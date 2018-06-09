@@ -46,7 +46,7 @@ class SiteNavbar extends Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/aboutus/">About Us</NavLink>
+              <NavLink href="/about/">About Us</NavLink>
             </NavItem>
             <NavItem>
               <NavLink href="/events/">Events</NavLink>
