@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from '../logo.svg'
 import {
   Collapse,
   Navbar,
@@ -15,6 +15,11 @@ import {
   Container,
   Row,
   Col } from 'reactstrap';
+
+var logoStyle = {
+  width: '150px',
+  height: '60px',
+};
 
 class SiteNavbar extends Component {
 
@@ -36,7 +41,7 @@ class SiteNavbar extends Component {
   render() {
     return (
       <Navbar color="light" light expand="md">
-        <NavbarBrand href="/">University Scholars Club</NavbarBrand>
+        <NavbarBrand href="/"><img src={logo} style={logoStyle} alt="logo" /></NavbarBrand>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
