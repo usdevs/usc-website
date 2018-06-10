@@ -8,4 +8,4 @@ export const logo = logoSVG;
 export const headerAboutUs = hAboutUs;
 export const headerContactUs = hContactUs;
 export const headerDashboard = hDashboard;
-export const headerhEvent = hEvent;
+export const headerEvent = hEvent;

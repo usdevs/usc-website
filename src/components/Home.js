@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Async from 'react-promise';
-import Calendar from 'react-google-calendar-events-list';
 import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
 import {
   UncontrolledCarousel,
@@ -13,21 +12,10 @@ import {
   Button
 } from 'reactstrap';
 import BigCalendar from 'react-big-calendar'
-import { GOOGLE_API_KEY } from '../config.js'
-import GoogleCalendar from '../utils/GoogleCalendar'
-// a localizer for BigCalendar
+import { calendars, getGoogleCalendarEvents } from '../resources/gcal'
 BigCalendar.momentLocalizer(moment)
 require('react-big-calendar/lib/css/react-big-calendar.css')
 
-const calendars = [
-  {
-    name: 'USCalendar',
-    url: 'ggoope87t0hgl8u9upt44vv8bs@group.calendar.google.com'
-  }
-]
-const dailyRecurrence = 700
-const weeklyRecurrence = 100
-const monthlyRecurrence = 20
 
 const items = [
   {
@@ -61,35 +49,10 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    this.getGoogleCalendarEvents()
+    getGoogleCalendarEvents((events) => this.setState({
+      events: events
+    }))
   }
-    getGoogleCalendarEvents = () => {
-      /*
-       * @param {string} GOOGLE_API_KEY - your Google API key
-       * @param {array} calendars - a list of key, value pairs
-       *                {name: 'name of your calendar', url: 'calendar_url'}
-       * @param {number} dailyRecurrence - how many times you want daily events to reoccur
-       * @param {number} weeklyRecurrence - how many times you want weekly events to reoccur
-       * @param {number} monthlyRecurrence - how many times you want monthly events to reoccur
-       *
-       * @returns {array} events - list of objects that will render on react-big-calendar
-       *   e.x. event = {
-       *           eventType: {string} calendar.name
-       *           creator: {string}
-       *           end: Datetime
-       *           gLink: {string} link to event in Google Calendar,
-       *           description: {string},
-       *           location: {string}
-       *           start: Datetime
-       *           title: {string} summary
-       *           meta: {object} - everything about the event Google returns
-       *        }
-       */
-      GoogleCalendar.getAllCalendars(GOOGLE_API_KEY, calendars, dailyRecurrence, weeklyRecurrence, monthlyRecurrence)
-        .then(events => this.setState({events}) )
-        .catch(err => { throw new Error(err) })
-    }
-
 
   render() {
 
