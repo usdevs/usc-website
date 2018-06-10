@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   UncontrolledCarousel,
   Container,
@@ -7,26 +8,8 @@ import {
   Jumbotron,
   Button
 } from 'reactstrap';
-import header from '../images/headerAboutUs.jpg';
-import icon from '../images/bg_aboutUs.jpg';
-import president from '../images/MC_president.jpg';
-import vpwelfare from '../images/MC_vp_welfare.jpg';
-import vpcommlife from '../images/MC_vp_commlife.jpg';
-import honfinsec from '../images/MC_honfinsec.jpg';
-import hongensec from '../images/MC_hongensec.jpg';
-import fopdirector from '../images/MC_fod.jpg';
-import presidentComm from '../images/USC_prcomm.jpg';
-import vpwelfareComm from '../images/USC_welfarecomm.jpg';
-import vpcommlifeComm from '../images/USC_commlifecomm.jpg';
-import honfinsecComm from '../images/USC_financecomm.jpg';
-import hongensecComm from '../images/USC_secretariat.jpg';
-import fopdirectorComm from '../images/USC_fopcomm.jpg';
-import ursaia from '../images/House_Ursaia.jpg';
-import nocturna from '../images/House_Nocturna.jpg';
-import ianthe from '../images/House_Ianthe.jpg';
-import triton from '../images/House_Triton.jpg';
-import ankaa from '../images/House_Ankaa.jpg';
-import saren from '../images/House_Saren.jpg';
+import { connect } from 'react-redux';
+import { headerAboutUs as header } from '../resources/images.js'
 
 var mcHeaderStyle = {
   backgroundColor: 'orange',
@@ -50,6 +33,52 @@ var uscCommNameStyle = {
 
 class AboutUs extends Component {
   render() {
+    const mcMembers = this.props.mcMembers.map((member) =>
+      <Col key={member.name}>
+        <div className="text-center">
+          <img src={member.image} className="img-fluid" />
+          <h5>{member.title}</h5>
+          <p className="lead">{member.name}</p>
+        </div>
+      </Col>
+    );
+
+    const uscCommittees = this.props.uscCommittees.map((committee) =>
+      <Col key={committee.name} xs="6" sm="4">
+        <img src={committee.image} className="img-fluid rounded" />
+        <h3 className="pb-0 mb-0">{committee.name}
+        </h3>
+        <small className="text-muted">Headed by <em>{committee.headedBy}</em></small>
+        <br/>
+        <br/>
+        {
+          committee.teams.map((team) =>
+            <div key={team.name}>
+              <p className="lead" style={uscCommTitleStyle}>{team.name}<br/>
+              <small className="text-muted">{team.members}</small></p>
+            </div>
+          )
+        }
+      </Col>
+    );
+
+    const houseCommittees = this.props.houseCommittees.map((committee) =>
+      <Col key={committee.name} xs="6" sm="4">
+        <div className="text-left">
+          <img src={committee.image} className="img-fluid rounded" />
+          <h3>{committee.name}
+          </h3>
+          {
+            committee.members.map((member) =>
+              <div key={member.name}>
+                <p className="lead" style={uscCommTitleStyle}>{member.title}<br/>
+                <small className="text-muted">{member.name}</small></p>
+              </div>
+            )
+          }
+        </div>
+      </Col>
+    );
 
     return (<Container>
       <Row>
@@ -86,50 +115,7 @@ class AboutUs extends Component {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <div className="text-center">
-            <img src={president} className="img-fluid" />
-            <h5>President</h5>
-            <p className="lead">THAM Jun Han</p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-center">
-            <img src={vpwelfare} className="img-fluid" />
-            <h5>Vice-President (Welfare)</h5>
-            <p className="lead">WOO Qiyun</p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-center">
-            <img src={vpcommlife} className="img-fluid" />
-            <h5>Vice-President (Community Life)</h5>
-            <p className="lead">TEE Shu Yun</p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-center">
-            <img src={hongensec} className="img-fluid" />
-            <h5>Honorary General Secretary</h5>
-            <p className="lead">Jeremy JEE De Sheng</p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-center">
-            <img src={honfinsec} className="img-fluid" />
-            <h5>Honorary Financial Secretary</h5>
-            <p className="lead">Melissa TANG Shou Hui</p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-center">
-            <img src={fopdirector} className="img-fluid" />
-            <h5>Freshmen Orientation Director</h5>
-            <p className="lead">ZHANG Quyi</p>
-          </div>
-        </Col>
-      </Row>
+      <Row>{ mcMembers }</Row>
       <Row>
         <Col>
           <div className="p-3 mb-2 text-white" style={uscHeaderStyle}>
@@ -137,168 +123,50 @@ class AboutUs extends Component {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <img src={presidentComm} className="img-fluid" />
-          <h3 className="pb-0 mb-0">Public Relations
-          </h3>
-          <small className="text-muted">Headed by <em>Tham Jun Han, President</em></small>
-          <br/>
-          <br/>
-          <p className="lead" style={uscCommTitleStyle}>Communications Team<br/>
-          <small className="text-muted">Royston Chua (Communications Secretary),<br/>Koh Kai Qian & Nur Ridhuan</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Alumni Relations Team<br/>
-          <small className="text-muted">Shien Hian Lim & Marcus Ng</small></p>
-        </Col>
-        <Col>
-          <div className="text-left">
-            <img src={vpwelfareComm} className="img-fluid" />
-            <h3 className="pb-0 mb-0">Student Welfare
-            </h3>
-            <small className="text-muted">Headed by <em>Woo Qiyun, Vice-President (Welfare)</em></small>
-            <br/>
-            <br/>
-            <p className="lead" style={uscCommTitleStyle}>Welfare Projects Team<br/>
-            <small className="text-muted">Wan Nur Syafiqa B Syed Yusoff (Director),
-              Charmaine Lee (Deputy Director), Sanchita Sachdev (Deputy Director),
-              Ong Ci Wen, Jaymee Mariano Justiniano, Melanie Chng, Wee Su-Ann, Jasmie Liew, Kagen Lim, Jade Ng & Lee Chun Min</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Academic Team<br/>
-            <small className="text-muted">Atharv Joshi (Director), Melvin Soh, Deter Thng, Devesh Narayanan & Loh Xiang Bin</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Residential Welfare Team<br/>
-          <small className="text-muted">Wang Chiew Hui (Spaces Director), Pang Chee Him (Dining Hall Director), Seah Wan Yu & Philina Lai</small></p>
-        <p className="lead" style={uscCommTitleStyle}>House Captains Team<br/>
-        <small className="text-muted">Gerald Seet (Ursaia), Kelvin Neo (Nocturna), Engracia Loh (Ianthe), Myat Thu Kyaw (Triton), Ng Jingrong (Ankaa), Arnold Teo (Saren) with Tan Kit Yung (Coordinating Director - Interhouse Events)</small></p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-left">
-            <img src={vpcommlifeComm} className="img-fluid" />
-            <h3 className="pb-0 mb-0">Community Life
-            </h3>
-            <small className="text-muted">Headed by <em>Tee Shu Yun, Vice-President (Community Life)</em></small>
-            <br/>
-            <br/>
-            <p className="lead" style={uscCommTitleStyle}>Deputy Directors (Community Life)<br/>
-            <small className="text-muted">Tan Yan Tyng & Joyce Foo</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Sports Director<br/>
-            <small className="text-muted">Jeremy Png</small></p>
-            <p className="lead" style={uscCommTitleStyle}>IG Coordinators<br/>
-            <small className="text-muted">Edward Goh (Sports) & Andrea Tan (Non-Sports)</small></p>
-            <p className="lead" style={uscCommTitleStyle}>GUI Coordinators<br/>
-            <small className="text-muted">Kathy Tan (Social, Cultural & Sports),<br/>
-            Jazreel Low (Social, Cultural & Sports),<br/>
-            Loh Xiang Bin (Welfare & Acad) & Teoh Xin Yi (Community Service)</small></p>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <img src={hongensecComm} className="img-fluid" />
-          <h3 className="pb-0 mb-0">Secretariat
-          </h3>
-          <small className="text-muted">Headed by <em>Jeremy Jee, Honorary General Secretary</em></small>
-          <br/>
-          <br/>
-          <p className="lead" style={uscCommTitleStyle}>Spaces Design Team<br/>
-          <small className="text-muted">Matthew Lee (Lead), Chia Yu Xuan (Lead), Chu Khoon Hwa & Andrea Tan</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Visual Design Team<br/>
-          <small className="text-muted">Carina Lim (Lead), Vandhana Jeyaram, Dong Yunfan, & Andrea Tan</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Technology Development Team<br/>
-          <small className="text-muted">Yuan Yuchuan (Lead), Varun Patro, Ahan Gupta, Sean Ng, Low Yew Woei & Chik Cheng Yao</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Operations Manager<br/>
-          <small className="text-muted">Gwyneth Cheng</small></p>
-        </Col>
-        <Col>
-          <div className="text-left">
-            <img src={vpwelfareComm} className="img-fluid" />
-            <h3 className="pb-0 mb-0">Finance
-            </h3>
-            <small className="text-muted">Headed by <em>Melissa Tang, Honorary Financial Secretary</em></small>
-            <br/>
-            <br/>
-            <p className="lead" style={uscCommTitleStyle}>Deputy Honorary Financial Secretary<br/>
-            <small className="text-muted">Maria Teresa Boey</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Business Development Executives<br/>
-            <small className="text-muted">Low Yew Woei (External) & Rachel Thomas (Internal)</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Marketing Executives<br/>
-          <small className="text-muted">Ng Shi Kai & Michelle Quek</small></p>
-          <p className="lead" style={uscCommTitleStyle}>Financial Attaches<br/>
-          <small className="text-muted">Quek Siying (Secretariat & Public Relations), Pang Chee Him (Welfare) & Andrea Chou Lim (Community Life)</small></p>
-          </div>
-        </Col>
-        <Col>
-          <div className="text-left">
-            <img src={vpcommlifeComm} className="img-fluid" />
-            <h3 className="pb-0 mb-0">Freshmen Orientation
-            </h3>
-            <small className="text-muted">Headed by <em>Zhang Quyi, Freshmen Orientation Director</em></small>
-            <br/>
-            <br/>
-            <p className="lead" style={uscCommTitleStyle}>Deputy Director<br/>
-            <small className="text-muted">Annina Zhang</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Directors<br/>
-            <small className="text-muted">Jazreel Low (Finance), Joyce Yeo (Creative), Merilynn Seng (Public Relations) & Jesmine Woon (Operations)</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Project Directors<br/>
-            <small className="text-muted">Beatrice Low (Camp), Jenn (O’Week), Kathy Tan (Events), Jadyn Teo (Batch Project) & Teoh Xinyi (Community Engagement)</small></p>
-          </div>
-        </Col>
-      </Row>
+      <Row>{ uscCommittees }</Row>
       <Row>
         <Col>
           <div className="p-3 mb-2 text-white" style={uscHeaderStyle}>
-            <h1 className="text-center display-4">House Committee</h1>
+            <h1 className="text-center display-4">House Committees</h1>
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <div className="text-left">
-            <img src={ursaia} className="img-fluid" />
-            <h3>Ursaia
-            </h3>
-            <p className="lead" style={uscCommTitleStyle}>House Captain<br/>
-            <small className="text-muted">Gerald Seet</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Vice House Captain<br/>
-            <small className="text-muted">Pratyay Jaidev</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Chief Orientation Group Leader<br/>
-            <small className="text-muted">Taira Robles</small></p>
-            <p className="lead" style={uscCommTitleStyle}>Vice Chief Orientation Group Leader<br/>
-            <small className="text-muted">Samantha Rin</small></p>
-          </div>
-        </Col>
-          <Col>
-            <div className="text-left">
-              <img src={ursaia} className="img-fluid" />
-              <h3>Ursaia
-              </h3>
-              <p className="lead" style={uscCommTitleStyle}>House Captain<br/>
-              <small className="text-muted">Gerald Seet</small></p>
-              <p className="lead" style={uscCommTitleStyle}>Vice House Captain<br/>
-              <small className="text-muted">Pratyay Jaidev</small></p>
-              <p className="lead" style={uscCommTitleStyle}>Chief Orientation Group Leader<br/>
-              <small className="text-muted">Taira Robles</small></p>
-              <p className="lead" style={uscCommTitleStyle}>Vice Chief Orientation Group Leader<br/>
-              <small className="text-muted">Samantha Rin</small></p>
-            </div>
-          </Col>
-            <Col>
-              <div className="text-left">
-                <img src={ursaia} className="img-fluid" />
-                <h3>Ursaia
-                </h3>
-                <p className="lead" style={uscCommTitleStyle}>House Captain<br/>
-                <small className="text-muted">Gerald Seet</small></p>
-                <p className="lead" style={uscCommTitleStyle}>Vice House Captain<br/>
-                <small className="text-muted">Pratyay Jaidev</small></p>
-                <p className="lead" style={uscCommTitleStyle}>Chief Orientation Group Leader<br/>
-                <small className="text-muted">Taira Robles</small></p>
-                <p className="lead" style={uscCommTitleStyle}>Vice Chief Orientation Group Leader<br/>
-                <small className="text-muted">Samantha Rin</small></p>
-              </div>
-            </Col>
-      </Row>
+      <Row>{ houseCommittees }</Row>
     </Container>);
     }
 }
 
-export default AboutUs;
+const mapStateToProps = state => {
+  return {
+    mcMembers: state.mcMembers,
+    uscCommittees: state.uscCommittees,
+    houseCommittees: state.houseCommittees
+  }
+}
+
+AboutUs.propTypes = {
+  mcMembers: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired
+  })).isRequired,
+  uscCommittees: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    headedBy: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    teams: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      members: PropTypes.string.isRequired,
+    })).isRequired
+  })).isRequired,
+  houseCommittees: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    members: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    })).isRequired
+  })).isRequired
+}
+
+export default connect(mapStateToProps)(AboutUs);

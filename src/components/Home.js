@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Async from 'react-promise';
 import Calendar from 'react-google-calendar-events-list';
-import carouselOne from '../images/headerAboutUs.jpg';
-import carouselTwo from '../images/headerContactUs.jpg';
-import carouselThree from '../images/headerDashboard.jpg';
+import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
 import {
   UncontrolledCarousel,
   Container,

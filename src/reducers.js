@@ -5,6 +5,8 @@ import {
   SET_VISIBILITY_FILTER,
   VisibilityFilters
 } from './actions'
+import { mcMembers as mcMembersData, uscCommittees as uscCommitteesData, houseCommittees  as houseCommitteesData } from './resources/data'
+
 const { SHOW_ALL } = VisibilityFilters
 
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -40,7 +42,20 @@ function todos(state = [], action) {
   }
 }
 
+function mcMembers(state = [], action) {
+  return mcMembersData
+}
+
+function uscCommittees(state = [], action) {
+  return uscCommitteesData
+}
+
+function houseCommittees(state = [], action) {
+  return houseCommitteesData
+}
+
 export default combineReducers({
-  visibilityFilter,
-  todos
+  mcMembers,
+  uscCommittees,
+  houseCommittees
 })
