@@ -61,7 +61,7 @@ class Calendar extends Component {
               <Col>
                 {
                   dayEvents ? dayEvents.map((event, index) =>
-                    <FontAwesomeIcon icon="circle" color={getDescriptionIconColor(event)} />
+                    <FontAwesomeIcon icon="circle" color={getDescriptionIconColor(event)} key={event.glink} />
                     ) : ''
                 }
               </Col>

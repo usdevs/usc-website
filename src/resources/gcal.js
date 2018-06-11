@@ -14,6 +14,9 @@ const weeklyRecurrence = 100
 const monthlyRecurrence = 20
 const gcalAPIKey = 'AIzaSyA0vELTTzgWbSlZ1DkQu5JChe6u40xs75k'
 export const dayFormat = 'DDMMYYYY'
+export const typeToColor = {
+  'Academic': 'dodgerblue'
+}
 
 export function processData(events, callback) {
   var gEvents = {}
@@ -45,13 +48,5 @@ export function getGoogleCalendarEvents(callback) {
 }
 
 export function getDescriptionIconColor(event) {
-  switch(event.type) {
-    case 'Academic':
-      return 'dodgerblue';
-    case 'Theme Room 2':
-      return 'red';
-    case 'Chatterbox':
-      return 'green';
-    default: 'black';
-  }
+  return typeToColor[event.type] ? typeToColor[event.type] : 'black'
 }

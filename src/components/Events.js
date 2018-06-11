@@ -54,30 +54,40 @@ class Events extends Component {
         </Row>
         <Row>
           <Col>
-            <h1 className="display-3">Events</h1>
+            <div className="d-flex">
+              <div className="p-2"><h1 className="display-3">Events</h1></div>
+              <div className="ml-auto mr-3 p-2 align-middle">
+                <a href="http://www.nususc.com/USC_Constitution.zip">
+                  <Button color="primary">Add to my Calendar</Button>
+                </a>
+              </div>
+            </div>
             <hr className="my-2" />
           </Col>
         </Row>
         <Row>
-          <Col md="4" className="d-none d-md-block">
-            <h1 className="display-4"><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{', ' + selectedDate.format('YYYY')}</small></h1>
-            <Infinite containerHeight={400} elementHeight={40}>
-                {
-                  selectedDayEvents ?
-                  selectedDayEvents.map((event) =>
-                    <div key={event.glink}>
-                      <div>
-                        <h1 className="d-inline-block">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></h1>
-                        <p class="lead">{moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '') }</p>
-                      </div>
-                    </div>
-                  ) : ''
-                }
-            </Infinite>
-          </Col>
-          <Col xs="12" md="8">
+          <Col xs="12" lg="8">
             <Calendar onDayClick={(date) => this.changeSelectedDate(date)} selectedDate={ selectedDate } events={ events } />
           </Col>
+            <Col xs="12" lg="4">
+              <hr className="my-2 d-block d-lg-none" />
+              <h1 className="display-4"><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{', ' + selectedDate.format('YYYY')}</small></h1>
+              <Infinite containerHeight={400} elementHeight={40}>
+                  {
+                    selectedDayEvents ?
+                    selectedDayEvents.map((event) =>
+                      <div key={event.glink}>
+                        <div>
+                          <h1 className="d-inline-block mb-0">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></h1>
+                          <br/>
+                          <small className="text-muted">{event.type}</small>
+                          <p className="lead">{moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '') }</p>
+                        </div>
+                      </div>
+                    ) : <h4>No events on this day</h4>
+                  }
+              </Infinite>
+            </Col>
         </Row>
       </Container>
     );
