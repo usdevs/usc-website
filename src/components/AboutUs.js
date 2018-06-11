@@ -34,7 +34,7 @@ var uscCommNameStyle = {
 class AboutUs extends Component {
   render() {
     const mcMembers = this.props.mcMembers.map((member) =>
-      <Col key={member.name}>
+      <Col key={member.name} xs="4" sm="4" md="2">
         <div className="text-center">
           <img src={member.image} className="img-fluid" />
           <h5>{member.title}</h5>

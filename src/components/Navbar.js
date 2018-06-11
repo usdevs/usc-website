@@ -11,10 +11,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem,
-  Container,
-  Row,
-  Col } from 'reactstrap';
+  DropdownItem } from 'reactstrap';
 
 var logoStyle = {
   width: '150px',

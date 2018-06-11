@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types'
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { render } from 'react-snapshot';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
 import './index.css';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
@@ -12,10 +11,16 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createStore } from 'redux'
 import reducers from './reducers'
+import fontawesome from '@fortawesome/fontawesome'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import brands from '@fortawesome/fontawesome-free-brands'
+import { faArrowCircleLeft, faArrowCircleRight, faCircle } from '@fortawesome/fontawesome-free-solid'
+
+fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle)
 
 const store = createStore(reducers)
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <div>
       <Navbar/>

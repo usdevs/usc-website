@@ -8,7 +8,6 @@ import moment from 'moment'
 const handleDayOfMonth = (calendar, recurrence, e) => {
   const start = moment(e.start.dateTime)
   const end = moment(e.end.dateTime)
-  const day = start.day()
   const date = start.date()
   let counter
   if (date <= 7) {
@@ -32,7 +31,7 @@ const handleDayOfMonth = (calendar, recurrence, e) => {
     let nextEnd = new Date(end.year(), end.month() + recurrence, tempCounter, end.hour(), end.minutes())
 
     while (tempCounter < 31) {
-      let isEqual = nextStart.getDay() == start.day()
+      let isEqual = nextStart.getDay() === start.day()
 
       if (isEqual) {
         const reoccurringEvent = {

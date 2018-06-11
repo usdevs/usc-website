@@ -1,61 +1,17 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import {
   Container,
   Row,
   Col,
-  Jumbotron,
   Button
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
 import { headerEvent as header } from '../resources/images.js'
-import BigCalendar from 'react-big-calendar'
-import moment from 'moment';
-import { calendars, getGoogleCalendarEvents, getVenueIconStyle } from '../resources/gcal'
-require('react-big-calendar/lib/css/react-big-calendar.css')
-
-const customToolbar = (toolbar) => {
-  const goToBack = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() - 1);
-    toolbar.onNavigate('prev');
-  };
-
-  const goToNext = () => {
-    toolbar.date.setMonth(toolbar.date.getMonth() + 1);
-    toolbar.onNavigate('next');
-  };
-
-  const goToCurrent = () => {
-    const now = new Date();
-    toolbar.date.setMonth(now.getMonth());
-    toolbar.date.setYear(now.getFullYear());
-    toolbar.onNavigate('current');
-  };
-
-  const date = moment(toolbar.date);
-
-  return (
-    <div className="text-center">
-      <Button color="primary" onClick={goToBack}>{'<'}</Button>
-      <span><b>{'      '}{date.format('MMMM')}</b><span> {date.format('YYYY')}{'      '}</span></span>
-      <Button color="primary" onClick={goToNext}>{'>'}</Button>
-      <br/>
-      <br/>
-    </div>
-  );
-};
-
-const customEventWrapper = ({ event, children }) => {
-  return(
-    <div className="d-inline">
-      <div style={getVenueIconStyle(event.location)} className="rounded-circle d-inline-block d-md-inline-block"/>
-      <p className="d-none d-md-inline">{' '}{event.title}</p>
-    </div>
-  );
-}
-
-moment.locale('en');
-BigCalendar.momentLocalizer(moment);
+import Calendar from './Calendar'
+import moment from 'moment'
+import Infinite from 'react-infinite'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class Events extends Component {
 
@@ -64,24 +20,31 @@ class Events extends Component {
 
     this.state = {
       events: [],
-      selectedDate: Date()
+      selectedDate: moment()
     }
   }
 
   componentDidMount = () => {
-    getGoogleCalendarEvents((events) => this.setState({
-      events: events
-    }))
+    getGoogleCalendarEvents((events) => {
+      this.setState({
+        ...this.state,
+        events: events
+      })
+    })
   }
 
   changeSelectedDate = (date) => {
     this.setState({
       ...this.state,
-      selectedDate: date.start
+      selectedDate: date
     })
   }
 
   render() {
+    const { selectedDate, events } = this.state
+    const selectedDayEvents = events ? events[moment(selectedDate).format(dayFormat)] : []
+    console.log(selectedDayEvents)
+
     return (
       <Container>
         <Row>
@@ -92,32 +55,28 @@ class Events extends Component {
         <Row>
           <Col>
             <h1 className="display-3">Events</h1>
-            <a href="http://www.nususc.com/USC_Constitution.zip">
-                <Button color="primary">Add To Your Calendar</Button>
-            </a>
-            <br/>
-            <br/>
+            <hr className="my-2" />
           </Col>
         </Row>
         <Row>
-          <Col className="embed-responsive embed-responsive-4by3">
-            <BigCalendar
-              selectable
-              defaultDate={new Date()}
-              className="embed-responsive-item"
-              events={this.state.events}
-              onSelectSlot={this.changeSelectedDate.bind(this)}
-              drilldownView={ null }
-              components={{
-                eventWrapper: customEventWrapper,
-                toolbar: customToolbar
-              }}
-            />
+          <Col md="4" className="d-none d-md-block">
+            <h1 className="display-4"><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{', ' + selectedDate.format('YYYY')}</small></h1>
+            <Infinite containerHeight={400} elementHeight={40}>
+                {
+                  selectedDayEvents ?
+                  selectedDayEvents.map((event) =>
+                    <div key={event.glink}>
+                      <div>
+                        <h1 className="d-inline-block">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></h1>
+                        <p class="lead">{moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '') }</p>
+                      </div>
+                    </div>
+                  ) : ''
+                }
+            </Infinite>
           </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h1>{ this.state.selectedDate.toString() }</h1>
+          <Col xs="12" md="8">
+            <Calendar onDayClick={(date) => this.changeSelectedDate(date)} selectedDate={ selectedDate } events={ events } />
           </Col>
         </Row>
       </Container>
