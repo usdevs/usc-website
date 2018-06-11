@@ -1,17 +1,16 @@
 /*
  * action types
  */
-
 export const ADD_TODO = 'ADD_TODO'
 export const TOGGLE_TODO = 'TOGGLE_TODO'
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER'
+export const SET_GOOGLE_EVENTS = 'NEW_GOOGLE_EVENTS'
 
 /*
  * other constants
  */
 
 export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
+  NEW_GOOGLE_EVENTS: 'SHOW_ALL',
   SHOW_COMPLETED: 'SHOW_COMPLETED',
   SHOW_ACTIVE: 'SHOW_ACTIVE'
 }
@@ -20,14 +19,11 @@ export const VisibilityFilters = {
  * action creators
  */
 
-export function addTodo(text) {
-  return { type: ADD_TODO, text }
+export function setGoogleEvents(events) {
+  console.log("test")
+  return { type: SET_GOOGLE_EVENTS, payload: events }
 }
 
 export function toggleTodo(index) {
   return { type: TOGGLE_TODO, index }
-}
-
-export function setVisibilityFilter(filter) {
-  return { type: SET_VISIBILITY_FILTER, filter }
 }

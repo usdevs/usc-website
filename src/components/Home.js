@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Async from 'react-promise';
+import { connect } from 'react-redux';
 import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
 import {
   UncontrolledCarousel,
@@ -9,13 +10,15 @@ import {
   Row,
   Col,
   Jumbotron,
-  Button
+  Button,
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle
 } from 'reactstrap';
-import BigCalendar from 'react-big-calendar'
-import { calendars, getGoogleCalendarEvents } from '../resources/gcal'
-BigCalendar.momentLocalizer(moment)
-require('react-big-calendar/lib/css/react-big-calendar.css')
-
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
+import { setGoogleEvents } from '../actions'
+import { isEmpty } from '../utils/utils'
+import lodash from 'lodash'
 
 const items = [
   {
@@ -49,12 +52,17 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
-    getGoogleCalendarEvents((events) => this.setState({
-      events: events
-    }))
+    if (isEmpty(this.props.events)) {
+      getGoogleCalendarEvents(this.props.setGoogleEvents)
+    }
   }
 
   render() {
+    var { upcomingEvents } = this.props
+
+    if (upcomingEvents.length > 5) {
+      upcomingEvents = lodash.slice(upcomingEvents, 0, 5)
+    }
 
     return (
       <Container>
@@ -75,12 +83,30 @@ class Home extends Component {
               </p>
               <hr className="my-2" />
               <br />
-              <h1 className="display-3">Events</h1>
-              <BigCalendar
-                defaultDate={new Date()}
-                style={{height: '420px'}}
-                events={this.state.events}
-              />
+              <h1 className="display-3">Upcoming Events</h1>
+              <Container>
+                <Row>
+                  {
+                    upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
+                      <Col key={event.glink}>
+                        <Card>
+                          <CardBody>
+                            <CardTitle>{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></CardTitle>
+                            <CardSubtitle>{moment(event.start).format('Do MMMM') + (event.type ? ' - ' + event.type : '')}</CardSubtitle>
+                            <CardText>{ moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '')  }</CardText>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col>
+                  }
+                </Row>
+              </Container>
+              <br/>
+              <p className="lead">
+                <Link to={`/events`}>
+                  <Button color="primary">See More</Button>
+                </Link>
+              </p>
             </Jumbotron>
           </Col>
         </Row>
@@ -89,4 +115,10 @@ class Home extends Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => {
+  return {
+    upcomingEvents: state.googleEventsUpcoming
+  }
+}
+
+export default connect(mapStateToProps, { setGoogleEvents })(Home);

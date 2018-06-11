@@ -1,6 +1,6 @@
 import GoogleCalendar from '../utils/GoogleCalendar'
+import { dispatch } from 'redux'
 import moment from 'moment'
-import lodash from 'lodash'
 
 export const calendars = [
   {
@@ -18,32 +18,10 @@ export const typeToColor = {
   'Academic': 'dodgerblue'
 }
 
-export function processData(events, callback) {
-  var gEvents = {}
-  events.map((event) => {
-    const details = lodash.split(event.location, '/', 2);
-    event = {
-      ...event,
-      type: lodash.trim(details[0]),
-      venue: details.length > 1 ? lodash.trim(details[1]) : ""
-    }
-    const date = moment(event.start).format(dayFormat)
-    var dayEvents = gEvents[date] ? gEvents[date].slice() : [];
-    dayEvents.push(event);
-
-    gEvents = {
-      ...gEvents,
-      [date]: dayEvents
-    }
-  })
-
-  callback(gEvents)
-}
-
 export function getGoogleCalendarEvents(callback) {
 
   GoogleCalendar.getAllCalendars(gcalAPIKey, calendars, dailyRecurrence, weeklyRecurrence, monthlyRecurrence)
-    .then(events => processData(events, callback))
+    .then(events => callback(events))
     .catch(err => { throw new Error(err) })
 }
 

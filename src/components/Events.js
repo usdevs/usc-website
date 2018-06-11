@@ -12,6 +12,8 @@ import Calendar from './Calendar'
 import moment from 'moment'
 import Infinite from 'react-infinite'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { setGoogleEvents } from '../actions'
+import { isEmpty } from '../utils/utils'
 
 class Events extends Component {
 
@@ -25,12 +27,9 @@ class Events extends Component {
   }
 
   componentDidMount = () => {
-    getGoogleCalendarEvents((events) => {
-      this.setState({
-        ...this.state,
-        events: events
-      })
-    })
+    if (isEmpty(this.props.events)) {
+      getGoogleCalendarEvents(this.props.setGoogleEvents)
+    }
   }
 
   changeSelectedDate = (date) => {
@@ -41,7 +40,8 @@ class Events extends Component {
   }
 
   render() {
-    const { selectedDate, events } = this.state
+    const { selectedDate } = this.state
+    const { events } = this.props
     const selectedDayEvents = events ? events[moment(selectedDate).format(dayFormat)] : []
     console.log(selectedDayEvents)
 
@@ -96,7 +96,8 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
+    events: state.googleEventsByDay
   }
 }
 
-export default connect(mapStateToProps)(Events);
+export default connect(mapStateToProps, { setGoogleEvents })(Events);
