@@ -19,6 +19,30 @@ import triton from './images/House/Triton.jpg';
 import ankaa from './images/House/Ankaa.jpg';
 import saren from './images/House/Saren.jpg';
 
+import { amphitheatre, chatterbox, ctph, themeRoom1, themeRoom2, protoStudio } from './images';
+
+export const spaces = [
+  {
+    name: "Amphitheatre",
+    image: amphitheatre,
+  }, {
+    name: "Chatterbox",
+    image: chatterbox,
+  }, {
+    name: "Chua Thian Poh Hall",
+    image: ctph,
+  }, {
+    name: "Theme Room 1",
+    image: themeRoom1,
+  }, {
+    name: "Theme Room 2",
+    image: themeRoom2,
+  }, {
+    name: "Prototyping Studio",
+    image: protoStudio
+  }
+]
+
 export const mcMembers = [
 {
   name: "THAM Jun Han",

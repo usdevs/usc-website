@@ -58,7 +58,7 @@ class Home extends Component {
   }
 
   render() {
-    var { upcomingEvents } = this.props
+    var { upcomingEvents, spaces } = this.props
 
     if (upcomingEvents.length > 5) {
       upcomingEvents = lodash.slice(upcomingEvents, 0, 5)
@@ -107,6 +107,31 @@ class Home extends Component {
                   <Button color="primary">See More</Button>
                 </Link>
               </p>
+              <hr className="my-2" />
+              <h1 className="display-3">Our Spaces</h1>
+              <Container>
+                <Row>
+                  {
+                    spaces.map((space)=>
+                      <Col xs="6" sm="4">
+                        <div className="card">
+                          <img class="card-img-top" src={space.image} alt={space.name} />
+                          <div class="card-body">
+                            <h5 class="card-title">{space.name}</h5>
+                          </div>
+                        </div>
+                      </Col>
+                    )
+                  }
+                </Row>
+              </Container>
+              <p className="lead">
+                <Link to={`/events`}>
+                  <Button color="primary">Learn More</Button>
+                </Link>
+              </p>
+              <hr className="my-2" />
+              <h6>Copyright 2018. NUS Students' University Scholars Club</h6>
             </Jumbotron>
           </Col>
         </Row>
@@ -117,7 +142,8 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    upcomingEvents: state.googleEventsUpcoming
+    upcomingEvents: state.googleEventsUpcoming,
+    spaces: state.spaces
   }
 }
 

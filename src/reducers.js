@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux'
-import { mcMembers as mcMembersData, uscCommittees as uscCommitteesData, houseCommittees  as houseCommitteesData } from './resources/data'
+import { mcMembers as mcMembersData, uscCommittees as uscCommitteesData, houseCommittees  as houseCommitteesData, spaces as spacesData } from './resources/data'
 import { SET_GOOGLE_EVENTS } from './actions'
 import lodash from 'lodash'
 import moment from 'moment'
-import {dayFormat} from './resources/gcal'
+import { dayFormat } from './resources/gcal'
 
 function mcMembers(state = [], action) {
   return mcMembersData
@@ -68,11 +68,16 @@ function googleEventsUpcoming(state = [], action) {
   }
 }
 
+function spaces(state = [], action) {
+  return spacesData
+}
+
 export default combineReducers({
   mcMembers,
   uscCommittees,
   houseCommittees,
   googleEvents,
   googleEventsByDay,
-  googleEventsUpcoming
+  googleEventsUpcoming,
+  spaces
 })
