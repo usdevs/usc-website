@@ -5,6 +5,13 @@ import honfinsec from './images/MC/honfinsec.jpg';
 import hongensec from './images/MC/hongensec.jpg';
 import fopdirector from './images/MC/fopdirector.jpg';
 
+import sixteenthpresident from './images/MC/16th/president.jpg';
+import sixteenthvpwelfare from './images/MC/16th/vpwelfare.jpg';
+import sixteenthvpcommlife from './images/MC/16th/vpcommlife.jpg';
+import sixteenthhonfinsec from './images/MC/16th/honfinsec.jpg';
+import sixteenthhongensec from './images/MC/16th/hongensec.jpg';
+import sixteenthfopdirector from './images/MC/16th/fopdirector.jpg';
+
 import presidentComm from './images/USCommitees/publicrelations.jpg';
 import vpwelfareComm from './images/USCommitees/welfare.jpg';
 import vpcommlifeComm from './images/USCommitees/commlife.jpg';
@@ -43,37 +50,74 @@ export const spaces = [
   }
 ]
 
-export const mcMembers = [
-{
-  name: "THAM Jun Han",
-  title: "President",
-  image: president,
-},
-{
-  name: "WOO Qi Yun",
-  title: "Vice-President (Welfare)",
-  image: vpwelfare,
-},
-{
-  name: "TEE Shu Yun",
-  title: "Vice-President (Community Life)",
-  image: vpcommlife,
-},
-{
-  name: "Jeremy JEE",
-  title: "Honorary General Secretary",
-  image: hongensec,
-},
-{
-  name: "Melissa TANG",
-  title: "Honorary Financial Secretary",
-  image: honfinsec,
-},
-{
-  name: "ZHANG Quyi",
-  title: "Freshmen Orientation Project Director",
-  image: fopdirector,
-}];
+export const mcMembers = {
+  "16th" :
+  [
+    {
+      name: "CHEAH Wen Jie",
+      title: "President",
+      image: sixteenthpresident,
+    },
+    {
+      name: "Hillary TAN",
+      title: "Vice-President (Welfare)",
+      image: sixteenthvpwelfare,
+    },
+    {
+      name: "Devesh NARAYANAN",
+      title: "Vice-President (Community Life)",
+      image: sixteenthvpcommlife,
+    },
+    {
+      name: "HONG Shao Yang",
+      title: "Honorary General Secretary",
+      image: sixteenthhongensec,
+    },
+    {
+      name: "Edwin Luke WEE",
+      title: "Honorary Financial Secretary",
+      image: sixteenthhonfinsec,
+    },
+    {
+      name: "WOO Qiyun",
+      title: "Freshmen Orientation Project Director",
+      image: sixteenthfopdirector,
+    }
+  ],
+  "17th" :
+  [
+    {
+      name: "THAM Jun Han",
+      title: "President",
+      image: president,
+    },
+    {
+      name: "WOO Qi Yun",
+      title: "Vice-President (Welfare)",
+      image: vpwelfare,
+    },
+    {
+      name: "TEE Shu Yun",
+      title: "Vice-President (Community Life)",
+      image: vpcommlife,
+    },
+    {
+      name: "Jeremy JEE",
+      title: "Honorary General Secretary",
+      image: hongensec,
+    },
+    {
+      name: "Melissa TANG",
+      title: "Honorary Financial Secretary",
+      image: honfinsec,
+    },
+    {
+      name: "ZHANG Quyi",
+      title: "Freshmen Orientation Project Director",
+      image: fopdirector,
+    }
+  ]
+};
 
 export const uscCommittees = [
   {

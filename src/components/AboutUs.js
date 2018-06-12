@@ -6,7 +6,8 @@ import {
   Row,
   Col,
   Jumbotron,
-  Button
+  Button,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { headerAboutUs as header } from '../resources/images.js'
@@ -32,16 +33,37 @@ var uscCommNameStyle = {
 };
 
 class AboutUs extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
   render() {
-    const mcMembers = this.props.mcMembers.map((member) =>
-      <Col key={member.name} xs="4" sm="4" md="2">
-        <div className="text-center">
-          <img src={member.image} className="img-fluid" />
-          <h5>{member.title}</h5>
-          <p className="lead">{member.name}</p>
-        </div>
-      </Col>
-    );
+    const mcMembers = (committees, modal) => {
+      var commTags = []
+      committees.map((member) => {
+        commTags.push(
+        <Col key={member.name} xs={!modal ? "4" : "6" } md={!modal ? "2" : "4" }>
+          <div className="text-center">
+            <img src={member.image} className="img-fluid rounded-circle" />
+            <h5>{member.title}</h5>
+            <p className="lead">{member.name}</p>
+          </div>
+        </Col>)
+      })
+
+      return commTags
+    };
 
     const uscCommittees = this.props.uscCommittees.map((committee) =>
       <Col key={committee.name} xs="6" sm="4">
@@ -80,6 +102,32 @@ class AboutUs extends Component {
       </Col>
     );
 
+    const previousMCMembersModal =
+      <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Previous Management Committees</ModalHeader>
+          <ModalBody>
+            <Container>
+              {
+                Object.keys(this.props.mcMembers).map((mcNo) =>
+                <div key={mcNo}>
+                  <Row>
+                    <Col>
+                      <h1 className="display-4">{mcNo + " Management Committee"}</h1>
+                    </Col>
+                  </Row>
+                  <Row>
+                    { mcMembers(this.props.mcMembers[mcNo], true) }
+                  </Row>
+                </div>
+                )
+              }
+            </Container>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggle}>Close</Button>
+          </ModalFooter>
+        </Modal>
+
     return (<Container>
       <Row>
         <Col>
@@ -115,10 +163,11 @@ class AboutUs extends Component {
           </div>
         </Col>
       </Row>
-      <Row>{ mcMembers }</Row>
+      <Row>{ mcMembers(this.props.mcMembers['17th'], false) }</Row>
       <Row>
         <Col>
-          <Button color="primary">View Previous</Button>
+          <Button color="primary" onClick={this.toggle}>View Previous</Button>
+          { previousMCMembersModal }
           <br/>
           <br/>
         </Col>
@@ -152,11 +201,12 @@ const mapStateToProps = state => {
 }
 
 AboutUs.propTypes = {
-  mcMembers: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired
-  })).isRequired,
+  mcMembers: PropTypes.shape({
+    byId: PropTypes.objectOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired
+  }))}).isRequired,
   uscCommittees: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     headedBy: PropTypes.string.isRequired,
