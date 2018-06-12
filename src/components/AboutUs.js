@@ -118,6 +118,13 @@ class AboutUs extends Component {
       <Row>{ mcMembers }</Row>
       <Row>
         <Col>
+          <Button color="primary">View Previous</Button>
+          <br/>
+          <br/>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <div className="p-3 mb-2 text-white" style={uscHeaderStyle}>
             <h1 className="text-center display-4">USC Committees</h1>
           </div>

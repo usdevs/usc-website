@@ -64,6 +64,17 @@ class Home extends Component {
       upcomingEvents = lodash.slice(upcomingEvents, 0, 5)
     }
 
+    var spacesCarousellItems = []
+
+    spaces.map((space) => {
+      spacesCarousellItems.push({
+        src: space.image,
+        altText: space.name,
+        caption: '',
+        header: space.name
+      })
+    })
+
     return (
       <Container>
         <Row>
@@ -73,7 +84,7 @@ class Home extends Component {
         </Row>
         <Row>
           <Col sm="12" md={{ size: 10, offset: 1 }}>
-            <Jumbotron>
+            <Jumbotron className="pb-0 mb-0 h-100">
               <h1 className="display-3">About Us</h1>
               <p className="lead">The University Scholars Club (USC) is a community of students enrolled in the National University of Singapore (NUS) University Scholars Programme (USP), which is a multidisciplinary, partially residential academic programme for NUS undergraduates.</p>
               <p className="lead">
@@ -88,7 +99,7 @@ class Home extends Component {
                 <Row>
                   {
                     upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
-                      <Col key={event.glink}>
+                      <Col key={event.glink} xs="12" md="6">
                         <Card>
                           <CardBody>
                             <CardTitle>{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></CardTitle>
@@ -108,23 +119,19 @@ class Home extends Component {
                 </Link>
               </p>
               <hr className="my-2" />
+              <br/>
               <h1 className="display-3">Our Spaces</h1>
-              <Container>
-                <Row>
-                  {
-                    spaces.map((space)=>
-                      <Col xs="6" sm="4">
-                        <div className="card">
-                          <img class="card-img-top" src={space.image} alt={space.name} />
-                          <div class="card-body">
-                            <h5 class="card-title">{space.name}</h5>
-                          </div>
-                        </div>
-                      </Col>
-                    )
-                  }
-                </Row>
-              </Container>
+            </Jumbotron>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12" md={{ size: 10, offset: 1 }}>
+            <UncontrolledCarousel items={spacesCarousellItems} />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12" md={{ size: 10, offset: 1 }}>
+            <Jumbotron>
               <p className="lead">
                 <Link to={`/events`}>
                   <Button color="primary">Learn More</Button>
