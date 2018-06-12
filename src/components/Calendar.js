@@ -52,7 +52,7 @@ class Calendar extends Component {
               <Col className="d-flex justify-content-center" >
                 <span className="fa-layers fa-fw" style={{marginTop: '.7em'}}>
                   {
-                    sameDay ? <FontAwesomeIcon icon="circle" color="dodgerblue" size="2x" style={{marginTop: '-.35em', marginLeft: '-.175em'}} /> : ''
+                    sameDay ? <FontAwesomeIcon icon="circle" color="dodgerblue" size="2x" style={{marginTop: '-.35em', marginLeft: '-.1925em'}} /> : ''
                   }
                   <span className={"fa-layers-text " + (sameDay ? 'text-white' : '')} data-fa-transform="shrink-8 down-3" style={{fontWeight: 900}}><h4>{day.format('D')}</h4></span>
                 </span>

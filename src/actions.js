@@ -20,7 +20,6 @@ export const VisibilityFilters = {
  */
 
 export function setGoogleEvents(events) {
-  console.log("test")
   return { type: SET_GOOGLE_EVENTS, payload: events }
 }
 

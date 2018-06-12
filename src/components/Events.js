@@ -43,7 +43,6 @@ class Events extends Component {
     const { selectedDate } = this.state
     const { events } = this.props
     const selectedDayEvents = events ? events[moment(selectedDate).format(dayFormat)] : []
-    console.log(selectedDayEvents)
 
     return (
       <Container>
