@@ -14,6 +14,7 @@ import Timeline from 'react-calendar-timeline/lib'
 import Moment from 'moment'
 import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
 import { connect } from 'react-redux';
+import _ from 'lodash'
 import { setGoogleEvents } from '../actions'
 import { isEmpty } from '../utils/utils'
 import Calendar from './Calendar'

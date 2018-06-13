@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Container, Row, Col } from 'reactstrap';
 import Moment from 'moment'
-import lodash from 'lodash'
+import _ from 'lodash'
 import { extendMoment } from 'moment-range';
 import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -59,13 +59,18 @@ class Calendar extends Component {
               </Col>
             </Row>
             <Row>
-              <Col className="d-flex justify-content-center pt-1">
                 {
-                  dayEvents ? dayEvents.map((event, index) =>
-                    <FontAwesomeIcon icon="circle" color={event.color} key={event.glink} />
-                    ) : ''
+                  dayEvents ? _.chunk(dayEvents, 3).map((eventChunk) => {
+                    var tags = []
+                    eventChunk.map((event) => {
+                      tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={event.color} key={event.glink} />)
+                    })
+
+                    return (<Col className="d-flex justify-content-center pt-1">
+                      { tags }
+                    </Col>)
+                  }) : ''
                 }
-              </Col>
             </Row>
           </Container>
         </Col>)
@@ -143,7 +148,7 @@ class Calendar extends Component {
           {this.dayHeaders()}
         </Row>
         {
-          lodash.chunk(this.days(), 7).map((week, index) =>
+          _.chunk(this.days(), 7).map((week, index) =>
             <Row key={index}>
               { week }
             </Row>
