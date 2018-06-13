@@ -3,7 +3,7 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import Moment from 'moment'
 import lodash from 'lodash'
 import { extendMoment } from 'moment-range';
-import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
+import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 const moment = extendMoment(Moment);
@@ -62,7 +62,7 @@ class Calendar extends Component {
               <Col className="d-flex justify-content-center pt-1">
                 {
                   dayEvents ? dayEvents.map((event, index) =>
-                    <FontAwesomeIcon icon="circle" color={getDescriptionIconColor(event)} key={event.glink} />
+                    <FontAwesomeIcon icon="circle" color={event.color} key={event.glink} />
                     ) : ''
                 }
               </Col>

@@ -6,6 +6,7 @@ import './index.css';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import Events from './components/Events';
+import Spaces from './components/Spaces';
 import Navbar from './components/Navbar';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -29,6 +30,7 @@ render(
           <Route exact path="/" component={Home}/>
           <Route path="/about" component={AboutUs}/>
           <Route path="/events" component={Events}/>
+          <Route path="/spaces" component={Spaces}/>
           <Route component={Home}/>
         </Switch>
       </Router>

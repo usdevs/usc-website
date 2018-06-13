@@ -28,27 +28,63 @@ import saren from './images/House/Saren.jpg';
 
 import { amphitheatre, chatterbox, ctph, themeRoom1, themeRoom2, protoStudio } from './images';
 
+export const eventTypes = ["Academic", "Community Life", "Welfare", "Others"];
+
+export function getEventTypeID(event) {
+  switch(event) {
+    case eventTypes[0]:
+      return 0
+    case eventTypes[1]:
+      return 1
+    case eventTypes[2]:
+      return 2
+    case eventTypes[3]:
+      return 3
+    default:
+      return -1
+  }
+}
+
 export const spaces = [
   {
     name: "Amphitheatre",
+    shortName: "Amphi",
     image: amphitheatre,
   }, {
     name: "Chatterbox",
+    shortName: "Chatter",
     image: chatterbox,
   }, {
-    name: "Chua Thian Poh Hall",
-    image: ctph,
-  }, {
     name: "Theme Room 1",
+    shortName: "TR1",
     image: themeRoom1,
   }, {
     name: "Theme Room 2",
+    shortName: "TR2",
     image: themeRoom2,
-  }, {
-    name: "Prototyping Studio",
-    image: protoStudio
   }
 ]
+
+export const defaultTypeColor = "black"
+
+export const typeToColor = {
+  'Academic': 'dodgerblue'
+}
+
+export function getSpaceID(space) {
+  switch(space) {
+    case "Amphitheatre":
+      return 0
+    case "Chatterbox":
+      return 1
+    case "Theme Room 1":
+      return 2
+    case "Theme Room 2":
+      return 3
+    default:
+      return -1
+  }
+}
 
 export const mcMembers = {
   "16th" :

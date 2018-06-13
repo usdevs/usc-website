@@ -7,7 +7,7 @@ import {
   Jumbotron
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
+import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
 import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
 import moment from 'moment'
@@ -83,7 +83,7 @@ class Events extends Component {
                     selectedDayEvents.map((event) =>
                       <div key={event.glink}>
                         <div>
-                          <h1 className="d-inline-block mb-0">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={event.color} size="xs" /></h1>
+                          <h1 className="d-inline-block mb-0">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></h1>
                           <br/>
                           <small className="text-muted">{event.type}</small>
                           <p className="lead">{moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '') }</p>

@@ -10,6 +10,7 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
 
 var mcHeaderStyle = {
@@ -55,7 +56,7 @@ class AboutUs extends Component {
         commTags.push(
         <Col key={member.name} xs={!modal ? "4" : "6" } md={!modal ? "2" : "4" }>
           <div className="text-center">
-            <img src={member.image} className="img-fluid rounded-circle" />
+            <Img src={member.image} className="img-fluid rounded-circle" />
             <h5>{member.title}</h5>
             <p className="lead">{member.name}</p>
           </div>
@@ -67,7 +68,7 @@ class AboutUs extends Component {
 
     const uscCommittees = this.props.uscCommittees.map((committee) =>
       <Col key={committee.name} xs="6" sm="4">
-        <img src={committee.image} className="img-fluid rounded" />
+        <Img src={committee.image} className="img-fluid rounded" />
         <h3 className="pb-0 mb-0">{committee.name}
         </h3>
         <small className="text-muted">Headed by <em>{committee.headedBy}</em></small>
@@ -87,7 +88,7 @@ class AboutUs extends Component {
     const houseCommittees = this.props.houseCommittees.map((committee) =>
       <Col key={committee.name} xs="6" sm="4">
         <div className="text-left">
-          <img src={committee.image} className="img-fluid rounded" />
+          <Img src={committee.image} className="img-fluid rounded" />
           <h3>{committee.name}
           </h3>
           {
@@ -131,7 +132,7 @@ class AboutUs extends Component {
     return (<Container>
       <Row>
         <Col>
-          <img src={header} className="img-fluid" />
+          <Img src={header} className="img-fluid" />
         </Col>
       </Row>
       <Row>
@@ -188,6 +189,11 @@ class AboutUs extends Component {
         </Col>
       </Row>
       <Row>{ houseCommittees }</Row>
+      <Row>
+        <Col>
+          <Jumbotron><h6>Copyright 2018. NUS Students' University Scholars Club</h6></Jumbotron>
+        </Col>
+      </Row>
     </Container>);
     }
 }

@@ -15,7 +15,7 @@ import {
   CardTitle, CardSubtitle
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
+import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
 import { setGoogleEvents } from '../actions'
 import { isEmpty } from '../utils/utils'
 import lodash from 'lodash'
@@ -102,7 +102,7 @@ class Home extends Component {
                       <Col key={event.glink} xs="12" md="6">
                         <Card>
                           <CardBody>
-                            <CardTitle>{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={getDescriptionIconColor(event)} size="xs" /></CardTitle>
+                            <CardTitle>{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={event.color} size="xs" /></CardTitle>
                             <CardSubtitle>{moment(event.start).format('Do MMMM') + (event.type ? ' - ' + event.type : '')}</CardSubtitle>
                             <CardText>{ moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '')  }</CardText>
                           </CardBody>
@@ -133,7 +133,7 @@ class Home extends Component {
           <Col sm="12" md={{ size: 10, offset: 1 }}>
             <Jumbotron>
               <p className="lead">
-                <Link to={`/events`}>
+                <Link to={`/spaces`}>
                   <Button color="primary">Learn More</Button>
                 </Link>
               </p>
