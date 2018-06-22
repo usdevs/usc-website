@@ -29,6 +29,7 @@ import saren from './images/House/Saren.jpg';
 import { amphitheatre, chatterbox, ctph, themeRoom1, themeRoom2, protoStudio } from './images';
 
 export const eventTypes = ["Academic", "Community Life", "Welfare", "Others"];
+export const footerText = "© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club"
 
 export function getEventTypeID(event) {
   switch(event) {

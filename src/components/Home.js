@@ -19,6 +19,7 @@ import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
 import { setGoogleEvents } from '../actions'
 import { isEmpty } from '../utils/utils'
 import lodash from 'lodash'
+import { footerText } from '../resources/data'
 
 const items = [
   {
@@ -120,28 +121,12 @@ class Home extends Component {
               </p>
               <hr className="my-2" />
               <br/>
-              <h1 className="display-3">Our Spaces</h1>
+              <h6>{ footerText }</h6>
+              <br/>
             </Jumbotron>
           </Col>
         </Row>
-        <Row>
-          <Col sm="12" md={{ size: 10, offset: 1 }}>
-            <UncontrolledCarousel items={spacesCarousellItems} />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm="12" md={{ size: 10, offset: 1 }}>
-            <Jumbotron>
-              <p className="lead">
-                <Link to={`/spaces`}>
-                  <Button color="primary">Learn More</Button>
-                </Link>
-              </p>
-              <hr className="my-2" />
-              <h6>Copyright 2018. NUS Students' University Scholars Club</h6>
-            </Jumbotron>
-          </Col>
-        </Row>
+        <Row><Col><br/></Col></Row>
       </Container>
     );
   }

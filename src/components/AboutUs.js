@@ -12,6 +12,7 @@ import {
 import { connect } from 'react-redux';
 import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
+import { footerText } from '../resources/data'
 
 var mcHeaderStyle = {
   backgroundColor: 'orange',
@@ -191,7 +192,7 @@ class AboutUs extends Component {
       <Row>{ houseCommittees }</Row>
       <Row>
         <Col>
-          <Jumbotron><h6>Copyright 2018. NUS Students' University Scholars Club</h6></Jumbotron>
+          <Jumbotron><h6>{ footerText }</h6></Jumbotron>
         </Col>
       </Row>
     </Container>);
