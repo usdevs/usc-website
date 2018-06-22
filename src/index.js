@@ -8,6 +8,7 @@ import AboutUs from './components/AboutUs';
 import Events from './components/Events';
 import Spaces from './components/Spaces';
 import Navbar from './components/Navbar';
+import ContactUs from './components/ContactUs';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createStore } from 'redux'
@@ -31,6 +32,7 @@ render(
           <Route path="/about" component={AboutUs}/>
           <Route path="/events" component={Events}/>
           <Route path="/spaces" component={Spaces}/>
+          <Route path="/contactus" component={ContactUs}/>
           <Route component={Home}/>
         </Switch>
       </Router>

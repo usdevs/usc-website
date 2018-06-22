@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { logo } from '../resources/images'
+import LoginModal from './LoginModal'
 import {
+  Button,
   Collapse,
   Navbar,
   NavbarToggler,
@@ -25,13 +27,21 @@ class SiteNavbar extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      loginIsOpen: false,
     };
   }
 
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
+    });
+  }
+
+  toggleLogin() {
+    console.log(this.state.loginIsOpen)
+    this.setState({
+      loginIsOpen: !this.state.loginIsOpen
     });
   }
 
@@ -54,22 +64,27 @@ class SiteNavbar extends Component {
             <NavItem>
               <NavLink href="/contactus/">Contact Us</NavLink>
             </NavItem>
-            <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Account
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  Manage
-                </DropdownItem>
-                <DropdownItem divider />
-                <DropdownItem>
-                  Log Out
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            {
+              false ? <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Account
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                    Manage
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem>
+                    Log Out
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown> :
+              <Button color="primary" onClick={this.toggleLogin.bind(this)}>Login</Button>
+            }
+
           </Nav>
         </Collapse>
+        <LoginModal isOpen={this.state.loginIsOpen} toggle={this.toggleLogin.bind(this)} />
       </Navbar>
     );
   }
