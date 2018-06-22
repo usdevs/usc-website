@@ -78,12 +78,12 @@ class Home extends Component {
     return (
       <Container>
         <Row>
-          <Col sm="12" md={{ size: 10, offset: 1 }}>
+          <Col sm="12">
             <UncontrolledCarousel items={items} />
           </Col>
         </Row>
         <Row>
-          <Col sm="12" md={{ size: 10, offset: 1 }}>
+          <Col sm="12">
             <Jumbotron className="pb-0 mb-0 h-100">
               <h1 className="display-3">About Us</h1>
               <p className="lead">The University Scholars Club (USC) is a community of students enrolled in the National University of Singapore (NUS) University Scholars Programme (USP), which is a multidisciplinary, partially residential academic programme for NUS undergraduates.</p>

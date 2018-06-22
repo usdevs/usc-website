@@ -226,7 +226,7 @@ class Spaces extends Component {
           <Col><img src={header} className="img-fluid" /></Col>
         </Row>
         <Row>
-          <Col><div className="p-2"><h1 className="display-3">Spaces</h1></div></Col>
+          <Col><div className="p-2"><h1 className="display-3">Spaces</h1></div><hr className="my-2" /></Col>
         </Row>
         <Row>
           <Col xs="12" md="6">

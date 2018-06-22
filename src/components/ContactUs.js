@@ -33,12 +33,12 @@ class ContactUs extends Component {
     return(
       <Container>
         <Row>
-          <Col sm="12" md={{ size: 5, offset: 1 }}>
+          <Col>
             <h1 className="display-4">Contact Us</h1>
           </Col>
         </Row>
         <Row>
-          <Col sm="12" md={{ size: 5, offset: 1 }}>
+          <Col sm="12" md="6">
             <MapWithAMarker
               googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4R6AN7SmujjPUIGKdyao2Kqitzr1kiRg&v=3.exp&libraries=geometry,drawing,places"
               loadingElement={<div style={{ height: `100%` }} />}
@@ -46,7 +46,7 @@ class ContactUs extends Component {
               mapElement={<div style={{ height: `100%` }} />}
             />
           </Col>
-          <Col sm="12" md={{ size: 5 }}>
+          <Col sm="12" md="6">
             <Jumbotron className="pb-0 mb-0 h-100">
               <h4>NUS Students' University Scholars Club</h4>
               <p className="lead">National University of Singapore<br/>Cinnamon College, University Town<br/>18 College Avenue East S138593</p>
