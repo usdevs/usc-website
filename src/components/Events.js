@@ -16,6 +16,8 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { setGoogleEvents } from '../actions'
 import { isEmpty } from '../utils/utils'
 
+const calendarLink = "http://bit.ly/uspcalendar"
+
 class Events extends Component {
 
   constructor(props) {
@@ -23,7 +25,7 @@ class Events extends Component {
 
     this.state = {
       events: [],
-      selectedDate: moment()
+      selectedDate: moment(),
     }
   }
 
@@ -57,13 +59,13 @@ class Events extends Component {
             <div className="d-flex">
               <div className="p-2"><h1 className="display-3">Events</h1></div>
               <div className="d-flex ml-auto mr-3 p-2 align-items-center">
-                <a href="https://calendar.google.com/calendar?cid=Z2dvb3BlODd0MGhnbDh1OXVwdDQ0dnY4YnNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ">
+                <a href={calendarLink}>
                   <Button color="primary" className="d-none d-sm-block">Add to my Calendar</Button>
                 </a>
               </div>
             </div>
             <div>
-              <a href="https://calendar.google.com/calendar?cid=Z2dvb3BlODd0MGhnbDh1OXVwdDQ0dnY4YnNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ">
+              <a href={calendarLink}>
                 <Button color="primary" className="d-block d-sm-none w-100">Add to my Calendar</Button>
               </a>
             </div>

@@ -66,7 +66,7 @@ class Calendar extends Component {
                       tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={event.color} key={event.glink} />)
                     })
 
-                    return (<Col className="d-flex justify-content-center pt-1">
+                    return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].glink}>
                       { tags }
                     </Col>)
                   }) : ''

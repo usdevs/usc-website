@@ -14,7 +14,9 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-
+import {
+  Redirect
+} from 'react-router'
 var logoStyle = {
   width: '150px',
   height: '60px',
@@ -29,6 +31,7 @@ class SiteNavbar extends Component {
     this.state = {
       isOpen: false,
       loginIsOpen: false,
+      goDashboard: false,
     };
   }
 
@@ -46,6 +49,13 @@ class SiteNavbar extends Component {
   }
 
   render() {
+    if (this.state.goDashboard) {
+      this.setState({
+        goDashboard: false,
+      })
+      return <Redirect to='/dashboard' />
+    }
+
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/"><img src={logo} style={logoStyle} alt="logo" /></NavbarBrand>
@@ -65,11 +75,16 @@ class SiteNavbar extends Component {
               <NavLink href="/contactus/">Contact Us</NavLink>
             </NavItem>
             {
-              false ? <UncontrolledDropdown nav inNavbar>
+              true ? <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Account
                 </DropdownToggle>
                 <DropdownMenu right>
+                  <DropdownItem onClick={() => { this.setState({
+                    goDashboard: true,
+                  }) }}>
+                    Dashboard
+                  </DropdownItem>
                   <DropdownItem>
                     Manage
                   </DropdownItem>
