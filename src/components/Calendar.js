@@ -59,7 +59,7 @@ class Calendar extends Component {
             </Row>
             <Row>
                 {
-                  dayEvents && isLoaded(eventTypes) ? _.chunk(dayEvents, 3).map((eventChunk) => {
+                  dayEvents && isLoaded(eventTypes) && eventTypes ? _.chunk(dayEvents, 3).map((eventChunk) => {
                     var tags = []
                     eventChunk.map((event) => {
                       tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)

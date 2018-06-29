@@ -100,7 +100,6 @@ class Events extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.firestore)
   return {
     events: state.firestore.ordered.events,
     eventTypes: state.firestore.data.eventTypes,

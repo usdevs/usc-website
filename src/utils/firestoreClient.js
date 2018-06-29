@@ -13,22 +13,29 @@ export function createEvent(firestore, event, uid, callback) {
   .then(() => callback())
 }
 
-export function getEvents(firestore, month, callback) {
+export function getEvents(firestore, month, spaceOnly, callback) {
+  var query = { collection: 'events', orderBy: ['startDate'] }
+  var where = []
+
   if (month) {
-    firestore
-    .get({
-      collection: 'events',
-      where: [
-        ['startDate', '>=', month.startOf('month').toDate()],
-        ['startDate', '<=', month.endOf('month').toDate()]
-      ],
-      orderBy: ['startDate']})
-    .then(() => callback())
-  } else {
-    firestore
-    .get({ collection: 'events', orderBy: ['startDate'] })
-    .then(() => callback())
+    where.push(['startDate', '>=', month.startOf('month').toDate()])
+    where.push(['startDate', '<=', month.endOf('month').toDate()])
   }
+
+  if (spaceOnly) {
+    where.push(['otherVenueSelected', '==', false])
+  }
+
+  if (where.length > 0) {
+    query = {
+      ...query,
+      where: where
+    }
+  }
+
+  firestore
+  .get(query)
+  .then(() => callback())
 }
 
 export function getEventsAfter(firestore, date, limit) {

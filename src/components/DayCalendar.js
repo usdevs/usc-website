@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import Infinite from 'react-infinite'
-import moment from 'moment'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase';
-import { getEventByDay } from '../utils/utils'
+import { getEventByDay, getEventStart } from '../utils/utils'
 
 class DayCalendar extends Component {
   render() {
@@ -22,7 +21,7 @@ class DayCalendar extends Component {
                   <h1 className="d-inline-block mb-0">{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={isLoaded(eventTypes) ? eventTypes[event.type].colour : ''} size="xs" /></h1>
                   <br/>
                   <small className="text-muted">{eventTypes[event.type].name}</small>
-                  <p className="lead">{moment(event.start).format('hh:mm a') + ' - ' + (!event.otherVenueSelected ? spaces[event.venue].name : event.venue) }</p>
+                  <p className="lead">{getEventStart(event).format('hh:mm a') + ' - ' + (!event.otherVenueSelected ? spaces[event.venue].name : event.venue) }</p>
                 </div>
               </div>
             ) : <h4>No events on this day</h4> : ''

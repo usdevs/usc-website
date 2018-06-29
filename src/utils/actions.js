@@ -12,10 +12,10 @@ export function createEvent(firestore, event, uid, callback) {
   createFirestoreEvent(firestore, event, uid, callback)
 }
 
-export function getEvents(firestore, month = null, callback = () => {}) {
+export function getEvents(firestore, month = null, spaceOnly = false, callback = () => {}) {
   getEventTypes(firestore)
   getSpaces(firestore)
-  getFirestoreEvents(firestore, month, callback)
+  getFirestoreEvents(firestore, month, spaceOnly, callback)
   watchFirestoreEvents(firestore)
 }
 
