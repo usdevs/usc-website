@@ -206,10 +206,10 @@ class CreateEvent extends Component {
       })
     } else {
       const { event } = this.state
-      const { auth } = this.props
+      const { auth, spacesUnordered } = this.props
       const { firestore } = this.context.store
 
-      createEvent(firestore, event, auth.uid, () => {
+      createEvent(firestore, event, auth.uid, spacesUnordered, () => {
           this.setState({
             nameEntry: false,
             typeEntry: false,

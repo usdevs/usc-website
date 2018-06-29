@@ -9,16 +9,15 @@ class DayCalendar extends Component {
     const { selectedDate, events, eventTypes, spaces } = this.props
     const selectedDateEvents = events ? getEventByDay(events, selectedDate) : []
 
-    console.log(selectedDateEvents)
     return(<div>
       <h1 className="display-4"><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{', ' + selectedDate.format('YYYY')}</small></h1>
       <Infinite containerHeight={400} elementHeight={40}>
           {
-            isLoaded(eventTypes) && isLoaded(spaces) ? selectedDateEvents ?
+            isLoaded(eventTypes) && isLoaded(spaces) && eventTypes && spaces ? selectedDateEvents ?
             selectedDateEvents.map((event) =>
-              <div key={event.name}>
+              <div key={event.id}>
                 <div>
-                  <h1 className="d-inline-block mb-0">{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={isLoaded(eventTypes) ? eventTypes[event.type].colour : ''} size="xs" /></h1>
+                  <h1 className="d-inline-block mb-0">{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" /></h1>
                   <br/>
                   <small className="text-muted">{eventTypes[event.type].name}</small>
                   <p className="lead">{getEventStart(event).format('hh:mm a') + ' - ' + (!event.otherVenueSelected ? spaces[event.venue].name : event.venue) }</p>

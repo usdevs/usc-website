@@ -6,10 +6,15 @@ import {
   getSpaces as getFirestoreSpaces,
   watchEvents as watchFirestoreEvents
 } from './firestoreClient'
+import {
+  createEvent as createGoogleEvent,
+} from './googleAPIClient'
 import moment from 'moment'
 
-export function createEvent(firestore, event, uid, callback) {
-  createFirestoreEvent(firestore, event, uid, callback)
+export function createEvent(firestore, event, uid, spaces, callback) {
+  createGoogleEvent(event, spaces, (googleEntry) => {
+    createFirestoreEvent(firestore, event, uid, googleEntry.id, callback)
+  })
 }
 
 export function getEvents(firestore, month = null, spaceOnly = false, callback = () => {}) {

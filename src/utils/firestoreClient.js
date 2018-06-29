@@ -1,4 +1,4 @@
-export function createEvent(firestore, event, uid, callback) {
+export function createEvent(firestore, event, uid, googleEventID, callback) {
   firestore
   .add({ collection: 'events' }, {
     name: event.name,
@@ -8,7 +8,8 @@ export function createEvent(firestore, event, uid, callback) {
     multiDay: event.multiDay,
     startDate: event.startDate.toDate(),
     endDate: event.endDate.toDate(),
-    creator: uid
+    creator: uid,
+    gCalID: googleEventID,
   })
   .then(() => callback())
 }
