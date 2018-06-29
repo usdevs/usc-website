@@ -12,7 +12,6 @@ import {
 import { headerEvent as header } from '../resources/images.js';
 import Timeline from 'react-calendar-timeline/lib'
 import Moment from 'moment'
-import { getGoogleCalendarEvents, dayFormat, getDescriptionIconColor } from '../resources/gcal'
 import { connect } from 'react-redux';
 import _ from 'lodash'
 import { setGoogleEvents } from '../actions'
@@ -24,7 +23,7 @@ require('react-calendar-timeline/lib/Timeline.css')
 const moment = extendMoment(Moment);
 
 class Spaces extends Component {
-  constructor(props) {
+/*  constructor(props) {
     super(props);
 
     this.state = {
@@ -246,6 +245,10 @@ class Spaces extends Component {
         </Row>
       </Container>
     );
+  }*/
+
+  render() {
+    return(<div/>)
   }
 }
 

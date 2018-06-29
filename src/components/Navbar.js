@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { logo } from '../resources/images'
-import LoginModal from './LoginModal'
 import { withRouter } from 'react-router-dom'
 import {
   Button,
@@ -18,8 +16,10 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-import { Redirect } from 'react-router'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { logo } from '../resources/images'
+import LoginModal from './LoginModal'
+
 var logoStyle = {
   width: '150px',
   height: '60px',

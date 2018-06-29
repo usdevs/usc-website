@@ -26,7 +26,7 @@ import triton from './images/House/Triton.jpg';
 import ankaa from './images/House/Ankaa.jpg';
 import saren from './images/House/Saren.jpg';
 
-import { amphitheatre, chatterbox, ctph, themeRoom1, themeRoom2, protoStudio } from './images';
+import { amphitheatre, chatterbox, themeRoom1, themeRoom2 } from './images';
 
 export const timeIntervals = 30
 

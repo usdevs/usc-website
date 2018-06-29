@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, Label, Input, FormText
-} from 'reactstrap';
+import { Input } from 'reactstrap';
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import '../../resources/react-datepicker.css';

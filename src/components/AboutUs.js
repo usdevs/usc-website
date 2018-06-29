@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-  UncontrolledCarousel,
   Container,
   Row,
   Col,
@@ -14,24 +13,12 @@ import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
 import { footerText } from '../resources/data'
 
-var mcHeaderStyle = {
-  backgroundColor: 'orange',
-};
-
 var uscHeaderStyle = {
   backgroundColor: 'dodgerblue',
 };
 
-var uscCommHeaderStyle = {
-  backgroundColor: 'darkgrey',
-};
-
 var uscCommTitleStyle = {
   color: 'dodgerblue',
-};
-
-var uscCommNameStyle = {
-  color: 'darkgrey',
 };
 
 class AboutUs extends Component {
@@ -62,6 +49,7 @@ class AboutUs extends Component {
             <p className="lead">{member.name}</p>
           </div>
         </Col>)
+        return('')
       })
 
       return commTags

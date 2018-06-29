@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import moment from 'moment';
-import Async from 'react-promise';
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
 import {
   UncontrolledCarousel,
@@ -11,15 +11,14 @@ import {
   Col,
   Jumbotron,
   Button,
-  Card, CardImg, CardText, CardBody,
+  Card, CardText, CardBody,
   CardTitle, CardSubtitle
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
-import { setGoogleEvents } from '../actions'
-import { isEmpty } from '../utils/utils'
-import lodash from 'lodash'
 import { footerText } from '../resources/data'
+import { getUpcomingEvents } from '../utils/actions'
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import { withRouter } from 'react-router-dom'
 
 const items = [
   {
@@ -43,6 +42,9 @@ const items = [
 ];
 
 class Home extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props);
@@ -52,29 +54,15 @@ class Home extends Component {
     }
   }
 
-  componentDidMount = () => {
-    if (isEmpty(this.props.events)) {
-      getGoogleCalendarEvents(this.props.setGoogleEvents)
-    }
+  componentWillMount() {
+    const { firestore } = this.context.store
+    getUpcomingEvents(firestore, 10)
   }
 
   render() {
-    var { upcomingEvents, spaces } = this.props
+    var { upcomingEvents, spaces, eventTypes, history } = this.props
 
-    if (upcomingEvents.length > 5) {
-      upcomingEvents = lodash.slice(upcomingEvents, 0, 5)
-    }
-
-    var spacesCarousellItems = []
-
-    spaces.map((space) => {
-      spacesCarousellItems.push({
-        src: space.image,
-        altText: space.name,
-        caption: '',
-        header: space.name
-      })
-    })
+    console.log(upcomingEvents)
 
     return (
       <Container>
@@ -89,9 +77,7 @@ class Home extends Component {
               <h1 className="display-3">About Us</h1>
               <p className="lead">The University Scholars Club (USC) is a community of students enrolled in the National University of Singapore (NUS) University Scholars Programme (USP), which is a multidisciplinary, partially residential academic programme for NUS undergraduates.</p>
               <p className="lead">
-                <Link to={`/about`}>
-                  <Button color="primary">Learn More</Button>
-                </Link>
+                <Button color="primary" onClick={() => history.push('/about')}>Learn More</Button>
               </p>
               <hr className="my-2" />
               <br />
@@ -99,25 +85,24 @@ class Home extends Component {
               <Container>
                 <Row>
                   {
-                    upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
-                      <Col key={event.glink} xs="12" md="6">
+                    isLoaded(upcomingEvents) && isLoaded(eventTypes) ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
+                      <Col key={event.id} xs="12" md="6">
                         <Card>
                           <CardBody>
-                            <CardTitle>{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={event.color} size="xs" /></CardTitle>
-                            <CardSubtitle>{moment(event.start).format('Do MMMM') + (event.type ? ' - ' + event.type : '')}</CardSubtitle>
-                            <CardText>{ moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '')  }</CardText>
+                            <CardTitle>{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" /></CardTitle>
+                            <CardSubtitle>{eventTypes[event.type].name}</CardSubtitle>
+                            <CardText>{moment(event.start).format('Do MMMM') + ' - ' + moment(event.start).format('hh:mm a')}</CardText>
+                            <CardText>{ event.otherVenueSelected ? event.venue : spaces[event.venue].name  }</CardText>
                           </CardBody>
                         </Card>
                       </Col>
-                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col>
+                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4>Loading Events!</h4></Col>
                   }
                 </Row>
               </Container>
               <br/>
               <p className="lead">
-                <Link to={`/events`}>
-                  <Button color="primary">See More</Button>
-                </Link>
+                <Button color="primary" onClick={() => history.push('/events')}>See More</Button>
               </p>
               <hr className="my-2" />
               <br/>
@@ -134,9 +119,13 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    upcomingEvents: state.googleEventsUpcoming,
-    spaces: state.spaces
+    upcomingEvents: state.firestore.ordered.events,
+    eventTypes: state.firestore.data.eventTypes,
+    spaces: state.firestore.data.spaces,
   }
 }
 
-export default connect(mapStateToProps, { setGoogleEvents })(Home);
+export default withRouter(compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(Home))

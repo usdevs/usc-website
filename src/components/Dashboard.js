@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import {
-  UncontrolledCarousel,
   Container,
   Row,
   Col,
-  Jumbotron,
-  Button,
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle
+  Button
 } from 'reactstrap';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 

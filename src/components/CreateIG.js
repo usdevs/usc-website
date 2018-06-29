@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {
-  Alert, Container,
+  Container,
   Row,
   Col,
   Button,
   Jumbotron,
-  Form, FormGroup, Label, Input, FormText, FormFeedback
+  Form, FormGroup, Label, Input, FormFeedback
 } from 'reactstrap';
 
 class CreateIG extends Component {
@@ -19,8 +19,6 @@ class CreateIG extends Component {
   }
 
   handleFormChange = (value, type) => {
-    const { multiDay, startDate, endDate } = this.state
-
     switch(type) {
       case 'name':
         this.setState({ nameEntry: true, name: value })

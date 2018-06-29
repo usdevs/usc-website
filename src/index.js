@@ -5,12 +5,10 @@ import { render } from 'react-snapshot';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { compose } from 'redux';
 import { Provider } from 'react-redux';
-import moment from 'moment';
 import { reactReduxFirebase } from 'react-redux-firebase'
 import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase'
 import './index.css';
-import { initGoogle } from './googleAPIClient'
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import Events from './components/Events';
@@ -25,7 +23,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { createStore } from 'redux'
 import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle } from '@fortawesome/fontawesome-free-solid'
 
@@ -58,7 +55,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 
      script.onload = () => {
          window.gapi.load('client:auth2', () => {
-           console.log(window.gapi)
            gapi.client.init({
              apiKey: firebaseConfig.apiKey,
              clientId: firebaseConfig.clientId,
@@ -68,10 +64,7 @@ firebase.auth().onAuthStateChanged(function(user) {
            // Loading is finished, so start the app
            .then(function() {
             // Make sure the Google API Client is properly signed in
-            if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-              //startApp(user);
-              console.log(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token)
-            } else {
+            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
               firebase.auth().signOut(); // Something went wrong, sign out
             }
           })

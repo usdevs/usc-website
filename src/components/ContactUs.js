@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import {
-  UncontrolledCarousel,
   Container,
   Row,
   Col,
-  Jumbotron,
-  Button,
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle
+  Jumbotron
 } from 'reactstrap';
 import {
   withScriptjs,

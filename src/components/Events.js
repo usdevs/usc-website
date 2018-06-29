@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux';
 import {
   Container,
   Row,
@@ -6,52 +9,49 @@ import {
   Button,
   Jumbotron
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
+import { getEvents } from '../utils/actions'
 import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
+import DayCalendar from './DayCalendar'
 import moment from 'moment'
-import Infinite from 'react-infinite'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { setGoogleEvents } from '../actions'
-import { isEmpty } from '../utils/utils'
+import { firebaseConnect } from 'react-redux-firebase';
 
 const calendarLink = "http://bit.ly/uspcalendar"
 
 class Events extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      events: [],
       selectedDate: moment(),
     }
   }
 
-  componentDidMount = () => {
-    if (isEmpty(this.props.events)) {
-      getGoogleCalendarEvents(this.props.setGoogleEvents)
-    }
+  componentWillMount() {
+    const { firestore } = this.context.store
+    getEvents(firestore, moment())
   }
 
   changeSelectedDate = (date) => {
     this.setState({
       ...this.state,
-      selectedDate: date
+      selectedDate: date,
     })
   }
 
   render() {
     const { selectedDate } = this.state
-    const { events } = this.props
-    const selectedDayEvents = events ? events[moment(selectedDate).format(dayFormat)] : []
+    const { events, eventTypes, spaces } = this.props
 
     return (
       <Container>
         <Row>
           <Col>
-            <img src={header} className="img-fluid" />
+            <img src={header} className="img-fluid" alt="header" />
           </Col>
         </Row>
         <Row>
@@ -74,26 +74,19 @@ class Events extends Component {
         </Row>
         <Row>
           <Col xs="12" lg="8">
-            <Calendar onDayClick={(date) => this.changeSelectedDate(date)} selectedDate={ selectedDate } events={ events } />
+            <Calendar
+              onDayClick={(date) => this.changeSelectedDate(date)}
+              selectedDate={ selectedDate }
+              events={ events }
+              eventTypes={eventTypes} />
           </Col>
             <Col xs="12" lg="4">
               <hr className="my-2 d-block d-lg-none" />
-              <h1 className="display-4"><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{', ' + selectedDate.format('YYYY')}</small></h1>
-              <Infinite containerHeight={400} elementHeight={40}>
-                  {
-                    selectedDayEvents ?
-                    selectedDayEvents.map((event) =>
-                      <div key={event.glink}>
-                        <div>
-                          <h1 className="d-inline-block mb-0">{event.title + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={event.color} size="xs" /></h1>
-                          <br/>
-                          <small className="text-muted">{event.type}</small>
-                          <p className="lead">{moment(event.start).format('hh:mm a') + (event.venue ? ' - ' + event.venue : '') }</p>
-                        </div>
-                      </div>
-                    ) : <h4>No events on this day</h4>
-                  }
-              </Infinite>
+              <DayCalendar
+                selectedDate={selectedDate}
+                events={ events }
+                eventTypes={eventTypes}
+                spaces={spaces} />
             </Col>
         </Row>
         <Row>
@@ -107,9 +100,15 @@ class Events extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.firestore)
   return {
-    events: state.googleEventsByDay
+    events: state.firestore.ordered.events,
+    eventTypes: state.firestore.data.eventTypes,
+    spaces: state.firestore.data.spaces
   }
 }
 
-export default connect(mapStateToProps, { setGoogleEvents })(Events);
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(Events)

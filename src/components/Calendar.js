@@ -3,8 +3,9 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import Moment from 'moment'
 import _ from 'lodash'
 import { extendMoment } from 'moment-range';
-import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
+import { getEventByDay } from '../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { isLoaded } from 'react-redux-firebase';
 
 const moment = extendMoment(Moment);
 
@@ -27,10 +28,9 @@ class Calendar extends Component {
 
   days() {
     var days = []
-    var dayCounter = 0
 
     var { date } = this.state
-    var { selectedDate, events } = this.props
+    var { selectedDate, events, eventTypes } = this.props
 
     const mthDisplayRange = moment.range(
       moment(date).startOf('month').startOf('week'),
@@ -40,8 +40,7 @@ class Calendar extends Component {
     for (let day of mthDisplayRange.by('day')) {
       let belongsToSameMonth = day.isSame(moment(date), 'month')
 
-      const dayEvents = events ? events[moment(day).format(dayFormat)] : []
-      const offSet = dayEvents ? Math.round((12 - dayEvents.length)/2) - 1: 0
+      const dayEvents = events ? getEventByDay(events, day) : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
 
       days.push(
@@ -60,13 +59,14 @@ class Calendar extends Component {
             </Row>
             <Row>
                 {
-                  dayEvents ? _.chunk(dayEvents, 3).map((eventChunk) => {
+                  dayEvents && isLoaded(eventTypes) ? _.chunk(dayEvents, 3).map((eventChunk) => {
                     var tags = []
                     eventChunk.map((event) => {
-                      tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={event.color} key={event.glink} />)
+                      tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)
+                      return('')
                     })
 
-                    return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].glink}>
+                    return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].id}>
                       { tags }
                     </Col>)
                   }) : ''

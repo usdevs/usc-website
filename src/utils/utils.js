@@ -18,3 +18,16 @@ export function roundTime(time, minInterval) {
 export function isToday(datetime) {
   return moment().isSame(datetime, 'day')
 }
+
+export function getEventByDay(events, day) {
+  if(isEmpty(events)) {
+    return []
+  }
+  
+  return events.filter((event) => {
+    const startDate = moment(event.startDate.toDate())
+    const endDate = moment(event.endDate.toDate())
+
+    return startDate >= day.clone().startOf('day') && endDate <= day.clone().endOf('day')
+  })
+}
