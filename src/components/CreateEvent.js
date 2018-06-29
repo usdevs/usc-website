@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import {
   Alert, Container,
   Row,
@@ -8,7 +9,12 @@ import {
   Form, FormGroup, Label, Input, FormText, FormFeedback
 } from 'reactstrap';
 import DatePickerForm from './reusable/DatePickerForm'
-import { connect } from 'react-redux';
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
+import firebase from 'firebase'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { createTestEvent } from '../firestoreClient'
 import { getGoogleCalendarEvents, dayFormat } from '../resources/gcal'
 import { eventTypes, spaces, timeIntervals } from '../resources/data'
 import { headerEvent as header } from '../resources/images.js'
@@ -19,30 +25,47 @@ import DatePicker from 'react-datepicker'
 import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { setGoogleEvents } from '../actions'
-import { isEmpty, roundTime, isToday } from '../utils/utils'
+import { isEmpty as objectIsEmpty, roundTime, isToday } from '../utils/utils'
 
 class CreateEvent extends Component {
   constructor(props) {
     super(props);
 
     const currentTime = roundTime(moment(), timeIntervals)
+    const { auth } = this.props
 
     this.handleFormChange = this.handleFormChange.bind(this)
+
+    if (isLoaded(auth) && !isEmpty(auth)) {
+        console.log(this.props.googleToken)
+    }
 
     this.state = {
       events: [],
       selectedDate: moment(),
-      startDate: currentTime,
-      endDate: currentTime.clone().add(timeIntervals, "minutes"),
       nameEntry: false,
       otherVenueEntry: false,
-      multiDay: false,
       submitFailure: false,
+      event: {
+        name: '',
+        type: 'Academic',
+        tentative: false,
+        spaceOnly: false,
+        venue: 'Amphitheatre',
+        otherVenue: '',
+        multiDay: false,
+        startDate: currentTime,
+        endDate: currentTime.clone().add(timeIntervals, "minutes"),
+      }
     }
   }
 
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
+
   componentDidMount = () => {
-    if (isEmpty(this.props.events)) {
+    if (objectIsEmpty(this.props.events)) {
       getGoogleCalendarEvents(this.props.setGoogleEvents)
     }
   }
@@ -61,42 +84,83 @@ class CreateEvent extends Component {
   }
 
   handleFormChange = (value, type) => {
-    const { multiDay, startDate, endDate } = this.state
+    const { event } = this.state
+    const { multiDay, startDate, endDate } = event
 
     switch(type) {
       case 'name':
-        this.setState({ nameEntry: true, name: value })
+        this.setState({
+          nameEntry: true,
+          event: {
+            ...event,
+            name: value
+          }
+        })
+        break
+      case 'type':
+        this.setState({
+          event: {
+            ...event,
+            type: value
+          }
+        })
         break
       case 'venue':
-        this.setState({ venue: value })
+        this.setState({
+          event: {
+            ...event,
+            venue: value
+          }
+        })
         break
       case 'otherVenue':
-        this.setState({ otherVenueEntry: true, otherVenue: value })
+        this.setState({
+          otherVenueEntry: true,
+          event: {
+            ...event,
+            otherVenue: value
+          }
+        })
         break
       case 'multiDay':
-        this.setState({ multiDay: !multiDay })
+        this.setState({
+          event: {
+            ...event,
+            multiDay: !multiDay
+          }
+        })
         break
       case 'date':
         const newStartDate = value.clone().hour(startDate.hour()).minute(startDate.minute())
         const newEndDate = newStartDate.clone().hour(endDate.hour()).minute(endDate.minute())
 
         this.setState({
-          startDate: newStartDate,
-          endDate: newEndDate
+          event: {
+            ...event,
+            startDate: newStartDate,
+            endDate: newEndDate
+          }
         })
         break
       case 'startDate':
         const newEndDate2 = value.isSameOrAfter(endDate) ? value.clone().add(timeIntervals, "minutes") : endDate
 
         this.setState({
-          startDate: value,
-          endDate: newEndDate2,
+          event: {
+            ...event,
+            startDate: value,
+            endDate: newEndDate2
+          }
         })
         break
       case 'endDate':
         const tempDate = !multiDay ? startDate.clone().hour(value.hour()).minute(value.minute()) : value
+
         this.setState({
-          endDate: tempDate.isSameOrBefore(startDate) ? startDate.clone().add(timeIntervals, "minutes") : tempDate,
+          event: {
+            ...event,
+            endDate: tempDate.isSameOrBefore(startDate) ? startDate.clone().add(timeIntervals, "minutes") : tempDate,
+          }
         })
         break
       default: break
@@ -104,7 +168,8 @@ class CreateEvent extends Component {
   }
 
   validate = (clearEntryChecks) => {
-    const { name, nameEntry, venue, otherVenue, otherVenueEntry, multiDay, submitFailure } = this.state
+    const { event, nameEntry, otherVenueEntry, submitFailure } = this.state
+    const { name, venue, otherVenue, multiDay } = event
     const showOtherVenue = venue === "Others"
 
     return {
@@ -125,14 +190,23 @@ class CreateEvent extends Component {
         submitFailure: true,
       })
     } else {
-      this.setState({
-        submitFailure: false,
-      })
+      const { event } = this.state
+      const { firestore } = this.context.store
+
+      createTestEvent(firebase)
+      /*createEvent(firestore, event, () => {
+          this.setState({
+            submitFailure: false,
+            savedEvent: true,
+           })
+        }
+      )*/
     }
   }
 
   render() {
-    const { selectedDate, startDate, endDate, name, venue, multiDay, submitFailure } = this.state
+    const { selectedDate, event, submitFailure } = this.state
+    const { startDate, endDate, name, venue, multiDay } = event
     const { events } = this.props
     const selectedDayEvents = events ? events[moment(selectedDate).format(dayFormat)] : []
     const timeInterval = timeIntervals
@@ -144,9 +218,6 @@ class CreateEvent extends Component {
     const endEDate = endDate.clone().endOf('day')
 
     const showOtherVenue = venue === "Others"
-
-
-    console.log(errors)
 
     return (
       <Container>
@@ -162,12 +233,12 @@ class CreateEvent extends Component {
             <Form className="m-3">
               <FormGroup>
                 <Label for="name"><h3>Name</h3></Label>
-                <Input type="text" value={ name } id="name" placeholder="Event Name" invalid={errors.name} onChange={(event) => this.handleFormChange(event.target.value, 'name')} />
+                <Input type="text" value={ name } placeholder="Event Name" invalid={errors.name} onChange={(event) => this.handleFormChange(event.target.value, 'name')} />
                 { errors.name ? <FormFeedback>Name cannot be empty.</FormFeedback> : ''}
               </FormGroup>
               <FormGroup>
                 <Label for="type"><h3>Type</h3></Label>
-                <Input type="select" name="select" id="type">
+                <Input type="select" name="select" id="type" onChange={(event) => this.handleFormChange(event.target.value, 'type')}>
                   {
                     eventTypes.map((type) => <option key={ type }>{ type }</option>)
                   }
@@ -271,7 +342,7 @@ class CreateEvent extends Component {
                   Upload a poster to be displayed on the Digital Signage.
                 </FormText>
               </FormGroup>
-              <Button color="primary" onClick={this.createEvent} block>Create Event</Button>
+              <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>Create Event</Button>
               <br/>
               { submitFailure ? <Alert color="danger">One or more inputs are invalid. Please check and try again.</Alert> : ''}
             </Form>
@@ -309,8 +380,14 @@ class CreateEvent extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.googleEventsByDay
+    events: state.googleEventsByDay,
+    auth: state.firebase.auth,
+    firestore: state.firestore,
+    googleToken: state.googleToken,
   }
 }
 
-export default connect(mapStateToProps, { setGoogleEvents })(CreateEvent);
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps, { setGoogleEvents })
+)(CreateEvent)

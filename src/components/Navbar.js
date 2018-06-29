@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { logo } from '../resources/images'
 import LoginModal from './LoginModal'
+import { withRouter } from 'react-router-dom'
 import {
   Button,
   Collapse,
@@ -14,9 +18,8 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-import {
-  Redirect
-} from 'react-router'
+import { Redirect } from 'react-router'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 var logoStyle = {
   width: '150px',
   height: '60px',
@@ -31,7 +34,6 @@ class SiteNavbar extends Component {
     this.state = {
       isOpen: false,
       loginIsOpen: false,
-      goDashboard: false,
     };
   }
 
@@ -42,20 +44,14 @@ class SiteNavbar extends Component {
   }
 
   toggleLogin() {
-    console.log(this.state.loginIsOpen)
     this.setState({
       loginIsOpen: !this.state.loginIsOpen
     });
   }
 
   render() {
-    if (this.state.goDashboard) {
-      this.setState({
-        goDashboard: false,
-      })
-      return <Redirect to='/dashboard' />
-    }
 
+    const { auth, firebase, history } = this.props;
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/"><img src={logo} style={logoStyle} alt="logo" /></NavbarBrand>
@@ -63,33 +59,31 @@ class SiteNavbar extends Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/about/">About Us</NavLink>
+              <NavLink onClick={() => history.push('/about')}>About Us</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/events/">Events</NavLink>
+              <NavLink onClick={() => history.push('/events')}>Events</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/spaces/">Spaces</NavLink>
+              <NavLink onClick={() => history.push('/spaces')}>Spaces</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/contactus/">Contact Us</NavLink>
+              <NavLink onClick={() => history.push('/contactus')}>Contact Us</NavLink>
             </NavItem>
             {
-              true ? <UncontrolledDropdown nav inNavbar>
+              !isLoaded(auth) ? '' : !isEmpty(auth) ? <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Account
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem onClick={() => { this.setState({
-                    goDashboard: true,
-                  }) }}>
+                  <DropdownItem onClick={() => history.push('/dashboard')}>
                     Dashboard
                   </DropdownItem>
                   <DropdownItem>
                     Manage
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>
+                  <DropdownItem onClick={() => firebase.logout()}>
                     Log Out
                   </DropdownItem>
                 </DropdownMenu>
@@ -105,4 +99,21 @@ class SiteNavbar extends Component {
   }
 }
 
-export default SiteNavbar;
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+  }
+}
+
+
+SiteNavbar.propTypes = {
+  firebase: PropTypes.shape({
+    login: PropTypes.func.isRequired
+  }),
+  auth: PropTypes.object
+}
+
+export default withRouter(compose(
+  firebaseConnect(), // withFirebase can also be used
+  connect(mapStateToProps)
+)(SiteNavbar))

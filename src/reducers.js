@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import { mcMembers as mcMembersData, uscCommittees as uscCommitteesData, houseCommittees  as houseCommitteesData, spaces as spacesData } from './resources/data'
-import { SET_GOOGLE_EVENTS } from './actions'
+import { SET_GOOGLE_EVENTS, SAVE_GOOGLE_TOKEN } from './actions'
 import _ from 'lodash'
 import moment from 'moment'
 import { dayFormat } from './resources/gcal'
 import { getSpaceID, defaultTypeColor, typeToColor } from './resources/data'
+import { firebaseReducer } from 'react-redux-firebase'
+import { firestoreReducer } from 'redux-firestore'
 
 function mcMembers(state = [], action) {
   return mcMembersData
@@ -162,6 +164,14 @@ function spaces(state = [], action) {
   return spacesData
 }
 
+function googleToken(state = null, action) {
+  if(action.type === SAVE_GOOGLE_TOKEN) {
+    return action.payload
+  }
+
+  return state
+}
+
 export default combineReducers({
   mcMembers,
   uscCommittees,
@@ -171,5 +181,8 @@ export default combineReducers({
   googleEventsUpcoming,
   bookingsByDay,
   bookingsByDayBySpace,
-  spaces
+  spaces,
+  googleToken,
+  firebase: firebaseReducer,
+  firestore: firestoreReducer
 })
