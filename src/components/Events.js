@@ -10,6 +10,7 @@ import {
   Jumbotron
 } from 'reactstrap';
 import { getEvents } from '../utils/actions'
+import { getEventsByDate } from '../utils/utils'
 import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
 import DayCalendar from './DayCalendar'
@@ -27,13 +28,13 @@ class Events extends Component {
     super(props);
 
     this.state = {
-      selectedDate: moment(),
+      selectedDate: moment().startOf('day'),
     }
   }
 
   componentWillMount() {
     const { firestore } = this.context.store
-    getEvents(firestore, moment())
+    getEvents(firestore, () => {}, moment())
   }
 
   changeSelectedDate = (date) => {
@@ -83,8 +84,8 @@ class Events extends Component {
             <Col xs="12" lg="4">
               <hr className="my-2 d-block d-lg-none" />
               <DayCalendar
-                selectedDate={selectedDate}
-                events={ events }
+                selectedDate={ selectedDate }
+                events={ events && events[selectedDate.toString()] ? events[selectedDate.toString()] : null }
                 eventTypes={eventTypes}
                 spaces={spaces} />
             </Col>
@@ -101,7 +102,7 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.firestore.ordered.events,
+    events: getEventsByDate(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.data.spaces
   }

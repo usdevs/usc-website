@@ -47,7 +47,7 @@ class CreateEvent extends Component {
 
     this.state = {
       events: [],
-      selectedDate: moment(),
+      selectedDate: moment().startOf('day'),
       modal: false,
       nameEntry: false,
       typeEntry: false,

@@ -3,7 +3,6 @@ import { Button, Container, Row, Col } from 'reactstrap';
 import Moment from 'moment'
 import _ from 'lodash'
 import { extendMoment } from 'moment-range';
-import { getEventByDay } from '../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase';
 
@@ -40,7 +39,7 @@ class Calendar extends Component {
     for (let day of mthDisplayRange.by('day')) {
       let belongsToSameMonth = day.isSame(moment(date), 'month')
 
-      const dayEvents = events ? getEventByDay(events, day) : []
+      const dayEvents = events && events[day.toString()] ? events[day.toString()] : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
 
       days.push(
@@ -61,9 +60,8 @@ class Calendar extends Component {
                 {
                   dayEvents && isLoaded(eventTypes) && eventTypes ? _.chunk(dayEvents, 3).map((eventChunk) => {
                     var tags = []
-                    eventChunk.map((event) => {
+                    _.forOwn(eventChunk, (event) => {
                       tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)
-                      return('')
                     })
 
                     return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].id}>

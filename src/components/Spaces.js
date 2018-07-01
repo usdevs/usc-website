@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import {
   Container,
   Row,
   Col,
-  Jumbotron,
-  Popover, PopoverHeader, PopoverBody
+  Jumbotron
 } from 'reactstrap';
 import { headerEvent as header } from '../resources/images.js';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { isEmpty } from '../utils/utils'
-import { getEventByDay, getEventStart, getEventEnd, getEventsBetween } from '../utils/utils'
+import { isEmpty, getEventsByTime } from '../utils/utils'
+import { getEventStart, getEventEnd, getEventsBetween } from '../utils/utils'
 import Calendar from './Calendar'
 import { getEvents } from '../utils/actions'
 require('react-calendar-timeline/lib/Timeline.css')
@@ -28,63 +27,27 @@ class Spaces extends Component {
     super(props);
 
     this.state = {
-      selectedDate: moment(),
-      popoversOpen: {}
+      selectedDate: moment().startOf('day')
     }
   }
 
   componentWillMount() {
     const { firestore } = this.context.store
-    getEvents(firestore, moment(), true)
-  }
-
-  setupPopovers = (events, date) => {
-    var popover = {}
-
-    if(events) {
-      const dayEvents = getEventByDay(events, date)
-
-      dayEvents.map((event) => {
-        popover = {
-          ...popover,
-          [event.id]: false
-        }
-
-        return null
-      })
-    }
-
-    return popover
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ popoversOpen: this.setupPopovers(nextProps.events, this.state.selectedDate) })
+    getEvents(firestore, () => {}, moment(), true)
   }
 
   changeSelectedDate = (date) => {
     this.setState({
       ...this.state,
       selectedDate: date,
-      popoversOpen: this.setupPopovers(this.props.events, date)
     })
-  }
-
-  toggle = (bookingID) => {
-    const { popoversOpen } = this.state
-
-    this.setState({
-      popoversOpen: {
-        ...popoversOpen,
-        [bookingID]: !popoversOpen[bookingID]
-      }
-    });
   }
 
   spacesDisplay = () => {
     const { selectedDate } = this.state
     const { events, spaces } = this.props
 
-    const dayEvents = getEventByDay(events, selectedDate)
+    const dayEvents = events ? events.selectedDate : []
     const hasBookings = !isEmpty(dayEvents)
 
     const day_start = selectedDate.clone().startOf('day')
@@ -103,7 +66,7 @@ class Spaces extends Component {
 
       const timeSlotEvents = getEventsBetween(dayEvents, time)
 
-      spaces.map((space) => {
+      _.forOwn(spaces, (space) => {
         var slotColor = null
         var isStart = false
         var isEnd = false
@@ -136,8 +99,6 @@ class Spaces extends Component {
             {' '}
           </Col>
         )
-
-        return null
       })
 
       return timeColumns
@@ -191,30 +152,11 @@ class Spaces extends Component {
     )
   }
 
-  popoversDisplay = () => {
-    var popovers = []
-    const { selectedDate } = this.state
-    const { events, spacesUnordered } = this.props
-
-    const dayEvents = getEventByDay(events, selectedDate)
-
-    dayEvents.map((event) => {
-      popovers.push(
-        <Popover key={'popover' + event.id} placement="top-start" isOpen={this.state.popoversOpen[event.id]} target={ "b" + event.id } toggle={() => this.toggle(event.id)}>
-          <PopoverHeader>{event.name}</PopoverHeader>
-          <PopoverBody>{ isLoaded(spacesUnordered) ? spacesUnordered[event.venue].name : '' }</PopoverBody>
-        </Popover>
-      )
-
-      return null
-    })
-
-    return popovers
-  }
-
   render() {
     const { selectedDate } = this.state;
     const { events, eventTypes } = this.props;
+
+    console.log(events)
 
     return (
       <Container>
@@ -230,11 +172,10 @@ class Spaces extends Component {
               onDayClick={(date) => this.changeSelectedDate(date)}
               selectedDate={ selectedDate }
               events={ events }
-              eventTypes={eventTypes} />
+              eventTypes={ eventTypes } />
           </Col>
           <Col xs="12" md="6">
             { this.spacesDisplay() }
-            { this.popoversDisplay() }
           </Col>
         </Row>
         <br/>
@@ -251,7 +192,7 @@ class Spaces extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.firestore.ordered.events,
+    events: getEventsByTime(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces

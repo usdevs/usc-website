@@ -14,18 +14,26 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
   .then(() => callback())
 }
 
-export function getEvents(firestore, month, spaceOnly, callback) {
+export function getEvents(firestore, callback = () => {}, spaceOnly = false, month = null, startInMonth = true) {
   var query = { collection: 'events', orderBy: ['startDate'] }
   var where = []
 
   if (month) {
-    where.push(['startDate', '>=', month.startOf('month').toDate()])
-    where.push(['startDate', '<=', month.endOf('month').toDate()])
+    const dateField = startInMonth ? 'startDate' : 'endDate'
+    where.push([dateField, '>=', month.startOf('month').toDate()])
+    where.push([dateField, '<=', month.endOf('month').toDate()])
+
+    const nameField = startInMonth ? 'eventsStartInMth' : 'eventsEndInMth'
+    query = {
+      ...query,
+      storeAs: nameField,
+      orderBy: [dateField]
+    }
   }
 
-  if (spaceOnly) {
+  /*if (spaceOnly) {
     where.push(['otherVenueSelected', '==', false])
-  }
+  }*/
 
   if (where.length > 0) {
     query = {
@@ -33,6 +41,7 @@ export function getEvents(firestore, month, spaceOnly, callback) {
       where: where
     }
   }
+    console.log(callback)
 
   firestore
   .get(query)
