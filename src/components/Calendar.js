@@ -41,6 +41,7 @@ class Calendar extends Component {
 
       const dayEvents = events && events[day.toString()] ? events[day.toString()] : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
+        console.log(dayEvents)
 
       days.push(
         <Col key={day.format('YYYYMMDD')} onClick={belongsToSameMonth ? () => this.props.onDayClick(day) : () => this.changeSelectedDate(day)}
@@ -50,9 +51,9 @@ class Calendar extends Component {
               <Col className="d-flex justify-content-center" >
                 <span className="fa-layers fa-fw" style={{marginTop: '.7em'}}>
                   {
-                    sameDay ? <FontAwesomeIcon icon="circle" color="dodgerblue" size="2x" style={{marginTop: '-.35em', marginLeft: '-.1925em'}} /> : ''
+                    sameDay ? <FontAwesomeIcon icon="circle" color="dodgerblue" transform="grow-11 up-3" /> : ''
                   }
-                  <span className={"fa-layers-text " + (sameDay ? 'text-white' : '')} data-fa-transform="shrink-8 down-3" style={{fontWeight: 900}}><h4>{day.format('D')}</h4></span>
+                  <span className={"fa-layers-text " + (sameDay ? 'text-white' : '')} transform="bottom-100" style={{marginTop: '.6em'}}><h4>{day.format('D')}</h4></span>
                 </span>
               </Col>
             </Row>
@@ -131,24 +132,12 @@ class Calendar extends Component {
     return (
       <div>
         <Row className="text-center align-items-center">
-          <Col xs="2" className="d-none d-sm-block">
+          <Col className="d-flex justify-content-between">
             { previousButton }
-          </Col>
-          <Col>
-            <h5 className="display-4">
-              { moment(date).format('MMMM') }, <small className="text-muted">{ moment(date).format('YYYY') } </small>
-            </h5>
-          </Col>
-          <Col xs="2" className="d-none d-sm-block">
-            { nextButton }
-          </Col>
-        </Row>
-        <Row className="text-center align-items-center">
-          <Col xs={{size: 2, offset: 3}} className="d-block d-sm-none">
-            { previousButton }
-          </Col>
-          <Col xs="2" className="d-block d-sm-none">
-            { nextButton }
+            <h2>
+              { moment(date).format('MMMM') } <small className="text-muted">{ moment(date).format('YYYY') } </small>
+            </h2>
+              { nextButton }
           </Col>
         </Row>
       </div>);

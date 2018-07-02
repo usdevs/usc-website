@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
 import { footerText } from '../resources/data'
+import '../resources/responsivefont.css';
 
 var uscHeaderStyle = {
   backgroundColor: 'dodgerblue',
@@ -126,14 +127,14 @@ class AboutUs extends Component {
       </Row>
       <Row>
         <Col>
-          <h1 className="display-3">About Us</h1>
+          <h1 style={{fontWeight: 300}}>About Us</h1>
             <p className="lead">The University Scholars Club (USC) is a community of students enrolled in the National University of Singapore (NUS) University Scholars Programme (USP), which is a multidisciplinary, partially residential academic programme for NUS undergraduates.</p>
             <p>Members of the USC come from a wide array of majors spanning 7 faculties, ranging from computer science, to business, to philosophy. Possessing diverse interests and passions, members of the USC are marked by their intellectual curiosity, and are enthusiastic about learning and thinking critically, much of which stems from their daily interactions with peers and faculty.</p>
             <p>They seek to emerge from NUS as graduates with the intellectual rigour, initiative, and innovative spirit to make significant contributions to society.</p>
           <hr className="my-2" />
-          <h4 className="display-4">Our Mission</h4>
+          <h2>Our Mission</h2>
             <p className="lead">To facilitate the creation of a cohesive community of leaders and thinkers through stronger student, faculty and alumni engagement.</p>
-          <h4 className="display-4">Our Vision</h4>
+          <h2>Our Vision</h2>
           <ol>
             <li>To Promote Informal Learning</li>
             <li>To Bridge the Students, Faculty & Alumni</li>
@@ -149,7 +150,7 @@ class AboutUs extends Component {
       <Row>
         <Col>
           <div className="p-3 mb-2 bg-dark text-white">
-            <h1 className="text-center display-4">17th Management Committee</h1>
+            <h3 className="mb-0">17th Management Committee</h3>
           </div>
         </Col>
       </Row>
@@ -165,7 +166,7 @@ class AboutUs extends Component {
       <Row>
         <Col>
           <div className="p-3 mb-2 text-white" style={uscHeaderStyle}>
-            <h1 className="text-center display-4">USC Committees</h1>
+            <h3 className="mb-0">USC Committees</h3>
           </div>
         </Col>
       </Row>
@@ -173,7 +174,7 @@ class AboutUs extends Component {
       <Row>
         <Col>
           <div className="p-3 mb-2 text-white" style={uscHeaderStyle}>
-            <h1 className="text-center display-4">House Committees</h1>
+            <h3 className="mb-0">House Committees</h3>
           </div>
         </Col>
       </Row>

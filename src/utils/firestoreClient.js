@@ -48,7 +48,7 @@ export function getEvents(firestore, callback = () => {}, spaceOnly = false, mon
   .then(() => callback())
 }
 
-export function getEventsAfter(firestore, date, limit) {
+export function getEventsAfter(firestore, callback, date, limit) {
   firestore
   .get({
     collection: 'events',

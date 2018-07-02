@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import { reactReduxFirebase } from 'react-redux-firebase'
 import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase'
-import './index.css';
 import Home from './components/Home';
 import AboutUs from './components/AboutUs';
 import Events from './components/Events';
@@ -25,6 +24,7 @@ import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle } from '@fortawesome/fontawesome-free-solid'
+import Typography from 'typography'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle)
 
@@ -92,6 +92,16 @@ const createStoreWithFirebase = compose(
 )(createStore)
 
 const store = createStoreWithFirebase(reducers)
+
+const typography = new Typography({
+  baseFontSize: '16px',
+  baseLineHeight: 1.45,
+  scaleRatio: 4,
+  headerFontFamily: ['Avenir Next', 'Helvetica Neue', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+  bodyFontFamily: ['Avenir Next', 'sans-serif'],
+  // See below for the full list of options.
+})
+typography.injectStyles()
 
 render(
   <Provider store={store}>

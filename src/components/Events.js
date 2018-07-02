@@ -58,7 +58,7 @@ class Events extends Component {
         <Row>
           <Col>
             <div className="d-flex">
-              <div className="p-2"><h1 className="display-3">Events</h1></div>
+              <div className="p-2"><h1 className="mb-0" style={{fontWeight: 300}}>Events</h1></div>
               <div className="d-flex ml-auto mr-3 p-2 align-items-center">
                 <a href={calendarLink}>
                   <Button color="primary" className="d-none d-sm-block">Add to my Calendar</Button>

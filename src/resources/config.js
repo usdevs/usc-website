@@ -1,2 +1,4 @@
 const firebaseDateFormat = "DDMMYYYY HH:mm"
-const timeInterval = 30
+export const config = {
+  timeInterval: 30
+}

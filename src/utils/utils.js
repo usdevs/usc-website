@@ -1,7 +1,7 @@
 import moment from 'moment'
 import _ from 'lodash'
 import { isLoaded } from 'react-redux-firebase';
-import { timeInterval } from '../resources/config'
+import { config } from '../resources/config'
 
 export function isEmpty(obj) {
     for(var key in obj) {
@@ -129,13 +129,23 @@ export function getEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces = tr
   return _.mapValues(eventsByDate, (dayEvents) => {
     //Array that will contain any venue present in any event for the day
     var venuesUsed = []
+    var eventsByDateTime = {}
 
     _.forEach(dayEvents, (event) => {
       if (ignoreStandardSpaces && !_.includes(_.keys(spaces), event.venue)) {
         return
       }
 
-      const noOfTimeslots = moment.duration(event.endDate.diff(event.startDate)).minutes() / 30
+      const duration = moment.duration(event.endDate.diff(event.startDate))
+      const noOfTimeslots = ((duration.days() * 24 + duration.hours()) * 60 + duration.minutes()) / 30
+
+      const timeslotCombiner = (initEventArr, addEventArr) => {
+        if(!initEventArr) {
+          return addEventArr
+        } else {
+          return _.concat(initEventArr, addEventArr)
+        }
+      }
 
       if(venuesUsed.length === 0) {
         venuesUsed = [event.venue]
@@ -143,20 +153,25 @@ export function getEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces = tr
         venuesUsed = _.union(venuesUsed, [event.venue]);
       }
 
-      for(var timeslot = 0; timeslot < noOfTimeslots; timeslot++) {
-        const tempStartTime = event.startDate.clone().add(timeInterval * timeslot, 'minutes')
-        _.merge(eventsByDate, {[tempStartTime.toString()]: {
-          [event.venue] : {
-            event: event,
-            isStart: timeslot === 0,
-            isEnd: timeslot === noOfTimeslots - 1
-          }
-        }})
+      for(var timeslot = 0; timeslot <= noOfTimeslots; timeslot++) {
+        const tempStartTime = event.startDate.clone().add(config.timeInterval * timeslot, 'minutes')
+
+        if (timeslot < noOfTimeslots) {
+          _.merge(eventsByDateTime, {[tempStartTime.toString()]: {
+            [event.venue] : {
+              event: event,
+              isStart: timeslot === 0,
+              isEnd: timeslot === noOfTimeslots - 1
+            }
+          }})
+        } else {
+          _.merge(eventsByDateTime, {[tempStartTime.toString()]: {blank: true} })
+        }
       }
     });
 
     return {
-      timeslots: eventsByDate,
+      timeslots: eventsByDateTime,
       venuesUsed: venuesUsed
     }
   })

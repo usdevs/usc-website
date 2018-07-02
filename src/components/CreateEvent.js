@@ -21,9 +21,9 @@ import DayCalendar from './DayCalendar'
 import { createEvent, getEvents } from '../utils/actions'
 import { roundTime, isToday } from '../utils/utils'
 import { withRouter } from 'react-router-dom'
+import { config } from '../resources/config'
 
 const otherVenueValue = "Other"
-const timeInterval = 30
 
 const newEvent = {
   name: '',
@@ -34,8 +34,8 @@ const newEvent = {
   otherVenueSelected: false,
   otherVenue: '',
   multiDay: false,
-  startDate: roundTime(moment(), timeInterval),
-  endDate: roundTime(moment(), timeInterval).clone().add(timeInterval, "minutes"),
+  startDate: roundTime(moment(), config.timeInterval),
+  endDate: roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes"),
 }
 
 class CreateEvent extends Component {
@@ -155,7 +155,7 @@ class CreateEvent extends Component {
         })
         break
       case 'startDate':
-        const newEndDate2 = value.isSameOrAfter(endDate) ? value.clone().add(timeInterval, "minutes") : endDate
+        const newEndDate2 = value.isSameOrAfter(endDate) ? value.clone().add(config.timeInterval, "minutes") : endDate
 
         this.setState({
           event: {
@@ -171,7 +171,7 @@ class CreateEvent extends Component {
         this.setState({
           event: {
             ...event,
-            endDate: tempDate.isSameOrBefore(startDate) ? startDate.clone().add(timeInterval, "minutes") : tempDate,
+            endDate: tempDate.isSameOrBefore(startDate) ? startDate.clone().add(config.timeInterval, "minutes") : tempDate,
           }
         })
         break
@@ -330,7 +330,7 @@ class CreateEvent extends Component {
                         selected={startDate}
                         customInput={<DatePickerForm timeOnly={!multiDay} />}
                         timeFormat="HH:mm"
-                        timeInterval={timeInterval}
+                        timeInterval={config.timeInterval}
                         dateFormat="LLL"
                         timeCaption="time"
                         minDate={moment()}
@@ -349,12 +349,12 @@ class CreateEvent extends Component {
                         selected={endDate}
                         customInput={<DatePickerForm timeOnly={!multiDay} />}
                         timeFormat="HH:mm"
-                        timeInterval={timeInterval}
+                        timeInterval={config.timeInterval}
                         dateFormat="LLL"
                         timeCaption="time"
                         minDate={moment()}
                         maxDate={moment().add(6, "months")}
-                        minTime={ !multiDay ? startDate.clone().add(timeInterval, "minutes") : begEDate}
+                        minTime={ !multiDay ? startDate.clone().add(config.timeInterval, "minutes") : begEDate}
                         maxTime={ !multiDay ? startDate.clone().endOf('day') : endEDate}
                         onChange={(date) => this.handleFormChange(date, 'endDate')} />
                     </Col>
