@@ -17,6 +17,7 @@ import {
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { footerText } from '../resources/data'
 import { getUpcomingEvents } from '../utils/actions'
+import { formatEvents } from '../utils/utils'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
@@ -61,7 +62,6 @@ class Home extends Component {
 
   render() {
     var { upcomingEvents, spaces, eventTypes, history } = this.props
-
     console.log(upcomingEvents)
 
     return (
@@ -74,14 +74,14 @@ class Home extends Component {
         <Row>
           <Col sm="12">
             <Jumbotron className="pb-0 mb-0 h-100">
-              <h1 className="display-3">About Us</h1>
+              <h1 style={{fontWeight: 300}}>About Us</h1>
               <p className="lead">The University Scholars Club (USC) is a community of students enrolled in the National University of Singapore (NUS) University Scholars Programme (USP), which is a multidisciplinary, partially residential academic programme for NUS undergraduates.</p>
               <p className="lead">
                 <Button color="primary" onClick={() => history.push('/about')}>Learn More</Button>
               </p>
               <hr className="my-2" />
               <br />
-              <h1 className="display-3">Upcoming Events</h1>
+                <h1 style={{fontWeight: 300}}>Upcoming Events</h1>
               <Container>
                 <Row>
                   {
@@ -89,14 +89,14 @@ class Home extends Component {
                       <Col key={event.id} xs="12" md="6">
                         <Card>
                           <CardBody>
-                            <CardTitle>{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" /></CardTitle>
-                            <CardSubtitle>{eventTypes[event.type].name}</CardSubtitle>
-                            <CardText>{moment(event.start).format('Do MMMM') + ' - ' + moment(event.start).format('hh:mm a')}</CardText>
-                            <CardText>{ event.otherVenueSelected ? event.venue : spaces[event.venue].name  }</CardText>
+                            <h3 className="mb-0">{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" /></h3>
+                            <h4 className="mb-0" style={{fontWeight: 300}}>{eventTypes[event.type].name}</h4>
+                            <h4 className="mb-2" style={{fontWeight: 300}}>{event.startDate.format('Do MMMM - hh:mm a')}</h4>
+                            <p className="lead">{ event.otherVenueSelected ? event.venue : spaces[event.venue].name  }</p>
                           </CardBody>
                         </Card>
                       </Col>
-                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4>Loading Events!</h4></Col>
+                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4>Loading Events...</h4></Col>
                   }
                 </Row>
               </Container>
@@ -119,7 +119,7 @@ class Home extends Component {
 
 const mapStateToProps = state => {
   return {
-    upcomingEvents: state.firestore.ordered.events,
+    upcomingEvents: formatEvents(state.firestore, 'upcomingEvents', true),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.data.spaces,
   }

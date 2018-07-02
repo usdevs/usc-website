@@ -48,7 +48,7 @@ export function getEvents(firestore, callback = () => {}, spaceOnly = false, mon
   .then(() => callback())
 }
 
-export function getEventsAfter(firestore, callback, date, limit) {
+export function getEventsAfter(firestore, callback, alias, date, limit) {
   firestore
   .get({
     collection: 'events',
@@ -56,6 +56,7 @@ export function getEventsAfter(firestore, callback, date, limit) {
       ['startDate', '>=', date.toDate()]
     ],
     orderBy: ['startDate'],
+    storeAs: alias,
     limit: limit})
 }
 

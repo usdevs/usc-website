@@ -54,8 +54,33 @@ export function formatFirestoreEvent(event, eventID) {
   }
 }
 
+export function formatEvents(firestore, alias, isArr) {
+  if (isArr) {
+    const events = firestore.ordered[alias]
+    var newEvents = []
+
+    _.forEach(events, (event) => {
+      newEvents.push(formatFirestoreEvent(event, event.id))
+    })
+
+    return newEvents
+  } else {
+    const events = firestore.data[alias]
+    var newEvents = {}
+
+    _.forOwn(events, (event, eventID) => {
+      newEvents = {
+        ...newEvents,
+        eventID: formatFirestoreEvent(event, eventID),
+      }
+    })
+
+    return newEvents
+  }
+}
+
 //Arrange events into arrays of events with a key of the date
-export function getEventsByDate(firestore) {
+export function formatEventsByDate(firestore) {
   const { eventsStartInMth, eventsEndInMth } = firestore.data
 
   if (!isLoaded(eventsStartInMth) || !isLoaded(eventsEndInMth) || !eventsStartInMth || !eventsEndInMth) {
@@ -122,8 +147,8 @@ export function getEventsByDate(firestore) {
 }
 
 //Arrange events into arrays of events with a key of the date
-export function getEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces = true) {
-  const eventsByDate = getEventsByDate(firestore)
+export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces = true) {
+  const eventsByDate = formatEventsByDate(firestore)
   const { spaces } = firestore.data
 
   return _.mapValues(eventsByDate, (dayEvents) => {

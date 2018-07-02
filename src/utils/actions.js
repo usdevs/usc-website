@@ -33,7 +33,7 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
 
 export function getUpcomingEvents(firestore, limit) {
   getEvents(firestore)
-  getFirestoreEventsAfter(firestore, null, moment(), limit)
+  getFirestoreEventsAfter(firestore, null, 'upcomingEvents', moment(), limit)
 }
 
 export function getEventTypes(firestore) {

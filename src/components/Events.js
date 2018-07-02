@@ -10,7 +10,7 @@ import {
   Jumbotron
 } from 'reactstrap';
 import { getEvents } from '../utils/actions'
-import { getEventsByDate } from '../utils/utils'
+import { formatEventsByDate } from '../utils/utils'
 import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
 import DayCalendar from './DayCalendar'
@@ -102,7 +102,7 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: getEventsByDate(state.firestore),
+    events: formatEventsByDate(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.data.spaces
   }

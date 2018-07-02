@@ -12,8 +12,7 @@ import { headerEvent as header } from '../resources/images.js';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { isEmpty, getEventsByDateTimeAndVenue } from '../utils/utils'
-import { getEventStart, getEventEnd, getEventsBetween } from '../utils/utils'
+import { isEmpty, formatEventsByDateTimeAndVenue } from '../utils/utils'
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
 import { getEvents } from '../utils/actions'
@@ -100,7 +99,7 @@ class Spaces extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: getEventsByDateTimeAndVenue(state.firestore),
+    events: formatEventsByDateTimeAndVenue(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces
