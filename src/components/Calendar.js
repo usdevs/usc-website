@@ -29,7 +29,7 @@ class Calendar extends Component {
     var days = []
 
     var { date } = this.state
-    var { selectedDate, events, eventTypes } = this.props
+    var { selectedDate, events, eventTypes, bySpaces, spaces } = this.props
 
     const mthDisplayRange = moment.range(
       moment(date).startOf('month').startOf('week'),
@@ -58,16 +58,34 @@ class Calendar extends Component {
             </Row>
             <Row>
                 {
-                  dayEvents && isLoaded(eventTypes) && eventTypes ? _.chunk(dayEvents, 3).map((eventChunk) => {
-                    var tags = []
-                    _.forOwn(eventChunk, (event) => {
-                      tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)
-                    })
+                    dayEvents ?
+                      !bySpaces ?
+                        isLoaded(eventTypes) && eventTypes ?
+                          _.chunk(dayEvents, 3).map((eventChunk) => {
+                            var tags = []
+                            _.forOwn(eventChunk, (event) => {
+                              tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)
+                            })
 
-                    return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].id}>
-                      { tags }
-                    </Col>)
-                  }) : ''
+                            return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].id}>
+                              { tags }
+                            </Col>)
+                          })
+                          : ''
+                      : isLoaded(spaces) && spaces ?
+                        _.chunk(dayEvents.venuesUsed, 3).map((venues) => {
+                          console.log(venues)
+                          var tags = []
+                          _.forOwn(venues, (venue, venueID) => {
+                            tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={spaces[venue].colour} key={venueID} />)
+                          })
+
+                          return (<Col className="d-flex justify-content-center pt-1" key={venues[0]}>
+                            { tags }
+                          </Col>)
+                        })
+                        : ''
+                      : ''
                 }
             </Row>
           </Container>

@@ -54,14 +54,6 @@ export function formatFirestoreEvent(event, eventID) {
   }
 }
 
-export function eventCombiner(initEventArr, addEventArr) {
-  if(!initEventArr) {
-    return addEventArr
-  } else {
-    return _.concat(initEventArr, addEventArr)
-  }
-}
-
 //Arrange events into arrays of events with a key of the date
 export function getEventsByDate(firestore) {
   const { eventsStartInMth, eventsEndInMth } = firestore.data
@@ -70,21 +62,57 @@ export function getEventsByDate(firestore) {
     return null
   }
 
+  //Combine all events with a start date in the month, and an end date in the month
   const allEvents = _.merge(eventsStartInMth, eventsEndInMth)
 
   var eventsByDate = {}
 
+  //Function that combines the arrays
+  const eventCombiner = (initEventArr, addEventArr) => {
+    if(!initEventArr) {
+      return addEventArr
+    } else {
+      return _.concat(initEventArr, addEventArr)
+    }
+  }
+
+  //Iterate through all events
   _.forOwn(allEvents, function(event, eventID) {
-    const newEvent = formatFirestoreEvent(event, eventID)
+    //Convert any formats needed after retrieval from firestore
+    var newEvent = formatFirestoreEvent(event, eventID)
     const noOfDays = moment.duration(newEvent.startDate.diff(newEvent.endDate)).days()
     const initialStartDate = newEvent.startDate.clone().startOf('day')
 
-    //Trivial case if noOfDays=0, handle multi day if otherwise
-    if (noOfDays === 0) {
-      _.mergeWith(eventsByDate, {[initialStartDate.toString()]: [newEvent]}, eventCombiner)
-    } else {
-      for(var day = 1; day <= noOfDays; day++) {
+    for(var day = 0; day <= noOfDays; day++) {
+        //Trivial case if noOfDays=0, handle multi day if otherwise
+      if (noOfDays === 0) {
+        _.mergeWith(eventsByDate, {[initialStartDate.toString()]: [newEvent]}, eventCombiner)
+      } else {
         const tempStartDate = initialStartDate.clone().add(day, 'day')
+
+        /* Manipulation of Date Data for Multiday
+         * endDate of the first day of a multiDay event will be midnight
+         * startDate and endDate of a middle day will be the start mn and end mn
+         * startDate of thelast day of a multiDay event will be midnight
+         */
+        if(day === 0) {
+          newEvent = {
+            ...newEvent,
+            endDate: tempStartDate.clone().endOf('day')
+          }
+        } else if (day === noOfDays) {
+          newEvent = {
+            ...newEvent,
+            startDate: tempStartDate.clone().startOf('day')
+          }
+        } else {
+          newEvent = {
+            ...newEvent,
+            startDate: tempStartDate.clone().startOf('day'),
+            endDate: tempStartDate.clone().endOf('day')
+          }
+        }
+
         _.mergeWith(eventsByDate, {[tempStartDate.toString()]: [newEvent]}, eventCombiner)
       }
     }
@@ -94,36 +122,42 @@ export function getEventsByDate(firestore) {
 }
 
 //Arrange events into arrays of events with a key of the date
-export function getEventsByTime(firestore, ignoreStandardSpaces = true) {
-  const { eventsStartInMth, eventsEndInMth, spaces } = firestore.data
+export function getEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces = true) {
+  const eventsByDate = getEventsByDate(firestore)
+  const { spaces } = firestore.data
 
-  if (!isLoaded(eventsStartInMth) || !isLoaded(eventsEndInMth) || !eventsStartInMth || !eventsEndInMth || !isLoaded(spaces)) {
-    return null
-  }
+  return _.mapValues(eventsByDate, (dayEvents) => {
+    //Array that will contain any venue present in any event for the day
+    var venuesUsed = []
 
-  const allEvents = _.merge(eventsStartInMth, eventsEndInMth)
+    _.forEach(dayEvents, (event) => {
+      if (ignoreStandardSpaces && !_.includes(_.keys(spaces), event.venue)) {
+        return
+      }
 
-  var eventsByDate = {}
-  console.log(allEvents)
+      const noOfTimeslots = moment.duration(event.endDate.diff(event.startDate)).minutes() / 30
 
-  _.forOwn(allEvents, function(event, eventID) {
-    if (!_.includes(_.keys(spaces), event.venue)) {
-      return
+      if(venuesUsed.length === 0) {
+        venuesUsed = [event.venue]
+      } else {
+        venuesUsed = _.union(venuesUsed, [event.venue]);
+      }
+
+      for(var timeslot = 0; timeslot < noOfTimeslots; timeslot++) {
+        const tempStartTime = event.startDate.clone().add(timeInterval * timeslot, 'minutes')
+        _.merge(eventsByDate, {[tempStartTime.toString()]: {
+          [event.venue] : {
+            event: event,
+            isStart: timeslot === 0,
+            isEnd: timeslot === noOfTimeslots - 1
+          }
+        }})
+      }
+    });
+
+    return {
+      timeslots: eventsByDate,
+      venuesUsed: venuesUsed
     }
-      console.log(event)
-
-    const newEvent = formatFirestoreEvent(event, eventID)
-    const noOfTimeslots = moment.duration(newEvent.endDate.diff(newEvent.startDate)).minutes() / 30
-
-    //Trivial case if noOfDays=0, handle multi day if otherwise
-    for(var timeslot = 0; timeslot <= noOfTimeslots; timeslot++) {
-      const tempStartTime = newEvent.startDate.clone().add(timeInterval * timeslot, 'minutes')
-      _.merge(eventsByDate, {[tempStartTime.toString()]: {
-        [newEvent.venue] : newEvent
-      }})
-        console.log(eventsByDate)
-    }
-  });
-  console.log(eventsByDate)
-  return eventsByDate
+  })
 }

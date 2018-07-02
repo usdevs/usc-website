@@ -12,7 +12,7 @@ import { headerEvent as header } from '../resources/images.js';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { isEmpty, getEventsByTime } from '../utils/utils'
+import { isEmpty, getEventsByDateTimeAndVenue } from '../utils/utils'
 import { getEventStart, getEventEnd, getEventsBetween } from '../utils/utils'
 import Calendar from './Calendar'
 import { getEvents } from '../utils/actions'
@@ -154,7 +154,7 @@ class Spaces extends Component {
 
   render() {
     const { selectedDate } = this.state;
-    const { events, eventTypes } = this.props;
+    const { events, eventTypes, spacesUnordered } = this.props;
 
     console.log(events)
 
@@ -172,7 +172,9 @@ class Spaces extends Component {
               onDayClick={(date) => this.changeSelectedDate(date)}
               selectedDate={ selectedDate }
               events={ events }
-              eventTypes={ eventTypes } />
+              eventTypes={ eventTypes }
+              spaces={ spacesUnordered }
+              bySpaces={ true }/>
           </Col>
           <Col xs="12" md="6">
             { this.spacesDisplay() }
@@ -192,7 +194,7 @@ class Spaces extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: getEventsByTime(state.firestore),
+    events: getEventsByDateTimeAndVenue(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces
