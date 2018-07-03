@@ -16,6 +16,7 @@ import Navbar from './components/Navbar';
 import ContactUs from './components/ContactUs';
 import Dashboard from './components/Dashboard';
 import CreateEvent from './components/CreateEvent';
+import ManageEvents from './components/ManageEvents';
 import CreateIG from './components/CreateIG';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -24,10 +25,10 @@ import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
 import { Jumbotron } from 'reactstrap'
-import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner, faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt } from '@fortawesome/fontawesome-free-solid'
+import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner, faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 
-fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner, faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt)
+fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner, faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock)
 
 const firebaseConfig = {
     apiKey: "***REMOVED***",
@@ -118,6 +119,7 @@ render(
             <Route path="/contactus" component={ContactUs}/>
             <Route path="/dashboard" component={Dashboard}/>
             <Route path="/createevent" component={CreateEvent}/>
+            <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/createig" component={CreateIG}/>
             <Route component={Home}/>
           </Switch>

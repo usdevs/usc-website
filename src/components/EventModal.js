@@ -53,22 +53,22 @@ class EventModal extends Component {
               <Row>
                 {
                   poster ?
-                  <Col>
+                  <Col xs="12" md="6">
                     <img src={poster} className="img-fluid" alt="Poster" />
                   </Col>
                   : ''
                 }
                 {
                   event.regLink || event.description ?
-                    <Col>
+                    <Col xs="12" md="6">
                       {
                         event.regLink ?
-                        <p>Register <a href={ event.regLink }>here</a></p>
+                        <p className="lead mb-2">Register <a href={ event.regLink }>here</a></p>
                         : ''
                       }
                       {
                         event.description ?
-                        <p className="lead">{ event.description }</p>
+                        <p>{ event.description }</p>
                         : ''
                       }
                     </Col>

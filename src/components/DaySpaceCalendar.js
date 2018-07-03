@@ -15,7 +15,6 @@ class DaySpaceCalendar extends Component {
 
   toggleEventModal(eventID) {
     const { eventModals } = this.state
-    console.log("test")
 
     this.setState({
       eventModals: {

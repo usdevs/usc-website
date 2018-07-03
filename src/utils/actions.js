@@ -6,7 +6,8 @@ import {
   getSpaces as getFirestoreSpaces,
   watchEvents as watchFirestoreEvents,
   uploadFile as uploadFirebaseFile,
-  deleteFile as deleteFirebaseFile
+  deleteFile as deleteFirebaseFile,
+  getUserEvents as getFirestoreUserEvents
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -22,7 +23,7 @@ export function createEvent(firestore, firebase, event, uid, spaces, callback) {
           ...event,
           poster: filePath,
         }
-        console.log(event)
+
         createFirestoreEvent(firestore, event, uid, googleEntry.id, callback)
       })
     } else {
@@ -64,6 +65,11 @@ export function getEventsByMonth(firestore, callback = () => {}, month, spaceOnl
 export function getUpcomingEvents(firestore, limit) {
   getEvents(firestore)
   getFirestoreEventsAfter(firestore, null, 'upcomingEvents', moment(), limit)
+}
+
+export function getUserEvents(firestore, userID) {
+  getEvents(firestore)
+  getFirestoreUserEvents(firestore, userID)
 }
 
 export function getEventTypes(firestore) {

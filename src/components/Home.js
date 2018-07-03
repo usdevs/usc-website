@@ -10,9 +10,11 @@ import {
   Col,
   Jumbotron,
   Button,
-  Card, CardBody
+  Card, CardText
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import _ from 'lodash'
+import EventCard from './EventCard'
 import { getUpcomingEvents } from '../utils/actions'
 import { formatEvents } from '../utils/utils'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
@@ -45,11 +47,22 @@ class Home extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      events: []
+      eventModals: {},
     }
+  }
+
+  toggleEventModal(eventID) {
+    const { eventModals } = this.state
+
+    this.setState({
+      eventModals: {
+        ...eventModals,
+        [eventID]: !eventModals[eventID]
+      }
+    })
   }
 
   componentWillMount() {
@@ -58,11 +71,11 @@ class Home extends Component {
   }
 
   render() {
-    var { upcomingEvents, spaces, eventTypes, history } = this.props
-    console.log(upcomingEvents)
+    var { eventModals } = this.state
+    var { upcomingEvents, spaces, eventTypes, firebase, history } = this.props
 
     return (
-      <Container>
+      <Container className="mb-5">
         <Row>
           <Col sm="12">
             <UncontrolledCarousel items={items} />
@@ -83,15 +96,8 @@ class Home extends Component {
                 <Row>
                   {
                     isLoaded(upcomingEvents) && isLoaded(eventTypes) ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
-                      <Col key={event.id} xs="12" md="6">
-                        <Card>
-                          <CardBody>
-                            <h3 className="mb-0">{event.name + '    '}<FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" /></h3>
-                            <h4 className="mb-0" style={{fontWeight: 300}}>{eventTypes[event.type].name}</h4>
-                            <h4 className="mb-2" style={{fontWeight: 300}}>{event.startDate.format('Do MMMM - hh:mm a')}</h4>
-                            <p className="lead">{ event.otherVenueSelected ? event.venue : spaces[event.venue].name  }</p>
-                          </CardBody>
-                        </Card>
+                      <Col key={event.id} xs="12" md="6" className="mb-2">
+                        <EventCard event={event} eventTypes={eventTypes} spaces={spaces} buttonAction={() => this.toggleEventModal(event.id)} buttonText='See More' modalOpen={eventModals[event.id]} firebase={firebase} />
                       </Col>
                     ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Events...</h4></Col>
                   }
@@ -99,12 +105,11 @@ class Home extends Component {
               </Container>
               <br/>
               <p className="lead">
-                <Button color="primary" onClick={() => history.push('/events')}>See More</Button>
+                <Button color="primary" onClick={() => history.push('/events')}>View All Events</Button>
               </p>
             </Jumbotron>
           </Col>
         </Row>
-        <Row><Col><br/></Col></Row>
       </Container>
     );
   }

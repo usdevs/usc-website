@@ -18,7 +18,7 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
 import { createEvent, getEvents, getEventsByMonth } from '../utils/actions'
-import { roundTime, isToday, formatEventsByDateTimeAndVenue } from '../utils/utils'
+import { roundTime, isToday, formatEventsByDateTimeAndVenue, formatMonthEvents } from '../utils/utils'
 import { withRouter } from 'react-router-dom'
 import { config } from '../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -322,15 +322,13 @@ class CreateEvent extends Component {
   render() {
     const { selectedDate, event, submitFailure } = this.state
     const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly, desc, regLink } = event
-    const { auth, history, events, eventTypes, spaces, eventTypesUnordered, spacesUnordered } = this.props
+    const { auth, history, events, eventTypes, spaces, eventTypesUnordered, spacesUnordered, eventsUnordered, firebase } = this.props
 
     const errors = this.validate();
     const begSDate = startDate.clone().startOf('day')
     const endSDate = startDate.clone().endOf('day')
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
-
-    console.log(event)
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
@@ -499,6 +497,9 @@ class CreateEvent extends Component {
               timeslots={ events && events[selectedDate.toString()] ? events[selectedDate.toString()] : null }
               spaces={ spacesUnordered }
               isLoaded={ isLoaded(spacesUnordered) }
+              eventTypes={ eventTypesUnordered }
+              eventsUnordered={ eventsUnordered }
+              firebase={ firebase }
             />
             </Col>
         </Row>
@@ -510,6 +511,7 @@ class CreateEvent extends Component {
 const mapStateToProps = state => {
   return {
     events: formatEventsByDateTimeAndVenue(state.firestore),
+    eventsUnordered: formatMonthEvents(state.firestore),
     eventTypes: state.firestore.ordered.eventTypes,
     eventTypesUnordered: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,

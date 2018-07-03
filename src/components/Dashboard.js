@@ -40,7 +40,12 @@ const categories = [
     }, {
       name: 'Create Event',
       icon: 'plus',
-      link: '/createEvent',
+      link: '/createevent',
+      color: 'tomato'
+    }, {
+      name: 'Manage My Events',
+      icon: 'user-clock',
+      link: '/manageevents',
       color: 'tomato'
     }]
   }
@@ -58,7 +63,9 @@ class Dashboard extends Component {
             <div className="d-flex justify-content-center w-100 mb-2">
               <FontAwesomeIcon icon={icon} color="white" size="3x" />
             </div>
-            <h4 className="text-center text-white mb-0">{name}</h4>
+            <div className="d-flex justify-content-center w-100">
+              <h4 className="text-center text-white mb-0 w-75">{name}</h4>
+            </div>
           </div>
         </div>
       </Col>)

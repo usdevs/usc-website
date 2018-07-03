@@ -87,11 +87,22 @@ export function getEventsAfter(firestore, callback, alias, date, limit) {
   .get({
     collection: 'events',
     where: [
-      ['startDate', '>=', date.toDate()]
+      ['endDate', '>=', date.toDate()]
     ],
-    orderBy: ['startDate'],
+    orderBy: ['endDate'],
     storeAs: alias,
     limit: limit})
+}
+
+export function getUserEvents(firestore, userID) {
+  firestore
+  .get({
+    collection: 'events',
+    where: [
+      ['creator', '==', userID]
+    ],
+    orderBy: ['startDate'],
+    storeAs: 'userEvents'})
 }
 
 export function watchEvents(firestore) {

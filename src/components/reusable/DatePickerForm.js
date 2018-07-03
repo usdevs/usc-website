@@ -22,6 +22,7 @@ class DatePickerForm extends Component {
         id={this.props.id}
         onClick={this.props.onClick}
         value={ dateText }
+        placeholder={ this.props.placeholder }
         readOnly />
     )
   }

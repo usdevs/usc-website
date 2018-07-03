@@ -18,7 +18,6 @@ class Calendar extends Component {
   }
 
   changeSelectedDate = (date) => {
-  console.log(date)
     this.setState({
       ...this.state,
       date: date
