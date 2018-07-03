@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import firebase from 'firebase'
 import { firebaseConnect } from 'react-redux-firebase'
 import GoogleButton from 'react-google-button'
 import { saveGoogleToken } from '../actions'
@@ -21,10 +20,11 @@ class LoginModal extends Component {
   }
 
   handleLogin() {
+    const { firebase } = this.props
+
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('email');
     provider.addScope('https://www.googleapis.com/auth/calendar');
-    console.log('reached2')
 
     firebase.login({ provider: 'google', type: 'popup' }).then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.

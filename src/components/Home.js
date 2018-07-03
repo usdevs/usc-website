@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import moment from 'moment';
 import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
 import {
   UncontrolledCarousel,
@@ -11,11 +10,9 @@ import {
   Col,
   Jumbotron,
   Button,
-  Card, CardText, CardBody,
-  CardTitle, CardSubtitle
+  Card, CardBody
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { footerText } from '../resources/data'
 import { getUpcomingEvents } from '../utils/actions'
 import { formatEvents } from '../utils/utils'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';

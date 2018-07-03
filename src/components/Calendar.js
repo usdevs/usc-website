@@ -5,8 +5,6 @@ import _ from 'lodash'
 import { extendMoment } from 'moment-range';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase';
-import { firebaseConnect } from 'react-redux-firebase';
-import { getEventsByMonth } from '../utils/actions'
 
 const moment = extendMoment(Moment);
 

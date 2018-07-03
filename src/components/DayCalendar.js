@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase'
-import { getEventStart, eventTimeDisplay } from '../utils/utils'
+import { eventTimeDisplay } from '../utils/utils'
 import { Container, Row, Col, Nav, NavLink } from 'reactstrap'
 import _ from 'lodash'
 import EventModal from './EventModal'
@@ -42,7 +42,7 @@ class DayCalendar extends Component {
                 <FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" />
               </h3>
               <br/>
-              <h5 className="mb-1 text-muted">{'   ' + eventTypes[event.type].name}</h5>
+              <h5 className="mb-1 text-muted">{eventTypes[event.type].name}</h5>
               <h4 className="mb-0" style={{fontWeight: 300}}>
               { eventTimeDisplay(event, selectedDate) }
               </h4>

@@ -7,8 +7,7 @@ import {
   Row,
   Col,
   Button,
-  Jumbotron,
-  Form, FormGroup, Label, Input, FormText, FormFeedback,
+  Form, FormGroup, Label, Input, FormFeedback,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import moment from 'moment'
@@ -18,7 +17,7 @@ import DatePickerForm from './reusable/DatePickerForm'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { createEvent, getEvents, getEventsByMonth, deletePoster } from '../utils/actions'
+import { createEvent, getEvents, getEventsByMonth } from '../utils/actions'
 import { roundTime, isToday, formatEventsByDateTimeAndVenue } from '../utils/utils'
 import { withRouter } from 'react-router-dom'
 import { config } from '../resources/config'
@@ -104,7 +103,6 @@ class CreateEvent extends Component {
     </Modal>
 
   getUploader = () => {
-    const { firebase } = this.props
     const { event } = this.state
 
       return (

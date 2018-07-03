@@ -2,43 +2,100 @@ import React, { Component } from 'react';
 import {
   Container,
   Row,
-  Col,
-  Button
+  Col
 } from 'reactstrap';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+
+const categories = [
+  {
+    name: 'General',
+    buttons: [{
+      name: 'USP Lifehacks',
+      icon: 'heart',
+      link: '',
+      color: 'dodgerblue'
+    }, {
+      name: 'MC Minutes & AGM Report',
+      icon: 'file-alt',
+      link: '',
+      color: 'dodgerblue'
+    }, {
+      name: 'blah',
+      icon: 'heart',
+      link: '',
+      color: 'dodgerblue'
+    }]
+  },
+  {
+    name: 'Events',
+    buttons: [{
+      name: 'See All Events',
+      icon: 'calendar-alt',
+      link: '/events',
+      color: 'tomato'
+    }, {
+      name: 'Create Event',
+      icon: 'plus',
+      link: '/createEvent',
+      color: 'tomato'
+    }]
+  }
+]
 
 class Dashboard extends Component {
+  createButton = (button) => {
+    const { history } = this.props;
+    const { name, icon, link, color } = button;
+
+    return (
+      <Col key={name+link} xs="4" md="2">
+        <div onClick={() => history.push(link)} className="h-100 w-100 rounded d-flex align-items-center justify-content-center" style={{backgroundColor: color, maxWidth: '150px'}}>
+          <div className="pt-3 pb-3">
+            <div className="d-flex justify-content-center w-100 mb-2">
+              <FontAwesomeIcon icon={icon} color="white" size="3x" />
+            </div>
+            <h4 className="text-center text-white mb-0">{name}</h4>
+          </div>
+        </div>
+      </Col>)
+  }
+
   render() {
     const { auth, history } = this.props;
 
     if(!isLoaded(auth)) {
       return <div/>
     } else if(isEmpty(auth)) {
-      console.log("test")
       history.push('/')
     }
 
     return(
-      <Container>
+      <Container className="mb-5">
         <Row>
           <Col>
-            <h1 className="display-4">Dashboard</h1>
+            <h1 style={{fontWeight: 300}}>Dashboard</h1>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Button onClick={() => history.push('/createevent')}>Create Event</Button>
-          </Col>
-          <Col>
-            <Button onClick={() => history.push('/createig')}>Create Interest Group</Button>
-          </Col>
-        </Row>
-        <Row>
-          <br/>
-        </Row>
+        {
+          categories.map((category) =>
+          <div key={category.name}>
+              <Row>
+                <Col>
+                  <h2>{category.name}</h2>
+                </Col>
+              </Row>
+              <Row className="mb-3">
+                {
+                  category.buttons.map((button) => this.createButton(button))
+                }
+              </Row>
+          </div>)
+
+        }
       </Container>
     )
   }

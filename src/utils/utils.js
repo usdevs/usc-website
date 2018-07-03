@@ -48,47 +48,70 @@ export function eventTimesToMoment(event) {
 }
 
 export function formatFirestoreEvent(event, eventID) {
+  const newEvent = eventTimesToMoment(event)
   return {
-    ...eventTimesToMoment(event),
-    id: eventID
+    ...newEvent,
+    id: eventID,
+    original: {
+      startDate: newEvent.startDate.clone(),
+      endDate: newEvent.endDate.clone()
+    }
   }
 }
 
 export function formatEvents(firestore, alias, isArr) {
   if (isArr) {
     const events = firestore.ordered[alias]
-    var newEvents = []
+    var newEventsArr = []
 
     _.forEach(events, (event) => {
-      newEvents.push(formatFirestoreEvent(event, event.id))
+      newEventsArr.push(formatFirestoreEvent(event, event.id))
     })
 
-    return newEvents
+    return newEventsArr
   } else {
     const events = firestore.data[alias]
-    var newEvents = {}
+    var newEventsObj = {}
 
     _.forOwn(events, (event, eventID) => {
-      newEvents = {
-        ...newEvents,
+      newEventsObj = {
+        ...newEventsObj,
         eventID: formatFirestoreEvent(event, eventID),
       }
     })
 
-    return newEvents
+    return newEventsObj
   }
 }
 
-//Arrange events into arrays of events with a key of the date
-export function formatEventsByDate(firestore) {
+export function formatMonthEvents(firestore) {
   const { eventsStartInMth, eventsEndInMth } = firestore.data
 
   if (!isLoaded(eventsStartInMth) || !isLoaded(eventsEndInMth) || !eventsStartInMth || !eventsEndInMth) {
     return null
   }
 
+  //Iterate through all events
+  var newEvents = {}
+   _.forOwn(_.merge(eventsStartInMth, eventsEndInMth), function(Event, eventID) {
+    //Convert any formats needed after retrieval from firestore
+    newEvents = {
+      ...newEvents,
+      [eventID]: formatFirestoreEvent(Event, eventID)
+    }
+  })
+
+  return newEvents
+}
+
+//Arrange events into arrays of events with a key of the date
+export function formatEventsByDate(firestore) {
   //Combine all events with a start date in the month, and an end date in the month
-  const allEvents = _.merge(eventsStartInMth, eventsEndInMth)
+  const allEvents = formatMonthEvents(firestore)
+
+  if(!allEvents) {
+    return null
+  }
 
   var eventsByDate = {}
 
@@ -121,13 +144,6 @@ export function formatEventsByDate(firestore) {
          * startDate and endDate of a middle day will be the start mn and end mn
          * startDate of thelast day of a multiDay event will be midnight
          */
-         newEvent = {
-           ...newEvent,
-           original: {
-             startDate: newEvent.startDate.clone(),
-             endDate: newEvent.endDate.clone()
-           }
-         }
 
         if(day === 0) {
           newEvent = {
@@ -173,14 +189,6 @@ export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces =
 
       const duration = moment.duration(event.endDate.diff(event.startDate))
       const noOfTimeslots = ((duration.days() * 24 + duration.hours()) * 60 + duration.minutes()) / 30
-
-      const timeslotCombiner = (initEventArr, addEventArr) => {
-        if(!initEventArr) {
-          return addEventArr
-        } else {
-          return _.concat(initEventArr, addEventArr)
-        }
-      }
 
       if(venuesUsed.length === 0) {
         venuesUsed = [event.venue]

@@ -3,10 +3,29 @@ import { Container, Row, Col } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import moment from 'moment'
-
-const timeInterval = 30
+import EventModal from './EventModal'
 
 class DaySpaceCalendar extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      eventModals: {},
+    }
+  }
+
+  toggleEventModal(eventID) {
+    const { eventModals } = this.state
+    console.log("test")
+
+    this.setState({
+      eventModals: {
+        ...eventModals,
+        [eventID]: !eventModals[eventID]
+      }
+    })
+  }
+
   spaceBookingDisplay = () => {
     const { timeslots, isLoaded } = this.props
     if(!isLoaded) {
@@ -29,13 +48,8 @@ class DaySpaceCalendar extends Component {
     }
   }
 
-
-
   spaceBookingDisplayCols = (noOfColumns) => {
-    const { selectedDate, timeslots, spaces } = this.props
-
-    const day_start = selectedDate.clone().startOf('day')
-    const day_end   = selectedDate.clone().endOf('day')
+    const { timeslots, spaces } = this.props
 
     const events = timeslots.timeslots
     const venuesUsed = timeslots.venuesUsed
@@ -54,7 +68,7 @@ class DaySpaceCalendar extends Component {
 
       _.forEach(timeslotChunk, (timeslotString) => {
         const timeslot = moment(timeslotString)
-        timeslotsCol.push(<Col xs={ colSize }  key={timeslot.toString() + index} className="d-flex justify-content-center"><small>{ timeslot.format("HHmm")}</small></Col>)
+        timeslotsCol.push(<Col xs={ colSize }  key={timeslot.toString() + index} className="d-flex justify-content-center"><small>{ timeslot.format("hh:mm a")}</small></Col>)
       })
 
       timeslotsCol.push(<div key={"timeslotDivider" + index} className="w-100"></div>)
@@ -68,7 +82,8 @@ class DaySpaceCalendar extends Component {
 
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}
                  className={(spaceEvent.isStart ? 'rounded-left ' : '') + (spaceEvent.isEnd ? 'rounded-right' : '')}
-                 style={{backgroundColor: spaces[venueID] ? spaces[venueID].colour : ''}}/>)
+                 style={{backgroundColor: spaces[venueID] ? spaces[venueID].colour : ''}}
+                 onClick={() => this.toggleEventModal(events[timeslotString][venueID].event.id)}/>)
           } else {
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}/>)
           }
@@ -81,12 +96,28 @@ class DaySpaceCalendar extends Component {
     return timeslotsCol
   }
 
+  eventModals = () => {
+    const { eventModals } = this.state
+    const { eventsUnordered, eventTypes, spaces, firebase } = this.props
+
+    if(eventsUnordered) {
+      var eventModal = []
+      _.forOwn(eventsUnordered, (event, eventID) =>{
+        eventModal.push(<EventModal key={eventID} isOpen={eventModals[eventID]} toggle={() => this.toggleEventModal(eventID)} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} />)
+      })
+      return eventModal
+    } else {
+      return ''
+    }
+  }
+
   render() {
-    const { timeslots, selectedDate } = this.props
+    const { selectedDate } = this.props
 
     return (<div>
       <h2 style={{fontWeight: 300}}><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{' ' + selectedDate.format('YYYY')}</small></h2>
       { this.spaceBookingDisplay() }
+      { this.eventModals() }
     </div>)
   }
 }

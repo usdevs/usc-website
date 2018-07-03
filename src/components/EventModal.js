@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { eventTimeDisplay } from '../utils/utils'
-import { firebaseConnect } from 'react-redux-firebase';
 
 class EventModal extends Component {
   constructor(props) {
@@ -38,8 +33,6 @@ class EventModal extends Component {
     const { poster } = this.state
     const { isOpen, toggle, event, eventTypes, spaces } = this.props
 
-    console.log(poster)
-
     return (
       <Modal isOpen={isOpen} toggle={toggle} className="w-75">
           <ModalBody>
@@ -47,6 +40,7 @@ class EventModal extends Component {
               {event.name + '    '}
               <FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" />
             </h3>
+            <h5 className="mb-1 text-muted">{eventTypes[event.type].name}</h5>
             <h4 className="mb-0" style={{fontWeight: 300}}>
             { this.dateDisplay() }
             </h4>
@@ -69,7 +63,7 @@ class EventModal extends Component {
                     <Col>
                       {
                         event.regLink ?
-                        <p className="lead">{ event.regLink }</p>
+                        <p>Register <a href={ event.regLink }>here</a></p>
                         : ''
                       }
                       {

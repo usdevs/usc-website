@@ -21,6 +21,13 @@ export function deleteFile(firebase, filesPath, file, key) {
 }
 
 export function createEvent(firestore, event, uid, googleEventID, callback) {
+  if(event.regLink && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
+    event = {
+      ...event,
+      regLink: "http://" + event.regLink
+    }
+  }
+
   firestore
   .add({ collection: 'events' }, {
     name: event.name,

@@ -4,14 +4,12 @@ import {
   Container,
   Row,
   Col,
-  Jumbotron,
   Button,
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
-import { footerText } from '../resources/data'
 import '../resources/responsivefont.css';
 
 var uscHeaderStyle = {

@@ -6,8 +6,7 @@ import {
   Container,
   Row,
   Col,
-  Button,
-  Jumbotron
+  Button
 } from 'reactstrap';
 import { getEvents, getEventsByMonth } from '../utils/actions'
 import { formatEventsByDate } from '../utils/utils'

@@ -5,14 +5,13 @@ import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import {
   Container,
   Row,
-  Col,
-  Jumbotron
+  Col
 } from 'reactstrap';
 import { headerEvent as header } from '../resources/images.js';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { isEmpty, formatEventsByDateTimeAndVenue } from '../utils/utils'
+import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../utils/utils'
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
 import { getEvents, getEventsByMonth } from '../utils/actions'
@@ -58,7 +57,7 @@ class Spaces extends Component {
 
   render() {
     const { selectedDate } = this.state;
-    const { events, eventTypes, spacesUnordered } = this.props;
+    const { events, eventsUnordered, eventTypes, spacesUnordered, firebase } = this.props;
     return (
       <Container>
         <Row>
@@ -74,6 +73,9 @@ class Spaces extends Component {
               timeslots={ events && events[selectedDate.toString()] ? events[selectedDate.toString()] : null }
               spaces={ spacesUnordered }
               isLoaded={ isLoaded(spacesUnordered) }
+              eventTypes={ eventTypes }
+              eventsUnordered={ eventsUnordered }
+              firebase={ firebase }
             />
           </Col>
           <Col xs="12" lg="4">
@@ -108,6 +110,7 @@ class Spaces extends Component {
 const mapStateToProps = state => {
   return {
     events: formatEventsByDateTimeAndVenue(state.firestore),
+    eventsUnordered: formatMonthEvents(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces
