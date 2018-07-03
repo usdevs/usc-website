@@ -179,11 +179,6 @@ class AboutUs extends Component {
         </Col>
       </Row>
       <Row>{ houseCommittees }</Row>
-      <Row>
-        <Col>
-          <Jumbotron><h6>{ footerText }</h6></Jumbotron>
-        </Col>
-      </Row>
     </Container>);
     }
 }

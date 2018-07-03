@@ -23,6 +23,7 @@ import { createStore } from 'redux'
 import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
+import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 
@@ -120,6 +121,7 @@ render(
             <Route path="/createig" component={CreateIG}/>
             <Route component={Home}/>
           </Switch>
+          <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>
         </div>
       </Router>
     </div>

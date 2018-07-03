@@ -100,11 +100,6 @@ class Spaces extends Component {
         </Row>
         <br/>
         <br/>
-        <Row>
-          <Col>
-            <Jumbotron><h6>Copyright 2018. NUS Students' University Scholars Club</h6></Jumbotron>
-          </Col>
-        </Row>
       </Container>
     );
   }

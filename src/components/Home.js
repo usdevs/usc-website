@@ -104,10 +104,6 @@ class Home extends Component {
               <p className="lead">
                 <Button color="primary" onClick={() => history.push('/events')}>See More</Button>
               </p>
-              <hr className="my-2" />
-              <br/>
-              <h6>{ footerText }</h6>
-              <br/>
             </Jumbotron>
           </Col>
         </Row>

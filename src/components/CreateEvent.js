@@ -38,6 +38,9 @@ const newEvent = {
   fullDay: false,
   startDate: roundTime(moment(), config.timeInterval),
   endDate: roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes"),
+  poster: '',
+  desc: '',
+  regLink: ''
 }
 
 class CreateEvent extends Component {
@@ -208,6 +211,22 @@ class CreateEvent extends Component {
           }
         })
         break
+      case 'desc':
+        this.setState({
+          event: {
+            ...event,
+            desc: value
+          }
+        })
+        break
+      case 'regLink':
+        this.setState({
+          event: {
+            ...event,
+            regLink: value
+          }
+        })
+        break
       default: break
     }
   }
@@ -260,7 +279,7 @@ class CreateEvent extends Component {
 
   render() {
     const { selectedDate, event, submitFailure } = this.state
-    const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly } = event
+    const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly, desc, regLink } = event
     const { auth, history, events, eventTypes, spaces, eventTypesUnordered, spacesUnordered } = this.props
 
     const errors = this.validate();
@@ -411,11 +430,11 @@ class CreateEvent extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="name"><h3>Description (Optional)</h3></Label>
-                <Input type="textarea" name="description" id="description" placeholder="Enter a description (optional)" />
+                <Input type="textarea" name="description" id="description" placeholder="Enter a description (optional)" value={desc} onChange={(event) => this.handleFormChange(event.target.value, 'desc')} />
               </FormGroup>
               <FormGroup>
                 <Label for="name"><h3>Registration Link (Optional)</h3></Label>
-                <Input type="text" name="registration" id="registration" placeholder="Paste your registration link here (optional)" />
+                <Input type="text" name="registration" id="registration" placeholder="Paste your registration link here (optional)" value={regLink} onChange={(event) => this.handleFormChange(event.target.value, 'regLink')} />
               </FormGroup>
               <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>
                 { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } Create Event
@@ -441,11 +460,6 @@ class CreateEvent extends Component {
               isLoaded={ isLoaded(spacesUnordered) }
             />
             </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Jumbotron><h6>Copyright 2018. NUS Students' University Scholars Club</h6></Jumbotron>
-          </Col>
         </Row>
       </Container>
     );
