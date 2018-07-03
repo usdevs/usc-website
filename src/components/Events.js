@@ -9,7 +9,7 @@ import {
   Button,
   Jumbotron
 } from 'reactstrap';
-import { getEvents } from '../utils/actions'
+import { getEvents, getEventsByMonth } from '../utils/actions'
 import { formatEventsByDate } from '../utils/utils'
 import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
@@ -40,8 +40,13 @@ class Events extends Component {
   changeSelectedDate = (date) => {
     this.setState({
       ...this.state,
-      selectedDate: date,
+      selectedDate: date.clone(),
     })
+  }
+
+  loadMonth(month) {
+    const { firestore } = this.context.store
+    getEventsByMonth(firestore, () => {}, month.clone())
   }
 
   render() {
@@ -79,7 +84,8 @@ class Events extends Component {
               onDayClick={(date) => this.changeSelectedDate(date)}
               selectedDate={ selectedDate }
               events={ events }
-              eventTypes={eventTypes} />
+              eventTypes={eventTypes}
+              loadMonth={ this.loadMonth.bind(this) }/>
           </Col>
             <Col xs="12" lg="4">
               <hr className="my-2 d-block d-lg-none" />

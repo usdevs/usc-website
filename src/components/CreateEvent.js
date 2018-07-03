@@ -17,11 +17,12 @@ import _ from 'lodash'
 import DatePickerForm from './reusable/DatePickerForm'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
-import DayCalendar from './DayCalendar'
-import { createEvent, getEvents } from '../utils/actions'
-import { roundTime, isToday } from '../utils/utils'
+import DaySpaceCalendar from './DaySpaceCalendar'
+import { createEvent, getEvents, getEventsByMonth } from '../utils/actions'
+import { roundTime, isToday, formatEventsByDateTimeAndVenue } from '../utils/utils'
 import { withRouter } from 'react-router-dom'
 import { config } from '../resources/config'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 const otherVenueValue = "Other"
 
@@ -34,6 +35,7 @@ const newEvent = {
   otherVenueSelected: false,
   otherVenue: '',
   multiDay: false,
+  fullDay: false,
   startDate: roundTime(moment(), config.timeInterval),
   endDate: roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes"),
 }
@@ -64,7 +66,7 @@ class CreateEvent extends Component {
 
   componentWillMount() {
     const { firestore } = this.context.store
-    getEvents(firestore)
+    getEvents(firestore, () => {}, moment())
   }
 
   changeSelectedDate = (date) => {
@@ -72,6 +74,11 @@ class CreateEvent extends Component {
       ...this.state,
       selectedDate: date
     })
+  }
+
+  loadMonth(month) {
+    const { firestore } = this.context.store
+    getEventsByMonth(firestore, () => {}, month.clone())
   }
 
   toggle() {
@@ -94,7 +101,7 @@ class CreateEvent extends Component {
 
   handleFormChange = (value, type) => {
     const { event } = this.state
-    const { multiDay, startDate, endDate } = event
+    const { multiDay, fullDay, startDate, endDate, tentative, spaceOnly } = event
 
     switch(type) {
       case 'name':
@@ -112,6 +119,22 @@ class CreateEvent extends Component {
           event: {
             ...event,
             type: value
+          }
+        })
+        break
+      case 'tentative':
+        this.setState({
+          event: {
+            ...event,
+            tentative: !tentative
+          }
+        })
+        break
+      case 'spaceOnly':
+        this.setState({
+          event: {
+            ...event,
+            spaceOnly: !spaceOnly
           }
         })
         break
@@ -139,6 +162,16 @@ class CreateEvent extends Component {
           event: {
             ...event,
             multiDay: !multiDay
+          }
+        })
+        break
+      case 'fullDay':
+        this.setState({
+          event: {
+            ...event,
+            fullDay: !fullDay,
+            startDate: startDate.clone().startOf('day'),
+            endDate: startDate.clone().endOf('day'),
           }
         })
         break
@@ -227,7 +260,7 @@ class CreateEvent extends Component {
 
   render() {
     const { selectedDate, event, submitFailure } = this.state
-    const { startDate, endDate, name, multiDay } = event
+    const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly } = event
     const { auth, history, events, eventTypes, spaces, eventTypesUnordered, spacesUnordered } = this.props
 
     const errors = this.validate();
@@ -260,7 +293,8 @@ class CreateEvent extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="type"><h3>Type</h3></Label>
-                <Input type="select" invalid={errors.type} name="select" id="type" onChange={(event) => this.handleFormChange(event.target.value, 'type')}>
+                { !isLoaded(eventTypes) ? <FontAwesomeIcon icon="spinner" spin /> : ''}
+                <Input type="select" invalid={errors.type} disabled={!isLoaded(eventTypes)} name="select" id="type" onChange={(event) => this.handleFormChange(event.target.value, 'type')} value={type}>
                   <option value=''>Please Select a Type</option>
                   {
                     isLoaded(eventTypes) ? eventTypes.map((type) => <option key={ type.id } value={ type.id }>{ type.name }</option>) : ''
@@ -269,18 +303,19 @@ class CreateEvent extends Component {
                 { errors.type ? <FormFeedback>Please select an event type.</FormFeedback> : ''}
                 <FormGroup check inline>
                   <Label check>
-                    <Input type="checkbox" id="tentative" /> Tentative
+                    <Input type="checkbox" id="tentative" onChange={(event) => this.handleFormChange(event.target.value, 'tentative')} value={tentative} /> Tentative
                   </Label>
                 </FormGroup>
                 <FormGroup check inline>
                   <Label check>
-                     <Input type="checkbox" id="spaceonly" /> Space Booking Only
+                     <Input type="checkbox" id="spaceonly" onChange={(event) => this.handleFormChange(event.target.value, 'spaceOnly')} value={spaceOnly} /> Space Booking Only
                   </Label>
                 </FormGroup>
               </FormGroup>
               <FormGroup>
                 <Label for="name"><h3>Venue</h3></Label>
-                <Input type="select" name="select" id="venue"  invalid={errors.venue} onChange={(event) => this.handleFormChange(event.target.value, 'venue')}>
+                { !isLoaded(spaces) ? <FontAwesomeIcon icon="spinner" spin /> : ''}
+                <Input type="select" name="select" id="venue" disabled={!isLoaded(spaces)} invalid={errors.venue} onChange={(event) => this.handleFormChange(event.target.value, 'venue')} value={venue}>
                   <option value=''>Please Select a Venue</option>
                   {
                     isLoaded(spaces) ? spaces.map((space) => <option key={ space.id } value={ space.id }>{ space.name }</option>) : ''
@@ -292,10 +327,16 @@ class CreateEvent extends Component {
                 { event.otherVenueSelected && errors.otherVenue ? <FormFeedback>Venue cannot be empty.</FormFeedback> : '' }
               </FormGroup>
               <FormGroup>
-                <Label for="datetime"><h3>Date & Time</h3></Label>
-                <FormGroup check>
+                <Label for="datetime"><h3 className="mb-0">Date & Time</h3></Label>
+                <br/>
+                <FormGroup check inline>
                   <Label check>
-                    <Input type="checkbox" id="multiDay" onChange={(event) => this.handleFormChange(event.target.value, 'multiDay')}  /> Multiple Days
+                    <Input type="checkbox" id="multiDay" disabled={event.fullDay} onChange={(event) => this.handleFormChange(event.target.value, 'multiDay')} value={multiDay}  /> Multiple Days
+                  </Label>
+                </FormGroup>
+                <FormGroup check inline>
+                  <Label check>
+                    <Input type="checkbox" id="fullDay" disabled={event.multiDay} onChange={(event) => this.handleFormChange(event.target.value, 'fullDay')} value={fullDay}  /> Full Day
                   </Label>
                 </FormGroup>
                 <Container>
@@ -316,49 +357,49 @@ class CreateEvent extends Component {
                       </Col>
                     </Row> : ''
                   }
-                  <Row>
-                    <br/>
-                  </Row>
-                  <Row>
-                    <Col xs="12" md="6">
-                      <Label for="startdatetime"><h5>Start</h5></Label>
-                      <DatePicker
-                        showTimeSelect
-                        showTimeSelectOnly={!multiDay}
-                        name="startdatetime"
-                        id="startdatetime"
-                        selected={startDate}
-                        customInput={<DatePickerForm timeOnly={!multiDay} />}
-                        timeFormat="HH:mm"
-                        timeInterval={config.timeInterval}
-                        dateFormat="LLL"
-                        timeCaption="time"
-                        minDate={moment()}
-                        maxDate={moment().add(6, "months")}
-                        minTime={ !multiDay ? isToday(startDate) ? moment() : begSDate : begSDate}
-                        maxTime={ endSDate }
-                        onChange={(date) => this.handleFormChange(date, 'startDate')} />
-                    </Col>
-                    <Col xs="12" md="6">
-                      <Label for="enddatetime"><h5>End</h5></Label>
-                      <DatePicker
-                        showTimeSelect
-                        showTimeSelectOnly={!multiDay}
-                        name="enddatetime"
-                        id="enddatetime"
-                        selected={endDate}
-                        customInput={<DatePickerForm timeOnly={!multiDay} />}
-                        timeFormat="HH:mm"
-                        timeInterval={config.timeInterval}
-                        dateFormat="LLL"
-                        timeCaption="time"
-                        minDate={moment()}
-                        maxDate={moment().add(6, "months")}
-                        minTime={ !multiDay ? startDate.clone().add(config.timeInterval, "minutes") : begEDate}
-                        maxTime={ !multiDay ? startDate.clone().endOf('day') : endEDate}
-                        onChange={(date) => this.handleFormChange(date, 'endDate')} />
-                    </Col>
-                  </Row>
+                  {
+                    !fullDay ?
+                    <Row>
+                      <Col xs="12" md="6">
+                        <Label for="startdatetime"><h5 className="mb-0">Start</h5></Label>
+                        <DatePicker
+                          showTimeSelect
+                          showTimeSelectOnly={!multiDay}
+                          name="startdatetime"
+                          id="startdatetime"
+                          selected={startDate}
+                          customInput={<DatePickerForm timeOnly={!multiDay} />}
+                          timeFormat="HH:mm"
+                          timeInterval={config.timeInterval}
+                          dateFormat="LLL"
+                          timeCaption="time"
+                          minDate={moment()}
+                          maxDate={moment().add(6, "months")}
+                          minTime={ !multiDay ? isToday(startDate) ? moment() : begSDate : begSDate}
+                          maxTime={ endSDate }
+                          onChange={(date) => this.handleFormChange(date, 'startDate')} />
+                      </Col>
+                      <Col xs="12" md="6">
+                        <Label for="enddatetime"><h5 className="mb-0">End</h5></Label>
+                        <DatePicker
+                          showTimeSelect
+                          showTimeSelectOnly={!multiDay}
+                          name="enddatetime"
+                          id="enddatetime"
+                          selected={endDate}
+                          customInput={<DatePickerForm timeOnly={!multiDay} />}
+                          timeFormat="HH:mm"
+                          timeInterval={config.timeInterval}
+                          dateFormat="LLL"
+                          timeCaption="time"
+                          minDate={moment()}
+                          maxDate={moment().add(6, "months")}
+                          minTime={ !multiDay ? startDate.clone().add(config.timeInterval, "minutes") : begEDate}
+                          maxTime={ !multiDay ? startDate.clone().endOf('day') : endEDate}
+                          onChange={(date) => this.handleFormChange(date, 'endDate')} />
+                      </Col>
+                    </Row> : ''
+                  }
                 </Container>
               </FormGroup>
               <FormGroup>
@@ -376,7 +417,9 @@ class CreateEvent extends Component {
                 <Label for="name"><h3>Registration Link (Optional)</h3></Label>
                 <Input type="text" name="registration" id="registration" placeholder="Paste your registration link here (optional)" />
               </FormGroup>
-              <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>Create Event</Button>
+              <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>
+                { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } Create Event
+              </Button>
               <br/>
               { submitFailure ? <Alert color="danger">One or more inputs are invalid. Please check and try again.</Alert> : ''}
             </Form>
@@ -386,13 +429,17 @@ class CreateEvent extends Component {
               onDayClick={(date) => this.changeSelectedDate(date)}
               selectedDate={ selectedDate }
               events={ events }
-              eventTypes={ eventTypesUnordered }/>
+              eventTypes={ eventTypesUnordered }
+              spaces={ spacesUnordered }
+              bySpaces={ true }
+              loadMonth={ this.loadMonth.bind(this) }/>
             <hr className="my-2 d-block d-lg-none" />
-            <DayCalendar
-              selectedDate={selectedDate}
-              events={events}
-              eventTypes={eventTypesUnordered}
-              spaces={spacesUnordered} />
+            <DaySpaceCalendar
+              selectedDate={ selectedDate }
+              timeslots={ events && events[selectedDate.toString()] ? events[selectedDate.toString()] : null }
+              spaces={ spacesUnordered }
+              isLoaded={ isLoaded(spacesUnordered) }
+            />
             </Col>
         </Row>
         <Row>
@@ -406,8 +453,9 @@ class CreateEvent extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.firestore)
   return {
-    events: state.firestore.ordered.events,
+    events: formatEventsByDateTimeAndVenue(state.firestore),
     eventTypes: state.firestore.ordered.eventTypes,
     eventTypesUnordered: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,

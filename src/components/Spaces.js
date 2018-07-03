@@ -15,7 +15,7 @@ import _ from 'lodash'
 import { isEmpty, formatEventsByDateTimeAndVenue } from '../utils/utils'
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { getEvents } from '../utils/actions'
+import { getEvents, getEventsByMonth } from '../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 require('react-calendar-timeline/lib/Timeline.css')
 
@@ -37,10 +37,22 @@ class Spaces extends Component {
     getEvents(firestore, () => {}, moment(), true)
   }
 
+  loadMonth(month) {
+    const { firestore } = this.context.store
+    getEventsByMonth(firestore, () => {}, month.clone(), true)
+  }
+
   changeSelectedDate = (date) => {
+    const { selectedDate } = this.state
+    const { firestore } = this.context.store
+
+    if(!selectedDate.isSame(date, 'month')) {
+      getEvents(firestore, () => {}, date.clone())
+    }
+
     this.setState({
       ...this.state,
-      selectedDate: date,
+      selectedDate: date.clone(),
     })
   }
 
@@ -72,7 +84,8 @@ class Spaces extends Component {
               events={ events }
               eventTypes={ eventTypes }
               spaces={ spacesUnordered }
-              bySpaces={ true }/>
+              bySpaces={ true }
+              loadMonth={ this.loadMonth.bind(this) }/>
             <Container>
               <Row>
                 {

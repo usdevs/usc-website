@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -9,7 +10,7 @@ class DaySpaceCalendar extends Component {
   spaceBookingDisplay = () => {
     const { timeslots, isLoaded } = this.props
     if(!isLoaded) {
-      return(<h3 style={{fontWeight: 300}}>Loading bookings...</h3>)
+      return(<h3 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading bookings...</h3>)
     } else if (timeslots) {
       return (<div>
         <Container className="d-block d-md-none">

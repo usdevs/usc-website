@@ -22,13 +22,17 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
   getSpaces(firestore)
 
   if(month) {
-    getFirestoreEvents(firestore, callback, spaceOnly, month, true)
-    getFirestoreEvents(firestore, callback, spaceOnly, month, false)
+    getEventsByMonth(firestore, callback, month, spaceOnly)
   } else {
     getFirestoreEvents(firestore, callback, spaceOnly)
   }
 
   watchFirestoreEvents(firestore)
+}
+
+export function getEventsByMonth(firestore, callback = () => {}, month, spaceOnly = false) {
+  getFirestoreEvents(firestore, callback, month, spaceOnly, true)
+  getFirestoreEvents(firestore, callback, month, spaceOnly, false)
 }
 
 export function getUpcomingEvents(firestore, limit) {

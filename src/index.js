@@ -23,10 +23,10 @@ import { createStore } from 'redux'
 import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
-import { faArrowCircleLeft, faArrowCircleRight, faCircle } from '@fortawesome/fontawesome-free-solid'
+import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 
-fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle)
+fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner)
 
 const firebaseConfig = {
     apiKey: "***REMOVED***",

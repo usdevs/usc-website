@@ -96,7 +96,7 @@ class Home extends Component {
                           </CardBody>
                         </Card>
                       </Col>
-                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4>Loading Events...</h4></Col>
+                    ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Events...</h4></Col>
                   }
                 </Row>
               </Container>

@@ -14,14 +14,14 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
   .then(() => callback())
 }
 
-export function getEvents(firestore, callback = () => {}, spaceOnly = false, month = null, startInMonth = true) {
+export function getEvents(firestore, callback = () => {}, month = null, spaceOnly = false, startInMonth = true) {
   var query = { collection: 'events', orderBy: ['startDate'] }
   var where = []
 
   if (month) {
     const dateField = startInMonth ? 'startDate' : 'endDate'
-    where.push([dateField, '>=', month.startOf('month').toDate()])
-    where.push([dateField, '<=', month.endOf('month').toDate()])
+    where.push([dateField, '>=', month.clone().startOf('month').add(-1, 'month').toDate()])
+    where.push([dateField, '<=', month.clone().endOf('month').add(1, 'month').toDate()])
 
     const nameField = startInMonth ? 'eventsStartInMth' : 'eventsEndInMth'
     query = {
@@ -41,7 +41,6 @@ export function getEvents(firestore, callback = () => {}, spaceOnly = false, mon
       where: where
     }
   }
-    console.log(callback)
 
   firestore
   .get(query)
@@ -73,39 +72,4 @@ export function getEventTypes(firestore) {
 export function getSpaces(firestore) {
   firestore
   .get({ collection: 'spaces', orderBy: ['name'] })
-}
-
-export function createTestEvent(firebase) {
-  var event = {
-  'summary': 'Google I/O 2015',
-  'location': '800 Howard St., San Francisco, CA 94103',
-  'description': 'A chance to hear more about Google\'s developer products.',
-  'start': {
-    'dateTime': '2018-06-28T09:00:00-07:00',
-    'timeZone': 'America/Los_Angeles',
-  },
-  'end': {
-    'dateTime': '2018-06-28T17:00:00-07:00',
-    'timeZone': 'America/Los_Angeles',
-  },
-  'recurrence': [
-    'RRULE:FREQ=DAILY;COUNT=2'
-  ],
-  'attendees': [
-    {'email': 'lpage@example.com'},
-    {'email': 'sbrin@example.com'},
-  ],
-  'reminders': {
-    'useDefault': false,
-    'overrides': [
-      {'method': 'email', 'minutes': 24 * 60},
-      {'method': 'popup', 'minutes': 10},
-    ],
-  },
-};
-firebase
-.push('events', event)
-.then(() => {
-  console.log('success')
-})
 }

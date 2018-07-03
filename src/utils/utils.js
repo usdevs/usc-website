@@ -102,14 +102,15 @@ export function formatEventsByDate(firestore) {
   }
 
   //Iterate through all events
-  _.forOwn(allEvents, function(event, eventID) {
+  _.forOwn(allEvents, function(Event, eventID) {
     //Convert any formats needed after retrieval from firestore
-    var newEvent = formatFirestoreEvent(event, eventID)
-    const noOfDays = moment.duration(newEvent.startDate.diff(newEvent.endDate)).days()
-    const initialStartDate = newEvent.startDate.clone().startOf('day')
+    var event = formatFirestoreEvent(Event, eventID)
+    const noOfDays = moment.duration(event.endDate.diff(event.startDate)).days()
+    const initialStartDate = event.startDate.clone().startOf('day')
 
     for(var day = 0; day <= noOfDays; day++) {
         //Trivial case if noOfDays=0, handle multi day if otherwise
+      var newEvent = event
       if (noOfDays === 0) {
         _.mergeWith(eventsByDate, {[initialStartDate.toString()]: [newEvent]}, eventCombiner)
       } else {
@@ -120,6 +121,14 @@ export function formatEventsByDate(firestore) {
          * startDate and endDate of a middle day will be the start mn and end mn
          * startDate of thelast day of a multiDay event will be midnight
          */
+         newEvent = {
+           ...newEvent,
+           original: {
+             startDate: newEvent.startDate.clone(),
+             endDate: newEvent.endDate.clone()
+           }
+         }
+
         if(day === 0) {
           newEvent = {
             ...newEvent,
@@ -134,7 +143,8 @@ export function formatEventsByDate(firestore) {
           newEvent = {
             ...newEvent,
             startDate: tempStartDate.clone().startOf('day'),
-            endDate: tempStartDate.clone().endOf('day')
+            endDate: tempStartDate.clone().endOf('day'),
+            fullDay: true
           }
         }
 

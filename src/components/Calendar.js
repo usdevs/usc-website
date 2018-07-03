@@ -5,6 +5,8 @@ import _ from 'lodash'
 import { extendMoment } from 'moment-range';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
+import { getEventsByMonth } from '../utils/actions'
 
 const moment = extendMoment(Moment);
 
@@ -18,6 +20,7 @@ class Calendar extends Component {
   }
 
   changeSelectedDate = (date) => {
+  console.log(date)
     this.setState({
       ...this.state,
       date: date
@@ -41,7 +44,6 @@ class Calendar extends Component {
 
       const dayEvents = events && events[day.toString()] ? events[day.toString()] : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
-        console.log(dayEvents)
 
       days.push(
         <Col key={day.format('YYYYMMDD')} onClick={belongsToSameMonth ? () => this.props.onDayClick(day) : () => this.changeSelectedDate(day)}
@@ -75,7 +77,6 @@ class Calendar extends Component {
                           : ''
                       : isLoaded(spaces) && spaces ?
                         _.chunk(dayEvents.venuesUsed, 3).map((venues) => {
-                          console.log(venues)
                           var tags = []
                           _.forOwn(venues, (venue, venueID) => {
                             tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={spaces[venue].colour} key={venueID} />)
@@ -110,6 +111,8 @@ class Calendar extends Component {
   }
 
   previousMonth = (date) => {
+    this.props.loadMonth(date.clone())
+
     this.setState({
       ...this.state,
       date: moment(date).subtract(1, 'months')
@@ -117,6 +120,8 @@ class Calendar extends Component {
   }
 
   nextMonth = (date) => {
+    this.props.loadMonth(date.clone())
+
     this.setState({
       ...this.state,
       date: moment(date).add(1, 'months')
@@ -164,4 +169,4 @@ class Calendar extends Component {
   }
 }
 
-export default Calendar;
+export default Calendar
