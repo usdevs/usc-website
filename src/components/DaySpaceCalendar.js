@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import moment from 'moment'
 import EventModal from './EventModal'
 
 class DaySpaceCalendar extends Component {
@@ -67,8 +66,7 @@ class DaySpaceCalendar extends Component {
       timeslotsCol.push(<Col xs={ colSize } key={"timeslotInitial" + index}/>)
 
       _.forEach(timeslotChunk, (timeslotString) => {
-        const timeslot = moment(timeslotString)
-        timeslotsCol.push(<Col xs={ colSize }  key={timeslot.toString() + index} className="d-flex justify-content-center"><small>{ timeslot.format("hh:mm a")}</small></Col>)
+        timeslotsCol.push(<Col xs={ colSize }  key={timeslotString + index} className="d-flex justify-content-center"><small>{ events[timeslotString].displayText }</small></Col>)
       })
 
       timeslotsCol.push(<div key={"timeslotDivider" + index} className="w-100"></div>)

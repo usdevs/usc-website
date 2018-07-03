@@ -201,6 +201,7 @@ export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces =
 
         if (timeslot < noOfTimeslots) {
           _.merge(eventsByDateTime, {[tempStartTime.toString()]: {
+            displayText: tempStartTime.format("hh:mm a"),
             [event.venue] : {
               event: event,
               isStart: timeslot === 0,
