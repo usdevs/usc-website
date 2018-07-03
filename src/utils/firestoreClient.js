@@ -1,13 +1,32 @@
+export function uploadFile(firebase, filePath, file, callback) {
+  firebase
+  .uploadFile(filePath, file)
+  .then((snapshot) => {
+    console.log(snapshot)
+    callback(snapshot.uploadTaskSnaphot.metadata.fullPath)
+  })
+}
+
+export function deleteFile(firebase, filesPath, file, key) {
+  return firebase.deleteFile(file.fullPath, `${filesPath}/${key}`)
+}
+
 export function createEvent(firestore, event, uid, googleEventID, callback) {
   firestore
   .add({ collection: 'events' }, {
     name: event.name,
     type: event.type,
+    tentative: event.tentative,
+    spaceOnly: event.spaceOnly,
     venue: event.otherVenueSelected ? event.otherVenue : event.venue,
     otherVenueSelected: event.otherVenueSelected,
     multiDay: event.multiDay,
+    fullDay: event.fullDay,
     startDate: event.startDate.toDate(),
     endDate: event.endDate.toDate(),
+    poster: event.poster,
+    description: event.desc,
+    regLink: event.regLink,
     creator: uid,
     gCalID: googleEventID,
   })

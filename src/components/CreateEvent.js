@@ -18,11 +18,12 @@ import DatePickerForm from './reusable/DatePickerForm'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { createEvent, getEvents, getEventsByMonth } from '../utils/actions'
+import { createEvent, getEvents, getEventsByMonth, deletePoster } from '../utils/actions'
 import { roundTime, isToday, formatEventsByDateTimeAndVenue } from '../utils/utils'
 import { withRouter } from 'react-router-dom'
 import { config } from '../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import Dropzone from 'react-dropzone'
 
 const otherVenueValue = "Other"
 
@@ -38,7 +39,7 @@ const newEvent = {
   fullDay: false,
   startDate: roundTime(moment(), config.timeInterval),
   endDate: roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes"),
-  poster: '',
+  poster: null,
   desc: '',
   regLink: ''
 }
@@ -101,6 +102,41 @@ class CreateEvent extends Component {
         <Button color="secondary" onClick={this.toggle}>Back to Create Event</Button>
       </ModalFooter>
     </Modal>
+
+  getUploader = () => {
+    const { firebase } = this.props
+    const { event } = this.state
+
+      return (
+        <div>
+          <div className="d-flex justify-content-center">
+            {
+              event.poster ?
+                <img src={event.poster.preview} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
+              : ''
+            }
+            '    '
+            <Dropzone
+              accept="image/jpeg, image/png"
+              onDrop={(files) => this.handleFormChange(files[0], 'poster')}>
+              <div className="w-100 h-100 d-flex justify-content-center">
+                <span className="w-100 h-100 fa-layers fa-fw" style={{marginTop: '.7em'}}>
+                  <FontAwesomeIcon icon="upload" size="4x" transform="up-15"/>
+                  <span className="fa-layers-text w-75 lead" style={{marginTop: '1em'}}><h4 style={{fontWeight: 300}}>Click to Select, or Drag File Here (*.jpg, *.png)</h4></span>
+                </span>
+              </div>
+            </Dropzone>
+          </div>
+            {
+              event.poster ?
+                <div className="d-flex justify-content-center">
+                  <Button outline color="danger" onClick={() => this.handleFormChange(null, 'poster')}>Delete Image</Button>
+                </div>
+              : ''
+            }
+        </div>
+      )
+    }
 
   handleFormChange = (value, type) => {
     const { event } = this.state
@@ -211,6 +247,14 @@ class CreateEvent extends Component {
           }
         })
         break
+      case 'poster':
+        this.setState({
+          event: {
+            ...event,
+            poster: value
+          }
+        })
+        break
       case 'desc':
         this.setState({
           event: {
@@ -258,10 +302,10 @@ class CreateEvent extends Component {
       })
     } else {
       const { event } = this.state
-      const { auth, spacesUnordered } = this.props
+      const { auth, firebase, spacesUnordered } = this.props
       const { firestore } = this.context.store
 
-      createEvent(firestore, event, auth.uid, spacesUnordered, () => {
+      createEvent(firestore, firebase, event, auth.uid, spacesUnordered, () => {
           this.setState({
             nameEntry: false,
             typeEntry: false,
@@ -287,6 +331,8 @@ class CreateEvent extends Component {
     const endSDate = startDate.clone().endOf('day')
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
+
+    console.log(event)
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
@@ -423,10 +469,7 @@ class CreateEvent extends Component {
               </FormGroup>
               <FormGroup>
                 <Label for="name"><h3>Poster (Optional)</h3></Label>
-                <Input type="file" name="file" id="exampleFile" />
-                <FormText color="muted">
-                  Upload a poster to be displayed on the Digital Signage.
-                </FormText>
+                { this.getUploader() }
               </FormGroup>
               <FormGroup>
                 <Label for="name"><h3>Description (Optional)</h3></Label>
@@ -467,7 +510,6 @@ class CreateEvent extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.firestore)
   return {
     events: formatEventsByDateTimeAndVenue(state.firestore),
     eventTypes: state.firestore.ordered.eventTypes,

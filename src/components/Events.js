@@ -51,7 +51,7 @@ class Events extends Component {
 
   render() {
     const { selectedDate } = this.state
-    const { events, eventTypes, spaces } = this.props
+    const { events, eventTypes, spaces, firebase } = this.props
 
     return (
       <Container>
@@ -93,7 +93,8 @@ class Events extends Component {
                 selectedDate={ selectedDate }
                 events={ events && events[selectedDate.toString()] ? events[selectedDate.toString()] : null }
                 eventTypes={eventTypes}
-                spaces={spaces} />
+                spaces={spaces}
+                firebase={firebase} />
             </Col>
         </Row>
       </Container>

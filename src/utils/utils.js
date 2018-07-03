@@ -211,3 +211,17 @@ export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces =
     }
   })
 }
+
+export function eventTimeDisplay(event, selectedDate) {
+  if (event.fullDay) {
+    return ('Full Day')
+  } else if (!event.multiDay) {
+    return (event.startDate.format('hh:mm a') + ' - ' + event.endDate.format('hh:mm a'))
+  } else {
+    if(selectedDate.isSame(event.original.startDate, 'day')) {
+      return ('starts at ' + event.startDate.format('hh:mm a'))
+    } else {
+      return ('ends at ' + event.endDate.format('hh:mm a'))
+    }
+  }
+}
