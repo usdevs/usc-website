@@ -87,10 +87,8 @@ class EventForm extends Component {
         <div>
           <div className="d-flex justify-content-center flex-wrap">
             {
-              event.poster || poster ?
-                poster ?
-                  <img src={poster} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
-                  : <img src={event.poster.preview} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
+              poster ?
+                <img src={poster} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
               : ''
             }
             '    '

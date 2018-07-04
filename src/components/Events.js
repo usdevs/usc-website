@@ -14,7 +14,8 @@ import { headerEvent as header } from '../resources/images.js'
 import Calendar from './Calendar'
 import DayCalendar from './DayCalendar'
 import moment from 'moment'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { withRouter } from 'react-router-dom'
 
 const calendarLink = "http://bit.ly/uspcalendar"
 
@@ -50,7 +51,7 @@ class Events extends Component {
 
   render() {
     const { selectedDate } = this.state
-    const { events, eventTypes, spaces, firebase } = this.props
+    const { events, eventTypes, spaces, firebase, history, auth } = this.props
 
     return (
       <Container>
@@ -64,14 +65,16 @@ class Events extends Component {
             <div className="d-flex">
               <div className="p-2"><h1 className="mb-0" style={{fontWeight: 300}}>Events</h1></div>
               <div className="d-flex ml-auto mr-3 p-2 align-items-center">
+                { isLoaded(auth) && !isEmpty(auth) ? <Button color="primary" className="d-none d-sm-block mr-3" onClick={() => history.push('/createevent')} outline>Create Event</Button> : '' }
                 <a href={calendarLink}>
                   <Button color="primary" className="d-none d-sm-block">Add to my Calendar</Button>
                 </a>
               </div>
             </div>
             <div>
+              <Button color="primary" className="d-block d-sm-none mb-3" onClick={() => history.push('/createevent')} block outline>Create Event</Button>
               <a href={calendarLink}>
-                <Button color="primary" className="d-block d-sm-none w-100">Add to my Calendar</Button>
+                <Button color="primary" className="d-block d-sm-none" block>Add to my Calendar</Button>
               </a>
             </div>
             <hr className="my-2" />
@@ -103,13 +106,14 @@ class Events extends Component {
 
 const mapStateToProps = state => {
   return {
+    auth: state.firebase.auth,
     events: formatEventsByDate(state.firestore),
     eventTypes: state.firestore.data.eventTypes,
     spaces: state.firestore.data.spaces
   }
 }
 
-export default compose(
+export default withRouter(compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(Events)
+)(Events))

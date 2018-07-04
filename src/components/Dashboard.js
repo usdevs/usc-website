@@ -48,6 +48,15 @@ const categories = [
       link: '/manageevents',
       color: 'tomato'
     }]
+  },
+  {
+    name: 'Interest Groups',
+    buttons: [{
+      name: 'Create Interest Group',
+      icon: 'plus',
+      link: '/createig',
+      color: 'mediumseagreen'
+    }]
   }
 ]
 

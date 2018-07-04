@@ -10,7 +10,6 @@ import {
 import { connect } from 'react-redux';
 import Img from 'react-image'
 import { headerAboutUs as header } from '../resources/images.js'
-import '../resources/responsivefont.css';
 
 var uscHeaderStyle = {
   backgroundColor: 'dodgerblue',
