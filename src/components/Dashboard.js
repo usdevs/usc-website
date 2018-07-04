@@ -109,7 +109,6 @@ class Dashboard extends Component {
 
 }
 
-
 export default withRouter(compose(
   firebaseConnect(), // withFirebase can also be used
   connect(({ firebase: { auth } }) => ({ auth }))

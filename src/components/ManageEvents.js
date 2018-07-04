@@ -124,7 +124,14 @@ class ManageEvents extends Component {
 
     return (
     <Col xs="12" md="4" className="mb-2" key={event.id}>
-      <EventCard event={event} eventTypes={eventTypes} spaces={spaces} buttonAction={() => history.push('/editevent/' + event.id)} buttonText='Manage' firebase={firebase} />
+      <EventCard
+        event={event}
+        eventTypes={eventTypes}
+        spaces={spaces}
+        buttonAction={() => history.push('/editevent/' + event.id)}
+        buttonText='Manage'
+        firebase={firebase}
+        hasModal={false} />
     </Col>)
   }
 

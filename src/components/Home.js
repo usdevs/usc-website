@@ -95,7 +95,15 @@ class Home extends Component {
                   {
                     isLoaded(upcomingEvents) && isLoaded(eventTypes) ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
                       <Col key={event.id} xs="12" md="6" className="mb-2">
-                        <EventCard event={event} eventTypes={eventTypes} spaces={spaces} buttonAction={() => this.toggleEventModal(event.id)} buttonText='See More' modalOpen={eventModals[event.id]} firebase={firebase} />
+                        <EventCard
+                          event={event}
+                          eventTypes={eventTypes}
+                          spaces={spaces}
+                          buttonAction={() => this.toggleEventModal(event.id)}
+                          buttonText='See More'
+                          modalOpen={eventModals[event.id]}
+                          firebase={firebase}
+                          hasModal={true} />
                       </Col>
                     ) : <Col><h4>No Upcoming Events :( Stay tuned!</h4></Col> : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Events...</h4></Col>
                   }

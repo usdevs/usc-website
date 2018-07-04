@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Container, Row, Col
+  Container, Row, Col, Button,
+  Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import moment from 'moment'
 import EventForm from './EventForm'
@@ -42,6 +43,30 @@ class CreateEvent extends Component {
     })
   }
 
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  successModal = () => {
+    const { modal } = this.state
+    const { history } = this.props
+
+    return(<Modal isOpen={modal} toggle={this.toggle}>
+      <ModalBody>
+        <h3 style={{fontWeight: 300}}>Event Created!</h3>
+        <p>Your event has been successfully created!</p>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={() => history.push('/dashboard')}>Dashboard</Button>{' '}
+        <Button color="secondary" onClick={() => {
+          this.toggle()
+        }}>Dismiss</Button>
+      </ModalFooter>
+    </Modal>)
+  }
+
   loadMonth(month) {
     const { firestore } = this.context.store
     getEventsByMonth(firestore, () => {}, month.clone())
@@ -51,7 +76,10 @@ class CreateEvent extends Component {
     const { auth, firebase, spacesUnordered } = this.props
     const { firestore } = this.context.store
 
-    createEvent(firestore, firebase, event, auth.uid, spacesUnordered, callback)
+    createEvent(firestore, firebase, event, auth.uid, spacesUnordered, () => {
+      this.toggle()
+      callback()
+    })
   }
 
   render() {
@@ -65,6 +93,7 @@ class CreateEvent extends Component {
 
     return (
       <Container>
+        { this.successModal() }
         <Row>
           <Col>
             <div className="d-flex">
@@ -76,7 +105,11 @@ class CreateEvent extends Component {
           <Col xs="12" lg="8">
             {
               isLoaded(eventTypes) && isLoaded(spaces) ?
-              <EventForm eventTypes={eventTypes} spaces={spaces} buttonOnSubmit={(event, callback) => this.createEvent(event, callback)} />
+              <EventForm
+                eventTypes={eventTypes}
+                spaces={spaces}
+                buttonText='Create Event'
+                buttonOnSubmit={(event, callback) => this.createEvent(event, callback)} />
               : <h4><FontAwesomeIcon icon="spinner" spin /> Please wait...</h4>
             }
           </Col>

@@ -20,7 +20,7 @@ export function deleteFile(firebase, filesPath, file, key) {
   return firebase.deleteFile(file.fullPath, `${filesPath}/${key}`)
 }
 
-export function createEvent(firestore, event, uid, googleEventID, callback) {
+export function formatFirestoreEvent(event, uid, googleEventID) {
   if(event.regLink && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
     event = {
       ...event,
@@ -28,24 +28,40 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
     }
   }
 
-  firestore
-  .add({ collection: 'events' }, {
-    name: event.name,
-    type: event.type,
-    tentative: event.tentative,
-    spaceOnly: event.spaceOnly,
+  if(googleEventID) {
+    event = {
+      ...event,
+      gCalID: googleEventID
+    }
+  }
+
+  return {
+    ...event,
     venue: event.otherVenueSelected ? event.otherVenue : event.venue,
     otherVenueSelected: event.otherVenueSelected,
-    multiDay: event.multiDay,
-    fullDay: event.fullDay,
+    otherVenue: null,
     startDate: event.startDate.toDate(),
     endDate: event.endDate.toDate(),
-    poster: event.poster,
-    description: event.desc,
-    regLink: event.regLink,
     creator: uid,
-    gCalID: googleEventID,
-  })
+    original: null,
+  }
+}
+
+export function createEvent(firestore, event, uid, googleEventID, callback) {
+  firestore
+  .add({ collection: 'events' }, formatFirestoreEvent(event, uid, googleEventID))
+  .then(() => callback())
+}
+
+export function updateEvent(firestore, event, uid, callback) {
+  firestore
+  .set({ collection: 'events', doc: event.id }, formatFirestoreEvent(event, uid))
+  .then(() => callback())
+}
+
+export function deleteEvent(firestore, event, callback) {
+  firestore
+  .delete({ collection: 'events', doc: event.id })
   .then(() => callback())
 }
 

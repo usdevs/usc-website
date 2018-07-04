@@ -7,10 +7,14 @@ import {
   watchEvents as watchFirestoreEvents,
   uploadFile as uploadFirebaseFile,
   deleteFile as deleteFirebaseFile,
-  getUserEvents as getFirestoreUserEvents
+  getUserEvents as getFirestoreUserEvents,
+  updateEvent as updateFirestoreEvent,
+  deleteEvent as deleteFirestoreEvent,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
+  updateEvent as updateGoogleEvent,
+  deleteEvent as deleteGoogleEvent
 } from './googleAPIClient'
 import moment from 'moment'
 import { config } from '../resources/config'
@@ -34,6 +38,16 @@ export function createEvent(firestore, firebase, event, uid, spaces, callback) {
       createFirestoreEvent(firestore, event, uid, googleEntry.id, callback)
     }
   })
+}
+
+export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
+  updateFirestoreEvent(firestore, event, uid, callback)
+  updateGoogleEvent(event, spaces, () => {})
+}
+
+export function deleteEvent(firestore, firebase, event, callback) {
+  deleteFirestoreEvent(firestore, event, callback)
+  deleteGoogleEvent(event, callback)
 }
 
 export function uploadPoster(firebase, poster, callback) {

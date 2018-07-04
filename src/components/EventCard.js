@@ -23,7 +23,7 @@ class EventCard extends Component {
 
   render() {
     const { poster } = this.state
-    const { event, eventTypes, spaces, buttonAction, buttonText, firebase, modalOpen } = this.props
+    const { event, eventTypes, spaces, buttonAction, buttonText, firebase, modalOpen, hasModal } = this.props
 
     return(<Card body className="h-100">
       <Container className="m-0 p-0">
@@ -52,7 +52,7 @@ class EventCard extends Component {
             <CardText>
               <Button outline className="mb-1" color="primary" onClick={buttonAction}>{ buttonText }</Button>
             </CardText>
-            <EventModal key={event.id} isOpen={modalOpen} toggle={buttonAction} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} />
+            { hasModal ? <EventModal key={event.id} isOpen={modalOpen} toggle={buttonAction} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} /> : ''}
           </Col>
         </Row>
       </Container>

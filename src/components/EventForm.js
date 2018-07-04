@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import {
   Alert, Container, Row, Col, Button,
-  Form, FormGroup, Label, Input, FormFeedback,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Form, FormGroup, Label, Input, FormFeedback
 } from 'reactstrap';
 import { config } from '../resources/config'
 import moment from 'moment'
@@ -12,6 +11,7 @@ import DatePickerForm from './reusable/DatePickerForm'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { roundTime, isToday } from '../utils/utils'
 import Dropzone from 'react-dropzone'
+import { withRouter } from 'react-router-dom'
 
 const otherVenueValue = "Other"
 
@@ -70,28 +70,6 @@ class EventForm extends Component {
       event: initialEvent,
     }
   }
-
-
-  toggle() {
-    this.setState({
-      modal: !this.state.modal
-    });
-  }
-
-  successModal = () =>
-    <Modal isOpen={this.state.modal} toggle={this.toggle}>
-      <ModalHeader toggle={this.toggle}>Event Created!</ModalHeader>
-      <ModalBody>
-        Your event has been successfully created!
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={() => this.props.history.push('/dashboard')}>Back to Dashboard</Button>{' '}
-        <Button color="secondary" onClick={() => {
-          this.resetForm()
-          this.toggle()
-        }}>Back to Create Event</Button>
-      </ModalFooter>
-    </Modal>
 
   getUploader = () => {
     const { event, poster } = this.state
@@ -295,7 +273,7 @@ class EventForm extends Component {
       const { event } = this.state
       const { buttonOnSubmit } = this.props
 
-      buttonOnSubmit(event, () => this.toggle())
+      buttonOnSubmit(event, () => this.resetForm())
     }
   }
 
@@ -313,7 +291,7 @@ class EventForm extends Component {
   render() {
     const { event, submitFailure } = this.state
     const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly, desc, regLink } = event
-    const { eventTypes, spaces } = this.props
+    const { eventTypes, spaces, buttonText } = this.props
 
     const errors = this.validate();
     const begSDate = startDate.clone().startOf('day')
@@ -322,7 +300,6 @@ class EventForm extends Component {
     const endEDate = endDate.clone().endOf('day')
 
     return(<Form className="m-3">
-      { this.successModal() }
       <FormGroup>
         <Label for="name"><h3>Name</h3></Label>
         <Input type="text" value={ name } placeholder="Event Name" invalid={errors.name} onChange={(event) => this.handleFormChange(event.target.value, 'name')} />
@@ -450,7 +427,7 @@ class EventForm extends Component {
         <Input type="text" name="registration" id="registration" placeholder="Paste your registration link here (optional)" value={regLink} onChange={(event) => this.handleFormChange(event.target.value, 'regLink')} />
       </FormGroup>
       <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>
-        { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } Create Event
+        { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } { buttonText }
       </Button>
       <br/>
       { submitFailure ? <Alert color="danger">One or more inputs are invalid. Please check and try again.</Alert> : ''}
@@ -458,4 +435,4 @@ class EventForm extends Component {
   }
 }
 
-export default EventForm
+export default withRouter(EventForm)
