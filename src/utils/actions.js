@@ -109,11 +109,15 @@ export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
 }
 
 export function deleteEvent(firestore, firebase, event, callback) {
-  deleteFirestoreEvent(firestore, event, callback)
+  if(event.poster) {
+    deleteFirebaseFile(firebase, event.poster, () => {})
+  }
 
   if(event.gCalID) {
     deleteGoogleEvent(event, callback)
   }
+
+  deleteFirestoreEvent(firestore, event, callback)
 }
 
 export function uploadPoster(firebase, poster, callback) {

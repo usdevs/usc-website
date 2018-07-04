@@ -58,11 +58,7 @@ class EventForm extends Component {
       }
 
       if(poster) {
-        firebase.storage().ref(poster).getDownloadURL().then((url) => {
-          this.setState({
-            poster: url,
-          })
-        })
+        this.loadPoster(firebase, poster)
       }
     }
 
@@ -74,6 +70,14 @@ class EventForm extends Component {
       submitFailure: false,
       event: initialEvent,
     }
+  }
+
+  loadPoster = (firebase, poster) => {
+    firebase.storage().ref(poster).getDownloadURL().then((url) => {
+      this.setState({
+        poster: url,
+      })
+    })
   }
 
   getUploader = () => {
@@ -222,12 +226,23 @@ class EventForm extends Component {
         })
         break
       case 'poster':
-        this.setState({
-          event: {
-            ...event,
-            poster: value
-          }
-        })
+        if(value) {
+          this.setState({
+            event: {
+              ...event,
+              poster: value
+            }
+          })
+        } else {
+          this.setState({
+            poster: value,
+            event: {
+              ...event,
+              poster: value
+            }
+          })
+        }
+
         break
       case 'description':
         this.setState({
@@ -286,6 +301,8 @@ class EventForm extends Component {
   }
 
   clearSubmitting = (event) => {
+    const { firebase } = this.props
+
     this.setState({
       formSubmitting: false,
       event: {
@@ -293,6 +310,10 @@ class EventForm extends Component {
         original: event
       },
     })
+
+    if(event.poster) {
+      this.loadPoster(firebase, event.poster)
+    }
   }
 
   resetForm = () => {
