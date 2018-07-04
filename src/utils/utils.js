@@ -76,7 +76,7 @@ export function formatEvents(firestore, alias, isArr) {
     _.forOwn(events, (event, eventID) => {
       newEventsObj = {
         ...newEventsObj,
-        eventID: formatFirestoreEvent(event, eventID),
+        [eventID]: formatFirestoreEvent(event, eventID),
       }
     })
 

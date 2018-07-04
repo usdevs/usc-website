@@ -36,13 +36,38 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
 
+    const { event, firebase } = props
+
+    var initialEvent = newEvent
+
+    if(event) {
+      const { venue, otherVenueSelected, poster } = event
+      initialEvent = event
+
+      if(otherVenueSelected) {
+        initialEvent = {
+          ...event,
+          venue: otherVenueValue,
+          otherVenue: venue
+        }
+      }
+
+      if(poster) {
+        firebase.storage().ref(poster).getDownloadURL().then((url) => {
+          this.setState({
+            poster: url,
+          })
+        })
+      }
+    }
+
     this.state = {
       nameEntry: false,
       typeEntry: false,
       venueEntry: false,
       otherVenueEntry: false,
       submitFailure: false,
-      event: newEvent,
+      event: initialEvent,
     }
   }
 
@@ -69,14 +94,16 @@ class EventForm extends Component {
     </Modal>
 
   getUploader = () => {
-    const { event } = this.state
+    const { event, poster } = this.state
 
       return (
         <div>
-          <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center flex-wrap">
             {
-              event.poster ?
-                <img src={event.poster.preview} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
+              event.poster || poster ?
+                poster ?
+                  <img src={poster} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
+                  : <img src={event.poster.preview} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
               : ''
             }
             '    '

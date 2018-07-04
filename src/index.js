@@ -17,6 +17,7 @@ import ContactUs from './components/ContactUs';
 import Dashboard from './components/Dashboard';
 import CreateEvent from './components/CreateEvent';
 import ManageEvents from './components/ManageEvents';
+import EditEvent from './components/EditEvent';
 import CreateIG from './components/CreateIG';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -120,6 +121,7 @@ render(
             <Route path="/dashboard" component={Dashboard}/>
             <Route path="/createevent" component={CreateEvent}/>
             <Route path="/manageevents" component={ManageEvents}/>
+            <Route path="/editevent/:eventID" component={EditEvent}/>
             <Route path="/createig" component={CreateIG}/>
             <Route component={Home}/>
           </Switch>

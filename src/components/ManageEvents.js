@@ -12,6 +12,7 @@ import moment from 'moment'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import DatePickerForm from './reusable/DatePickerForm'
+import EventCard from './EventCard'
 import { getUserEvents } from '../utils/actions'
 import { formatEvents } from '../utils/utils'
 import { config } from '../resources/config'
@@ -26,11 +27,14 @@ class ManageEvents extends Component {
   constructor(props) {
     super(props)
 
+    const firstUserEvent = _.head(props.userEvents)
+    const lastUserEvent = _.last(props.userEvents)
+
     this.state = {
       filter: {
         name: '',
-        startDate: moment(),
-        endDate: moment(),
+        startDate: firstUserEvent ? firstUserEvent.startDate : moment(),
+        endDate: lastUserEvent ? lastUserEvent.endDate : moment()
       },
     }
   }
@@ -54,19 +58,17 @@ class ManageEvents extends Component {
     }
 
     if(userEvents.length === 0 && nextProps.userEvents.length > 0) {
-      this.setState({
-        filter: {
-          ...filter,
-          startDate: _.head(nextProps.userEvents).startDate,
-          endDate: _.last(nextProps.userEvents).endDate
-        }
-      })
+      this.resetFilter(nextProps.userEvents)
     }
   }
 
-  resetFilter = () => {
+  resetFilter = (newUserEvents) => {
     const { filter } = this.state
-    const { userEvents } = this.props
+    var { userEvents } = this.props
+
+    if(newUserEvents) {
+      userEvents = newUserEvents
+    }
 
     this.setState({
       filter: {
@@ -112,7 +114,7 @@ class ManageEvents extends Component {
 
   displayEvent = (event) => {
     const { filter } = this.state
-    const { spaces } = this.props
+    const { spaces, history, firebase, eventTypes } = this.props
 
     if(!_.startsWith(event.name, filter.name) ||
       event.startDate.isBefore(filter.startDate) ||
@@ -121,22 +123,15 @@ class ManageEvents extends Component {
     }
 
     return (
-    <Col xs="12" md="4" key={event.id}>
-      <Card body className="mb-2">
-        <h3 className="mb-0" style={{fontWeight: 300}}>{event.name}</h3>
-        <CardText>
-          {event.startDate.format('Do MMMM hh:mm a') + ' - ' + event.endDate.format('Do MMMM hh:mm a')}
-          <br/>
-          {'at ' + spaces[event.venue].name}
-        </CardText>
-        <Button color="primary">Manage</Button>
-      </Card>
+    <Col xs="12" md="4" className="mb-2" key={event.id}>
+      <EventCard event={event} eventTypes={eventTypes} spaces={spaces} buttonAction={() => history.push('/editevent/' + event.id)} buttonText='Manage' firebase={firebase} />
     </Col>)
   }
 
   render() {
     const { filter } = this.state
     const { auth, history, userEvents, eventTypes, spaces } = this.props
+    console.log(this.props)
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
