@@ -190,7 +190,9 @@ class ManageEvents extends Component {
         <Row>
             {
               isLoaded(userEvents) && isLoaded(eventTypes) && isLoaded(spaces) ?
-              userEvents.map((event) => this.displayEvent(event))
+                userEvents.length > 0 ?
+                  userEvents.map((event) => this.displayEvent(event))
+                : <Col><h3><FontAwesomeIcon icon="frown" /> Either you have no events or no events match your filter.</h3></Col>
               : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Your Events...</h4></Col>
             }
         </Row>

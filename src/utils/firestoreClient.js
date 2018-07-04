@@ -16,8 +16,12 @@ export function uploadFile(firebase, filePath, file, callback) {
     })
 }
 
-export function deleteFile(firebase, filesPath, file, key) {
-  return firebase.deleteFile(file.fullPath, `${filesPath}/${key}`)
+export function deleteFile(firebase, path, callback) {
+  firebase
+  .storage()
+  .ref(path)
+  .delete()
+  .then(() => callback())
 }
 
 export function formatFirestoreEvent(event, uid, googleEventID) {
@@ -36,12 +40,20 @@ export function formatFirestoreEvent(event, uid, googleEventID) {
   }
 
   return {
-    ...event,
+    name: event.name,
+    type: event.type,
+    internal: event.internal,
+    spaceOnly: event.spaceOnly,
     venue: event.otherVenueSelected ? event.otherVenue : event.venue,
     otherVenueSelected: event.otherVenueSelected,
     otherVenue: null,
+    multiDay: event.multiDay,
+    fullDay: event.fullDay,
     startDate: event.startDate.toDate(),
     endDate: event.endDate.toDate(),
+    poster: event.poster,
+    description: event.description,
+    regLink: event.regLink,
     creator: uid,
     original: null,
   }
@@ -54,6 +66,7 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
 }
 
 export function updateEvent(firestore, event, uid, callback) {
+  console.log(formatFirestoreEvent(event, uid))
   firestore
   .set({ collection: 'events', doc: event.id }, formatFirestoreEvent(event, uid))
   .then(() => callback())
@@ -131,7 +144,16 @@ export function getEventTypes(firestore) {
   firestore
   .get({ collection: 'eventTypes', orderBy: ['name'] })
 }
+
 export function getSpaces(firestore) {
   firestore
   .get({ collection: 'spaces', orderBy: ['name'] })
+}
+
+export function getPoster(firebase, path, callback) {
+  firebase
+  .storage()
+  .ref(path)
+  .getDownloadURL()
+  .then((url) => callback(url))
 }

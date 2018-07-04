@@ -48,16 +48,17 @@ class EditEvent extends Component {
     }
   }
 
-  updateEvent = (event, callback) => {
+  updateEvent = (event, callback, clearSubmitting) => {
     const { auth, firebase, spacesUnordered } = this.props
     const { firestore } = this.context.store
 
-    updateEvent(firestore, firebase, event, auth.uid, spacesUnordered, () => {
+    updateEvent(firestore, firebase, event, auth.uid, spacesUnordered, (event) => {
       this.toggle('success')
+      clearSubmitting(event)
     })
   }
 
-  deleteEvent = (event, callback) => {
+  deleteEvent = (event, callback, clearSubmitting) => {
     const { firebase } = this.props
     const { firestore } = this.context.store
 
@@ -123,7 +124,7 @@ class EditEvent extends Component {
 
     if(isLoaded(auth) && isEmpty(auth)){
       history.push('/')
-    } else if (isLoaded(userEventsOriginal) && userEventsOriginal && !userEventsOriginal[eventID]) {
+    } else if (isLoaded(userEventsOriginal) && (!userEventsOriginal || (userEventsOriginal && !userEventsOriginal[eventID]))) {
       history.push('/manageevents')
     }
 
@@ -146,7 +147,7 @@ class EditEvent extends Component {
                   eventTypes={eventTypes}
                   spaces={spaces}
                   buttonText='Save Changes'
-                  buttonOnSubmit={(event, callback) => this.updateEvent(event, callback)}
+                  buttonOnSubmit={(event, callback, clearSubmitting) => this.updateEvent(event, callback, clearSubmitting)}
                   firebase={firebase} />
                 <div className="d-flex justify-content-center">
                   <Button className="w-75" color="danger" onClick={() => this.toggle('delete')} block disabled={!window.gapi.client}>

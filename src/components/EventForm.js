@@ -18,7 +18,9 @@ const otherVenueValue = "Other"
 const newEvent = {
   name: '',
   type: '',
-  tentative: false,
+  internal: false,
+  organisedBy: '',
+  organiserIsGUI: false,
   spaceOnly: false,
   venue: '',
   otherVenueSelected: false,
@@ -28,7 +30,7 @@ const newEvent = {
   startDate: roundTime(moment(), config.timeInterval),
   endDate: roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes"),
   poster: null,
-  desc: '',
+  description: '',
   regLink: ''
 }
 
@@ -42,13 +44,16 @@ class EventForm extends Component {
 
     if(event) {
       const { venue, otherVenueSelected, poster } = event
-      initialEvent = event
+      initialEvent = {
+        ...event,
+        original: event,
+      }
 
       if(otherVenueSelected) {
         initialEvent = {
           ...event,
           venue: otherVenueValue,
-          otherVenue: venue
+          otherVenue: venue,
         }
       }
 
@@ -109,7 +114,7 @@ class EventForm extends Component {
 
   handleFormChange = (value, type) => {
     const { event } = this.state
-    const { multiDay, fullDay, startDate, endDate, tentative, spaceOnly } = event
+    const { multiDay, fullDay, startDate, endDate, internal, spaceOnly } = event
 
     switch(type) {
       case 'name':
@@ -130,11 +135,11 @@ class EventForm extends Component {
           }
         })
         break
-      case 'tentative':
+      case 'internal':
         this.setState({
           event: {
             ...event,
-            tentative: !tentative
+            internal: !internal
           }
         })
         break
@@ -224,11 +229,11 @@ class EventForm extends Component {
           }
         })
         break
-      case 'desc':
+      case 'description':
         this.setState({
           event: {
             ...event,
-            desc: value
+            description: value
           }
         })
         break
@@ -272,9 +277,22 @@ class EventForm extends Component {
     } else {
       const { event } = this.state
       const { buttonOnSubmit } = this.props
+      this.setState({
+        formSubmitting: true,
+      })
 
-      buttonOnSubmit(event, () => this.resetForm())
+      buttonOnSubmit(event, () => this.resetForm(), (event) => this.clearSubmitting(event))
     }
+  }
+
+  clearSubmitting = (event) => {
+    this.setState({
+      formSubmitting: false,
+      event: {
+        ...event,
+        original: event
+      },
+    })
   }
 
   resetForm = () => {
@@ -284,13 +302,14 @@ class EventForm extends Component {
       venueEntry: false,
       otherVenueEntry: false,
       submitFailure: false,
+      formSubmitting: false,
       event: newEvent,
     })
   }
 
   render() {
-    const { event, submitFailure } = this.state
-    const { startDate, endDate, name, multiDay, venue, type, fullDay, tentative, spaceOnly, desc, regLink } = event
+    const { event, submitFailure, formSubmitting } = this.state
+    const { startDate, endDate, name, multiDay, venue, type, fullDay, internal, spaceOnly, description, regLink } = event
     const { eventTypes, spaces, buttonText } = this.props
 
     const errors = this.validate();
@@ -316,12 +335,12 @@ class EventForm extends Component {
         { errors.type ? <FormFeedback>Please select an event type.</FormFeedback> : ''}
         <FormGroup check inline>
           <Label check>
-            <Input type="checkbox" id="tentative" onChange={(event) => this.handleFormChange(event.target.value, 'tentative')} value={tentative} /> Tentative
+            <Input type="checkbox" id="tentative" onChange={(event) => this.handleFormChange(event.target.value, 'internal')} checked={internal} /> Internal (Not on GCal)
           </Label>
         </FormGroup>
         <FormGroup check inline>
           <Label check>
-             <Input type="checkbox" id="spaceonly" onChange={(event) => this.handleFormChange(event.target.value, 'spaceOnly')} value={spaceOnly} /> Space Booking Only
+             <Input type="checkbox" id="spaceonly" onChange={(event) => this.handleFormChange(event.target.value, 'spaceOnly')} checked={spaceOnly} /> Space Booking Only
           </Label>
         </FormGroup>
       </FormGroup>
@@ -343,12 +362,12 @@ class EventForm extends Component {
         <br/>
         <FormGroup check inline>
           <Label check>
-            <Input type="checkbox" id="multiDay" disabled={event.fullDay} onChange={(event) => this.handleFormChange(event.target.value, 'multiDay')} value={multiDay}  /> Multiple Days
+            <Input type="checkbox" id="multiDay" disabled={event.fullDay} onChange={(event) => this.handleFormChange(event.target.value, 'multiDay')} checked={multiDay}  /> Multiple Days
           </Label>
         </FormGroup>
         <FormGroup check inline>
           <Label check>
-            <Input type="checkbox" id="fullDay" disabled={event.multiDay} onChange={(event) => this.handleFormChange(event.target.value, 'fullDay')} value={fullDay}  /> Full Day
+            <Input type="checkbox" id="fullDay" disabled={event.multiDay} onChange={(event) => this.handleFormChange(event.target.value, 'fullDay')} checked={fullDay}  /> Full Day
           </Label>
         </FormGroup>
         <Container>
@@ -420,14 +439,14 @@ class EventForm extends Component {
       </FormGroup>
       <FormGroup>
         <Label for="name"><h3>Description (Optional)</h3></Label>
-        <Input type="textarea" name="description" id="description" placeholder="Enter a description (optional)" value={desc} onChange={(event) => this.handleFormChange(event.target.value, 'desc')} />
+        <Input type="textarea" name="description" id="description" placeholder="Enter a description (optional)" value={description} onChange={(event) => this.handleFormChange(event.target.value, 'description')} />
       </FormGroup>
       <FormGroup>
         <Label for="name"><h3>Registration Link (Optional)</h3></Label>
         <Input type="text" name="registration" id="registration" placeholder="Paste your registration link here (optional)" value={regLink} onChange={(event) => this.handleFormChange(event.target.value, 'regLink')} />
       </FormGroup>
-      <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client}>
-        { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } { buttonText }
+      <Button color="primary" onClick={this.createEvent} block disabled={!window.gapi.client || formSubmitting}>
+        { !window.gapi.client || formSubmitting ? <FontAwesomeIcon icon="spinner" spin /> : '' } { buttonText }
       </Button>
       <br/>
       { submitFailure ? <Alert color="danger">One or more inputs are invalid. Please check and try again.</Alert> : ''}
