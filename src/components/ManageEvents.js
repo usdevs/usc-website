@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux';
 import {
   Container, Row, Col,
-  Card, CardDeck, CardTitle, CardBody, CardText, Button,
+  Card, CardText, Button,
   Input
 } from 'reactstrap';
 import DatePicker from 'react-datepicker'
@@ -53,7 +53,7 @@ class ManageEvents extends Component {
       getUserEvents(firestore, nextProps.auth.uid)
     }
 
-    if(userEvents.length == 0 && nextProps.userEvents.length > 0) {
+    if(userEvents.length === 0 && nextProps.userEvents.length > 0) {
       this.setState({
         filter: {
           ...filter,
@@ -169,17 +169,17 @@ class ManageEvents extends Component {
                     dateFormat="LLL"
                     timeCaption="time"
                     onChange={(date) => this.handleValueChanged(date, 'startDate')} /></div>
-                <div className="p-2 align-self-center"><h4 className="mb-0">to</h4></div>
-                <div className="p-2"><DatePicker
-                  showTimeSelect
-                  selected={filter.endDate}
-                  customInput={<DatePickerForm placeholder="Select Start Filter" />}
-                  timeFormat="HH:mm"
-                  timeInterval={config.timeInterval}
-                  dateFormat="LLL"
-                  timeCaption="time"
-                  onChange={(date) => this.handleValueChanged(date, 'endDate')} /></div>
-                <div className="p-2"><Button color="link" onClick={() => this.resetFilter()}>Reset Filter</Button></div>
+                  <div className="p-2 align-self-center"><h4 className="mb-0">to</h4></div>
+                  <div className="p-2"><DatePicker
+                    showTimeSelect
+                    selected={filter.endDate}
+                    customInput={<DatePickerForm placeholder="Select Start Filter" />}
+                    timeFormat="HH:mm"
+                    timeInterval={config.timeInterval}
+                    dateFormat="LLL"
+                    timeCaption="time"
+                    onChange={(date) => this.handleValueChanged(date, 'endDate')} /></div>
+                  <div className="p-2"><Button color="link" onClick={() => this.resetFilter()}>Reset Filter</Button></div>
                 </div>
               </Col>
             </Row>

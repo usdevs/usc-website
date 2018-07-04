@@ -9,11 +9,9 @@ import {
   Row,
   Col,
   Jumbotron,
-  Button,
-  Card, CardText
+  Button
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 import EventCard from './EventCard'
 import { getUpcomingEvents } from '../utils/actions'
 import { formatEvents } from '../utils/utils'
