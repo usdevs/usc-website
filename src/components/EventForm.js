@@ -228,6 +228,7 @@ class EventForm extends Component {
       case 'poster':
         if(value) {
           this.setState({
+            poster: value.preview,
             event: {
               ...event,
               poster: value
