@@ -28,13 +28,13 @@ import brands from '@fortawesome/fontawesome-free-brands'
 import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
-  faTrashAlt, faFrown
+  faTrashAlt, faFrown, faUsers
 } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
-  faFrown)
+  faFrown, faUsers)
 
 const firebaseConfig = {
     apiKey: "***REMOVED***",

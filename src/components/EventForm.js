@@ -8,6 +8,7 @@ import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import _ from 'lodash'
 import DatePickerForm from './reusable/DatePickerForm'
+import ImageUploader from './reusable/ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { roundTime, isToday } from '../utils/utils'
 import Dropzone from 'react-dropzone'
@@ -81,36 +82,14 @@ class EventForm extends Component {
   }
 
   getUploader = () => {
-    const { event, poster } = this.state
+    const { poster } = this.state
 
       return (
-        <div>
-          <div className="d-flex justify-content-center flex-wrap">
-            {
-              poster ?
-                <img src={poster} className="img-fluid d-inline" alt="Poster" style={{maxHeight: '200px'}} />
-              : ''
-            }
-            '    '
-            <Dropzone
-              accept="image/jpeg, image/png"
-              onDrop={(files) => this.handleFormChange(files[0], 'poster')}>
-              <div className="w-100 h-100 d-flex justify-content-center">
-                <span className="w-100 h-100 fa-layers fa-fw" style={{marginTop: '.7em'}}>
-                  <FontAwesomeIcon icon="upload" size="4x" transform="up-15"/>
-                  <span className="fa-layers-text w-75 lead" style={{marginTop: '1em'}}><h4 style={{fontWeight: 300}}>Click to Select, or Drag File Here (*.jpg, *.png)</h4></span>
-                </span>
-              </div>
-            </Dropzone>
-          </div>
-            {
-              event.poster ?
-                <div className="d-flex justify-content-center">
-                  <Button outline color="danger" onClick={() => this.handleFormChange(null, 'poster')}>Delete Image</Button>
-                </div>
-              : ''
-            }
-        </div>
+        <ImageUploader
+            imageSrc={poster}
+            onDrop={(file) => this.handleFormChange(file, 'poster')}
+            onDelete={() => this.handleFormChange(null, 'poster')}
+          />
       )
     }
 

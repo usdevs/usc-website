@@ -12,7 +12,9 @@ import {
   deleteEvent as deleteFirestoreEvent,
   getPoster as getFirestorePoster,
   getUserProfile as getFirestoreUserProfile,
-  getUserProfileByEmail as getFirestoreUserProfileByEmail
+  getUserProfileByEmail as getFirestoreUserProfileByEmail,
+  createInterestGroup as createFirestoreInterestGroup,
+  getInterestGroupTypes as getFirestoreInterestGroupTypes,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -177,4 +179,12 @@ export function getSpaces(firestore) {
 
 export function getPoster(firebase, path, callback) {
   getFirestorePoster(firebase, path, callback)
+}
+
+export function getInterestGroupTypes(firestore) {
+  getFirestoreInterestGroupTypes(firestore)
+}
+
+export function createInterestGroup(firestore, interestGroup, callback) {
+  createFirestoreInterestGroup(firestore, interestGroup, callback)
 }

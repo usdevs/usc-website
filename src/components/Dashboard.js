@@ -52,9 +52,19 @@ const categories = [
   {
     name: 'Interest Groups',
     buttons: [{
+      name: 'See All Interest Groups',
+      icon: 'users',
+      link: '/interestgroups',
+      color: 'mediumseagreen'
+    }, {
       name: 'Create Interest Group',
       icon: 'plus',
       link: '/createig',
+      color: 'mediumseagreen'
+    }, {
+      name: 'Manage My Interest Groups',
+      icon: 'file-alt',
+      link: '/manageig',
       color: 'mediumseagreen'
     }]
   }

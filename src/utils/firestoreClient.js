@@ -1,4 +1,5 @@
 import ImageCompressor from 'image-compressor.js';
+import _ from 'lodash'
 
 export function uploadFile(firebase, filePath, file, callback) {
   (new ImageCompressor()).compress(file, {
@@ -56,6 +57,23 @@ export function formatFirestoreEvent(event, uid, googleEventID) {
     regLink: event.regLink,
     creator: uid,
     original: null,
+  }
+}
+
+export function formatFirestoreGroup(group, type) {
+  switch (type) {
+    case 'interestGroup':
+      return {
+        name: group.name,
+        type: group.type,
+        description: group.description,
+        activities: group.activities,
+        support: group.support,
+        leaderID: group.members[0].id
+      }
+      break
+    default:
+      break
   }
 }
 
@@ -184,4 +202,30 @@ export function getPoster(firebase, path, callback) {
   .ref(path)
   .getDownloadURL()
   .then((url) => callback(url))
+}
+
+export function getInterestGroupTypes(firestore) {
+  firestore
+  .get({
+    collection: 'groupTypes',
+    orderBy: ['name'],
+    where: ['category', '==', 'Interest Group'],
+    storeAs: 'igTypes'
+  })
+}
+
+export function createInterestGroup(firestore, interestGroup, callback) {
+  firestore
+  .add({ collection: 'groups' }, formatFirestoreGroup(interestGroup, 'interestGroup'))
+  .then((snapshot) => {
+    _.forEach(interestGroup.members, (member) => {
+      firestore
+      .add({ collection: 'groupMembership' }, {
+        groupID: snapshot.id,
+        memberID: member.id
+      })
+    })
+
+    callback()
+  })
 }
