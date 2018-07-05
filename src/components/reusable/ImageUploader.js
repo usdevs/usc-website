@@ -5,12 +5,6 @@ import Dropzone from 'react-dropzone'
 import { Button } from 'reactstrap';
 
 class ImageUploader extends Component {
-  static contextTypes = {
-    imageSrc: PropTypes.string.isRequired,
-    onDrop: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
-  }
-
   render() {
     const { imageSrc, onDrop, onDelete } = this.props
 

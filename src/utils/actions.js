@@ -10,11 +10,12 @@ import {
   getUserEvents as getFirestoreUserEvents,
   updateEvent as updateFirestoreEvent,
   deleteEvent as deleteFirestoreEvent,
-  getPoster as getFirestorePoster,
+  getFile as getFirestoreFile,
   getUserProfile as getFirestoreUserProfile,
   getUserProfileByEmail as getFirestoreUserProfileByEmail,
   createInterestGroup as createFirestoreInterestGroup,
   getInterestGroupTypes as getFirestoreInterestGroupTypes,
+  getInterestGroups as getFirestoreInterestGroups,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -128,8 +129,8 @@ export function uploadPoster(firebase, poster, callback) {
   uploadFirebaseFile(firebase, config.posterFilePath, poster, callback)
 }
 
-export function deletePoster(firebase, file, key) {
-  deleteFirebaseFile(firebase, file, key)
+export function uploadLogo(firebase, logo, callback) {
+  uploadFirebaseFile(firebase, config.logoFilePath, logo, callback)
 }
 
 export function getEvents(firestore, callback = () => {}, month = null, spaceOnly = false) {
@@ -165,6 +166,10 @@ export function getMyProfile(firestore, auth, callback) {
   getFirestoreUserProfile(firestore, auth.uid, callback)
 }
 
+export function getUserProfile(firestore, userID, callback) {
+  getFirestoreUserProfile(firestore, userID, callback)
+}
+
 export function getUserByEmail(firestore, email, callback) {
   getFirestoreUserProfileByEmail(firestore, email, callback)
 }
@@ -177,14 +182,30 @@ export function getSpaces(firestore) {
   getFirestoreSpaces(firestore)
 }
 
-export function getPoster(firebase, path, callback) {
-  getFirestorePoster(firebase, path, callback)
+export function getFile(firebase, path, callback) {
+  getFirestoreFile(firebase, path, callback)
 }
 
 export function getInterestGroupTypes(firestore) {
   getFirestoreInterestGroupTypes(firestore)
 }
 
-export function createInterestGroup(firestore, interestGroup, callback) {
-  createFirestoreInterestGroup(firestore, interestGroup, callback)
+export function getInterestGroups(firestore) {
+  getInterestGroupTypes(firestore)
+  getFirestoreInterestGroups(firestore)
+}
+
+export function createInterestGroup(firestore, firebase, interestGroup, callback) {
+  if (interestGroup.logo) {
+    uploadLogo(firebase, interestGroup.logo, (filePath) => {
+      interestGroup = {
+        ...interestGroup,
+        logo: filePath,
+      }
+
+      createFirestoreInterestGroup(firestore, interestGroup, callback)
+    })
+  } else {
+    createFirestoreInterestGroup(firestore, interestGroup, callback)
+  }
 }

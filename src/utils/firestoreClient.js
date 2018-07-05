@@ -1,5 +1,6 @@
 import ImageCompressor from 'image-compressor.js';
 import _ from 'lodash'
+import { config } from '../resources/config'
 
 export function uploadFile(firebase, filePath, file, callback) {
   (new ImageCompressor()).compress(file, {
@@ -26,7 +27,7 @@ export function deleteFile(firebase, path, callback) {
 }
 
 export function formatFirestoreEvent(event, uid, googleEventID) {
-  if(event.regLink && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
+  if(event.regLink !== '' && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
     event = {
       ...event,
       regLink: "http://" + event.regLink
@@ -63,14 +64,26 @@ export function formatFirestoreEvent(event, uid, googleEventID) {
 export function formatFirestoreGroup(group, type) {
   switch (type) {
     case 'interestGroup':
-      return {
+      var interestGroup = {
+        status: group.status,
         name: group.name,
         type: group.type,
+        category: group.category,
         description: group.description,
         activities: group.activities,
         support: group.support,
+        logo: group.logo,
         leaderID: group.members[0].id
       }
+
+      if(group.chat !== '' && !(group.chat.startsWith("http://") || group.chat.startsWith("https://"))) {
+        interestGroup = {
+          ...interestGroup,
+          chat: "https://" + group.chat
+        }
+      }
+
+      return interestGroup
       break
     default:
       break
@@ -166,7 +179,7 @@ export function watchEvents(firestore) {
   ])
 }
 
-export function getUserProfile(firestore, userID, callback, alias = 'userProfiles') {
+export function getUserProfile(firestore, userID, callback = () => {}, alias = 'userProfiles') {
   firestore
   .get({
     collection: 'users',
@@ -196,22 +209,36 @@ export function getSpaces(firestore) {
   .get({ collection: 'spaces', orderBy: ['name'] })
 }
 
-export function getPoster(firebase, path, callback) {
+export function getFile(firebase, path, callback) {
   firebase
   .storage()
   .ref(path)
   .getDownloadURL()
-  .then((url) => callback(url))
+  .then((url) => {
+    console.log(url)
+    callback(url)
+  })
 }
 
-export function getInterestGroupTypes(firestore) {
+export function getInterestGroupTypes(firestore, callback = () => {}) {
   firestore
   .get({
     collection: 'groupTypes',
     orderBy: ['name'],
-    where: ['category', '==', 'Interest Group'],
+    where: ['category', '==', config.categoryIDs.ig],
     storeAs: 'igTypes'
   })
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getInterestGroups(firestore) {
+    firestore
+    .get({
+      collection: 'groups',
+      orderBy: ['name'],
+      where: ['category', '==', config.categoryIDs.ig],
+      storeAs: 'interestGroups'
+    })
 }
 
 export function createInterestGroup(firestore, interestGroup, callback) {

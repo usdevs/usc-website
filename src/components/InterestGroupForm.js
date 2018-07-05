@@ -7,6 +7,7 @@ import {
 } from 'reactstrap';
 import { config } from '../resources/config'
 import { getUserByEmail, getMyProfile } from '../utils/actions'
+import ImageUploader from './reusable/ImageUploader'
 import UserCard from './UserCard'
 import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -24,8 +25,12 @@ const originalMembers = () => {
 }
 
 const newInterestGroup = {
+  status: 'pending',
   name: '',
   type: '',
+  category: '',
+  logo: null,
+  chat: '',
   description: '',
   activities: '',
   support: '',
@@ -49,9 +54,11 @@ const originalState = {
   descriptionEntry: false,
   activitiesEntry: false,
   supportEntry: false,
+  formSubmitting: false,
   membersEntry: originalMembersEntry(),
   membersIsLoading: originalMembersEntry(),
   submitFailure: false,
+  logo: null,
   interestGroup: newInterestGroup,
 }
 
@@ -91,11 +98,31 @@ class InterestGroupForm extends Component {
         })
         break
       case 'type':
+        const { igTypesUnordered } = this.props
+
         this.setState({
           typeEntry: true,
           interestGroup: {
             ...interestGroup,
             type: value,
+            category: igTypesUnordered[value] ? igTypesUnordered[value].category : null
+          }
+        })
+        break
+      case 'logo':
+        this.setState({
+          logo: value ? value.preview : value,
+          interestGroup: {
+            ...interestGroup,
+            logo: value
+          }
+        })
+        break
+      case 'chat':
+        this.setState({
+          interestGroup: {
+            ...interestGroup,
+            chat: value,
           }
         })
         break
@@ -370,11 +397,9 @@ class InterestGroupForm extends Component {
 
   render() {
     const { igTypes } = this.props
-    const { interestGroup, submitFailure } = this.state
-    const { name, type, description, activities, support, leader } = interestGroup
+    const { interestGroup, submitFailure, logo, formSubmitting } = this.state
+    const { name, type, chat, description, activities, support, leader } = interestGroup
     const errors = this.validate()
-
-    console.log(this.state)
 
     return (
       <Form className="m-3">
@@ -409,9 +434,21 @@ class InterestGroupForm extends Component {
           { errors.support ? <FormFeedback>Please enter the type of required support or enter NIL if unneeded.</FormFeedback> : ''}
         </FormGroup>
         <FormGroup>
+          <Label for="name"><h3>Group Chat Join Link (Optional)</h3></Label>
+          <Input type="text" value={ chat } placeholder="Telegram/Whatsapp Chat Link" onChange={(event) => this.handleFormChange(event.target.value, 'chat')} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="description"><h3>Logo (Optional)</h3></Label>
+          <ImageUploader
+              imageSrc={logo}
+              onDrop={(file) => this.handleFormChange(file, 'logo')}
+              onDelete={() => this.handleFormChange(null, 'logo')}
+            />
+        </FormGroup>
+        <FormGroup>
           <Label className="mb-0"><h3 className="mb-0">Member List</h3></Label>
           <br/>
-          <Label><small>(at least 5)</small></Label>
+          <Label><small>(at least {config.minimumIGMembers})</small></Label>
           <Container>
             <Row>
               {
@@ -421,7 +458,9 @@ class InterestGroupForm extends Component {
           </Container>
         </FormGroup>
         <div className="d-flex justify-content-center" >
-          <Button color="primary" onClick={() => this.submitForm() }>Submit</Button>
+          <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting}>
+            { formSubmitting ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
+          </Button>
         </div>
         <div className="d-flex justify-content-center" >
           { submitFailure ? <Alert color="danger" className="mt-3">One or more inputs are invalid. Please check and try again.</Alert> : ''}

@@ -19,6 +19,7 @@ import CreateEvent from './components/CreateEvent';
 import ManageEvents from './components/ManageEvents';
 import EditEvent from './components/EditEvent';
 import CreateIG from './components/CreateIG';
+import InterestGroups from './components/InterestGroups'
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createStore } from 'redux'
@@ -128,6 +129,7 @@ render(
             <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/editevent/:eventID" component={EditEvent}/>
             <Route path="/createig" component={CreateIG}/>
+            <Route path="/interestgroups" component={InterestGroups}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

@@ -57,8 +57,9 @@ class CreateIG extends Component {
 
   submitIG = (interestGroup, callback) => {
     const { firestore } = this.context.store
+    const { firebase } = this.props
 
-    createInterestGroup(firestore, interestGroup, () => {
+    createInterestGroup(firestore, firebase, interestGroup, () => {
       this.toggle()
       callback()
     })
@@ -66,7 +67,7 @@ class CreateIG extends Component {
 
   render() {
     const { firestore } = this.context.store
-    const { auth, userProfiles, igTypes } = this.props
+    const { auth, userProfiles, igTypes, igTypesUnordered } = this.props
 
     return (
     <Container>
@@ -94,7 +95,8 @@ class CreateIG extends Component {
               auth={auth}
               userProfiles={userProfiles}
               buttonOnSubmit={(interestGroup, callback) => this.submitIG(interestGroup, callback)}
-              igTypes={igTypes} />
+              igTypes={igTypes}
+              igTypesUnordered={igTypesUnordered} />
             : <p><FontAwesomeIcon icon="spinner" spin /> Please wait...</p>}
         </Col>
       </Row>
@@ -107,7 +109,8 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     userProfiles: state.firestore.data.userProfiles,
     myProfile: state.firestore.data.myProfile,
-    igTypes: state.firestore.ordered.igTypes
+    igTypes: state.firestore.ordered.igTypes,
+    igTypesUnordered: state.firestore.data.igTypes
   }
 }
 

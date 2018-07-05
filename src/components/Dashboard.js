@@ -14,19 +14,14 @@ const categories = [
   {
     name: 'General',
     buttons: [{
-      name: 'USP Lifehacks',
+      name: 'USP Life Hacks',
       icon: 'heart',
-      link: '',
+      link: '/',
       color: 'dodgerblue'
     }, {
       name: 'MC Minutes & AGM Report',
       icon: 'file-alt',
-      link: '',
-      color: 'dodgerblue'
-    }, {
-      name: 'blah',
-      icon: 'heart',
-      link: '',
+      link: '/',
       color: 'dodgerblue'
     }]
   },

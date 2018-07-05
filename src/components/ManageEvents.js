@@ -116,7 +116,7 @@ class ManageEvents extends Component {
     const { filter } = this.state
     const { spaces, history, firebase, eventTypes } = this.props
 
-    if(!_.startsWith(event.name, filter.name) ||
+    if(!_.startsWith(_.lowerCase(event.name), _.lowerCase(filter.name)) ||
       event.startDate.isBefore(filter.startDate) ||
       event.endDate.isAfter(filter.endDate)) {
       return ('')

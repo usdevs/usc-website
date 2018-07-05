@@ -11,7 +11,7 @@ import DatePickerForm from './reusable/DatePickerForm'
 import ImageUploader from './reusable/ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { roundTime, isToday } from '../utils/utils'
-import Dropzone from 'react-dropzone'
+import { getFile } from '../utils/actions'
 import { withRouter } from 'react-router-dom'
 
 const otherVenueValue = "Other"
@@ -74,7 +74,7 @@ class EventForm extends Component {
   }
 
   loadPoster = (firebase, poster) => {
-    firebase.storage().ref(poster).getDownloadURL().then((url) => {
+    getFile(firebase, poster, (url) => {
       this.setState({
         poster: url,
       })
@@ -203,24 +203,13 @@ class EventForm extends Component {
         })
         break
       case 'poster':
-        if(value) {
-          this.setState({
-            poster: value.preview,
-            event: {
-              ...event,
-              poster: value
-            }
-          })
-        } else {
-          this.setState({
-            poster: value,
-            event: {
-              ...event,
-              poster: value
-            }
-          })
-        }
-
+        this.setState({
+          poster: value ? value.preview : value,
+          event: {
+            ...event,
+            poster: value
+          }
+        })
         break
       case 'description':
         this.setState({

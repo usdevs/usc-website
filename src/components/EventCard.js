@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getPoster } from '../utils/actions'
+import { getFile } from '../utils/actions'
 import _ from 'lodash'
 
 class EventCard extends Component {
@@ -17,7 +17,7 @@ class EventCard extends Component {
     const { poster } = event
 
     if(poster) {
-      getPoster(firebase, poster, (url) => {
+      getFile(firebase, poster, (url) => {
         this.setState({
           poster: url,
         })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
+import { getFile } from '../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class EventModal extends Component {
@@ -11,7 +12,7 @@ class EventModal extends Component {
     }
 
     if(props.event.poster) {
-      props.firebase.storage().ref(props.event.poster).getDownloadURL().then((url) => {
+      getFile(props.firebase, props.event.poster, (url) => {
         this.setState({
           poster: url,
         })
