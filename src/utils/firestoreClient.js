@@ -95,9 +95,9 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
     }
   }
 
-  /*if (spaceOnly) {
+  if (spaceOnly) {
     where.push(['otherVenueSelected', '==', false])
-  }*/
+  }
 
   if (where.length > 0) {
     query = {
@@ -123,6 +123,14 @@ export function getEventsAfter(firestore, callback, alias, date, limit) {
     limit: limit})
 }
 
+export function getEvent(firestore, eventID) {
+  firestore
+  .get({
+    collection: 'events',
+    doc: eventID,
+    storeAs: 'event'})
+}
+
 export function getUserEvents(firestore, userID) {
   firestore
   .get({
@@ -138,6 +146,26 @@ export function watchEvents(firestore) {
   firestore.setListeners([
     { collection: 'events' },
   ])
+}
+
+export function getUserProfile(firestore, userID, callback, alias = 'userProfiles') {
+  firestore
+  .get({
+    collection: 'users',
+    doc: userID,
+    storeAs: alias})
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getUserProfileByEmail(firestore, email, callback, alias = 'userProfiles') {
+  firestore
+  .get({
+    collection: 'users',
+    where: [
+      ['email', '==', email]
+    ],
+    storeAs: alias})
+    .then((snapshot) => callback(snapshot))
 }
 
 export function getEventTypes(firestore) {

@@ -10,7 +10,9 @@ import {
   getUserEvents as getFirestoreUserEvents,
   updateEvent as updateFirestoreEvent,
   deleteEvent as deleteFirestoreEvent,
-  getPoster as getFirestorePoster
+  getPoster as getFirestorePoster,
+  getUserProfile as getFirestoreUserProfile,
+  getUserProfileByEmail as getFirestoreUserProfileByEmail
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -155,6 +157,14 @@ export function getUpcomingEvents(firestore, limit) {
 export function getUserEvents(firestore, userID) {
   getEvents(firestore)
   getFirestoreUserEvents(firestore, userID)
+}
+
+export function getMyProfile(firestore, auth, callback) {
+  getFirestoreUserProfile(firestore, auth.uid, callback)
+}
+
+export function getUserByEmail(firestore, email, callback) {
+  getFirestoreUserProfileByEmail(firestore, email, callback)
 }
 
 export function getEventTypes(firestore) {

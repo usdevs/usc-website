@@ -1,10 +1,18 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import {
   Container, Row, Col,
   Alert, Button, Card, Jumbotron,
-  Form, FormGroup, Label, Input, FormFeedback
+  Form, FormGroup, Label, Input, FormFeedback,
+  InputGroup, InputGroupAddon
 } from 'reactstrap';
+import { getUserByEmail, getMyProfile } from '../utils/actions'
+import UserCard from './UserCard'
 import _ from 'lodash'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 const newInterestGroup = {
   name: '',
@@ -12,19 +20,14 @@ const newInterestGroup = {
   activities: '',
   support: '',
   members: [{
-    name: '',
     email: '',
   },{
-    name: '',
     email: '',
   },{
-    name: '',
     email: '',
   },{
-    name: '',
     email: '',
   },{
-    name: '',
     email: '',
   }]
 }
@@ -38,12 +41,33 @@ class CreateIG extends Component {
       noOfMembers: 5,
       interestGroup: newInterestGroup,
       membersEntry: [false, false, false, false, false],
+      membersIsLoading: [false, false, false, false, false],
+    }
+  }
+
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { firestore } = this.context.store
+    const { auth } = this.props
+
+    if(!isLoaded(auth) && isLoaded(nextProps.auth) && !isEmpty(nextProps.auth)) {
+      const uid = nextProps.auth.uid
+
+      getMyProfile(firestore, uid, () => {
+        const { userProfiles } = this.props
+
+        if(userProfiles) {
+          this.handleFormChange(userProfiles[uid], 'memberProfile', 0)
+        }
+      })
     }
   }
 
   handleFormChange = (value, type, info) => {
     const { interestGroup, nameEntry } = this.state
-    var { membersEntry } = this.state
     var { members } = interestGroup
 
     switch(type) {
@@ -83,36 +107,27 @@ class CreateIG extends Component {
           }
         })
         break
-      case 'memberName':
-              console.log(info)
-        members[info] = {
-          ...members[info],
-          name: value
-        }
-
-        membersEntry[info] = true
-
-
-        this.setState({
-          supportEntry: true,
-          membersEntry: membersEntry,
-          interestGroup: {
-            ...interestGroup,
-            members: members,
-          }
-        })
-        break
       case 'memberEmail':
         members[info] = {
           ...members[info],
           email: value
         }
 
-        membersEntry[info] = true
+        this.setState({
+          interestGroup: {
+            ...interestGroup,
+            members: members,
+          }
+        })
+        break
+      case 'memberProfile':
+        members[info] = {
+          ...members[info],
+          profile: value
+        }
+          console.log(members)
 
         this.setState({
-          supportEntry: true,
-          membersEntry: membersEntry,
           interestGroup: {
             ...interestGroup,
             members: members,
@@ -133,26 +148,49 @@ class CreateIG extends Component {
       activities: (activitiesEntry || clearEntryChecks) ? !activities : false,
       support: false,
       members: membersEntry.map((memberEntry, index) => {
-        return (memberEntry || clearEntryChecks) ? !(members[index].name && members[index].email) : false
+        return (memberEntry || clearEntryChecks) ? !(members[index].profile) : false
       })
     }
   }
 
   showIGMembers = (errors) => {
-    const { noOfMembers, interestGroup } = this.state
+    const { noOfMembers, interestGroup, membersIsLoading } = this.state
     const { members } = interestGroup
 
     var igMembers = []
 
-    for(var i = 0; i < noOfMembers; i++) {
+    igMembers.push(
+      <Col xs="12" md="6" key="0">
+        {
+            members[0].profile ?
+              <div className="mb-3">
+                <UserCard user={members[0].profile} leader={true} />
+              </div>
+            : <p><FontAwesomeIcon icon="spinner" spin /> Loading Profile...</p>
+        }
+      </Col>)
+
+    for(var i = 1; i < noOfMembers; i++) {
       const index = i
       const igMember =
       <Col xs="12" md="6" key={i}>
-        <Card className="p-3 mb-3" outline color="primary">
-          <Input type="text" placeholder="Member Name" value={members[index].name} className="mb-3" invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberName', index)} />
-          <Input type="email" placeholder="Member Email" value={members[index].email} invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberEmail', index)} />
-          { errors.members[index] ? <FormFeedback>Enter both name and email.</FormFeedback> : ''}
-        </Card>
+        {
+          members[index].profile ?
+            <div className="mb-3">
+              <UserCard user={members[index].profile} />
+            </div>
+          : <Card className="p-3 mb-3" outline color="primary">
+              <InputGroup>
+                <Input type="email" placeholder="Member Email" value={members[index].email} invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberEmail', index)} />
+                <InputGroupAddon addonType="append">
+                  <Button color="info" disabled={membersIsLoading[index]} onClick={() => this.addMember(index, members[index].email)}>
+                    { membersIsLoading[index] ? <FontAwesomeIcon icon="spinner" spin /> : ''} Add
+                  </Button>
+                </InputGroupAddon>
+                { errors.members[index] ? <FormFeedback>Please add a valid member. Check if email is valid, a duplicate or if the member has registered on this site.</FormFeedback> : ''}
+              </InputGroup>
+            </Card>
+        }
       </Col>
 
       igMembers.push(igMember)
@@ -170,6 +208,53 @@ class CreateIG extends Component {
     </Col>)
 
     return igMembers
+  }
+
+  addMember = (index, email) => {
+    const { firestore } = this.context.store
+    var { membersEntry, membersIsLoading, interestGroup } = this.state
+
+    var emailExists = false
+    _.forEach(interestGroup.members, (member) => {
+      console.log(member.profile)
+      if(member.profile && member.profile.email === email) {
+        emailExists = true
+      }
+    })
+
+    if(emailExists) {
+      membersEntry[index] = true
+
+      this.setState({
+        membersEntry: membersEntry,
+      })
+
+      return
+    }
+
+    membersIsLoading[index] = true
+
+    this.setState({
+      membersIsLoading: membersIsLoading,
+    })
+
+    getUserByEmail(firestore, email, (snapshot) => {
+        const { userProfiles } = this.props
+
+        membersEntry[index] = true
+        membersIsLoading[index] = false
+
+        this.setState({
+          membersEntry: membersEntry,
+          membersIsLoading: membersIsLoading,
+        })
+
+        const userProfile = _.filter(userProfiles, (profile) => {return profile.email === email})
+
+        if(userProfile.length > 0) {
+          this.handleFormChange(userProfile[0], 'memberProfile', index)
+        }
+    })
   }
 
   changeNoOfMember = (increase) => {
@@ -215,7 +300,7 @@ class CreateIG extends Component {
 
   render() {
     const { interestGroup, submitFailure } = this.state
-    const { name, description, activities, support } = interestGroup
+    const { name, description, activities, support, leader } = interestGroup
     const errors = this.validate()
 
     return (
@@ -287,4 +372,17 @@ class CreateIG extends Component {
   }
 }
 
-export default CreateIG;
+const mapStateToProps = state => {
+
+console.log(state.firestore)
+  return {
+    auth: state.firebase.auth,
+    userProfiles: state.firestore.data.userProfiles,
+    myProfile: state.firestore.data.myProfile
+  }
+}
+
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(CreateIG);
