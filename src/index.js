@@ -8,18 +8,18 @@ import { Provider } from 'react-redux';
 import { reactReduxFirebase } from 'react-redux-firebase'
 import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase'
-import Home from './components/Home';
-import AboutUs from './components/AboutUs';
-import Events from './components/Events';
-import Spaces from './components/Spaces';
-import Navbar from './components/Navbar';
-import ContactUs from './components/ContactUs';
-import Dashboard from './components/Dashboard';
-import CreateEvent from './components/CreateEvent';
-import ManageEvents from './components/ManageEvents';
-import EditEvent from './components/EditEvent';
-import CreateIG from './components/CreateIG';
-import InterestGroups from './components/InterestGroups'
+import Home from './components/General/Home';
+import AboutUs from './components/General/AboutUs';
+import Events from './components/Events/Events';
+import Spaces from './components/Events/Spaces';
+import Navbar from './components/General/Navbar';
+import ContactUs from './components/General/ContactUs';
+import Dashboard from './components/General/Dashboard';
+import CreateEvent from './components/Events/CreateEvent';
+import ManageEvents from './components/Events/ManageEvents';
+import EditEvent from './components/Events/EditEvent';
+import CreateIG from './components/InterestGroups/CreateIG';
+import InterestGroups from './components/InterestGroups/InterestGroups'
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import { createStore } from 'redux'
@@ -44,7 +44,7 @@ const firebaseConfig = {
     projectId: "usc-website-206715",
     storageBucket: "usc-website-206715.appspot.com",
     messagingSenderId: "115895791273",
-    clientId: "115895791273-du64jmchflhmb0o7jec4e87klu5lccm0.apps.googleusercontent.com",
+    clientId: "115895791273-6hbrflf3p4hq9o9b1td3lijq602eb3jk.apps.googleusercontent.com",
     scopes: [
              "profile",
              "https://www.googleapis.com/auth/calendar"

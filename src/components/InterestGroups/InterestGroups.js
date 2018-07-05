@@ -11,8 +11,8 @@ import {
 } from 'reactstrap';
 import IGCard from './IGCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getInterestGroups } from '../utils/actions'
-import { config } from '../resources/config'
+import { getInterestGroups } from '../../utils/actions'
+import { config } from '../../resources/config'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -41,11 +41,9 @@ class InterestGroups extends Component {
 
   handleValueChanged = (value, type) => {
     const { filter } = this.state
-    console.log(value)
 
     switch (type) {
       case 'name':
-      console.log(value)
         this.setState({
           filter: {
             ...filter,

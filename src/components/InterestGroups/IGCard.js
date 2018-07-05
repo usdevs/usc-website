@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
-import { getUserProfile, getFile } from '../utils/actions'
-import { config } from '../resources/config'
+import { getUserProfile, getFile } from '../../utils/actions'
+import { config } from '../../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 

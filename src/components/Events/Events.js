@@ -8,9 +8,9 @@ import {
   Col,
   Button
 } from 'reactstrap';
-import { getEvents, getEventsByMonth } from '../utils/actions'
-import { formatEventsByDate } from '../utils/utils'
-import { headerEvent as header } from '../resources/images.js'
+import { getEvents, getEventsByMonth } from '../../utils/actions'
+import { formatEventsByDate } from '../../utils/utils'
+import { headerEvent as header } from '../../resources/images.js'
 import Calendar from './Calendar'
 import DayCalendar from './DayCalendar'
 import moment from 'moment'

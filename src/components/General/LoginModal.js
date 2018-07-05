@@ -6,7 +6,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import GoogleButton from 'react-google-button'
-import { saveGoogleToken } from '../actions'
 
 class LoginModal extends Component {
   constructor(props) {
@@ -66,5 +65,5 @@ LoginModal.propTypes = {
 
 export default withRouter(compose(
   firebaseConnect(), // withFirebase can also be used
-  connect(({ firebase: { auth } }) => ({ auth }),  { saveGoogleToken })
+  connect(({ firebase: { auth } }) => ({ auth }))
 )(LoginModal))

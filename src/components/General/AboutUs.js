@@ -9,7 +9,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import Img from 'react-image'
-import { headerAboutUs as header } from '../resources/images.js'
+import { headerAboutUs as header } from '../../resources/images.js'
 
 var uscHeaderStyle = {
   backgroundColor: 'dodgerblue',

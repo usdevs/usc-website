@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
-import { getFile } from '../utils/actions'
+import { getFile } from '../../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class EventModal extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { isLoaded } from 'react-redux-firebase'
-import { eventTimeDisplay } from '../utils/utils'
+import { eventTimeDisplay } from '../../utils/utils'
 import { Container, Row, Col, Nav, NavLink } from 'reactstrap'
 import _ from 'lodash'
 import EventModal from './EventModal'

@@ -11,8 +11,8 @@ import EventForm from './EventForm'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { createEvent, getEvents, getEventsByMonth } from '../utils/actions'
-import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../utils/utils'
+import { createEvent, getEvents, getEventsByMonth } from '../../utils/actions'
+import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { withRouter } from 'react-router-dom'
 

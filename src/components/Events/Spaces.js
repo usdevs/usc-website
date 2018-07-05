@@ -7,14 +7,14 @@ import {
   Row,
   Col
 } from 'reactstrap';
-import { headerEvent as header } from '../resources/images.js';
+import { headerEvent as header } from '../../resources/images.js';
 import moment from 'moment'
 import { connect } from 'react-redux';
 import _ from 'lodash'
-import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../utils/utils'
+import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../../utils/utils'
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { getEvents, getEventsByMonth } from '../utils/actions'
+import { getEvents, getEventsByMonth } from '../../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 require('react-calendar-timeline/lib/Timeline.css')
 

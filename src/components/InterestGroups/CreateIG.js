@@ -8,7 +8,7 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { createInterestGroup, getInterestGroupTypes } from '../utils/actions'
+import { createInterestGroup, getInterestGroupTypes } from '../../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import InterestGroupForm from './InterestGroupForm'
 import { withRouter } from 'react-router-dom'

@@ -3,15 +3,15 @@ import {
   Alert, Container, Row, Col, Button,
   Form, FormGroup, Label, Input, FormFeedback
 } from 'reactstrap';
-import { config } from '../resources/config'
+import { config } from '../../resources/config'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 import _ from 'lodash'
-import DatePickerForm from './reusable/DatePickerForm'
-import ImageUploader from './reusable/ImageUploader'
+import DatePickerForm from '../reusable/DatePickerForm'
+import ImageUploader from '../reusable/ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { roundTime, isToday } from '../utils/utils'
-import { getFile } from '../utils/actions'
+import { roundTime, isToday } from '../../utils/utils'
+import { getFile } from '../../utils/actions'
 import { withRouter } from 'react-router-dom'
 
 const otherVenueValue = "Other"

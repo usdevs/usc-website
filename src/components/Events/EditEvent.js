@@ -9,8 +9,8 @@ import {
 import moment from 'moment'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventForm from './EventForm'
-import { getUserEvents, updateEvent, deleteEvent } from '../utils/actions'
-import { formatEvents } from '../utils/utils'
+import { getUserEvents, updateEvent, deleteEvent } from '../../utils/actions'
+import { formatEvents } from '../../utils/utils'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 

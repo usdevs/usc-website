@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getFile } from '../utils/actions'
-import { config } from '../resources/config'
+import { getFile } from '../../utils/actions'
+import { config } from '../../resources/config'
 import _ from 'lodash'
 
 class EventCard extends Component {

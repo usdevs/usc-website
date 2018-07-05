@@ -5,10 +5,10 @@ import {
   Form, FormGroup, Label, Input, FormFeedback,
   InputGroup, InputGroupAddon
 } from 'reactstrap';
-import { config } from '../resources/config'
-import { getUserByEmail, getMyProfile } from '../utils/actions'
-import ImageUploader from './reusable/ImageUploader'
-import UserCard from './UserCard'
+import { config } from '../../resources/config'
+import { getUserByEmail, getMyProfile } from '../../utils/actions'
+import ImageUploader from '../reusable/ImageUploader'
+import UserCard from '../Users/UserCard'
 import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 

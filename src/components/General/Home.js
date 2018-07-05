@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../resources/images';
+import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../../resources/images';
 import {
   UncontrolledCarousel,
   Container,
@@ -12,9 +12,9 @@ import {
   Button
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import EventCard from './EventCard'
-import { getUpcomingEvents } from '../utils/actions'
-import { formatEvents } from '../utils/utils'
+import EventCard from '../Events/EventCard'
+import { getUpcomingEvents } from '../../utils/actions'
+import { formatEvents } from '../../utils/utils'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 

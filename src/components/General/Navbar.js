@@ -17,7 +17,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
-import { logo } from '../resources/images'
+import { logo } from '../../resources/images'
 import LoginModal from './LoginModal'
 
 var logoStyle = {
