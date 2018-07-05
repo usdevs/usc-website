@@ -12,6 +12,7 @@ import {
 import IGCard from './IGCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getInterestGroups } from '../utils/actions'
+import { config } from '../resources/config'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -35,7 +36,7 @@ class InterestGroups extends Component {
   componentWillMount() {
     const { firestore } = this.context.store
 
-    getInterestGroups(firestore)
+    getInterestGroups(firestore, config.igStatuses.active)
   }
 
   handleValueChanged = (value, type) => {

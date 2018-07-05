@@ -3,6 +3,7 @@ import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getFile } from '../utils/actions'
+import { config } from '../resources/config'
 import _ from 'lodash'
 
 class EventCard extends Component {
@@ -49,7 +50,7 @@ class EventCard extends Component {
             <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenueSelected ? event.venue : spaces[event.venue].name)  }</h4>
             { event.description ?
               <CardText className="mb-2">
-                { _.truncate(event.description, { 'length': 100 }) }
+                { _.truncate(event.description, { 'length': config.descriptionPreviewLength }) }
               </CardText>
               : ''
             }

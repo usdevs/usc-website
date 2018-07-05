@@ -190,9 +190,9 @@ export function getInterestGroupTypes(firestore) {
   getFirestoreInterestGroupTypes(firestore)
 }
 
-export function getInterestGroups(firestore) {
+export function getInterestGroups(firestore, status) {
   getInterestGroupTypes(firestore)
-  getFirestoreInterestGroups(firestore)
+  getFirestoreInterestGroups(firestore, status)
 }
 
 export function createInterestGroup(firestore, firebase, interestGroup, callback) {

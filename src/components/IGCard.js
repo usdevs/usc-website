@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import { getUserProfile, getFile } from '../utils/actions'
+import { config } from '../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 
@@ -18,7 +19,6 @@ class IGCard extends Component {
     if(logo) {
       getFile(firebase, logo, (url) => {
 
-      console.log(url)
         this.setState({
           logo: url,
         })
@@ -52,7 +52,7 @@ class IGCard extends Component {
             <h3 className="mb-0"><small>{name}</small></h3>
             <h5 className="mb-0">{igTypes[type].subName}</h5>
             <p className="mb-2">
-              { _.truncate(description, { 'length': 100 }) }
+              { _.truncate(description, { 'length': config.descriptionPreviewLength }) }
             </p>
           </Col>
         </Row>

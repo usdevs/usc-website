@@ -97,7 +97,6 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
 }
 
 export function updateEvent(firestore, event, uid, callback) {
-  console.log(formatFirestoreEvent(event, uid))
   firestore
   .set({ collection: 'events', doc: event.id }, formatFirestoreEvent(event, uid))
   .then(() => callback())
@@ -214,10 +213,7 @@ export function getFile(firebase, path, callback) {
   .storage()
   .ref(path)
   .getDownloadURL()
-  .then((url) => {
-    console.log(url)
-    callback(url)
-  })
+  .then((url) => callback(url))
 }
 
 export function getInterestGroupTypes(firestore, callback = () => {}) {
@@ -231,14 +227,28 @@ export function getInterestGroupTypes(firestore, callback = () => {}) {
   .then((snapshot) => callback(snapshot))
 }
 
-export function getInterestGroups(firestore) {
-    firestore
-    .get({
-      collection: 'groups',
-      orderBy: ['name'],
-      where: ['category', '==', config.categoryIDs.ig],
-      storeAs: 'interestGroups'
-    })
+export function getInterestGroups(firestore, status) {
+
+    if(status) {
+      firestore
+      .get({
+        collection: 'groups',
+        orderBy: ['name'],
+        where: [
+          ['category', '==', config.categoryIDs.ig],
+          ['status', '==', status],
+        ],
+        storeAs: 'interestGroups'
+      })
+    } else {
+      firestore
+      .get({
+        collection: 'groups',
+        orderBy: ['name'],
+        where: ['category', '==', config.categoryIDs.ig],
+        storeAs: 'interestGroups'
+      })
+    }
 }
 
 export function createInterestGroup(firestore, interestGroup, callback) {
