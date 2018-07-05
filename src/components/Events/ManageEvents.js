@@ -138,7 +138,6 @@ class ManageEvents extends Component {
   render() {
     const { filter } = this.state
     const { auth, history, userEvents, eventTypes, spaces } = this.props
-    console.log(this.props)
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')

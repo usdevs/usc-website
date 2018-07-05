@@ -13,7 +13,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import InterestGroupForm from './InterestGroupForm'
 import { withRouter } from 'react-router-dom'
 
-class CreateIG extends Component {
+class CreateInterestGroup extends Component {
   constructor(props) {
     super(props);
 
@@ -117,4 +117,4 @@ const mapStateToProps = state => {
 export default withRouter(compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(CreateIG))
+)(CreateInterestGroup))

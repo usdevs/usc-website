@@ -64,6 +64,15 @@ export function formatFirestoreEvent(event, uid, googleEventID) {
 export function formatFirestoreGroup(group, type) {
   switch (type) {
     case 'interestGroup':
+      var members = {}
+
+      _.forEach(group.members, (member) => {
+        members = {
+          ...members,
+          [member.id]: true,
+        }
+      })
+
       var interestGroup = {
         status: group.status,
         name: group.name,
@@ -73,7 +82,8 @@ export function formatFirestoreGroup(group, type) {
         activities: group.activities,
         support: group.support,
         logo: group.logo,
-        leaderID: group.members[0].id
+        leaderID: group.members[0].id,
+        members: members,
       }
 
       if(group.chat !== '' && !(group.chat.startsWith("http://") || group.chat.startsWith("https://"))) {
@@ -254,15 +264,17 @@ export function getInterestGroups(firestore, status) {
 export function createInterestGroup(firestore, interestGroup, callback) {
   firestore
   .add({ collection: 'groups' }, formatFirestoreGroup(interestGroup, 'interestGroup'))
-  .then((snapshot) => {
-    _.forEach(interestGroup.members, (member) => {
-      firestore
-      .add({ collection: 'groupMembership' }, {
-        groupID: snapshot.id,
-        memberID: member.id
-      })
-    })
+  .then((snapshot) => callback())
+}
 
-    callback()
+export function getUserInterestGroups(firestore, userID, callback, alias) {
+  const whereField = 'members.' + userID
+  firestore
+  .get({
+    collection: 'groups',
+    where: [
+      [whereField, '==', true]
+    ],
+    storeAs: alias
   })
 }

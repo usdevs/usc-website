@@ -54,12 +54,12 @@ const categories = [
     }, {
       name: 'Create Interest Group',
       icon: 'plus',
-      link: '/createig',
+      link: '/createinterestgroup',
       color: 'mediumseagreen'
     }, {
       name: 'Manage My Interest Groups',
       icon: 'file-alt',
-      link: '/manageig',
+      link: '/manageinterestgroups',
       color: 'mediumseagreen'
     }]
   }

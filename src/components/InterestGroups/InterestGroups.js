@@ -9,7 +9,7 @@ import {
   Button,
   Input
 } from 'reactstrap';
-import IGCard from './IGCard'
+import InterestGroupCard from './InterestGroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getInterestGroups } from '../../utils/actions'
 import { config } from '../../resources/config'
@@ -77,8 +77,7 @@ class InterestGroups extends Component {
   render() {
     const { firestore } = this.context.store
     const { filter } = this.state
-    const { interestGroups, igTypes, userProfiles, firebase } = this.props
-    console.log(filter)
+    const { interestGroups, igTypes, firebase } = this.props
 
     const filteredGroups = this.filterGroups(interestGroups)
 
@@ -108,12 +107,11 @@ class InterestGroups extends Component {
               isLoaded(interestGroups) && isLoaded(igTypes) ?
                 filteredGroups.length > 0 ?
                   filteredGroups.map((interestGroup) => <Col className="mb-3" xs="12" md="6" key={interestGroup.id}>
-                    <IGCard
+                    <InterestGroupCard
                       firebase={firebase}
                       firestore={firestore}
                       interestGroup={interestGroup}
                       igTypes={igTypes}
-                      userProfiles={userProfiles}
                     />
                   </Col>)
                 : <Col><h3><FontAwesomeIcon icon="frown" /> No Interest Groups match your criteria </h3></Col>
@@ -129,7 +127,6 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     interestGroups: state.firestore.ordered.interestGroups,
     igTypes: state.firestore.data.igTypes,
-    userProfiles: state.firestore.data.userProfiles,
   }
 }
 

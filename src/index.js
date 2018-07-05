@@ -8,20 +8,25 @@ import { Provider } from 'react-redux';
 import { reactReduxFirebase } from 'react-redux-firebase'
 import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase'
-import Home from './components/General/Home';
-import AboutUs from './components/General/AboutUs';
-import Events from './components/Events/Events';
-import Spaces from './components/Events/Spaces';
-import Navbar from './components/General/Navbar';
-import ContactUs from './components/General/ContactUs';
-import Dashboard from './components/General/Dashboard';
-import CreateEvent from './components/Events/CreateEvent';
-import ManageEvents from './components/Events/ManageEvents';
-import EditEvent from './components/Events/EditEvent';
-import CreateIG from './components/InterestGroups/CreateIG';
+import Home from './components/General/Home'
+import AboutUs from './components/General/AboutUs'
+import Events from './components/Events/Events'
+import Spaces from './components/Events/Spaces'
+import Navbar from './components/General/Navbar'
+import ContactUs from './components/General/ContactUs'
+import Dashboard from './components/General/Dashboard'
+import CreateEvent from './components/Events/CreateEvent'
+import ManageEvents from './components/Events/ManageEvents'
+import EditEvent from './components/Events/EditEvent'
+import EventAdmin from './components/Events/EventAdmin'
+import CreateInterestGroup from './components/InterestGroups/CreateInterestGroup'
 import InterestGroups from './components/InterestGroups/InterestGroups'
-import registerServiceWorker from './registerServiceWorker';
-import 'bootstrap/dist/css/bootstrap.css';
+import InterestGroup from './components/InterestGroups/InterestGroup'
+import ManageInterestGroups from './components/InterestGroups/ManageInterestGroups'
+import EditInterestGroup from './components/InterestGroups/EditInterestGroup'
+import InterestGroupAdmin from './components/InterestGroups/InterestGroupAdmin'
+import registerServiceWorker from './registerServiceWorker'
+import 'bootstrap/dist/css/bootstrap.css'
 import { createStore } from 'redux'
 import reducers from './reducers'
 import fontawesome from '@fortawesome/fontawesome'
@@ -128,8 +133,13 @@ render(
             <Route path="/createevent" component={CreateEvent}/>
             <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/editevent/:eventID" component={EditEvent}/>
-            <Route path="/createig" component={CreateIG}/>
+            <Route path="/eventadmin" component={InterestGroupAdmin}/>
+            <Route path="/createinterestgroup" component={CreateInterestGroup}/>
             <Route path="/interestgroups" component={InterestGroups}/>
+            <Route path="/interestgroup/:igID" component={InterestGroup}/>
+            <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
+            <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>
+            <Route path="/interestgroupadmin" component={InterestGroupAdmin}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

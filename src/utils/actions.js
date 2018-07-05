@@ -16,6 +16,7 @@ import {
   createInterestGroup as createFirestoreInterestGroup,
   getInterestGroupTypes as getFirestoreInterestGroupTypes,
   getInterestGroups as getFirestoreInterestGroups,
+  getUserInterestGroups as getFirestoreUserInterestGroups,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -193,6 +194,11 @@ export function getInterestGroupTypes(firestore) {
 export function getInterestGroups(firestore, status) {
   getInterestGroupTypes(firestore)
   getFirestoreInterestGroups(firestore, status)
+}
+
+export function getUserInterestGroups(firestore, userID, callback = () => {}, alias = 'userInterestGroups') {
+  getInterestGroupTypes(firestore)
+  getFirestoreUserInterestGroups(firestore, userID, callback, alias)
 }
 
 export function createInterestGroup(firestore, firebase, interestGroup, callback) {

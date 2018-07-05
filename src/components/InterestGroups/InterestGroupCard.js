@@ -5,7 +5,7 @@ import { config } from '../../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 
-class IGCard extends Component {
+class InterestGroupCard extends Component {
   constructor(props) {
     super(props)
 
@@ -35,7 +35,7 @@ class IGCard extends Component {
 
   render() {
     const { logo } = this.state
-    const { interestGroup, igTypes, userProfiles } = this.props
+    const { interestGroup, igTypes } = this.props
     const { name, type, description, activities } = interestGroup
 
     return(<Card body className="h-100">
@@ -61,4 +61,4 @@ class IGCard extends Component {
   }
 }
 
-export default IGCard
+export default InterestGroupCard
