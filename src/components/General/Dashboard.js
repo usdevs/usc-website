@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { headerContactUs as header } from '../../resources/images.js'
+import { headerDashboard as header } from '../../resources/images.js'
 
 const categories = [
 /*  {

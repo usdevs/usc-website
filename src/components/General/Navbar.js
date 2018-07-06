@@ -52,6 +52,7 @@ class SiteNavbar extends Component {
   }
 
   render() {
+    const { isOpen } = this.state
     const { auth, firebase, history } = this.props;
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 
@@ -63,31 +64,41 @@ class SiteNavbar extends Component {
           <Nav className="ml-auto" navbar>
             <NavItem>
               <NavLink onClick={() => {
-                this.toggle()
+                if(isOpen) {
+                  this.toggle()
+                }
                 history.push('/about')
               }}>About Us</NavLink>
             </NavItem>
             <NavItem>
               <NavLink onClick={() => {
-                this.toggle()
+                if(isOpen) {
+                  this.toggle()
+                }
                 history.push('/events')
               }}>Events</NavLink>
             </NavItem>
             <NavItem>
               <NavLink onClick={() => {
-                this.toggle()
+                if(isOpen) {
+                  this.toggle()
+                }
                 history.push('/spaces')
               }}>Spaces</NavLink>
             </NavItem>
             <NavItem>
               <NavLink onClick={() => {
-                this.toggle()
+                if(isOpen) {
+                  this.toggle()
+                }
                 history.push('/interestgroups')
               }}>Interest Groups</NavLink>
             </NavItem>
             <NavItem>
               <NavLink onClick={() => {
-                this.toggle()
+                if(isOpen) {
+                  this.toggle()
+                }
                 history.push('/contactus')
               }}>Contact Us</NavLink>
             </NavItem>
@@ -95,7 +106,9 @@ class SiteNavbar extends Component {
               signedIn ?
               <NavItem>
                 <NavLink onClick={() => {
-                  this.toggle()
+                  if(isOpen) {
+                    this.toggle()
+                  }
                   history.push('/dashboard')
                 }} className="border border-primary rounded text-primary" style={{fontWeight: 500}}><FontAwesomeIcon icon="columns" />{ ' ' }Dashboard</NavLink>
               </NavItem> : ''
@@ -111,14 +124,18 @@ class SiteNavbar extends Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem onClick={() => {
-                    this.toggle()
+                    if(isOpen) {
+                      this.toggle()
+                    }
                     history.push('/settings')
                   }}>
                     <FontAwesomeIcon icon="toolbox" />{ ' ' } Settings
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={() => {
-                    this.toggle()
+                    if(isOpen) {
+                      this.toggle()
+                    }
                     signOut(firebase, ()=>{})
                   }}>
                     <FontAwesomeIcon icon="sign-out-alt" />{ ' ' } Log Out
