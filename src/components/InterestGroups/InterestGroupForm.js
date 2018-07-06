@@ -85,13 +85,37 @@ class InterestGroupForm extends Component {
         })
       }
 
-      getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
-        this.setProfile(snapshot.data(), interestGroup.leaderID)
+      const memberIDs = _.keys(interestGroup.members)
 
-        _.forEach(_.keys(interestGroup.members), (memberID) => {
+      getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
+        var profile = snapshot.data()
+        var profiles = []
+
+        profiles = profiles.concat({
+          id: interestGroup.leaderID,
+          profile: profile,
+          email: profile.email
+        })
+
+        _.forEach(memberIDs, (memberID) => {
           if(memberID !== interestGroup.leaderID) {
             getUserProfile(firestore, memberID, (snapshot) => {
-                this.setProfile(snapshot.data(), memberID)
+              var profile = snapshot.data()
+
+              profiles = profiles.concat({
+                id: memberID,
+                profile: profile,
+                email: profile.email
+              })
+
+              if(memberIDs.length === profiles.length) {
+                this.setState({
+                  interestGroup: {
+                    ...interestGroup,
+                    members: profiles
+                  }
+                })
+              }
             })
           }
         })
@@ -102,22 +126,6 @@ class InterestGroupForm extends Component {
       ...originalState,
       interestGroup: initialIG
     }
-  }
-
-  setProfile = (profile, memberID) => {
-    const { interestGroup } = this.state
-    const { members } = interestGroup
-
-    this.setState({
-      interestGroup: {
-        ...interestGroup,
-        members: members.concat({
-          id: memberID,
-          profile: profile,
-          email: profile.email
-        })
-      }
-    })
   }
 
   handleFormChange = (value, type, info) => {
@@ -243,8 +251,8 @@ class InterestGroupForm extends Component {
 
     var igMembers = []
 
-    if(!_.isArray(members)) {
-      return igMembers
+    if(!_.isArray(members) || interestGroup.original && (_.keys(interestGroup.original.members).length !== members.length)) {
+      return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
     }
 
     for(var i = 0; i < members.length; i++) {
