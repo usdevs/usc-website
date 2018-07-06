@@ -2,7 +2,7 @@ export const config = {
   timeInterval: 30,
   posterFilePath: 'poster',
   logoFilePath: 'logo',
-  minimumIGMembers: 3,
+  minimumIGMembers: 1,
   descriptionPreviewLength: 100,
   categoryIDs: {
     ig: '0ee1DDaz3D9ZdsZTk29p',

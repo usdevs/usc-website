@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import { headerAboutUs as carouselOne, headerContactUs as carouselTwo, headerDashboard as carouselThree } from '../../resources/images';
+import { carouselOne, carouselTwo, carouselThree } from '../../resources/images';
 import {
   UncontrolledCarousel,
   Container,
@@ -21,21 +21,21 @@ import { withRouter } from 'react-router-dom'
 const items = [
   {
     src: carouselOne,
+    altText: 'Renaissance',
+    caption: 'USC FOP 2018 O\'Camp Finale Night',
+    header: 'Renaissance'
+  },
+  {
+    src: carouselTwo,
     altText: 'Welcome',
     caption: 'The 17th USC Committee',
     header: 'Welcome'
   },
   {
-    src: carouselTwo,
-    altText: 'Welcome',
-    caption: 'Freshmen Orientation Project 2017',
-    header: 'Aurora'
-  },
-  {
     src: carouselThree,
-    altText: 'Welcome',
-    caption: 'Cinnamon College',
-    header: 'Our Home'
+    altText: 'End of an Era',
+    caption: 'AY17/18 Closes',
+    header: 'End of Year Dinner'
   }
 ];
 

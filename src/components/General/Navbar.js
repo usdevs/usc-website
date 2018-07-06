@@ -19,6 +19,7 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { signOut } from '../../utils/actions'
 import { logo } from '../../resources/images'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LoginModal from './LoginModal'
 
 var logoStyle = {
@@ -51,8 +52,9 @@ class SiteNavbar extends Component {
   }
 
   render() {
-
     const { auth, firebase, history } = this.props;
+    const signedIn = isLoaded(auth) && !isEmpty(auth)
+
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/"><img src={logo} style={logoStyle} alt="logo" /></NavbarBrand>
@@ -60,39 +62,72 @@ class SiteNavbar extends Component {
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink onClick={() => history.push('/about')}>About Us</NavLink>
+              <NavLink onClick={() => {
+                this.toggle()
+                history.push('/about')
+              }}>About Us</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink onClick={() => history.push('/events')}>Events</NavLink>
+              <NavLink onClick={() => {
+                this.toggle()
+                history.push('/events')
+              }}>Events</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink onClick={() => history.push('/spaces')}>Spaces</NavLink>
+              <NavLink onClick={() => {
+                this.toggle()
+                history.push('/spaces')
+              }}>Spaces</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink onClick={() => history.push('/interestgroups')}>Interest Groups</NavLink>
+              <NavLink onClick={() => {
+                this.toggle()
+                history.push('/interestgroups')
+              }}>Interest Groups</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink onClick={() => history.push('/contactus')}>Contact Us</NavLink>
+              <NavLink onClick={() => {
+                this.toggle()
+                history.push('/contactus')
+              }}>Contact Us</NavLink>
             </NavItem>
             {
-              !isLoaded(auth) ? '' : !isEmpty(auth) ? <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Account
+              signedIn ?
+              <NavItem>
+                <NavLink onClick={() => {
+                  this.toggle()
+                  history.push('/dashboard')
+                }} className="border border-primary rounded text-primary" style={{fontWeight: 500}}><FontAwesomeIcon icon="columns" />{ ' ' }Dashboard</NavLink>
+              </NavItem> : ''
+            }
+            {
+              !isLoaded(auth) ? <FontAwesomeIcon icon="spinner" spin /> : signedIn ?
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret className="text-primary">
+                  <h4 className="d-inline" style={{fontWeight: 500}}>
+                    { auth.displayName }
+                    <img src={auth.photoURL} className="rounded-circle mb-0 ml-2" alt="Avatar" style={{maxHeight: "30px"}} />
+                  </h4>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem onClick={() => history.push('/dashboard')}>
-                    Dashboard
-                  </DropdownItem>
-                  <DropdownItem>
-                    Manage
+                  <DropdownItem onClick={() => {
+                    this.toggle()
+                    history.push('/settings')
+                  }}>
+                    <FontAwesomeIcon icon="toolbox" />{ ' ' } Settings
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={() => signOut(firebase, ()=>{})}>
-                    Log Out
+                  <DropdownItem onClick={() => {
+                    this.toggle()
+                    signOut(firebase, ()=>{})
+                  }}>
+                    <FontAwesomeIcon icon="sign-out-alt" />{ ' ' } Log Out
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown> :
-              <Button color="primary" onClick={this.toggleLogin.bind(this)}>Login</Button>
+              <NavItem>
+                <NavLink onClick={this.toggleLogin.bind(this)} className="border border-primary rounded text-primary" style={{fontWeight: 500}}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' } Log In</NavLink>
+              </NavItem>
             }
 
           </Nav>

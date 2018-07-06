@@ -54,8 +54,10 @@ class LoginModal extends Component {
     const { isOpen, toggle, className } = this.props;
 
     return (<Modal isOpen={ isOpen } toggle={ toggle } className={ className }>
-        <ModalHeader toggle={ toggle }>Log In</ModalHeader>
         <ModalBody>
+          <h2 style={{fontWeight: 300}}>Log In</h2>
+          <p>Log into the NUS University Scholars Club Website here.<br/><br/>We require permission to access your Google Calendar for the Events System.</p>
+          <p className="text-danger"><small>Any user found to not be from the University Scholars Programme, National University of Singapore will be banned.</small></p>
           { !window.gapi.client || formSubmitting ? <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p> : <GoogleButton color="primary" onClick={this.handleLogin.bind(this)} /> }
           { login === "failure" ? <Alert color="danger">{ error.message }</Alert> : ''}
         </ModalBody>

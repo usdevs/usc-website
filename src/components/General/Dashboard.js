@@ -9,9 +9,10 @@ import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { headerContactUs as header } from '../../resources/images.js'
 
 const categories = [
-  {
+/*  {
     name: 'General',
     buttons: [{
       name: 'USP Life Hacks',
@@ -24,7 +25,7 @@ const categories = [
       link: '/',
       color: 'dodgerblue'
     }]
-  },
+  },*/
   {
     name: 'Events',
     buttons: [{
@@ -105,6 +106,11 @@ class Dashboard extends Component {
 
     return(
       <Container className="mb-5">
+        <Row>
+          <Col>
+            <img src={header} className="img-fluid" alt="header" />
+          </Col>
+        </Row>
         <Row>
           <Col>
             <h1 style={{fontWeight: 300}}>Dashboard</h1>

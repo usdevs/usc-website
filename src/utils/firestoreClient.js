@@ -96,7 +96,6 @@ export function formatFirestoreGroup(group, type) {
       }
 
       return interestGroup
-      break
     default:
       break
   }

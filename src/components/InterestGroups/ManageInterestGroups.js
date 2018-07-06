@@ -53,7 +53,7 @@ class ManageInterestGroups extends Component {
             id: igID
           }}
           igTypes={igTypes}
-          showStatus={true}
+          manageMode={true}
         />
       </Col>)
     })

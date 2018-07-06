@@ -14,6 +14,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getInterestGroups } from '../../utils/actions'
 import { config } from '../../resources/config'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { headerInterestGroups as header } from '../../resources/images.js'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
@@ -83,6 +84,11 @@ class InterestGroups extends Component {
 
     return(
       <Container>
+        <Row>
+          <Col>
+            <img src={header} className="img-fluid" alt="header" />
+          </Col>
+        </Row>
         <Row>
           <Col>
             <h1 style={{fontWeight: 300}}>Interest Groups</h1>

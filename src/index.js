@@ -32,7 +32,8 @@ import brands from '@fortawesome/fontawesome-free-brands'
 import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
-  faTrashAlt, faFrown, faUsers, faComments, faSignInAlt
+  faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
+  faToolbox
 } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
@@ -40,7 +41,7 @@ import { initialiseGAPI } from './utils/actions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
-  faFrown, faUsers, faComments, faSignInAlt)
+  faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox)
 
 
 firebase.initializeApp(firebaseConfig)

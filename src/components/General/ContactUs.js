@@ -11,6 +11,7 @@ import {
   GoogleMap,
   Marker,
 } from "react-google-maps";
+import { headerContactUs as header } from '../../resources/images.js'
 
 const MapWithAMarker = withScriptjs(withGoogleMap(props =>
   <GoogleMap
@@ -28,6 +29,11 @@ class ContactUs extends Component {
   render() {
     return(
       <Container>
+        <Row>
+          <Col>
+            <img src={header} className="img-fluid" alt="header" />
+          </Col>
+        </Row>
         <Row>
           <Col>
             <h1 className="display-4">Contact Us</h1>

@@ -25,7 +25,7 @@ const originalMembers = () => {
 }
 
 const newInterestGroup = {
-  status: 'pending',
+  status: 'active',
   name: '',
   type: '',
   category: '',
