@@ -5,6 +5,7 @@ import {
   getEvents as getFirestoreEvents,
   getEventsAfter as getFirestoreEventsAfter,
   getEventTypes as getFirestoreEventTypes,
+  getGroupEvents as getFirestoreGroupEvents,
   getSpaces as getFirestoreSpaces,
   watchEvents as watchFirestoreEvents,
   uploadFile as uploadFirebaseFile,
@@ -22,6 +23,8 @@ import {
   getInterestGroups as getFirestoreInterestGroups,
   getUserInterestGroups as getFirestoreUserInterestGroups,
   getGroup as getFirestoreGroup,
+  getGroups as getFirestoreGroups,
+  getGroupTypes as getFirestoreGroupTypes,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -164,9 +167,14 @@ export function getUpcomingEvents(firestore, limit) {
   getFirestoreEventsAfter(firestore, null, 'upcomingEvents', moment(), limit)
 }
 
-export function getUserEvents(firestore, userID) {
+export function getUserEvents(firestore, userID, callback = () => {}) {
   getEvents(firestore)
-  getFirestoreUserEvents(firestore, userID)
+  getFirestoreUserEvents(firestore, userID, callback)
+}
+
+export function getGroupEvents(firestore, groupID, callback = () => {}) {
+  getEvents(firestore)
+  getFirestoreGroupEvents(firestore, groupID, callback)
 }
 
 export function getMyProfile(firestore, auth, callback) {
@@ -257,6 +265,15 @@ export function deleteGroup(firestore, firebase, group, callback) {
 export function getInterestGroup(firestore, igID, callback = () => {}) {
   getInterestGroupTypes(firestore)
   getFirestoreGroup(firestore, igID, callback, 'interestGroup')
+}
+
+export function getGroupTypes(firestore, callback = () => {}) {
+  getFirestoreGroupTypes(firestore, callback)
+}
+
+export function getGroups(firestore, callback = () => {}) {
+  getGroupTypes(firestore, callback)
+  getFirestoreGroups(firestore, callback)
 }
 
 export function initialiseGAPI() {

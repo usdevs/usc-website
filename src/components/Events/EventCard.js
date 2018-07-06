@@ -12,7 +12,10 @@ class EventCard extends Component {
 
     this.state = {
       poster: null,
+      modal: false,
     }
+
+    this.toggleModal = this.toggleModal.bind(this);
 
     const { event, firebase } = props
     const { poster } = event
@@ -26,11 +29,19 @@ class EventCard extends Component {
     }
   }
 
+  toggleModal() {
+    const { modal } = this.state
+
+    this.setState({
+      modal: !modal
+    })
+  }
+
   render() {
-    const { poster } = this.state
+    const { poster, modal } = this.state
     const { event, eventTypes, spaces, buttonAction, buttonText, firebase, modalOpen, hasModal } = this.props
 
-    return(<Card body className="h-100">
+    return(<Card body>
       <Container className="m-0 p-0">
         <Row>
           {
@@ -55,9 +66,9 @@ class EventCard extends Component {
               : ''
             }
             <CardText>
-              <Button outline className="mb-1" color="primary" onClick={buttonAction}>{ buttonText }</Button>
+              <Button outline className="mb-1" color="primary" onClick={ buttonAction ? buttonAction : this.toggleModal}>{ buttonText }</Button>
             </CardText>
-            { hasModal ? <EventModal key={event.id} isOpen={modalOpen} toggle={buttonAction} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} /> : ''}
+            { hasModal ? <EventModal key={event.id} isOpen={modal} toggle={this.toggleModal} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} /> : ''}
           </Col>
         </Row>
       </Container>

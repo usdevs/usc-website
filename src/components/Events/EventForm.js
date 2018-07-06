@@ -6,10 +6,12 @@ import {
 import { config } from '../../resources/config'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
+import Autosuggest from 'react-autosuggest';
 import _ from 'lodash'
 import DatePickerForm from '../reusable/DatePickerForm'
 import ImageUploader from '../reusable/ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import InterestGroupCard from '../InterestGroups/InterestGroupCard'
 import { roundTime, isToday } from '../../utils/utils'
 import { getFile } from '../../utils/actions'
 import { withRouter } from 'react-router-dom'
@@ -39,15 +41,22 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
 
-    const { event, firebase } = props
+    const { event, firebase, groupsUnordered } = props
 
     var initialEvent = newEvent
 
     if(event) {
-      const { venue, otherVenueSelected, poster } = event
+      const { venue, otherVenueSelected, organisedBy, poster } = event
       initialEvent = {
         ...event,
         original: event,
+      }
+
+      if(organisedBy) {
+        initialEvent = {
+          ...event,
+          organisedBy: groupsUnordered[event.organisedBy],
+        }
       }
 
       if(otherVenueSelected) {
@@ -64,14 +73,55 @@ class EventForm extends Component {
     }
 
     this.state = {
+      organisedBy: '',
       nameEntry: false,
       typeEntry: false,
       venueEntry: false,
       otherVenueEntry: false,
       submitFailure: false,
+      suggestions: [],
       event: initialEvent,
     }
   }
+
+  getGroupSuggestions = value => {
+    const { groups } = this.props
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : groups.filter(group =>
+      group.name.toLowerCase().slice(0, inputLength) === inputValue
+    );
+  };
+
+  getSuggestionValue = suggestion => {
+    this.handleFormChange(suggestion, 'organisedBy')
+    return suggestion.name
+  };
+
+  renderSuggestion = suggestion => (
+    <span className="suggestion-content list-unstyled">
+      <InterestGroupCard
+        firebase={this.props.firebase}
+        firestore={this.props.firestore}
+        interestGroup={suggestion}
+        igTypes={this.props.groupTypes}
+        hideButtons
+      />
+    </span>
+  );
+
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({
+      suggestions: this.getGroupSuggestions(value)
+    });
+  };
+
+  onSuggestionsClearRequested = () => {
+    this.setState({
+      suggestions: []
+    });
+  };
 
   loadPoster = (firebase, poster) => {
     getFile(firebase, poster, (url) => {
@@ -203,6 +253,15 @@ class EventForm extends Component {
           }
         })
         break
+      case 'organisedBy':
+        this.setState({
+          organisedBy: value ? value.name : '',
+          event: {
+            ...event,
+            organisedBy: value
+          }
+        })
+        break
       case 'poster':
         this.setState({
           poster: value ? value.preview : value,
@@ -286,6 +345,7 @@ class EventForm extends Component {
 
   resetForm = () => {
     this.setState({
+      organisedBy: '',
       nameEntry: false,
       typeEntry: false,
       venueEntry: false,
@@ -293,20 +353,35 @@ class EventForm extends Component {
       submitFailure: false,
       formSubmitting: false,
       poster: null,
+      suggestions: [],
       event: newEvent,
     })
   }
 
   render() {
-    const { event, submitFailure, formSubmitting } = this.state
+    const { event, submitFailure, formSubmitting, organisedBy, suggestions, organiserProfile } = this.state
     const { startDate, endDate, name, multiDay, venue, type, fullDay, internal, spaceOnly, description, regLink } = event
-    const { eventTypes, spaces, buttonText } = this.props
+    const { eventTypes, spaces, buttonText, firebase, firestore, groupTypes } = this.props
 
     const errors = this.validate();
     const begSDate = startDate.clone().startOf('day')
     const endSDate = startDate.clone().endOf('day')
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
+
+      console.log(event)
+
+    const inputProps = {
+      placeholder: "Enter an IG or GUI Name",
+      value: organisedBy,
+      onChange: (event, { newValue }) => {
+        this.setState({
+          organisedBy: newValue
+        });
+      }
+    };
+
+    const renderInputComponent = inputProps => (<Input type="text" {...inputProps} />);
 
     return(<Form className="m-3">
       <FormGroup>
@@ -422,6 +497,35 @@ class EventForm extends Component {
             </Row> : ''
           }
         </Container>
+      </FormGroup>
+      <FormGroup>
+        <Label for="name"><h3>Organised By (Optional)</h3></Label>
+        {
+          groupTypes ?
+            event.organisedBy ?
+            <div>
+              <InterestGroupCard
+                firebase={firebase}
+                firestore={firestore}
+                interestGroup={event.organisedBy}
+                igTypes={groupTypes}
+                hideButtons
+              />
+              <Button color="danger" className="mt-2" outline onClick={() => this.handleFormChange(null, 'organisedBy')}>
+                <FontAwesomeIcon icon="trash-alt" />
+              </Button>
+            </div>
+            : <Autosuggest
+              suggestions={suggestions}
+              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              getSuggestionValue={this.getSuggestionValue}
+              renderSuggestion={this.renderSuggestion}
+              inputProps={inputProps}
+              renderInputComponent={renderInputComponent}
+            />
+          : <h4 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading Groups...</h4>
+        }
       </FormGroup>
       <FormGroup>
         <Label for="name"><h3>Poster (Optional)</h3></Label>

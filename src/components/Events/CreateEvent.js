@@ -11,7 +11,7 @@ import EventForm from './EventForm'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import Calendar from './Calendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
-import { createEvent, getEvents, getEventsByMonth } from '../../utils/actions'
+import { createEvent, getEvents, getEventsByMonth, getGroups } from '../../utils/actions'
 import { formatEventsByDateTimeAndVenue, formatMonthEvents } from '../../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { withRouter } from 'react-router-dom'
@@ -34,6 +34,7 @@ class CreateEvent extends Component {
   componentWillMount() {
     const { firestore } = this.context.store
     getEvents(firestore, () => {}, moment())
+    getGroups(firestore, () => {})
   }
 
   changeSelectedDate = (date) => {
@@ -84,7 +85,9 @@ class CreateEvent extends Component {
 
   render() {
     const { selectedDate } = this.state
-    const { auth, history, events, eventTypes, spaces, eventTypesUnordered, spacesUnordered, eventsUnordered, firebase } = this.props
+    const { firestore } = this.context.store
+    const { auth, history, events, eventTypes, spaces, eventTypesUnordered,
+      spacesUnordered, eventsUnordered, firebase, groups, groupTypes } = this.props
 
 
     if(isLoaded(auth) && isEmpty(auth)) {
@@ -109,7 +112,11 @@ class CreateEvent extends Component {
                 eventTypes={eventTypes}
                 spaces={spaces}
                 buttonText='Create Event'
-                buttonOnSubmit={(event, callback) => this.createEvent(event, callback)} />
+                buttonOnSubmit={(event, callback) => this.createEvent(event, callback)}
+                groups={groups}
+                groupTypes={groupTypes}
+                firebase={firebase}
+                firestore={firestore} />
               : <h4><FontAwesomeIcon icon="spinner" spin /> Please wait...</h4>
             }
           </Col>
@@ -147,9 +154,10 @@ const mapStateToProps = state => {
     eventTypesUnordered: state.firestore.data.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces,
+    groups: state.firestore.ordered.groups,
+    groupTypes: state.firestore.data.groupTypes,
     auth: state.firebase.auth,
     firestore: state.firestore,
-    googleToken: state.googleToken,
   }
 }
 

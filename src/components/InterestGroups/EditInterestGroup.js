@@ -9,9 +9,11 @@ import {
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { updateInterestGroup, deleteGroup, getInterestGroup } from '../../utils/actions'
+import { statusColor } from '../../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import InterestGroupForm from './InterestGroupForm'
 import { withRouter } from 'react-router-dom'
+import _ from 'lodash'
 
 class EditInterestGroup extends Component {
   constructor(props) {
@@ -152,6 +154,9 @@ class EditInterestGroup extends Component {
         <Col>
           { isLoaded(auth) && isLoaded(igTypes) && interestGroup ?
             <div>
+              <div className={"d-flex justify-content-center" }>
+                <h3 className={"p-2 align-middle border rounded border-" + statusColor[interestGroup.status] +"  text-" + statusColor[interestGroup.status]}>Status: {_.capitalize(interestGroup.status)}</h3>
+              </div>
               <InterestGroupForm
                 firestore={firestore}
                 firebase={firebase}
@@ -166,7 +171,7 @@ class EditInterestGroup extends Component {
                 igTypesUnordered={igTypesUnordered} />
               <div className="d-flex justify-content-center">
                 <Button className="w-75" color="danger" onClick={() => this.toggle('delete')} block disabled={!window.gapi.client}>
-                  { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } Delete Interest Group
+                  { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } <FontAwesomeIcon icon="trash-alt" />{' '}Delete Interest Group
                 </Button>
               </div>
               <div className="d-flex justify-content-center">

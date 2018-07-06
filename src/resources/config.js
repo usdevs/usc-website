@@ -16,6 +16,12 @@ export const config = {
   }
 }
 
+export const statusColor = {
+  "active": 'success',
+  "pending": 'info',
+  "inactive": 'danger',
+}
+
 export const firebaseConfig = {
     apiKey: "***REMOVED***",
     authDomain: "usc-website-206715.firebaseapp.com",

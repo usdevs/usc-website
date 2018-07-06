@@ -56,6 +56,7 @@ export function formatFirestoreEvent(event, uid, googleEventID) {
     poster: event.poster,
     description: event.description,
     regLink: event.regLink,
+    organisedBy: event.organisedBy ? event.organisedBy.id : null,
     creator: uid,
     original: null,
   }
@@ -153,6 +154,17 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
   .then(() => callback())
 }
 
+export function getGroupEvents(firestore, groupID, callback = () => {}) {
+  firestore
+  .get({
+    collection: 'events',
+    where: ['organisedBy', '==', groupID],
+    orderBy: ['startDate'],
+    storeAs: 'groupEvents'
+  })
+  .then((snapshot) => console.log(snapshot))
+}
+
 export function getEventsAfter(firestore, callback, alias, date, limit) {
   firestore
   .get({
@@ -173,7 +185,7 @@ export function getEvent(firestore, eventID) {
     storeAs: 'event'})
 }
 
-export function getUserEvents(firestore, userID) {
+export function getUserEvents(firestore, userID, callback) {
   firestore
   .get({
     collection: 'events',
@@ -182,6 +194,7 @@ export function getUserEvents(firestore, userID) {
     ],
     orderBy: ['startDate'],
     storeAs: 'userEvents'})
+  .then((snapshot) => callback(snapshot))
 }
 
 export function watchEvents(firestore) {
@@ -226,6 +239,24 @@ export function getFile(firebase, path, callback) {
   .ref(path)
   .getDownloadURL()
   .then((url) => callback(url))
+}
+
+export function getGroupTypes(firestore, callback = () => {}) {
+  firestore
+  .get({
+    collection: 'groupTypes',
+    orderBy: ['name']
+  })
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getGroups(firestore, callback = () => {}) {
+  firestore
+  .get({
+    collection: 'groups',
+    orderBy: ['name']
+  })
+  .then((snapshot) => callback(snapshot))
 }
 
 export function getInterestGroupTypes(firestore, callback = () => {}) {

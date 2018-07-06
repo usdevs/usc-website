@@ -44,32 +44,12 @@ class Home extends Component {
     store: PropTypes.object.isRequired
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      eventModals: {},
-    }
-  }
-
-  toggleEventModal(eventID) {
-    const { eventModals } = this.state
-
-    this.setState({
-      eventModals: {
-        ...eventModals,
-        [eventID]: !eventModals[eventID]
-      }
-    })
-  }
-
   componentWillMount() {
     const { firestore } = this.context.store
     getUpcomingEvents(firestore, 10)
   }
 
   render() {
-    var { eventModals } = this.state
     var { upcomingEvents, spaces, eventTypes, firebase, history } = this.props
 
     return (
@@ -99,9 +79,7 @@ class Home extends Component {
                           event={event}
                           eventTypes={eventTypes}
                           spaces={spaces}
-                          buttonAction={() => this.toggleEventModal(event.id)}
                           buttonText='See More'
-                          modalOpen={eventModals[event.id]}
                           firebase={firebase}
                           hasModal={true} />
                       </Col>

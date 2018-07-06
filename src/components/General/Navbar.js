@@ -69,6 +69,9 @@ class SiteNavbar extends Component {
               <NavLink onClick={() => history.push('/spaces')}>Spaces</NavLink>
             </NavItem>
             <NavItem>
+              <NavLink onClick={() => history.push('/interestgroups')}>Interest Groups</NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink onClick={() => history.push('/contactus')}>Contact Us</NavLink>
             </NavItem>
             {

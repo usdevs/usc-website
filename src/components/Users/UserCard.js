@@ -3,10 +3,10 @@ import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 
 class UserCard extends Component {
   render() {
-    const { user, leader } = this.props
+    const { user, leader, hideContact } = this.props
     const { avatarUrl, displayName, email } = user
 
-    return(<Card body className="h-100">
+    return(<Card body>
       <Container className="m-0 p-0">
         <Row className="d-flex align-items-center">
           {
@@ -18,7 +18,7 @@ class UserCard extends Component {
           }
           <Col xs="9">
             <h3 className="mb-0"><small>{displayName}</small></h3>
-            <h5 className="mb-0">{email}</h5>
+            { !hideContact ? <h5 className="mb-0">{email}</h5> : '' }
             { leader ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>Leader</h5> : ''}
           </Col>
         </Row>

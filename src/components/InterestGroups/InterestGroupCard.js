@@ -3,8 +3,10 @@ import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import { getUserProfile, getFile } from '../../utils/actions'
 import { config } from '../../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import EventCard from '../Events/EventCard'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
+import { statusColor } from '../../resources/config'
 
 class InterestGroupCard extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class InterestGroupCard extends Component {
 
   render() {
     const { logo } = this.state
-    const { interestGroup, igTypes, firebase, history } = this.props
+    const { interestGroup, igTypes, firebase, history, hideButtons, manageMode } = this.props
     const { id, name, type, description, activities, leader } = interestGroup
 
     const isLeader = firebase.auth ? leader === firebase.auth.uid : false
@@ -47,12 +49,21 @@ class InterestGroupCard extends Component {
           <Col xs="9">
             <h3 className="mb-0"><small>{name}</small></h3>
             <h5 className="mb-0">{igTypes[type].subName}</h5>
-            { isLeader ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
+            {
+              manageMode ?
+                <div className="d-flex align-items-left"><h5 className={"p-1 mb-2 mt-2 align-middle border rounded border-" + statusColor[interestGroup.status] +"  text-" + statusColor[interestGroup.status]}>Status: {_.capitalize(interestGroup.status)}</h5></div>
+              : ''
+            }
+            { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
             <p className="mb-2">
               { _.truncate(description, { 'length': config.descriptionPreviewLength }) }
             </p>
-            <Button color="primary" onClick={() => history.push('/interestgroup/'+id)}>Details</Button>
-            { isLeader ? <Button outline color="info" className="ml-3" onClick={() => history.push('/editinterestgroup/'+id)}>Edit</Button> : ''}
+            {
+              !hideButtons ?
+                <Button color="primary" onClick={() => history.push('/interestgroup/'+id)}>Details</Button>
+              : ''
+            }
+            { isLeader && manageMode && !hideButtons ? <Button outline color="info" className="ml-3" onClick={() => history.push('/editinterestgroup/'+id)}>Edit</Button> : ''}
           </Col>
         </Row>
       </Container>

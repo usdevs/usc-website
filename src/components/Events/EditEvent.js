@@ -9,7 +9,7 @@ import {
 import moment from 'moment'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventForm from './EventForm'
-import { getUserEvents, updateEvent, deleteEvent } from '../../utils/actions'
+import { getUserEvents, updateEvent, deleteEvent, getGroups } from '../../utils/actions'
 import { formatEvents } from '../../utils/utils'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
@@ -31,11 +31,17 @@ class EditEvent extends Component {
 
   componentWillMount() {
     const { firestore } = this.context.store
-    const { auth } = this.props
+    const { auth, history } = this.props
 
     if(isLoaded(auth) && !isEmpty(auth)) {
-      getUserEvents(firestore, auth.uid)
+      getUserEvents(firestore, auth.uid, (snapshot) => {
+        if (snapshot.empty) {
+          history.push('/manageevents')
+        }
+      })
     }
+
+    getGroups(firestore, () => {})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -120,7 +126,8 @@ class EditEvent extends Component {
 
   render() {
     const { eventID } = this.state
-    const { auth, eventTypes, spaces, userEvents, firebase, userEventsOriginal, history } = this.props
+    const { firestore } = this.context.store
+    const { auth, eventTypes, spaces, userEvents, firebase, userEventsOriginal, history, groups, groupTypes, groupsUnordered } = this.props
 
     if(isLoaded(auth) && isEmpty(auth)){
       history.push('/')
@@ -140,7 +147,7 @@ class EditEvent extends Component {
       <Row className="mb-3">
         <Col>
           {
-            isLoaded(eventTypes) && isLoaded(spaces) && userEvents[eventID] ?
+            isLoaded(eventTypes) && isLoaded(spaces) && userEvents[eventID] && groups && groupTypes ?
               <div>
                 <EventForm
                   event={userEvents[eventID]}
@@ -148,10 +155,14 @@ class EditEvent extends Component {
                   spaces={spaces}
                   buttonText='Save Changes'
                   buttonOnSubmit={(event, callback, clearSubmitting) => this.updateEvent(event, callback, clearSubmitting)}
-                  firebase={firebase} />
+                  firebase={firebase}
+                  firestore={firestore}
+                  groups={groups}
+                  groupsUnordered={groupsUnordered}
+                  groupTypes={groupTypes} />
                 <div className="d-flex justify-content-center">
                   <Button className="w-75" color="danger" onClick={() => this.toggle('delete')} block disabled={!window.gapi.client}>
-                    { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } Delete Event
+                    { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } <FontAwesomeIcon icon="trash-alt" />{' '}Delete Event
                   </Button>
                 </div>
                 <div className="d-flex justify-content-center">
@@ -176,6 +187,9 @@ const mapStateToProps = state => {
     eventTypes: state.firestore.ordered.eventTypes,
     spaces: state.firestore.ordered.spaces,
     spacesUnordered: state.firestore.data.spaces,
+    groups: state.firestore.ordered.groups,
+    groupsUnordered: state.firestore.data.groups,
+    groupTypes: state.firestore.data.groupTypes,
   }
 }
 
