@@ -85,6 +85,17 @@ class EditInterestGroup extends Component {
     })
   }
 
+  deleteGroup = (interestGroup, callback) => {
+    const { firebase } = this.props
+    const { firestore } = this.context.store
+    const { igID } = this.props.match.params
+
+    deleteGroup(firestore, firebase, {
+      ...interestGroup,
+      id: igID
+    }, callback)
+  }
+
   successModal = () => {
     const { successModal } = this.state
     const { history } = this.props

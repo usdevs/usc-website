@@ -109,6 +109,7 @@ class InterestGroupForm extends Component {
               })
 
               if(memberIDs.length === profiles.length) {
+                const { interestGroup } = this.state
                 this.setState({
                   interestGroup: {
                     ...interestGroup,
@@ -231,7 +232,7 @@ class InterestGroupForm extends Component {
 
   validate = (clearEntryChecks) => {
     const { interestGroup, nameEntry, typeEntry, descriptionEntry, activitiesEntry, supportEntry, membersEntry } = this.state
-    const { name, type, description, activities, support, members } = interestGroup
+    const { name, type, description, activities, support, members, original } = interestGroup
 
     return {
       name: (nameEntry || clearEntryChecks) ? !name : false,
@@ -241,7 +242,8 @@ class InterestGroupForm extends Component {
       support: false,
       members: membersEntry.map((memberEntry, index) => {
         return (memberEntry || clearEntryChecks) ? members[index]? !(members[index].profile) : false : false
-      })
+      }),
+      membersLoaded: original ? _.keys(original.members).length !== members.length : false
     }
   }
 
@@ -506,7 +508,7 @@ class InterestGroupForm extends Component {
         </FormGroup>
         <div className="d-flex justify-content-center" >
           <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting}>
-            { formSubmitting ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
+            { formSubmitting || errors.membersLoaded ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
           </Button>
         </div>
         <div className="d-flex justify-content-center" >

@@ -223,6 +223,7 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
 }
 
 export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}) {
+  console.log(interestGroup)
   if(interestGroup.original.logo !== interestGroup.logo) {
     if(interestGroup.original.logo) {
       deleteFirebaseFile(firebase, interestGroup.original.logo, () => {})
