@@ -66,6 +66,14 @@ const categories = [
 ]
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      login: this.props.match.params.login,
+    }
+  }
+
   createButton = (button) => {
     const { history } = this.props;
     const { name, icon, link, color } = button;
@@ -86,11 +94,12 @@ class Dashboard extends Component {
   }
 
   render() {
+    const { login } = this.state
     const { auth, history } = this.props;
 
     if(!isLoaded(auth)) {
-      return <div/>
-    } else if(isEmpty(auth)) {
+      return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
+    } else if(isEmpty(auth) && !login) {
       history.push('/')
     }
 

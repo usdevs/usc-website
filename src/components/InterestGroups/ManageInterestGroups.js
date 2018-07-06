@@ -64,8 +64,6 @@ class ManageInterestGroups extends Component {
     const { firestore } = this.context.store
     const { auth, history, interestGroups, igTypes, firebase } = this.props
 
-    console.log(this.props)
-
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
     }

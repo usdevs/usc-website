@@ -128,6 +128,7 @@ class EventForm extends Component {
         this.setState({
           event: {
             ...event,
+            internal: !spaceOnly,
             spaceOnly: !spaceOnly
           }
         })
@@ -291,6 +292,7 @@ class EventForm extends Component {
       otherVenueEntry: false,
       submitFailure: false,
       formSubmitting: false,
+      poster: null,
       event: newEvent,
     })
   }

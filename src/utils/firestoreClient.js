@@ -14,7 +14,7 @@ export function uploadFile(firebase, filePath, file, callback) {
       })
     })
     .catch((err) => {
-      console.log(err.message);
+      console.log(err);
     })
 }
 
@@ -27,7 +27,7 @@ export function deleteFile(firebase, path, callback) {
 }
 
 export function formatFirestoreEvent(event, uid, googleEventID) {
-  if(event.regLink !== '' && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
+  if(event.regLink && event.regLink !== '' && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
     event = {
       ...event,
       regLink: "http://" + event.regLink
@@ -81,12 +81,13 @@ export function formatFirestoreGroup(group, type) {
         description: group.description,
         activities: group.activities,
         support: group.support,
+        chat: group.chat,
         logo: group.logo,
         leaderID: group.members[0].id,
         members: members,
       }
 
-      if(group.chat !== '' && !(group.chat.startsWith("http://") || group.chat.startsWith("https://"))) {
+      if(group.chat && group.chat !== '' && !(group.chat.startsWith("http://") || group.chat.startsWith("https://"))) {
         interestGroup = {
           ...interestGroup,
           chat: "https://" + group.chat
@@ -107,9 +108,10 @@ export function createEvent(firestore, event, uid, googleEventID, callback) {
 }
 
 export function updateEvent(firestore, event, uid, callback) {
+  const newEvent = formatFirestoreEvent(event, uid)
   firestore
-  .set({ collection: 'events', doc: event.id }, formatFirestoreEvent(event, uid))
-  .then(() => callback())
+  .set({ collection: 'events', doc: event.id }, newEvent)
+  .then(() => callback(newEvent))
 }
 
 export function deleteEvent(firestore, event, callback) {
@@ -188,7 +190,7 @@ export function watchEvents(firestore) {
   ])
 }
 
-export function getUserProfile(firestore, userID, callback = () => {}, alias = 'userProfiles') {
+export function getUserProfile(firestore, userID, callback = () => {}, alias = 'userProfile') {
   firestore
   .get({
     collection: 'users',
@@ -205,7 +207,7 @@ export function getUserProfileByEmail(firestore, email, callback, alias = 'userP
       ['email', '==', email]
     ],
     storeAs: alias})
-    .then((snapshot) => callback(snapshot))
+  .then((snapshot) => callback(snapshot))
 }
 
 export function getEventTypes(firestore) {
@@ -238,7 +240,6 @@ export function getInterestGroupTypes(firestore, callback = () => {}) {
 }
 
 export function getInterestGroups(firestore, status) {
-
     if(status) {
       firestore
       .get({
@@ -262,9 +263,33 @@ export function getInterestGroups(firestore, status) {
 }
 
 export function createInterestGroup(firestore, interestGroup, callback) {
+  const group = formatFirestoreGroup(interestGroup, 'interestGroup')
   firestore
-  .add({ collection: 'groups' }, formatFirestoreGroup(interestGroup, 'interestGroup'))
-  .then((snapshot) => callback())
+  .add({ collection: 'groups' }, group)
+  .then((snapshot) => callback(group))
+}
+
+export function updateInterestGroup(firestore, interestGroup, callback) {
+  const group = formatFirestoreGroup(interestGroup, 'interestGroup')
+  firestore
+  .set({ collection: 'groups' , doc: interestGroup.id }, group)
+  .then((snapshot) => callback(group))
+}
+
+export function deleteGroup(firestore, group, callback) {
+  firestore
+  .delete({ collection: 'groups', doc: group.id })
+  .then(() => callback())
+}
+
+export function getGroup(firestore, groupID, callback, alias = 'group') {
+  firestore
+  .get({
+    collection: 'groups',
+    doc: groupID,
+    storeAs: alias
+  })
+  .then((snapshot) => callback(snapshot))
 }
 
 export function getUserInterestGroups(firestore, userID, callback, alias) {

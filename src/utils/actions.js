@@ -1,3 +1,5 @@
+/* global gapi */
+
 import {
   createEvent as createFirestoreEvent,
   getEvents as getFirestoreEvents,
@@ -14,9 +16,12 @@ import {
   getUserProfile as getFirestoreUserProfile,
   getUserProfileByEmail as getFirestoreUserProfileByEmail,
   createInterestGroup as createFirestoreInterestGroup,
+  updateInterestGroup as updateFirestoreInterestGroup,
+  deleteGroup as deleteFirestoreGroup,
   getInterestGroupTypes as getFirestoreInterestGroupTypes,
   getInterestGroups as getFirestoreInterestGroups,
   getUserInterestGroups as getFirestoreUserInterestGroups,
+  getGroup as getFirestoreGroup,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -25,6 +30,7 @@ import {
 } from './googleAPIClient'
 import moment from 'moment'
 import { config } from '../resources/config'
+import { firebaseConfig } from '../resources/config'
 
 export function createEvent(firestore, firebase, event, uid, spaces, callback) {
 
@@ -214,4 +220,79 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
   } else {
     createFirestoreInterestGroup(firestore, interestGroup, callback)
   }
+}
+
+export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}) {
+  if(interestGroup.original.logo !== interestGroup.logo) {
+    if(interestGroup.original.logo) {
+      deleteFirebaseFile(firebase, interestGroup.original.logo, () => {})
+    }
+
+    if(interestGroup.logo) {
+      uploadLogo(firebase, interestGroup.logo, (filePath) => {
+        interestGroup = {
+          ...interestGroup,
+          logo: filePath,
+        }
+
+        updateFirestoreInterestGroup(firestore, interestGroup, callback)
+      })
+    } else {
+      updateFirestoreInterestGroup(firestore, interestGroup, callback)
+    }
+  } else {
+    updateFirestoreInterestGroup(firestore, interestGroup, callback)
+  }
+}
+
+export function deleteGroup(firestore, firebase, group, callback) {
+  if(group.logo) {
+    deleteFirebaseFile(firebase, group.logo, () => {})
+  }
+
+  deleteFirestoreGroup(firestore, group, callback)
+}
+
+export function getInterestGroup(firestore, igID, callback = () => {}) {
+  getInterestGroupTypes(firestore)
+  getFirestoreGroup(firestore, igID, callback, 'interestGroup')
+}
+
+export function initialiseGAPI() {
+  const script = document.createElement("script");
+  script.src = "https://apis.google.com/js/api.js";
+  document.body.appendChild(script);
+
+  script.onload = () => {
+    window.gapi.load('client:auth2', () => {
+      gapi.client.init({
+        apiKey: firebaseConfig.apiKey,
+        clientId: firebaseConfig.clientId,
+        discoveryDocs: firebaseConfig.discoveryDocs,
+        scope: firebaseConfig.scopes.join(' '),
+      })
+     })
+   }
+}
+
+export function signIn(firebase, successCallback, errorCallback) {
+  window.gapi.auth2.getAuthInstance().signIn().then((e) => {
+    var idToken = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+    var creds = firebase.auth.GoogleAuthProvider.credential(idToken);
+
+    firebase.auth()
+    .signInAndRetrieveDataWithCredential(creds)
+    .then((result) => successCallback(result))
+    .catch((error) => errorCallback(error))
+  })
+}
+
+export function signOut(firebase, callback) {
+  var auth = gapi.auth2.getAuthInstance()
+
+  firebase.logout().then(() => {
+  	auth.signOut().then(() => {
+  		callback()
+  	})
+  })
 }

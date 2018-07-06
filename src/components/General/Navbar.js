@@ -17,6 +17,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { signOut } from '../../utils/actions'
 import { logo } from '../../resources/images'
 import LoginModal from './LoginModal'
 
@@ -83,7 +84,7 @@ class SiteNavbar extends Component {
                     Manage
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={() => firebase.logout()}>
+                  <DropdownItem onClick={() => signOut(firebase, ()=>{})}>
                     Log Out
                   </DropdownItem>
                 </DropdownMenu>
@@ -104,7 +105,6 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
   }
 }
-
 
 SiteNavbar.propTypes = {
   firebase: PropTypes.shape({

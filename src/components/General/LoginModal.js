@@ -6,6 +6,9 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import GoogleButton from 'react-google-button'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { initialiseGAPI, signIn } from '../../utils/actions'
+import { firebaseConfig } from '../../resources/config'
 
 class LoginModal extends Component {
   constructor(props) {
@@ -15,38 +18,45 @@ class LoginModal extends Component {
     this.state = {
       login: null,
       error: null,
+      formSubmitting: false,
     }
+
+    initialiseGAPI()
   }
 
   handleLogin() {
     const { firebase } = this.props
 
-    var provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('email');
-    provider.addScope('https://www.googleapis.com/auth/calendar');
+    this.setState({
+      formSubmitting: true,
+    })
 
-    firebase.login({ provider: 'google', type: 'popup' }).then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
+    signIn(firebase, (result) => {
       const { toggle, history } = this.props;
 
+      this.setState({
+        formSubmitting: false,
+      })
+
       toggle()
-      history.push('/dashboard')
-    }).catch((error) => {
+      history.push('/dashboard/login')
+    }, (error) => {
       this.setState({
         login: "failure",
-        error: error
+        error: error,
+        formSubmitting: false,
       })
-    });
+    })
   }
 
   render() {
-    const { login, error } = this.state;
+    const { login, error, formSubmitting } = this.state;
     const { isOpen, toggle, className } = this.props;
 
     return (<Modal isOpen={ isOpen } toggle={ toggle } className={ className }>
         <ModalHeader toggle={ toggle }>Log In</ModalHeader>
         <ModalBody>
-          <GoogleButton color="primary" onClick={this.handleLogin.bind(this)} />
+          { !window.gapi.client || formSubmitting ? <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p> : <GoogleButton color="primary" onClick={this.handleLogin.bind(this)} /> }
           { login === "failure" ? <Alert color="danger">{ error.message }</Alert> : ''}
         </ModalBody>
         <ModalFooter>

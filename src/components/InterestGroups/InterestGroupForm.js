@@ -6,7 +6,7 @@ import {
   InputGroup, InputGroupAddon
 } from 'reactstrap';
 import { config } from '../../resources/config'
-import { getUserByEmail, getMyProfile } from '../../utils/actions'
+import { getUserByEmail, getMyProfile, getUserProfile, getFile } from '../../utils/actions'
 import ImageUploader from '../reusable/ImageUploader'
 import UserCard from '../Users/UserCard'
 import _ from 'lodash'
@@ -66,19 +66,56 @@ class InterestGroupForm extends Component {
   constructor(props) {
     super(props);
 
-    const { auth, firestore } = this.props
+    const { auth, firestore, firebase, interestGroup } = this.props
 
-    this.state = originalState
+    var initialIG = newInterestGroup
 
-    getMyProfile(firestore, auth.uid, () => {
-      const { userProfiles } = this.props
+    if(interestGroup) {
+      initialIG = {
+        ...interestGroup,
+        original: interestGroup,
+        members: [],
+      }
 
-      if(userProfiles) {
-        const profile = userProfiles[auth.uid]
-        this.handleFormChange({
-          ...profile,
-          id: auth.uid,
-        }, 'memberProfile', 0)
+      if(interestGroup.logo) {
+        getFile(firebase, interestGroup.logo, (url) => {
+          this.setState({
+            logo: url,
+          })
+        })
+      }
+
+      getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
+        this.setProfile(snapshot.data(), interestGroup.leaderID)
+
+        _.forEach(_.keys(interestGroup.members), (memberID) => {
+          if(memberID !== interestGroup.leaderID) {
+            getUserProfile(firestore, memberID, (snapshot) => {
+                this.setProfile(snapshot.data(), memberID)
+            })
+          }
+        })
+      })
+    }
+
+    this.state = {
+      ...originalState,
+      interestGroup: initialIG
+    }
+  }
+
+  setProfile = (profile, memberID) => {
+    const { interestGroup } = this.state
+    const { members } = interestGroup
+
+    this.setState({
+      interestGroup: {
+        ...interestGroup,
+        members: members.concat({
+          id: memberID,
+          profile: profile,
+          email: profile.email
+        })
       }
     })
   }
@@ -195,7 +232,7 @@ class InterestGroupForm extends Component {
       activities: (activitiesEntry || clearEntryChecks) ? !activities : false,
       support: false,
       members: membersEntry.map((memberEntry, index) => {
-        return (memberEntry || clearEntryChecks) ? !(members[index].profile) : false
+        return (memberEntry || clearEntryChecks) ? members[index]? !(members[index].profile) : false : false
       })
     }
   }
@@ -206,24 +243,18 @@ class InterestGroupForm extends Component {
 
     var igMembers = []
 
-    igMembers.push(
-      <Col xs="12" md="6" key="0">
-        {
-            members[0].profile ?
-              <div className="mb-3">
-                <UserCard user={members[0].profile} leader={true} />
-              </div>
-            : <p><FontAwesomeIcon icon="spinner" spin /> Loading Profile...</p>
-        }
-      </Col>)
-    for(var i = 1; i < noOfMembers; i++) {
+    if(!_.isArray(members)) {
+      return igMembers
+    }
+
+    for(var i = 0; i < members.length; i++) {
       const index = i
       const igMember =
       <Col xs="12" md="6" key={i}>
         {
           members[index].profile ?
             <div className="mb-3">
-              <UserCard user={members[index].profile} />
+              <UserCard user={members[index].profile} leader={i === 0} />
             </div>
           : <Card className="p-3 mb-3" outline color="primary">
               <InputGroup>
@@ -245,7 +276,7 @@ class InterestGroupForm extends Component {
     igMembers.push(<Col xs="12" md="6" key="addremove">
       <div className="d-flex justify-content-center" >
         {
-          noOfMembers > 5 ?
+          noOfMembers > config.minimumIGMembers ?
             <Button outline color="danger" onClick={() => this.changeNoOfMember(false) } className="mr-3">Remove Member</Button>
           : ''
         }
@@ -310,16 +341,21 @@ class InterestGroupForm extends Component {
 
   changeNoOfMember = (increase) => {
     const { noOfMembers, interestGroup } = this.state
-    const { members } = interestGroup
+    var { members } = interestGroup
+
+    if (increase) {
+      members = members.concat({
+        email: ''
+      })
+    } else {
+      members.pop()
+    }
 
     this.setState({
       noOfMembers: increase ? noOfMembers + 1 : noOfMembers - 1,
       interestGroup: {
         ...interestGroup,
-        members: increase ? members.push({
-          name: '',
-          email: ''
-        }) : members.pop()
+        members: members
       }
     })
   }
@@ -360,7 +396,7 @@ class InterestGroupForm extends Component {
         formSubmitting: true,
       })
 
-      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), () => this.clearSubmitting(interestGroup))
+      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), (ig) => this.clearSubmitting(ig))
     }
   }
 
@@ -375,14 +411,17 @@ class InterestGroupForm extends Component {
       },
     })
 
-    /*if(event.poster) {
-      this.loadPoster(firebase, event.poster)
-    }*/
+    if(interestGroup.logo) {
+      getFile(firebase, interestGroup.logo, (url) => {
+        this.setState({
+          logo: url,
+        })
+      })
+    }
   }
 
   resetForm = (interestGroup) => {
     var newMembers = originalMembers()
-    newMembers[0] = interestGroup.members[0]
 
     this.setState({
       ...originalState,

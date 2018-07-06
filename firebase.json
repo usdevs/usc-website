@@ -10,6 +10,17 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [
+        {
+          "source" : "/service-worker.js",
+          "headers" : [
+            {
+              "key" : "Cache-Control",
+              "value" : "no-store"
+            }
+          ]
+        }
+    ],
     "rewrites": [
       {
         "source": "**",

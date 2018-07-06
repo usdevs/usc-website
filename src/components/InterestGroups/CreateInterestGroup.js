@@ -79,14 +79,18 @@ class CreateInterestGroup extends Component {
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Jumbotron>
-            <h3>Why Create an Interest Group?</h3>
-            <p>Lorem Ipsum</p>
-          </Jumbotron>
-        </Col>
-      </Row>
+      {
+        /*
+        <Row>
+          <Col>
+            <Jumbotron>
+              <h3>Why Create an Interest Group?</h3>
+              <p>Lorem Ipsum</p>
+            </Jumbotron>
+          </Col>
+        </Row>
+        */ ''
+      }
       <Row>
         <Col>
           { isLoaded(auth) && isLoaded(igTypes) ?

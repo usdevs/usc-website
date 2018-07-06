@@ -1,5 +1,3 @@
-/* global gapi */
-
 import React from 'react';
 import { render } from 'react-snapshot';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -37,27 +35,14 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faTrashAlt, faFrown, faUsers
 } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
+import { firebaseConfig } from './resources/config'
+import { initialiseGAPI } from './utils/actions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
   faFrown, faUsers)
 
-const firebaseConfig = {
-    apiKey: "***REMOVED***",
-    authDomain: "usc-website-206715.firebaseapp.com",
-    databaseURL: "https://usc-website-206715.firebaseio.com",
-    projectId: "usc-website-206715",
-    storageBucket: "usc-website-206715.appspot.com",
-    messagingSenderId: "115895791273",
-    clientId: "115895791273-6hbrflf3p4hq9o9b1td3lijq602eb3jk.apps.googleusercontent.com",
-    scopes: [
-             "profile",
-             "https://www.googleapis.com/auth/calendar"
-    ],
-    discoveryDocs: [
-    "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"
-    ]
-  };
+
 firebase.initializeApp(firebaseConfig)
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -68,21 +53,7 @@ firebase.auth().onAuthStateChanged(function(user) {
      document.body.appendChild(script);
 
      script.onload = () => {
-         window.gapi.load('client:auth2', () => {
-           gapi.client.init({
-             apiKey: firebaseConfig.apiKey,
-             clientId: firebaseConfig.clientId,
-             discoveryDocs: firebaseConfig.discoveryDocs,
-             scope: firebaseConfig.scopes.join(' '),
-           })
-           // Loading is finished, so start the app
-           .then(function() {
-            // Make sure the Google API Client is properly signed in
-            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
-              firebase.auth().signOut(); // Something went wrong, sign out
-            }
-          })
-        });
+         initialiseGAPI()
      }
 
     document.getElementsByTagName('head')[0].appendChild(script);
@@ -129,7 +100,8 @@ render(
             <Route path="/events" component={Events}/>
             <Route path="/spaces" component={Spaces}/>
             <Route path="/contactus" component={ContactUs}/>
-            <Route path="/dashboard" component={Dashboard}/>
+            <Route path="/dashboard/:login" component={Dashboard}/>
+            <Route path="/dashboard/" component={Dashboard}/>
             <Route path="/createevent" component={CreateEvent}/>
             <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/editevent/:eventID" component={EditEvent}/>
