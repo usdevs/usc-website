@@ -343,3 +343,60 @@ export function getUserInterestGroups(firestore, userID, callback, alias) {
     storeAs: alias
   })
 }
+
+
+export function getModuleTypes(firestore, uspOnly, callback) {
+  var query = {
+    collection: 'moduleTypes',
+    orderBy: ['name']
+  }
+
+  if (uspOnly) {
+    query = {
+      ...query,
+      where: ['isUSP', '==', true]
+    }
+  }
+
+  firestore
+  .get(query)
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getModule(firestore, moduleID, callback, alias = 'module') {
+  firestore
+  .get({
+    collection: 'modules',
+    doc: moduleID,
+    storeAs: alias
+  })
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getModuleReviews(firestore, moduleID, callback) {
+  firestore
+  .get({
+    collection: 'moduleReviews',
+    where: ['module', '==', moduleID],
+    orderBy: ['semester', 'desc']
+  })
+  .then((snapshot) => callback(snapshot))
+}
+
+export function getModules(firestore, type, callback = () => {}) {
+  var query = {
+    collection: 'modules',
+    orderBy: ['name']
+  }
+
+  if (type) {
+    query = {
+      ...query,
+      where: ['type', '==', type]
+    }
+  }
+
+  firestore
+  .get(query)
+  .then((snapshot) => callback(snapshot))
+}

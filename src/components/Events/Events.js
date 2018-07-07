@@ -72,7 +72,7 @@ class Events extends Component {
               </div>
             </div>
             <div>
-              <Button color="primary" className="d-block d-sm-none mb-3" onClick={() => history.push('/createevent')} block outline>Create Event</Button>
+              { isLoaded(auth) && !isEmpty(auth) ? <Button color="primary" className="d-block d-sm-none mb-3" onClick={() => history.push('/createevent')} block outline>Create Event</Button> : '' }
               <a href={calendarLink}>
                 <Button color="primary" className="d-block d-sm-none" block>Add to my Calendar</Button>
               </a>

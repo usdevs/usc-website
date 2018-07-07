@@ -26,6 +26,10 @@ import {
   getGroups as getFirestoreGroups,
   watchGroups as watchFirestoreGroups,
   getGroupTypes as getFirestoreGroupTypes,
+  getModuleTypes as getFirestoreModuleTypes,
+  getModules as getFirestoreModules,
+  getModule as getFirestoreModule,
+  getModuleReviews as getFirestoreModuleReviews,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -179,7 +183,7 @@ export function getGroupEvents(firestore, groupID, callback = () => {}) {
 }
 
 export function getMyProfile(firestore, auth, callback) {
-  getFirestoreUserProfile(firestore, auth.uid, callback)
+  getFirestoreUserProfile(firestore, auth.uid, callback, 'myProfile')
 }
 
 export function getUserProfile(firestore, userID, callback) {
@@ -280,6 +284,24 @@ export function getGroups(firestore, callback = () => {}) {
   watchFirestoreGroups(firestore)
 }
 
+export function getModuleTypes(firestore, uspOnly = false, callback = () => {}) {
+  getFirestoreModuleTypes(firestore, uspOnly, callback)
+}
+
+export function getModules(firestore, uspOnly = false, callback = () => {}) {
+  getModuleTypes(firestore, uspOnly)
+  getFirestoreModules(firestore, null, callback)
+}
+
+export function getModule(firestore, moduleID, callback = () => {}) {
+  getModuleTypes(firestore)
+  getFirestoreModule(firestore, moduleID, callback)
+}
+
+export function getModuleReviews(firestore, moduleID, callback = () => {}) {
+  getFirestoreModuleReviews(firestore, moduleID, callback )
+}
+
 export function initialiseGAPI() {
   const script = document.createElement("script");
   script.src = "https://apis.google.com/js/api.js";
@@ -307,11 +329,6 @@ export function signIn(firebase, successCallback, errorCallback) {
     })
     .then((result) => successCallback(result))
     .catch((error) => errorCallback(error))
-/*
-    firebase.auth()
-    .signInAndRetrieveDataWithCredential(creds)
-    .then((result) => successCallback(result))
-    .catch((error) => errorCallback(error))*/
   })
 }
 

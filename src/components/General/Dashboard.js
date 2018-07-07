@@ -63,6 +63,20 @@ const categories = [
       link: '/manageinterestgroups',
       color: 'mediumseagreen'
     }]
+  },
+  {
+    name: 'Modules',
+    buttons: [{
+      name: 'See All Modules',
+      icon: 'chalkboard-teacher',
+      link: '/modules',
+      color: 'sandybrown'
+    }, {
+      name: 'Add Review',
+      icon: 'chalkboard-teacher',
+      link: '/addreview',
+      color: 'sandybrown'
+    }]
   }
 ]
 

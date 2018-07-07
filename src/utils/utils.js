@@ -234,3 +234,21 @@ export function eventTimeDisplay(event, selectedDate) {
     }
   }
 }
+
+export function formatModulesIntoTypes(firestore) {
+  const { modules } = firestore.ordered
+
+  var modulesByType = {}
+
+  _.forEach(modules, (module) => {
+    const { type } = module
+
+    if(!modulesByType[type]) {
+      modulesByType[type] = [module]
+    } else {
+      modulesByType[type] = modulesByType[type].concat(module)
+    }
+  })
+
+  return modulesByType
+}

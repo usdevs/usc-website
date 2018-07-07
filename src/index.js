@@ -23,6 +23,10 @@ import InterestGroup from './components/InterestGroups/InterestGroup'
 import ManageInterestGroups from './components/InterestGroups/ManageInterestGroups'
 import EditInterestGroup from './components/InterestGroups/EditInterestGroup'
 import InterestGroupAdmin from './components/InterestGroups/InterestGroupAdmin'
+import Settings from './components/Users/Settings'
+import Modules from './components/Modules/Modules'
+import Module from './components/Modules/Module'
+import AddReview from './components/Modules/AddReview'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 import { createStore } from 'redux'
@@ -33,7 +37,7 @@ import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
-  faToolbox
+  faToolbox, faChalkboardTeacher
 } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
@@ -41,7 +45,7 @@ import { initialiseGAPI } from './utils/actions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
-  faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox)
+  faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher)
 
 
 firebase.initializeApp(firebaseConfig)
@@ -113,6 +117,10 @@ render(
             <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
             <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>
             <Route path="/interestgroupadmin" component={InterestGroupAdmin}/>
+            <Route path="/settings" component={Settings}/>
+            <Route path="/modules" component={Modules}/>
+            <Route path="/module/:moduleID" component={Module}/>
+            <Route path="/addreview/" component={AddReview}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

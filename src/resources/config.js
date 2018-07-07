@@ -3,7 +3,7 @@ export const config = {
   posterFilePath: 'poster',
   logoFilePath: 'logo',
   minimumIGMembers: 1,
-  descriptionPreviewLength: 100,
+  descriptionPreviewLength: 200,
   categoryIDs: {
     ig: '0ee1DDaz3D9ZdsZTk29p',
     gui: 'COOcvdATPUEwJt6B9VIb',
