@@ -24,6 +24,7 @@ import {
   getUserInterestGroups as getFirestoreUserInterestGroups,
   getGroup as getFirestoreGroup,
   getGroups as getFirestoreGroups,
+  watchGroups as watchFirestoreGroups,
   getGroupTypes as getFirestoreGroupTypes,
 } from './firestoreClient'
 import {
@@ -208,11 +209,13 @@ export function getInterestGroupTypes(firestore) {
 export function getInterestGroups(firestore, status) {
   getInterestGroupTypes(firestore)
   getFirestoreInterestGroups(firestore, status)
+  watchFirestoreGroups(firestore)
 }
 
 export function getUserInterestGroups(firestore, userID, callback = () => {}, alias = 'userInterestGroups') {
   getInterestGroupTypes(firestore)
   getFirestoreUserInterestGroups(firestore, userID, callback, alias)
+  watchFirestoreGroups(firestore)
 }
 
 export function createInterestGroup(firestore, firebase, interestGroup, callback, errorCallback = () => {}) {
@@ -264,6 +267,7 @@ export function deleteGroup(firestore, firebase, group, callback) {
 export function getInterestGroup(firestore, igID, callback = () => {}) {
   getInterestGroupTypes(firestore)
   getFirestoreGroup(firestore, igID, callback, 'interestGroup')
+  watchFirestoreGroups(firestore)
 }
 
 export function getGroupTypes(firestore, callback = () => {}) {
@@ -273,6 +277,7 @@ export function getGroupTypes(firestore, callback = () => {}) {
 export function getGroups(firestore, callback = () => {}) {
   getGroupTypes(firestore, callback)
   getFirestoreGroups(firestore, callback)
+  watchFirestoreGroups(firestore)
 }
 
 export function initialiseGAPI() {
@@ -297,10 +302,16 @@ export function signIn(firebase, successCallback, errorCallback) {
     var idToken = gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
     var creds = firebase.auth.GoogleAuthProvider.credential(idToken);
 
+    firebase.login({
+      credential: creds
+    })
+    .then((result) => successCallback(result))
+    .catch((error) => errorCallback(error))
+/*
     firebase.auth()
     .signInAndRetrieveDataWithCredential(creds)
     .then((result) => successCallback(result))
-    .catch((error) => errorCallback(error))
+    .catch((error) => errorCallback(error))*/
   })
 }
 

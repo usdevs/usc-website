@@ -124,9 +124,8 @@ class InterestGroup extends Component {
             {
               events ?
                 events.map((event) =>
-                  <Col xs="12" md="6">
+                  <Col xs="12" md="6" key={event.id}>
                     <EventCard
-                      key={event.id}
                       event={event}
                       eventTypes={eventTypes}
                       spaces={spaces}

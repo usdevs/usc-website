@@ -260,6 +260,12 @@ export function getGroups(firestore, callback = () => {}) {
   .then((snapshot) => callback(snapshot))
 }
 
+export function watchGroups(firestore) {
+  firestore.setListeners([
+    { collection: 'groups' },
+  ])
+}
+
 export function getInterestGroupTypes(firestore, callback = () => {}) {
   firestore
   .get({

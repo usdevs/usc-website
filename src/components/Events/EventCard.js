@@ -17,8 +17,21 @@ class EventCard extends Component {
 
     this.toggleModal = this.toggleModal.bind(this);
 
-    const { event, firebase } = props
-    const { poster } = event
+    const { poster } = props.event
+
+    if(poster) {
+      this.loadPoster(poster)
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.event.poster != newProps.event.poster) {
+      this.loadPoster(newProps.event.poster)
+    }
+  }
+
+  loadPoster = (poster) => {
+    const { firebase } = this.props
 
     if(poster) {
       getFile(firebase, poster, (url) => {

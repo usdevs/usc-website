@@ -53,7 +53,7 @@ class ManageInterestGroups extends Component {
             id: igID
           }}
           igTypes={igTypes}
-          manageMode={true}
+          manageMode={auth.uid === interestGroup.leaderID}
         />
       </Col>)
     })

@@ -68,6 +68,7 @@ class InterestGroupForm extends Component {
 
     this.state = {
       ...originalState,
+      logo: null,
       interestGroup: newInterestGroup
     }
   }
@@ -76,7 +77,7 @@ class InterestGroupForm extends Component {
       this.setState({isMounted: false, interestGroup: null})
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.setState({isMounted: true})
     this.loadExistingIG(this.props.interestGroup, true)
   }
@@ -108,11 +109,17 @@ class InterestGroupForm extends Component {
             logo: url,
           })
         })
-      }
 
-      this.setState({
-        interestGroup: initialIG
-      })
+        this.setState({
+          interestGroup: initialIG
+        })
+      } else {
+        console.log(this.state)
+        this.setState({
+          logo: null,
+          interestGroup: initialIG
+        })
+      }
 
       const memberIDs = _.keys(interestGroup.members)
 
@@ -498,6 +505,7 @@ class InterestGroupForm extends Component {
     const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
     const { name, type, chat, description, activities, support, leader } = interestGroup
     const errors = this.validate()
+      console.log(this.state)
 
     return (
       <Form className="m-3">

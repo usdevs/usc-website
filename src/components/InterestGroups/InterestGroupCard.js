@@ -16,17 +16,27 @@ class InterestGroupCard extends Component {
       logo: null,
     }
 
-    const { interestGroup, firebase } = props
-    const { logo } = interestGroup
+    const { logo } = props.interestGroup
 
-    if(logo) {
-      getFile(firebase, logo, (url) => {
-
-        this.setState({
-          logo: url,
-        })
-      })
+    if (logo) {
+      this.loadLogo(logo)
     }
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.interestGroup.logo != newProps.interestGroup.logo) {
+      this.loadLogo(newProps.interestGroup.logo)
+    }
+  }
+
+  loadLogo = (logo) => {
+    const { firebase } = this.props
+
+    getFile(firebase, logo, (url) => {
+      this.setState({
+        logo: url,
+      })
+    })
   }
 
   render() {
