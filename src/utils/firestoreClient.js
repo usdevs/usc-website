@@ -101,17 +101,19 @@ export function formatFirestoreGroup(group, type) {
   }
 }
 
-export function createEvent(firestore, event, uid, googleEventID, callback) {
+export function createEvent(firestore, event, uid, googleEventID, callback, errorCallback) {
   firestore
   .add({ collection: 'events' }, formatFirestoreEvent(event, uid, googleEventID))
   .then(() => callback())
+  .catch((err) => errorCallback(err))
 }
 
-export function updateEvent(firestore, event, uid, callback) {
+export function updateEvent(firestore, event, uid, callback, errorCallback) {
   const newEvent = formatFirestoreEvent(event, uid)
   firestore
   .set({ collection: 'events', doc: event.id }, newEvent)
   .then(() => callback(newEvent))
+  .catch((err) => errorCallback(err))
 }
 
 export function deleteEvent(firestore, event, callback) {
@@ -292,18 +294,20 @@ export function getInterestGroups(firestore, status) {
     }
 }
 
-export function createInterestGroup(firestore, interestGroup, callback) {
+export function createInterestGroup(firestore, interestGroup, callback, errorCallback) {
   const group = formatFirestoreGroup(interestGroup, 'interestGroup')
   firestore
   .add({ collection: 'groups' }, group)
   .then((snapshot) => callback(group))
+  .catch((err) => errorCallback(err))
 }
 
-export function updateInterestGroup(firestore, interestGroup, callback) {
+export function updateInterestGroup(firestore, interestGroup, callback, errorCallback) {
   const group = formatFirestoreGroup(interestGroup, 'interestGroup')
   firestore
   .set({ collection: 'groups' , doc: interestGroup.id }, group)
   .then((snapshot) => callback(group))
+  .catch((err) => errorCallback(err))
 }
 
 export function deleteGroup(firestore, group, callback) {

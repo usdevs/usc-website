@@ -35,15 +35,15 @@ import moment from 'moment'
 import { config } from '../resources/config'
 import { firebaseConfig } from '../resources/config'
 
-export function createEvent(firestore, firebase, event, uid, spaces, callback) {
+export function createEvent(firestore, firebase, event, uid, spaces, callback = () => {}, errorCallback = () => {}) {
 
   const action = (firestore, firebase, event, uid, spaces, callback) => {
     if(!event.internal) {
       createGoogleEvent(event, spaces, (googleEntry) => {
-        createFirestoreEvent(firestore, event, uid, googleEntry.id, callback)
+        createFirestoreEvent(firestore, event, uid, googleEntry.id, callback, errorCallback)
       })
     } else {
-      createFirestoreEvent(firestore, event, uid, null, callback)
+      createFirestoreEvent(firestore, event, uid, null, callback, errorCallback)
     }
   }
 
@@ -62,7 +62,7 @@ export function createEvent(firestore, firebase, event, uid, spaces, callback) {
   }
 }
 
-export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
+export function updateEvent(firestore, firebase, event, uid, spaces, callback = () => {}, errorCallback = () => {}) {
   const actionHandleGCal = (firestore, firebase, event, uid, spaces, callback) => {
     //If there are any changes in whether the event is internal or external
     //Else update GCal if it exist, and update Firestore
@@ -76,7 +76,7 @@ export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
             gCalID: null
           }
 
-          updateFirestoreEvent(firestore, event, uid, () => callback(event))
+          updateFirestoreEvent(firestore, event, uid, () => callback(event), errorCallback)
         })
       } else {
         createGoogleEvent(event, spaces, (googleEntry) => {
@@ -84,7 +84,7 @@ export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
             ...event,
             gCalID: googleEntry.id
           }
-            updateFirestoreEvent(firestore, event, uid, () => callback(event))
+            updateFirestoreEvent(firestore, event, uid, () => callback(event), errorCallback)
         })
       }
     } else {
@@ -92,7 +92,7 @@ export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
         updateGoogleEvent(event, spaces, () => {})
       }
 
-      updateFirestoreEvent(firestore, event, uid, () => callback(event))
+      updateFirestoreEvent(firestore, event, uid, () => callback(event), errorCallback)
     }
   }
 
@@ -215,7 +215,7 @@ export function getUserInterestGroups(firestore, userID, callback = () => {}, al
   getFirestoreUserInterestGroups(firestore, userID, callback, alias)
 }
 
-export function createInterestGroup(firestore, firebase, interestGroup, callback) {
+export function createInterestGroup(firestore, firebase, interestGroup, callback, errorCallback = () => {}) {
   if (interestGroup.logo) {
     uploadLogo(firebase, interestGroup.logo, (filePath) => {
       interestGroup = {
@@ -223,14 +223,15 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
         logo: filePath,
       }
 
-      createFirestoreInterestGroup(firestore, interestGroup, callback)
+      createFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
     })
   } else {
-    createFirestoreInterestGroup(firestore, interestGroup, callback)
+    createFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
   }
 }
 
-export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}) {
+export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}, errorCallback = () => {}) {
+  console.log(interestGroup)
   if(interestGroup.original.logo !== interestGroup.logo) {
     if(interestGroup.original.logo) {
       deleteFirebaseFile(firebase, interestGroup.original.logo, () => {})
@@ -243,13 +244,13 @@ export function updateInterestGroup(firestore, firebase, interestGroup, callback
           logo: filePath,
         }
 
-        updateFirestoreInterestGroup(firestore, interestGroup, callback)
+        updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
       })
     } else {
-      updateFirestoreInterestGroup(firestore, interestGroup, callback)
+      updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
     }
   } else {
-    updateFirestoreInterestGroup(firestore, interestGroup, callback)
+    updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
   }
 }
 

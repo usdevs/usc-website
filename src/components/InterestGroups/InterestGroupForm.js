@@ -78,7 +78,7 @@ class InterestGroupForm extends Component {
 
   componentDidMount() {
     this.setState({isMounted: true})
-    this.loadExistingIG(this.props.interestGroup)
+    this.loadExistingIG(this.props.interestGroup, true)
   }
 
   componentWillReceiveProps(newProps) {
@@ -87,9 +87,11 @@ class InterestGroupForm extends Component {
     }
   }
 
-  loadExistingIG = (interestGroup) => {
-    const { isMounted } = this.state
+  loadExistingIG = (interestGroup, forceIsMounted) => {
+    var { isMounted } = this.state
     const { auth, firestore, firebase } = this.props
+
+    isMounted = forceIsMounted ? forceIsMounted : isMounted
 
     var initialIG = newInterestGroup
 
@@ -108,9 +110,15 @@ class InterestGroupForm extends Component {
         })
       }
 
+      this.setState({
+        interestGroup: initialIG
+      })
+
       const memberIDs = _.keys(interestGroup.members)
 
       getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
+        const { interestGroup } = this.state
+
         var profile = snapshot.data()
         var profiles = []
 
@@ -154,10 +162,6 @@ class InterestGroupForm extends Component {
         }
       })
     }
-
-    this.setState({
-      interestGroup: initialIG
-    })
   }
 
   handleFormChange = (value, type, info) => {
@@ -435,10 +439,17 @@ class InterestGroupForm extends Component {
 
       this.setState({
         formSubmitting: true,
+        submitError: null,
       })
 
-      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), (ig) => this.clearSubmitting(ig))
+      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), this.clearSubmitting, this.submitError)
     }
+  }
+
+  submitError = (error) => {
+    this.setState({
+      submitError: error
+    })
   }
 
   clearSubmitting = (interestGroup) => {
@@ -477,7 +488,7 @@ class InterestGroupForm extends Component {
 
   render() {
     const { igTypes } = this.props
-    const { interestGroup, submitFailure, logo, formSubmitting } = this.state
+    const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
     const { name, type, chat, description, activities, support, leader } = interestGroup
     const errors = this.validate()
 
@@ -538,12 +549,13 @@ class InterestGroupForm extends Component {
           </Container>
         </FormGroup>
         <div className="d-flex justify-content-center" >
-          <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting}>
+          <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting || errors.membersLoaded}>
             { formSubmitting || errors.membersLoaded ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
           </Button>
         </div>
         <div className="d-flex justify-content-center" >
           { submitFailure ? <Alert color="danger" className="mt-3">One or more inputs are invalid. Please check and try again.</Alert> : ''}
+          { submitError ? <Alert color="danger">{ submitError.message }</Alert> : ''}
         </div>
       </Form>)
   }
