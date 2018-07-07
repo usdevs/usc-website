@@ -66,7 +66,30 @@ class InterestGroupForm extends Component {
   constructor(props) {
     super(props);
 
-    const { auth, firestore, firebase, interestGroup } = this.props
+    this.state = {
+      ...originalState,
+      interestGroup: newInterestGroup
+    }
+  }
+
+  componentWillUnmount(){
+      this.setState({isMounted: false, interestGroup: null})
+  }
+
+  componentDidMount() {
+    this.setState({isMounted: true})
+    this.loadExistingIG(this.props.interestGroup)
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.interestGroup.id != newProps.interestGroup.id) {
+      this.loadExistingIG(newProps.interestGroup)
+    }
+  }
+
+  loadExistingIG = (interestGroup) => {
+    const { isMounted } = this.state
+    const { auth, firestore, firebase } = this.props
 
     var initialIG = newInterestGroup
 
@@ -97,36 +120,44 @@ class InterestGroupForm extends Component {
           email: profile.email
         })
 
-        _.forEach(memberIDs, (memberID) => {
-          if(memberID !== interestGroup.leaderID) {
-            getUserProfile(firestore, memberID, (snapshot) => {
-              var profile = snapshot.data()
+        if(memberIDs.length === profiles.length && isMounted) {
+          this.setState({
+            interestGroup: {
+              ...interestGroup,
+              members: profiles
+            }
+          })
+        } else {
+          _.forEach(memberIDs, (memberID) => {
+            if(memberID !== interestGroup.leaderID) {
+              getUserProfile(firestore, memberID, (snapshot) => {
+                var profile = snapshot.data()
 
-              profiles = profiles.concat({
-                id: memberID,
-                profile: profile,
-                email: profile.email
-              })
-
-              if(memberIDs.length === profiles.length) {
-                const { interestGroup } = this.state
-                this.setState({
-                  interestGroup: {
-                    ...interestGroup,
-                    members: profiles
-                  }
+                profiles = profiles.concat({
+                  id: memberID,
+                  profile: profile,
+                  email: profile.email
                 })
-              }
-            })
-          }
-        })
+
+                if(memberIDs.length === profiles.length && isMounted) {
+                  const { interestGroup } = this.state
+                  this.setState({
+                    interestGroup: {
+                      ...interestGroup,
+                      members: profiles
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
       })
     }
 
-    this.state = {
-      ...originalState,
+    this.setState({
       interestGroup: initialIG
-    }
+    })
   }
 
   handleFormChange = (value, type, info) => {

@@ -27,7 +27,21 @@ class EditInterestGroup extends Component {
   }
 
   componentWillMount() {
+    this.loadInterestGroup(this.state.igID)
+  }
+
+  componentWillReceiveProps(newProps) {
     const { igID } = this.state
+
+    if (igID != newProps.match.params.igID) {
+      this.loadInterestGroup(newProps.match.params.igID)
+      this.setState({
+        igID: newProps.match.params.igID
+      })
+    }
+  }
+
+  loadInterestGroup = (igID) => {
     const { history } = this.props
     const { firestore } = this.context.store
 
@@ -137,7 +151,6 @@ class EditInterestGroup extends Component {
   render() {
     const { firestore } = this.context.store
     const { auth, userProfiles, igTypes, igTypesUnordered, history, interestGroup, firebase } = this.props
-    const { igID } = this.props.match.params
 
     return (
     <Container>
@@ -152,19 +165,16 @@ class EditInterestGroup extends Component {
       </Row>
       <Row>
         <Col>
-          { isLoaded(auth) && isLoaded(igTypes) && interestGroup ?
+          { isLoaded(auth) && isLoaded(igTypes) && interestGroup && interestGroup[0] ?
             <div>
               <div className={"d-flex justify-content-center" }>
-                <h3 className={"p-2 align-middle border rounded border-" + statusColor[interestGroup.status] +"  text-" + statusColor[interestGroup.status]}>Status: {_.capitalize(interestGroup.status)}</h3>
+                <h3 className={"p-2 align-middle border rounded border-" + statusColor[interestGroup[0].status] +"  text-" + statusColor[interestGroup[0].status]}>Status: {_.capitalize(interestGroup[0].status)}</h3>
               </div>
               <InterestGroupForm
                 firestore={firestore}
                 firebase={firebase}
                 auth={auth}
-                interestGroup={{
-                  ...interestGroup,
-                  id: igID
-                }}
+                interestGroup={interestGroup[0]}
                 userProfiles={userProfiles}
                 buttonOnSubmit={(interestGroup, callback, optionalCallback) => this.submitIG(interestGroup, callback, optionalCallback)}
                 igTypes={igTypes}
@@ -192,7 +202,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     userProfiles: state.firestore.data.userProfiles,
     myProfile: state.firestore.data.myProfile,
-    interestGroup: state.firestore.data.interestGroup,
+    interestGroup: state.firestore.ordered.interestGroup,
     igTypes: state.firestore.ordered.igTypes,
     igTypesUnordered: state.firestore.data.igTypes
   }

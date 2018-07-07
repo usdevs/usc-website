@@ -44,7 +44,7 @@ class InterestGroup extends Component {
   showInterestGroup = () => {
     const { logo } = this.state
     const { interestGroup, igTypes, firebase, history, events, eventTypes, spaces, userProfile, auth } = this.props
-    const { name, type, description, activities, leader } = interestGroup
+    const { name, type, description, activities, leader, chat } = interestGroup
 
     const isLeader = firebase.auth ? leader === firebase.auth.uid : false
     const signedIn = isLoaded(auth) && !isEmpty(auth)
@@ -96,11 +96,15 @@ class InterestGroup extends Component {
           <Col xs="12" md={{size: 4, offset: 4}}>
             <div className="d-flex align-items-center justify-content-end">
               <div>
-                <Button outline color="primary" className="mb-1" disabled={!signedIn}><FontAwesomeIcon icon="comments" /> { ' ' }Join Chat Group</Button>
+                { chat ? <Button outline color="primary" className="mb-1" href={chat} disabled={!signedIn}><FontAwesomeIcon icon="comments" /> { ' ' }Join Chat Group</Button> : ''}
                 <br/>
-                <div className="d-flex justify-content-end">
-                  <Button outline color="primary" className="mt-1" disabled={!signedIn}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' }Join IG</Button>
-                </div>
+                {
+                  /*
+                  <div className="d-flex justify-content-end">
+                    <Button outline color="primary" className="mt-1" disabled={!signedIn}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' }Join IG</Button>
+                  </div>
+                  */
+                }
                 { !signedIn
                   ? <div>
                       <p><small>Please Sign In</small></p>
@@ -114,19 +118,24 @@ class InterestGroup extends Component {
         <Row>
           <Col>
             <h3>Our Events</h3>
+          </Col>
+        </Row>
+        <Row>
             {
               events ?
-                events.map((event) => <EventCard
-                  key={event.id}
-                  event={event}
-                  eventTypes={eventTypes}
-                  spaces={spaces}
-                  buttonText='See More'
-                  firebase={firebase}
-                  hasModal={true} />)
+                events.map((event) =>
+                  <Col xs="12" md="6">
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      eventTypes={eventTypes}
+                      spaces={spaces}
+                      buttonText='See More'
+                      firebase={firebase}
+                      hasModal={true} />
+                  </Col>)
               : <h4><FontAwesomeIcon icon="frown" /> There are currently no events for this Interest Group.</h4>
             }
-          </Col>
         </Row>
       </Container>
     </Col>

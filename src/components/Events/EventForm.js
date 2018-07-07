@@ -54,14 +54,17 @@ class EventForm extends Component {
 
       if(organisedBy) {
         initialEvent = {
-          ...event,
-          organisedBy: groupsUnordered[event.organisedBy],
+          ...initialEvent,
+          organisedBy: {
+            ...groupsUnordered[event.organisedBy],
+            id: event.organisedBy
+          },
         }
       }
 
       if(otherVenueSelected) {
         initialEvent = {
-          ...event,
+          ...initialEvent,
           venue: otherVenueValue,
           otherVenue: venue,
         }
@@ -368,8 +371,6 @@ class EventForm extends Component {
     const endSDate = startDate.clone().endOf('day')
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
-
-      console.log(event)
 
     const inputProps = {
       placeholder: "Enter an IG or GUI Name",

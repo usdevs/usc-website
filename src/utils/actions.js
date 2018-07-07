@@ -97,7 +97,7 @@ export function updateEvent(firestore, firebase, event, uid, spaces, callback) {
   }
 
   //If there are changes in the poster
-  //Else just update GCal and Firestore
+  //Else just update GCal and firestoreReducer
   if(event.original.poster !== event.poster) {
     //Delete the original poster file if it exists
     if(event.original.poster) {
@@ -231,7 +231,6 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
 }
 
 export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}) {
-  console.log(interestGroup)
   if(interestGroup.original.logo !== interestGroup.logo) {
     if(interestGroup.original.logo) {
       deleteFirebaseFile(firebase, interestGroup.original.logo, () => {})
