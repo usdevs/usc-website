@@ -82,7 +82,7 @@ class InterestGroupForm extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.interestGroup.id != newProps.interestGroup.id) {
+    if (this.props.interestGroup && newProps.interestGroup && this.props.interestGroup.id != newProps.interestGroup.id) {
       this.loadExistingIG(newProps.interestGroup)
     }
   }
@@ -165,7 +165,7 @@ class InterestGroupForm extends Component {
   }
 
   handleFormChange = (value, type, info) => {
-    const { interestGroup, nameEntry } = this.state
+    const { interestGroup, nameEntry, membersEntry } = this.state
     var { members } = interestGroup
 
     switch(type) {
@@ -251,12 +251,15 @@ class InterestGroupForm extends Component {
         members[info] = {
           ...members[info],
           profile: value,
-          id: value.id
+          id: value ? value.id : value
         }
+
+        membersEntry[info] = value ? true : false
 
         this.setState({
           interestGroup: {
             ...interestGroup,
+            membersEntry: membersEntry,
             members: members,
           }
         })
@@ -300,8 +303,12 @@ class InterestGroupForm extends Component {
           members[index].profile ?
             <div className="mb-3">
               <UserCard user={members[index].profile} leader={i === 0} />
+              <Button color="danger" className="mt-2" outline onClick={() => this.handleFormChange(null, 'memberProfile', index)}>
+                <FontAwesomeIcon icon="trash-alt" />
+              </Button>
             </div>
           : <Card className="p-3 mb-3" outline color="primary">
+              <h5 className="mb-0" style={{color: 'dodgerblue'}}>{ i === 0 ? 'Leader' : 'Member'}</h5>
               <InputGroup>
                 <Input type="email" placeholder="Member Email" value={members[index].email} invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberEmail', index)} />
                 <InputGroupAddon addonType="append">
