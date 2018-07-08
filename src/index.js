@@ -27,6 +27,7 @@ import Settings from './components/Users/Settings'
 import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
+import ModuleAdmin from './components/Modules/ModuleAdmin'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 import { createStore } from 'redux'
@@ -121,6 +122,7 @@ render(
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>
             <Route path="/addreview/" component={AddReview}/>
+            <Route path="/moduleadmin/" component={ModuleAdmin}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

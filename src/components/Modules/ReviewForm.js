@@ -40,10 +40,10 @@ class EventForm extends Component {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
-    return inputLength === 0 ? [] : modules.filter(module =>
-      module.name.toLowerCase().slice(0, inputLength) === inputValue ||
-      module.code.toLowerCase().slice(0, inputLength) === inputValue
-    );
+    return inputLength >= 3 ? modules.filter(module =>
+      module.name.toLowerCase().startsWith(inputValue)  ||
+      module.code.toLowerCase().startsWith(inputValue)
+    ) : []
   };
 
   getSuggestionValue = suggestion => {
@@ -171,6 +171,23 @@ class EventForm extends Component {
     })
   }
 
+  displaySemesterOptions = () => {
+    var semesterOptions = []
+
+    const startDate = moment().add(config.reviewStartYear, 'year')
+
+    for(var i = 0; i <= -config.reviewStartYear; i++) {
+      const firstYear = startDate.clone().add(i, 'year').format('YY')
+      const secondYear = startDate.clone().add(i + 1, 'year').format('YY')
+      const semString1 = 'AY'+firstYear+'/'+secondYear+' Sem 1'
+      const semString2 = 'AY'+firstYear+'/'+secondYear+' Sem 2'
+      semesterOptions.push(<option value={semString1} key={semString1}>{semString1}</option>)
+      semesterOptions.push(<option value={semString2} key={semString2}>{semString2}</option>)
+    }
+
+    return semesterOptions
+  }
+
   render() {
     const { buttonText } = this.props
     const { moduleSearch, reviewEntry, moduleEntry, semesterEntry, submitFailure, suggestions, formSubmitting, moduleData } = this.state
@@ -217,15 +234,15 @@ class EventForm extends Component {
         <Input type="select" invalid={errors.semester} onChange={(event) => this.handleFormChange(event.target.value, 'semester')} value={semester}>
           <option value=''>Please Select a Semester</option>
           {
-            ''
+            this.displaySemesterOptions()
           }
         </Input>
         { errors.semester ? <FormFeedback>Please select a semester.</FormFeedback> : ''}
       </FormGroup>
       <FormGroup>
         <Label><h3>Review</h3></Label>
-        <Input type="textarea" placeholder="Enter your review" value={review} onChange={(event) => this.handleFormChange(event.target.value, 'review')} style={{minHeight: '200px'}} />
-        { errors.review ? <FormFeedback>Please enter youre view.</FormFeedback> : ''}
+        <Input type="textarea" invalid={errors.review} placeholder="Enter your review" value={review} onChange={(event) => this.handleFormChange(event.target.value, 'review')} style={{minHeight: '200px'}} />
+        { errors.review ? <FormFeedback>Please enter your review.</FormFeedback> : ''}
       </FormGroup>
       <FormGroup>
         <Label><h3>Anonymous</h3></Label>

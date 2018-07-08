@@ -12,7 +12,7 @@ import {
   Card, CardTitle, CardText
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getModules } from '../../utils/actions'
+import { getModule, getModuleReviews } from '../../utils/actions'
 import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 import ModuleCard from './ModuleCard'
@@ -30,22 +30,48 @@ class Modules extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: '1'
+      activeTab: ''
     };
   }
 
   componentWillMount() {
     const { firestore } = this.context.store
-    getModules(firestore, true)
+    getModuleReviews(firestore)
   }
 
   componentWillReceiveProps(newProps) {
-    const { modules } = newProps
+    const { firestore } = this.context.store
+    const { moduleReviews } = newProps
+    const { activeTab } = this.state
     const moduleTypes = _.keys(modules)
 
-    if (_.keys(this.props.modules).length !== moduleTypes) {
-      this.setState({
-        activeTab: moduleTypes[0]
+    if (!this.props.moduleReviews && moduleReviews) {
+      const moduleCodes = _.map(_.uniqBy(moduleReviews, 'module'), (moduleReview) => moduleReview.module)
+
+      var modules = {}
+      var completed = 0
+      _.forEach(moduleCodes, (moduleCode) => {
+        getModule(firestore, moduleCode, (snapshot) => {
+          var module = {
+            ...snapshot.data(),
+            id: moduleCode
+          }
+
+          if(modules[module.type]) {
+            modules[module.type] = modules[module.type].concat(module)
+          } else {
+            modules[module.type] = [module]
+          }
+
+          completed += 1
+
+          if(completed === moduleCodes.length) {
+            this.setState({
+              modules: modules,
+              activeTab: _.keys(modules)[0]
+            })
+          }
+        })
       })
     }
   }
@@ -59,7 +85,8 @@ class Modules extends Component {
   }
 
   renderModules = () => {
-    const { modules, moduleTypes } = this.props
+    const { modules } = this.state
+    const { moduleTypes } = this.props
 
     const moduleTabs = []
 
@@ -84,17 +111,19 @@ class Modules extends Component {
   }
 
   renderModuleTypeTabs = () => {
-    const { modules, moduleTypes } = this.props
+    const { modules, activeTab } = this.state
+    const { moduleTypes } = this.props
 
     const moduleTypeTabs = []
+    var setActiveTab = false
 
-    _.forEach(_.keys(modules), (moduleID) => {
-      const moduleType = moduleTypes[moduleID]
+    _.forEach(_.keys(modules), (moduleTypeID) => {
+      const moduleType = moduleTypes[moduleTypeID]
 
-      moduleTypeTabs.push(<NavItem key={moduleID}>
+      moduleTypeTabs.push(<NavItem key={moduleTypeID}>
         <NavLink
-          className={classnames({ active: this.state.activeTab === moduleID })}
-          onClick={() => { this.toggle(moduleID); }}
+          className={classnames({ active: this.state.activeTab === moduleTypeID })}
+          onClick={() => { this.toggle(moduleTypeID); }}
         >
           { moduleType.name }
         </NavLink>
@@ -109,13 +138,17 @@ class Modules extends Component {
   }
 
   render() {
-    const { modules, moduleTypes } = this.props
+    const { modules } = this.state
+    const { moduleTypes } = this.props
 
     return(<Container>
       <Row>
         <Col>
           <div className="d-flex">
-            <div className="p-2"><h1 style={{fontWeight: 300}}>Modules</h1></div>
+            <div className="p-2">
+              <h1 style={{fontWeight: 300}} className="mb-0">Modules</h1>
+              <h4 className="mb-4 text-primary">Only Modules with Reviews are Displayed</h4>
+            </div>
           </div>
         </Col>
       </Row>
@@ -136,6 +169,7 @@ class Modules extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
+    moduleReviews: state.firestore.ordered.moduleReviews,
     modules: formatModulesIntoTypes(state.firestore),
     moduleTypes: state.firestore.data.moduleTypes
   }

@@ -30,6 +30,8 @@ import {
   getModules as getFirestoreModules,
   getModule as getFirestoreModule,
   getModuleReviews as getFirestoreModuleReviews,
+  addModule as addFirestoreModule,
+  addReview as addFirestoreReview
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -298,8 +300,16 @@ export function getModule(firestore, moduleID, callback = () => {}) {
   getFirestoreModule(firestore, moduleID, callback)
 }
 
-export function getModuleReviews(firestore, moduleID, callback = () => {}) {
+export function getModuleReviews(firestore, moduleID = null, callback = () => {}) {
   getFirestoreModuleReviews(firestore, moduleID, callback )
+}
+
+export function addModule(firestore, module, callback = () => {}, errorCallback = () => {}) {
+  addFirestoreModule(firestore, module, callback, errorCallback)
+}
+
+export function addReview(firestore, review, callback = () => {}, errorCallback = () => {}) {
+  addFirestoreReview(firestore, review, callback, errorCallback)
 }
 
 export function initialiseGAPI() {

@@ -4,6 +4,7 @@ export const config = {
   logoFilePath: 'logo',
   minimumIGMembers: 1,
   descriptionPreviewLength: 200,
+  reviewStartYear: -4,
   categoryIDs: {
     ig: '0ee1DDaz3D9ZdsZTk29p',
     gui: 'COOcvdATPUEwJt6B9VIb',

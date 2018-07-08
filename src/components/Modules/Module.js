@@ -28,7 +28,8 @@ class Module extends Component {
 
   componentWillMount() {
     const { firestore } = this.context.store
-    const { moduleID } =this.props.match.params
+    const { moduleID } = this.props.match.params
+
     getModule(firestore, moduleID)
     getModuleReviews(firestore, moduleID)
   }
@@ -44,7 +45,7 @@ class Module extends Component {
             <Col>
               <h4 className="mb-0 mt-4 text-primary">{moduleTypes[module.type].name}</h4>
               <h1 style={{fontWeight: 300}}>{ module.name }{' '}<br/><small className="text-muted">{ module.code }</small></h1>
-              <h3>by { module.prof }</h3>
+              { module.prof ? <h3>by { module.prof }</h3> : ''}
               <p className="lead">{ module.description }</p>
               {
                 moduleReviews ?

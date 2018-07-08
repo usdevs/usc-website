@@ -15,14 +15,16 @@ class ModuleReviewCard extends Component {
 
     const { firestore, moduleReview } = props
 
-    getUserProfile(firestore, moduleReview.creator, (snapshot) => {
-      this.setState({
-        creator: {
-          ...snapshot.data(),
-          id: moduleReview.creator
-        }
+    if(!moduleReview.isAnon){
+      getUserProfile(firestore, moduleReview.creator, (snapshot) => {
+        this.setState({
+          creator: {
+            ...snapshot.data(),
+            id: moduleReview.creator
+          }
+        })
       })
-    })
+    }
   }
 
   render() {
@@ -34,7 +36,14 @@ class ModuleReviewCard extends Component {
       <Container className="m-0 p-0">
         <Row className="d-flex align-items-center">
           <Col xs="12">
-            { creator && !isAnon ? <div className="d-flex justify-content-end"><div><UserCard user={creator} /></div></div> : '' }
+            { creator || isAnon ?
+              <div className="d-flex justify-content-end">
+                <div>
+                  { !isAnon ? <UserCard user={creator} /> : <h3 className="text-secondary mb-0">Anonymous</h3>}
+                </div>
+              </div>
+              : ''
+            }
             <div className="d-flex justify-content-end"><h4 className="mt-2 text-primary">taken in {semester}</h4></div>
             <p>{ review }</p>
           </Col>
