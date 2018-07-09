@@ -17,6 +17,14 @@ class AddReview extends Component {
     store: PropTypes.object.isRequired
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      modal: false
+    }
+  }
+
   componentWillMount() {
     const { firestore } = this.context.store
 
