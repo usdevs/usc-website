@@ -87,7 +87,7 @@ class CreateEvent extends Component {
     const { selectedDate } = this.state
     const { firestore } = this.context.store
     const { auth, history, events, eventTypes, spaces, eventTypesUnordered,
-      spacesUnordered, eventsUnordered, firebase, groups, groupTypes } = this.props
+      spacesUnordered, eventsUnordered, firebase, groups, groupTypes, venueBookings } = this.props
 
 
     if(isLoaded(auth) && isEmpty(auth)) {
@@ -115,6 +115,7 @@ class CreateEvent extends Component {
                 buttonOnSubmit={(event, callback) => this.createEvent(event, callback)}
                 groups={groups}
                 groupTypes={groupTypes}
+                venueBookings={venueBookings}
                 firebase={firebase}
                 firestore={firestore} />
               : <h4><FontAwesomeIcon icon="spinner" spin /> Please wait...</h4>
@@ -158,6 +159,7 @@ const mapStateToProps = state => {
     groupTypes: state.firestore.data.groupTypes,
     auth: state.firebase.auth,
     firestore: state.firestore,
+    venueBookings: state.firestore.ordered.venueBookings
   }
 }
 

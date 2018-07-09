@@ -4,6 +4,7 @@ import {
   createEvent as createFirestoreEvent,
   getEvents as getFirestoreEvents,
   getEventsAfter as getFirestoreEventsAfter,
+  getEventVenueBookingsAfter as getFirestoreEventVenueBookingsAfter,
   getEventTypes as getFirestoreEventTypes,
   getGroupEvents as getFirestoreGroupEvents,
   getSpaces as getFirestoreSpaces,
@@ -161,6 +162,10 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
   }
 
   watchFirestoreEvents(firestore)
+}
+
+export function getEventVenueBookingsAfter(firestore, venueID, date, alias = 'venueBookings', callback = () => {}) {
+  getFirestoreEventVenueBookingsAfter(firestore, venueID, date, alias, callback)
 }
 
 export function getEventsByMonth(firestore, callback = () => {}, month, spaceOnly = false) {

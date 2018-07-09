@@ -12,8 +12,8 @@ import DatePickerForm from '../reusable/DatePickerForm'
 import ImageUploader from '../reusable/ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import InterestGroupCard from '../InterestGroups/InterestGroupCard'
-import { roundTime, isToday } from '../../utils/utils'
-import { getFile } from '../../utils/actions'
+import { roundTime, isToday, eventTimesToMoment } from '../../utils/utils'
+import { getFile, getEventVenueBookingsAfter } from '../../utils/actions'
 import { withRouter } from 'react-router-dom'
 
 const otherVenueValue = "Other"
@@ -161,11 +161,16 @@ class EventForm extends Component {
         })
         break
       case 'type':
+        //If House, the event should be internal
+        const mustBeInternal = value === 'hkhhLXls25Pqbg5tXWwL'
+
         this.setState({
           typeEntry: true,
+          mustBeInternal: mustBeInternal,
           event: {
             ...event,
-            type: value
+            type: value,
+            internal: mustBeInternal ? true : internal
           }
         })
         break
@@ -179,6 +184,7 @@ class EventForm extends Component {
         break
       case 'spaceOnly':
         this.setState({
+          mustBeInternal: !spaceOnly,
           event: {
             ...event,
             internal: !spaceOnly,
@@ -187,6 +193,7 @@ class EventForm extends Component {
         })
         break
       case 'venue':
+        this.getVenueBookings(value, null)
         this.setState({
           venueEntry: true,
           event: {
@@ -237,7 +244,7 @@ class EventForm extends Component {
         break
       case 'startDate':
         const newEndDate2 = value.isSameOrAfter(endDate) ? value.clone().add(config.timeInterval, "minutes") : endDate
-
+        this.getVenueBookings(null, value)
         this.setState({
           event: {
             ...event,
@@ -294,7 +301,50 @@ class EventForm extends Component {
     }
   }
 
+  getVenueBookings = (newVenueID, newStartDate) => {
+    const { firestore } = this.props
+    var { venue, startDate } = this.state.event
+
+    if(newVenueID) {
+      venue = newVenueID
+    }
+
+    if(newStartDate) {
+      startDate = newStartDate
+    }
+
+    getEventVenueBookingsAfter(firestore, venue, startDate, 'venueBookings')
+  }
+
+  checkVenueClashes = () => {
+    const { venueBookings } = this.props
+    const { startDate, endDate } = this.state.event
+
+    if (!startDate || !endDate || !venueBookings) {
+      return false
+    }
+
+    var clashes = false
+
+    checkBookings: {
+      _.forEach(venueBookings, (bookingTemp) => {
+        const booking = eventTimesToMoment(bookingTemp)
+        clashes = startDate.isBetween(booking.startDate, booking.endDate)
+                    || endDate.isBetween(booking.startDate, booking.endDate)
+                    || booking.startDate.isBetween(startDate, endDate)
+                    || booking.endDate.isBetween(startDate, endDate)
+
+        if(clashes) {
+          return false
+        }
+      })
+    }
+
+    return clashes
+  }
+
   validate = (clearEntryChecks) => {
+    const { venueBookings } = this.props
     const { event, nameEntry, typeEntry, venueEntry, otherVenueEntry } = this.state
     const { name, type, venue, otherVenue } = event
     const showOtherVenue = venue === "Others"
@@ -303,6 +353,7 @@ class EventForm extends Component {
       name: (nameEntry || clearEntryChecks) ? !name : false,
       type: (typeEntry || clearEntryChecks) ? type === '' : false,
       venue: (venueEntry || clearEntryChecks) ? venue === '' : false,
+      venueClashes: this.checkVenueClashes(),
       otherVenue: showOtherVenue ? (otherVenueEntry || clearEntryChecks) ? !otherVenue : false : false,
     }
   }
@@ -362,7 +413,7 @@ class EventForm extends Component {
   }
 
   render() {
-    const { event, submitFailure, formSubmitting, organisedBy, suggestions, organiserProfile } = this.state
+    const { event, submitFailure, formSubmitting, organisedBy, suggestions, organiserProfile, mustBeInternal } = this.state
     const { startDate, endDate, name, multiDay, venue, type, fullDay, internal, spaceOnly, description, regLink } = event
     const { eventTypes, spaces, buttonText, firebase, firestore, groupTypes } = this.props
 
@@ -371,6 +422,8 @@ class EventForm extends Component {
     const endSDate = startDate.clone().endOf('day')
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
+
+    console.log(errors)
 
     const inputProps = {
       placeholder: "Enter an IG or GUI Name",
@@ -401,7 +454,7 @@ class EventForm extends Component {
         { errors.type ? <FormFeedback>Please select an event type.</FormFeedback> : ''}
         <FormGroup check inline>
           <Label check>
-            <Input type="checkbox" id="tentative" onChange={(event) => this.handleFormChange(event.target.value, 'internal')} checked={internal} /> Internal (Not on GCal)
+            <Input type="checkbox" id="tentative" disabled={mustBeInternal} onChange={(event) => this.handleFormChange(event.target.value, 'internal')} checked={internal} /> Internal (Not on GCal)
           </Label>
         </FormGroup>
         <FormGroup check inline>
@@ -412,7 +465,7 @@ class EventForm extends Component {
       </FormGroup>
       <FormGroup>
         <Label for="name"><h3>Venue</h3></Label>
-        <Input type="select" name="select" id="venue" invalid={errors.venue} onChange={(event) => this.handleFormChange(event.target.value, 'venue')} value={venue}>
+        <Input type="select" name="select" id="venue" invalid={errors.venue || errors.venueClashes} onChange={(event) => this.handleFormChange(event.target.value, 'venue')} value={venue}>
           <option value=''>Please Select a Venue</option>
           {
             spaces.map((space) => <option key={ space.id } value={ space.id }>{ space.name }</option>)
@@ -420,6 +473,7 @@ class EventForm extends Component {
           <option value={otherVenueValue}>Others</option>
         </Input>
         { errors.venue ? <FormFeedback>Please select a venue.</FormFeedback> : ''}
+        { errors.venueClashes ? <FormFeedback>Venue is already booked at that period, choose another venue.</FormFeedback> : ''}
         { event.otherVenueSelected ? <Input type="text" name="othervenue" id="othervenue" placeholder="Venue Name (e.g. Dining Hall/Lobby)" invalid={errors.otherVenue} onChange={(event) => this.handleFormChange(event.target.value, 'otherVenue')} /> : '' }
         { event.otherVenueSelected && errors.otherVenue ? <FormFeedback>Venue cannot be empty.</FormFeedback> : '' }
       </FormGroup>

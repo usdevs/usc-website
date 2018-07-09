@@ -28,6 +28,7 @@ import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
 import ModuleAdmin from './components/Modules/ModuleAdmin'
+import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 import { createStore } from 'redux'
@@ -98,7 +99,7 @@ render(
   <Provider store={store}>
     <div>
       <Router>
-        <div>
+        <ScrollToTop>
           <Navbar/>
           <Switch>
             <Route exact path="/" component={Home}/>
@@ -126,7 +127,7 @@ render(
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>
-        </div>
+        </ScrollToTop>
       </Router>
     </div>
   </Provider>, document.getElementById('root'));

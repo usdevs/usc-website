@@ -127,7 +127,8 @@ class EditEvent extends Component {
   render() {
     const { eventID } = this.state
     const { firestore } = this.context.store
-    const { auth, eventTypes, spaces, userEvents, firebase, userEventsOriginal, history, groups, groupTypes, groupsUnordered } = this.props
+    const { auth, eventTypes, spaces, userEvents, firebase, userEventsOriginal,
+      history, groups, groupTypes, groupsUnordered, venueBookings } = this.props
 
     if(isLoaded(auth) && isEmpty(auth)){
       history.push('/')
@@ -155,6 +156,7 @@ class EditEvent extends Component {
                   spaces={spaces}
                   buttonText='Save Changes'
                   buttonOnSubmit={(event, callback, clearSubmitting) => this.updateEvent(event, callback, clearSubmitting)}
+                  venueBookings={venueBookings}
                   firebase={firebase}
                   firestore={firestore}
                   groups={groups}
@@ -190,6 +192,7 @@ const mapStateToProps = state => {
     groups: state.firestore.ordered.groups,
     groupsUnordered: state.firestore.data.groups,
     groupTypes: state.firestore.data.groupTypes,
+    venueBookings: state.firestore.ordered.venueBookings
   }
 }
 

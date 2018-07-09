@@ -186,6 +186,19 @@ export function getEvent(firestore, eventID) {
     storeAs: 'event'})
 }
 
+export function getEventVenueBookingsAfter(firestore, venueID, date, alias, callback) {
+  firestore
+  .get({
+    collection: 'events',
+    where: [
+      ['endDate', '>=', date.toDate()],
+      ['venue', '==', venueID]
+    ],
+    orderBy: ['endDate'],
+    storeAs: alias})
+  .then((snapshot) => callback(snapshot))
+}
+
 export function getUserEvents(firestore, userID, callback) {
   firestore
   .get({
