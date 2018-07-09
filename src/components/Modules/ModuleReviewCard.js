@@ -35,15 +35,11 @@ class ModuleReviewCard extends Component {
         <Row className="d-flex align-items-center">
           <Col xs="12">
             { creator || isAnon ?
-              <div className="d-flex justify-content-end">
-                <div>
-                  { !isAnon ? <UserCard user={creator} /> : <h3 className="text-secondary mb-0">Anonymous</h3>}
-                </div>
-              </div>
+              !isAnon ? <UserCard user={creator} /> : <h3 className="text-secondary mb-0">Anonymous</h3>
               : ''
             }
-            <div className="d-flex justify-content-end"><h4 className="mt-2 text-primary">taken in {semester}</h4></div>
-            <p>{ review }</p>
+            <h4 className="mt-2 text-primary">taken in {semester}</h4>
+            <p style={{whiteSpace: 'pre-line'}}>{ review }</p>
           </Col>
         </Row>
       </Container>

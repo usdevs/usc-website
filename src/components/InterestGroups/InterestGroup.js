@@ -68,8 +68,8 @@ class InterestGroup extends Component {
           }
           <Col xs="12" md={logo ? "9" : "12"}>
             <h2 style={{fontWeight: 300}}>{ name }</h2>
-              <p className="lead">{ description }</p>
-              <p>{ activities }</p>
+              <p className="lead" style={{whiteSpace: 'pre-line'}}>{ description }</p>
+              <p style={{whiteSpace: 'pre-line'}}>{ activities }</p>
           </Col>
         </Row>
         <Row>

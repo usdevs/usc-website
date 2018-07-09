@@ -51,7 +51,7 @@ class EventCard extends Component {
   }
 
   render() {
-    const { poster, modal } = this.state
+    const { poster, modal, fullDescription } = this.state
     const { event, eventTypes, spaces, buttonAction, buttonText, hasModal } = this.props
 
     return(<Card body>
@@ -73,9 +73,9 @@ class EventCard extends Component {
             <h4 className="mb-0" style={{fontWeight: 300}}>{event.startDate.format('Do MMMM - hh:mm a')}</h4>
             <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenueSelected ? event.venue : spaces[event.venue].name)  }</h4>
             { event.description ?
-              <CardText className="mb-2">
-                { _.truncate(event.description, { 'length': config.descriptionPreviewLength }) }
-              </CardText>
+              <p>{ fullDescription ? event.description : _.truncate(event.description, { 'length': config.descriptionPreviewLength }) }
+                <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>
+              </p>
               : ''
             }
             <CardText>

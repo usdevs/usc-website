@@ -38,7 +38,7 @@ class GroupCard extends Component {
   }
 
   render() {
-    const { logo } = this.state
+    const { logo, fullDescription } = this.state
     const { group, groupTypes, firebase, history, hideButtons, manageMode } = this.props
     const { id, name, type, description, leader } = group
 
@@ -61,9 +61,9 @@ class GroupCard extends Component {
                 <div className="d-flex align-items-left"><h5 className={"p-1 mb-2 mt-2 align-middle border rounded border-" + statusColor[group.status] +"  text-" + statusColor[group.status]}>Status: {_.capitalize(group.status)}</h5></div>
               : ''
             }
-            { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
-            <p className="mb-2">
-              { _.truncate(description, { 'length': config.descriptionPreviewLength }) }
+            { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}      
+            <p className="mb-2">{ fullDescription ? description : _.truncate(description, { 'length': config.descriptionPreviewLength }) }
+              <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>
             </p>
             {
               !hideButtons ?

@@ -165,6 +165,7 @@ class EventForm extends Component {
       semesterEntry: false,
       submitFailure: false,
       suggestions: [],
+      formSubmitting: false,
       review: newReview,
     })
   }

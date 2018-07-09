@@ -38,7 +38,7 @@ class InterestGroupCard extends Component {
   }
 
   render() {
-    const { logo } = this.state
+    const { logo, fullDescription } = this.state
     const { interestGroup, igTypes, firebase, history, hideButtons, manageMode } = this.props
     const { id, name, type, description, leader } = interestGroup
 
@@ -63,8 +63,8 @@ class InterestGroupCard extends Component {
               : ''
             }
             { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
-            <p className="mb-2">
-              { _.truncate(description, { 'length': config.descriptionPreviewLength }) }
+            <p className="mb-2">{ fullDescription ? description : _.truncate(description, { 'length': config.descriptionPreviewLength }) }
+              <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>
             </p>
             {
               !hideButtons ?

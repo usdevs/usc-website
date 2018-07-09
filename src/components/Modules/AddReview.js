@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Container, Row, Col
+  Container, Row, Col,
+  Button, Modal, ModalBody, ModalFooter
 } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
 import { getModules, addReview } from '../../utils/actions'
@@ -30,14 +31,40 @@ class AddReview extends Component {
       ...review,
       creator: auth.uid
     }, () => {
+      this.toggle()
       callback()
     })
+  }
+
+  successModal = () => {
+    const { modal } = this.state
+    const { history } = this.props
+
+    return(<Modal isOpen={modal} toggle={this.toggle}>
+      <ModalBody>
+        <h3 style={{fontWeight: 300}}>Review Submitted!</h3>
+        <p>Your review has been submitted!</p>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={() => history.push('/modules/')}>To Modules</Button>{' '}
+        <Button color="secondary" onClick={() => {
+          this.toggle()
+        }}>Dismiss</Button>
+      </ModalFooter>
+    </Modal>)
+  }
+
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   render() {
     const { modules, moduleTypes } = this.props
 
     return(<Container>
+      { this.successModal() }
       <Row>
         <Col>
           <h1 style={{fontWeight: 300}}>Add Review</h1>
