@@ -95,7 +95,7 @@ class DaySpaceCalendar extends Component {
 
   eventModals = () => {
     const { eventModals } = this.state
-    const { eventsUnordered, eventTypes, spaces, firebase } = this.props
+    const { eventsUnordered, eventTypes, spaces } = this.props
 
     if(eventsUnordered) {
       var eventModal = []

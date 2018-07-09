@@ -52,7 +52,7 @@ class EventCard extends Component {
 
   render() {
     const { poster, modal } = this.state
-    const { event, eventTypes, spaces, buttonAction, buttonText, firebase, hasModal } = this.props
+    const { event, eventTypes, spaces, buttonAction, buttonText, hasModal } = this.props
 
     return(<Card body>
       <Container className="m-0 p-0">

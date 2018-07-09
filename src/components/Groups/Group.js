@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import { Button, Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import EventCard from '../Events/EventCard'
 import UserCard from '../Users/UserCard'
 import { getGroup, getFile, getGroupEvents, getUserProfile } from '../../utils/actions'
@@ -48,7 +48,7 @@ class Group extends Component {
   showInterestGroup = () => {
     const { logo, group } = this.state
     const { firebase, events, eventTypes, spaces, userProfile, auth } = this.props
-    const { name, description, activities, chat } = group
+    const { name, description, activities } = group
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 

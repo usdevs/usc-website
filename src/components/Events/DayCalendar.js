@@ -27,7 +27,7 @@ class DayCalendar extends Component {
 
   render() {
     const { eventModals } = this.state
-    const { selectedDate, events, eventTypes, spaces, firebase } = this.props
+    const { selectedDate, events, eventTypes, spaces } = this.props
 
     return(<div>
       <h1 style={{fontWeight: 300}}><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{' ' + selectedDate.format('YYYY')}</small></h1>
