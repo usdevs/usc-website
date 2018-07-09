@@ -3,23 +3,13 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Jumbotron, Button,
-  Container, Row, Col,
-  Modal, ModalHeader, ModalBody, ModalFooter,
-  Form, FormGroup, Label, Input, FormFeedback,
-  InputGroupAddon, InputGroup,
-  TabContent, TabPane, Nav, NavItem, NavLink,
-  Card, CardTitle, CardText
+  Container, Row, Col
 } from 'reactstrap';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { getModule, getModuleReviews } from '../../utils/actions'
-import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
-import ModuleCard from './ModuleCard'
 import ModuleReviewCard from './ModuleReviewCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import classnames from 'classnames';
-import _ from 'lodash'
 
 class Module extends Component {
   static contextTypes = {

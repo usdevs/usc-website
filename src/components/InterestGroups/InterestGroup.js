@@ -43,10 +43,9 @@ class InterestGroup extends Component {
 
   showInterestGroup = () => {
     const { logo } = this.state
-    const { interestGroup, igTypes, firebase, history, events, eventTypes, spaces, userProfile, auth } = this.props
-    const { name, type, description, activities, leader, chat } = interestGroup
+    const { interestGroup, firebase, events, eventTypes, spaces, userProfile, auth } = this.props
+    const { name, description, activities, chat } = interestGroup
 
-    const isLeader = firebase.auth ? leader === firebase.auth.uid : false
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 
     if (!logo && interestGroup.logo) {
@@ -141,7 +140,7 @@ class InterestGroup extends Component {
   }
 
   render() {
-    const { interestGroup, firebase, history, requesting } = this.props
+    const { interestGroup } = this.props
 
     return(<Container>
       <Row className="mt-3 mb-3">

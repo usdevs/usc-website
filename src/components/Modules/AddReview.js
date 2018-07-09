@@ -3,20 +3,13 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Jumbotron, Button,
-  Container, Row, Col,
-  Modal, ModalHeader, ModalBody, ModalFooter,
-  Form, FormGroup, Label, Input, FormFeedback,
-  InputGroupAddon, InputGroup,
-  TabContent, TabPane, Nav, NavItem, NavLink,
-  Card, CardTitle, CardText
+  Container, Row, Col
 } from 'reactstrap';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { getModules, addReview } from '../../utils/actions'
 import { withRouter } from 'react-router-dom'
 import ReviewForm from './ReviewForm'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 
 class AddReview extends Component {
   static contextTypes = {
@@ -43,7 +36,6 @@ class AddReview extends Component {
   }
 
   render() {
-    const { firestore } = this.context.store
     const { modules, moduleTypes } = this.props
 
     return(<Container>

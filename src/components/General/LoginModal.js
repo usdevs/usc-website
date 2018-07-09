@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Alert, Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
@@ -8,7 +8,6 @@ import { firebaseConnect } from 'react-redux-firebase'
 import GoogleButton from 'react-google-button'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { initialiseGAPI, signIn } from '../../utils/actions'
-import { firebaseConfig } from '../../resources/config'
 
 class LoginModal extends Component {
   constructor(props) {

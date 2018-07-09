@@ -1,18 +1,44 @@
 import React, { Component } from 'react'
-import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
+import { compose } from 'redux'
+import { Card, Container, Row, Col } from 'reactstrap';
+import { firebaseConnect } from 'react-redux-firebase';
+import { getFile } from '../../utils/actions'
 
 class UserCard extends Component {
+  constructor(props) {
+    super(props)
+
+    var avatar = null
+    const { avatarUrl } = props.user
+
+    if(avatarUrl.startsWith('http')) {
+      avatar = avatarUrl
+    } else {
+      const { firebase } = this.props
+
+      getFile(firebase, avatar, (url) => {
+        this.setState({
+          avatar: url,
+        })
+      })
+    }
+
+    this.state = {
+      avatar: avatar,
+    }
+  }
+
   render() {
-    const { user, leader, hideContact } = this.props
-    const { avatarUrl, displayName, email } = user
+    const { user, leader, hideContact, avatar } = this.props
+    const { displayName, email } = user
 
     return(<Card body>
       <Container className="m-0 p-0">
         <Row className="d-flex align-items-center">
           {
-            avatarUrl ?
+            avatar ?
             <Col xs="3" className="pr-0">
-              <img src={avatarUrl} className="rounded-circle mb-0" alt="Avatar" />
+              <img src={avatar} className="rounded-circle mb-0" alt="Avatar" />
             </Col>
             : ''
           }
@@ -27,4 +53,6 @@ class UserCard extends Component {
   }
 }
 
-export default UserCard
+export default compose(
+  firebaseConnect()
+)(UserCard)

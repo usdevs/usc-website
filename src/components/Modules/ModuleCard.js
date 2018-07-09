@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
+import { Button, Card, Container, Row, Col } from 'reactstrap';
 import { config } from '../../resources/config'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'

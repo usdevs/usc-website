@@ -2,6 +2,7 @@ export const config = {
   timeInterval: 30,
   posterFilePath: 'poster',
   logoFilePath: 'logo',
+  avatarFilePath: 'avatar',
   minimumIGMembers: 1,
   descriptionPreviewLength: 200,
   reviewStartYear: -4,

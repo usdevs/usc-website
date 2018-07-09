@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {
   Container, Row, Col,
-  Alert, Button, Card, Jumbotron,
+  Alert, Button, Card,
   Form, FormGroup, Label, Input, FormFeedback,
   InputGroup, InputGroupAddon
 } from 'reactstrap';
 import { config } from '../../resources/config'
-import { getUserByEmail, getMyProfile, getUserProfile, getFile } from '../../utils/actions'
+import { getUserByEmail, getUserProfile, getFile } from '../../utils/actions'
 import ImageUploader from '../reusable/ImageUploader'
 import UserCard from '../Users/UserCard'
 import _ from 'lodash'
@@ -83,14 +83,14 @@ class InterestGroupForm extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.interestGroup && newProps.interestGroup && this.props.interestGroup.id != newProps.interestGroup.id) {
+    if (this.props.interestGroup && newProps.interestGroup && this.props.interestGroup.id !== newProps.interestGroup.id) {
       this.loadExistingIG(newProps.interestGroup)
     }
   }
 
   loadExistingIG = (interestGroup, forceIsMounted) => {
     var { isMounted } = this.state
-    const { auth, firestore, firebase } = this.props
+    const { firestore, firebase } = this.props
 
     isMounted = forceIsMounted ? forceIsMounted : isMounted
 
@@ -172,7 +172,7 @@ class InterestGroupForm extends Component {
   }
 
   handleFormChange = (value, type, info) => {
-    const { interestGroup, nameEntry, membersEntry } = this.state
+    const { interestGroup, membersEntry } = this.state
     var { members } = interestGroup
 
     switch(type) {
@@ -276,8 +276,8 @@ class InterestGroupForm extends Component {
   }
 
   validate = (clearEntryChecks) => {
-    const { interestGroup, nameEntry, typeEntry, descriptionEntry, activitiesEntry, supportEntry, membersEntry } = this.state
-    const { name, type, description, activities, support, members, original } = interestGroup
+    const { interestGroup, nameEntry, typeEntry, descriptionEntry, activitiesEntry, membersEntry } = this.state
+    const { name, type, description, activities, members, original } = interestGroup
 
     return {
       name: (nameEntry || clearEntryChecks) ? !name : false,
@@ -298,7 +298,7 @@ class InterestGroupForm extends Component {
 
     var igMembers = []
 
-    if(!_.isArray(members) || interestGroup.original && (_.keys(interestGroup.original.members).length !== members.length)) {
+    if(!_.isArray(members) || (interestGroup.original && (_.keys(interestGroup.original.members).length !== members.length))) {
       return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
     }
 
@@ -503,7 +503,7 @@ class InterestGroupForm extends Component {
   render() {
     const { igTypes } = this.props
     const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
-    const { name, type, chat, description, activities, support, leader } = interestGroup
+    const { name, type, chat, description, activities, support } = interestGroup
     const errors = this.validate()
       console.log(this.state)
 

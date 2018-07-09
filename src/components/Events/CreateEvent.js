@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
   Container, Row, Col, Button,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Modal, ModalBody, ModalFooter
 } from 'reactstrap';
 import moment from 'moment'
 import EventForm from './EventForm'

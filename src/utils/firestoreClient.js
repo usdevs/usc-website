@@ -500,3 +500,23 @@ export function addReview(firestore, review, callback, errorCallback) {
   .then((snapshot) => callback(snapshot))
   .catch((err) => errorCallback(err))
 }
+
+export function formatFirestoreProfile(profile) {
+  return {
+    avatarUrl: profile.avatarUrl,
+    displayName: profile.displayName,
+    email: profile.email,
+    providerData: profile.providerData,
+    telegram: profile.telegram
+  }
+}
+
+export function saveProfile(firestore, profile, callback) {
+  firestore
+  .set({ collection: 'users', doc: profile.id }, formatFirestoreProfile(profile))
+  .then((snapshot) => callback(snapshot))
+}
+
+export function watchProfile(firestore, profile, alias) {
+  firestore.onSnapshot({ collection: 'users', doc: profile.id, storeAs: alias })
+}

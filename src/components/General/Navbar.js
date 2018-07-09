@@ -4,7 +4,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import {
-  Button,
   Collapse,
   Navbar,
   NavbarToggler,
@@ -19,6 +18,7 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { signOut } from '../../utils/actions'
 import { logo } from '../../resources/images'
+import { getMyProfile, getFile } from '../../utils/actions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LoginModal from './LoginModal'
 
@@ -28,6 +28,9 @@ var logoStyle = {
 };
 
 class SiteNavbar extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props);
@@ -36,7 +39,64 @@ class SiteNavbar extends Component {
     this.state = {
       isOpen: false,
       loginIsOpen: false,
+      profile: null,
     };
+  }
+
+  componentWillMount() {
+    const { auth } = this.props
+
+    if(isLoaded(auth) && !isEmpty(auth)) {
+      this.getProfile(auth)
+    }
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log(newProps)
+
+    if (newProps.auth && newProps.auth.uid && newProps.myProfile && newProps.myProfile) {
+      console.log("test")
+      this.setUpProfile(newProps.myProfile, newProps.auth.uid)
+    } else if (!isLoaded(this.props.auth) && isLoaded(newProps.auth)) {
+      if(!isEmpty(newProps.auth)) {
+        this.getProfile(newProps.auth)
+      } else {
+        this.props.history.push('/')
+      }
+    }
+  }
+
+  getProfile = (auth) => {
+    const { firestore } = this.context.store
+
+    getMyProfile(firestore, auth, (snapshot) => {
+      var profile = snapshot.data()
+
+      this.setUpProfile(profile, auth)
+    })
+  }
+
+  setUpProfile = (profile, auth) => {
+    var avatarUrl = null
+    if(profile.avatarUrl.startsWith('http')) {
+      avatarUrl = profile.avatarUrl
+    } else {
+      const { firebase } = this.props
+
+      getFile(firebase, profile.avatarUrl, (url) => {
+        this.setState({
+          avatarUrl: url,
+        })
+      })
+    }
+
+    this.setState({
+      avatarUrl: avatarUrl,
+      profile: {
+        ...profile,
+        id: auth.uid
+      }
+    })
   }
 
   toggle() {
@@ -52,7 +112,7 @@ class SiteNavbar extends Component {
   }
 
   render() {
-    const { isOpen } = this.state
+    const { isOpen, profile, avatarUrl } = this.state
     const { auth, firebase, history } = this.props;
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 
@@ -114,37 +174,41 @@ class SiteNavbar extends Component {
               </NavItem> : ''
             }
             {
-              !isLoaded(auth) ? <FontAwesomeIcon icon="spinner" spin /> : signedIn ?
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret className="text-primary">
-                  <h4 className="d-inline" style={{fontWeight: 500}}>
-                    { auth.displayName }
-                    <img src={auth.photoURL} className="rounded-circle mb-0 ml-2" alt="Avatar" style={{maxHeight: "30px"}} />
-                  </h4>
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem onClick={() => {
-                    if(isOpen) {
-                      this.toggle()
-                    }
-                    history.push('/settings')
-                  }}>
-                    <FontAwesomeIcon icon="toolbox" />{ ' ' } Settings
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem onClick={() => {
-                    if(isOpen) {
-                      this.toggle()
-                    }
-                    signOut(firebase, ()=>{})
-                  }}>
-                    <FontAwesomeIcon icon="sign-out-alt" />{ ' ' } Log Out
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown> :
-              <NavItem>
-                <NavLink onClick={this.toggleLogin.bind(this)} className="border border-primary rounded text-primary" style={{fontWeight: 500}}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' } Log In</NavLink>
-              </NavItem>
+              !isLoaded(auth) ?
+                <div className="d-flex align-items-center"><FontAwesomeIcon icon="spinner" spin /></div>
+              : signedIn ?
+                !profile ? <div className="d-flex align-items-center"><FontAwesomeIcon icon="spinner" spin /></div> :
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret className="text-primary">
+                    <h4 className="d-inline" style={{fontWeight: 500}}>
+                      { profile.displayName }
+                      { avatarUrl ? <img src={avatarUrl} className="rounded-circle mb-0 ml-2" alt="Avatar" style={{maxHeight: "30px"}} /> : '' }
+                    </h4>
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem onClick={() => {
+                      if(isOpen) {
+                        this.toggle()
+                      }
+                      history.push('/settings')
+                    }}>
+                      <FontAwesomeIcon icon="toolbox" />{ ' ' } Settings
+                    </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={() => {
+                      if(isOpen) {
+                        this.toggle()
+                      }
+                      signOut(firebase, ()=>{})
+                    }}>
+                      <FontAwesomeIcon icon="sign-out-alt" />{ ' ' } Log Out
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                :
+                <NavItem>
+                  <NavLink onClick={this.toggleLogin.bind(this)} className="border border-primary rounded text-primary" style={{fontWeight: 500}}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' } Log In</NavLink>
+                </NavItem>
             }
 
           </Nav>
@@ -158,6 +222,7 @@ class SiteNavbar extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
+    myProfile: state.firestore.data.myProfile
   }
 }
 

@@ -32,7 +32,9 @@ import {
   getModule as getFirestoreModule,
   getModuleReviews as getFirestoreModuleReviews,
   addModule as addFirestoreModule,
-  addReview as addFirestoreReview
+  addReview as addFirestoreReview,
+  saveProfile as saveFirestoreProfile,
+  watchProfile as watchFirestoreProfile,
 } from './firestoreClient'
 import {
   createEvent as createGoogleEvent,
@@ -149,6 +151,10 @@ export function uploadPoster(firebase, poster, callback) {
 
 export function uploadLogo(firebase, logo, callback) {
   uploadFirebaseFile(firebase, config.logoFilePath, logo, callback)
+}
+
+export function uploadAvatar(firebase, avatar, callback) {
+  uploadFirebaseFile(firebase, config.avatarFilePath, avatar, callback)
 }
 
 export function getEvents(firestore, callback = () => {}, month = null, spaceOnly = false) {
@@ -315,6 +321,30 @@ export function addModule(firestore, module, callback = () => {}, errorCallback 
 
 export function addReview(firestore, review, callback = () => {}, errorCallback = () => {}) {
   addFirestoreReview(firestore, review, callback, errorCallback)
+}
+
+export function saveProfile(firestore, firebase, profile, callback = () => {}) {
+  watchFirestoreProfile(firestore, profile, 'myProfile')
+  if(profile.avatarUrl !== profile.original.avatarUrl) {
+    if(profile.original.avatarUrl && !profile.original.avatarUrl.startsWith("http")) {
+      deleteFirebaseFile(firebase, profile.original.avatarUrl, () => {})
+    }
+
+    if(profile.avatarUrl) {
+      uploadAvatar(firebase, profile.avatarUrl, (filePath) => {
+        profile = {
+          ...profile,
+          avatarUrl: filePath,
+        }
+
+        saveFirestoreProfile(firestore, profile, callback)
+      })
+    } else {
+      saveFirestoreProfile(firestore, profile, callback)
+    }
+  } else {
+    saveFirestoreProfile(firestore, profile, callback)
+  }
 }
 
 export function initialiseGAPI() {

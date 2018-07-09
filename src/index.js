@@ -16,7 +16,7 @@ import Dashboard from './components/General/Dashboard'
 import CreateEvent from './components/Events/CreateEvent'
 import ManageEvents from './components/Events/ManageEvents'
 import EditEvent from './components/Events/EditEvent'
-import EventAdmin from './components/Events/EventAdmin'
+//import EventAdmin from './components/Events/EventAdmin'
 import CreateInterestGroup from './components/InterestGroups/CreateInterestGroup'
 import InterestGroups from './components/InterestGroups/InterestGroups'
 import InterestGroup from './components/InterestGroups/InterestGroup'
@@ -27,7 +27,7 @@ import Settings from './components/Users/Settings'
 import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
-import ModuleAdmin from './components/Modules/ModuleAdmin'
+//import ModuleAdmin from './components/Modules/ModuleAdmin'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -39,7 +39,7 @@ import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
-  faToolbox, faChalkboardTeacher
+  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes
 } from '@fortawesome/fontawesome-free-solid'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
@@ -47,7 +47,8 @@ import { initialiseGAPI } from './utils/actions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
-  faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher)
+  faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher,
+  faMobileAlt, faTimes)
 
 
 firebase.initializeApp(firebaseConfig)
@@ -123,7 +124,6 @@ render(
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>
             <Route path="/addreview/" component={AddReview}/>
-            <Route path="/moduleadmin/" component={ModuleAdmin}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

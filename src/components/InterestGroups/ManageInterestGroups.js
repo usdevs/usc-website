@@ -4,8 +4,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux';
 import {
   Container, Row, Col,
-  Card, CardText, Button,
-  Input
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -39,7 +37,7 @@ class ManageInterestGroups extends Component {
 
   displayInterestGroups = () => {
     const { firestore } = this.context.store
-    const { auth, history, interestGroups, igTypes, firebase } = this.props
+    const { auth, interestGroups, igTypes, firebase } = this.props
 
     var igs = []
 
@@ -62,8 +60,7 @@ class ManageInterestGroups extends Component {
   }
 
   render() {
-    const { firestore } = this.context.store
-    const { auth, history, interestGroups, igTypes, firebase } = this.props
+    const { auth, history, interestGroups, igTypes } = this.props
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')

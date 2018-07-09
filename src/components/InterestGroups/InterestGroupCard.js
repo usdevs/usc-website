@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
-import { getUserProfile, getFile } from '../../utils/actions'
+import { Button, Card, Container, Row, Col } from 'reactstrap';
+import { getFile } from '../../utils/actions'
 import { config } from '../../resources/config'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import EventCard from '../Events/EventCard'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
 import { statusColor } from '../../resources/config'
@@ -24,7 +22,7 @@ class InterestGroupCard extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.interestGroup.logo != newProps.interestGroup.logo) {
+    if (this.props.interestGroup.logo !== newProps.interestGroup.logo) {
       this.loadLogo(newProps.interestGroup.logo)
     }
   }
@@ -42,7 +40,7 @@ class InterestGroupCard extends Component {
   render() {
     const { logo } = this.state
     const { interestGroup, igTypes, firebase, history, hideButtons, manageMode } = this.props
-    const { id, name, type, description, activities, leader } = interestGroup
+    const { id, name, type, description, leader } = interestGroup
 
     const isLeader = firebase.auth ? leader === firebase.auth.uid : false
 

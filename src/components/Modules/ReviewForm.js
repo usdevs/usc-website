@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Alert, Container, Row, Col, Button,
+  Alert, Button,
   Form, FormGroup, Label, Input, FormFeedback
 } from 'reactstrap';
 import { config } from '../../resources/config'
@@ -10,8 +10,6 @@ import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import ModuleCard from './ModuleCard'
 import { withRouter } from 'react-router-dom'
-
-const otherVenueValue = "Other"
 
 const newReview = {
   review: '',
@@ -190,8 +188,8 @@ class EventForm extends Component {
 
   render() {
     const { buttonText } = this.props
-    const { moduleSearch, reviewEntry, moduleEntry, semesterEntry, submitFailure, suggestions, formSubmitting, moduleData } = this.state
-    const { review, module, semester, isAnon } = this.state.review
+    const { moduleSearch, submitFailure, suggestions, formSubmitting, moduleData } = this.state
+    const { review, semester, isAnon } = this.state.review
 
     const errors = this.validate();
 

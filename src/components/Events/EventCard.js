@@ -25,7 +25,7 @@ class EventCard extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.props.event.poster != newProps.event.poster) {
+    if (this.props.event.poster !== newProps.event.poster) {
       this.loadPoster(newProps.event.poster)
     }
   }
@@ -52,7 +52,7 @@ class EventCard extends Component {
 
   render() {
     const { poster, modal } = this.state
-    const { event, eventTypes, spaces, buttonAction, buttonText, firebase, modalOpen, hasModal } = this.props
+    const { event, eventTypes, spaces, buttonAction, buttonText, firebase, hasModal } = this.props
 
     return(<Card body>
       <Container className="m-0 p-0">

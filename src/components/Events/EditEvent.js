@@ -4,9 +4,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
   Container, Row, Col, Button,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Modal, ModalBody, ModalFooter
 } from 'reactstrap';
-import moment from 'moment'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventForm from './EventForm'
 import { getUserEvents, updateEvent, deleteEvent, getGroups } from '../../utils/actions'
@@ -46,8 +45,7 @@ class EditEvent extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { firestore } = this.context.store
-    const { auth, userEvents } = this.props
-    const { filter } = this.state
+    const { auth } = this.props
 
     if(!isLoaded(auth) && isLoaded(nextProps.auth) && !isEmpty(nextProps.auth)) {
       getUserEvents(firestore, nextProps.auth.uid)

@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux';
 import {
   Container, Row, Col,
-  Card, CardText, Button,
+  Button,
   Input
 } from 'reactstrap';
 import DatePicker from 'react-datepicker'
@@ -51,7 +51,6 @@ class ManageEvents extends Component {
   componentWillReceiveProps(nextProps) {
     const { firestore } = this.context.store
     const { auth, userEvents } = this.props
-    const { filter } = this.state
 
     if(!isLoaded(auth) && isLoaded(nextProps.auth) && !isEmpty(nextProps.auth)) {
       getUserEvents(firestore, nextProps.auth.uid)

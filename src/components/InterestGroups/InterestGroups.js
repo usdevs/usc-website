@@ -13,7 +13,7 @@ import InterestGroupCard from './InterestGroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getInterestGroups } from '../../utils/actions'
 import { config } from '../../resources/config'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import { headerInterestGroups as header } from '../../resources/images.js'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -62,6 +62,7 @@ class InterestGroups extends Component {
             }
           }
         })
+        break
       default:
         break
     }

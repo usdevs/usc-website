@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
-import { config } from '../../resources/config'
+import { Card, Container, Row, Col } from 'reactstrap';
 import { getUserProfile } from '../../utils/actions'
 import UserCard from '../Users/UserCard'
-import _ from 'lodash'
 
 class ModuleReviewCard extends Component {
   constructor(props) {

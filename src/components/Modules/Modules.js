@@ -3,15 +3,10 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Jumbotron, Button,
   Container, Row, Col,
-  Modal, ModalHeader, ModalBody, ModalFooter,
-  Form, FormGroup, Label, Input, FormFeedback,
-  InputGroupAddon, InputGroup,
-  TabContent, TabPane, Nav, NavItem, NavLink,
-  Card, CardTitle, CardText
+  TabContent, TabPane, Nav, NavItem, NavLink
 } from 'reactstrap';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { getModule, getModuleReviews } from '../../utils/actions'
 import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
@@ -42,8 +37,6 @@ class Modules extends Component {
   componentWillReceiveProps(newProps) {
     const { firestore } = this.context.store
     const { moduleReviews } = newProps
-    const { activeTab } = this.state
-    const moduleTypes = _.keys(modules)
 
     if (!this.props.moduleReviews && moduleReviews) {
       const moduleCodes = _.map(_.uniqBy(moduleReviews, 'module'), (moduleReview) => moduleReview.module)
@@ -86,7 +79,6 @@ class Modules extends Component {
 
   renderModules = () => {
     const { modules } = this.state
-    const { moduleTypes } = this.props
 
     const moduleTabs = []
 
@@ -111,11 +103,10 @@ class Modules extends Component {
   }
 
   renderModuleTypeTabs = () => {
-    const { modules, activeTab } = this.state
+    const { modules } = this.state
     const { moduleTypes } = this.props
 
     const moduleTypeTabs = []
-    var setActiveTab = false
 
     _.forEach(_.keys(modules), (moduleTypeID) => {
       const moduleType = moduleTypes[moduleTypeID]

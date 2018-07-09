@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Jumbotron, Button,
+  Button,
   Container, Row, Col,
-  Modal, ModalHeader, ModalBody, ModalFooter
+  Modal, ModalBody, ModalFooter
 } from 'reactstrap';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import { updateInterestGroup, deleteGroup, getInterestGroup } from '../../utils/actions'
 import { statusColor } from '../../resources/config'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -33,7 +33,7 @@ class EditInterestGroup extends Component {
   componentWillReceiveProps(newProps) {
     const { igID } = this.state
 
-    if (igID != newProps.match.params.igID) {
+    if (igID !== newProps.match.params.igID) {
       this.loadInterestGroup(newProps.match.params.igID)
       this.setState({
         igID: newProps.match.params.igID
@@ -131,7 +131,7 @@ class EditInterestGroup extends Component {
   }
 
   deleteModal = () => {
-    const { deleteModal, eventID } = this.state
+    const { deleteModal } = this.state
     const { history, interestGroup } = this.props
 
     return(<Modal isOpen={deleteModal} toggle={() => this.toggle('delete')}>

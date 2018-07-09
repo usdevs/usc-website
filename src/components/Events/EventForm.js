@@ -326,25 +326,22 @@ class EventForm extends Component {
 
     var clashes = false
 
-    checkBookings: {
-      _.forEach(venueBookings, (bookingTemp) => {
-        const booking = eventTimesToMoment(bookingTemp)
-        clashes = startDate.isBetween(booking.startDate, booking.endDate)
-                    || endDate.isBetween(booking.startDate, booking.endDate)
-                    || booking.startDate.isBetween(startDate, endDate)
-                    || booking.endDate.isBetween(startDate, endDate)
+    _.forEach(venueBookings, (bookingTemp) => {
+      const booking = eventTimesToMoment(bookingTemp)
+      clashes = startDate.isBetween(booking.startDate, booking.endDate)
+                  || endDate.isBetween(booking.startDate, booking.endDate)
+                  || booking.startDate.isBetween(startDate, endDate)
+                  || booking.endDate.isBetween(startDate, endDate)
 
-        if(clashes) {
-          return false
-        }
-      })
-    }
+      if(clashes) {
+        return false
+      }
+    })
 
     return clashes
   }
 
   validate = (clearEntryChecks) => {
-    const { venueBookings } = this.props
     const { event, nameEntry, typeEntry, venueEntry, otherVenueEntry } = this.state
     const { name, type, venue, otherVenue } = event
     const showOtherVenue = venue === "Others"
@@ -413,7 +410,7 @@ class EventForm extends Component {
   }
 
   render() {
-    const { event, submitFailure, formSubmitting, organisedBy, suggestions, organiserProfile, mustBeInternal } = this.state
+    const { event, submitFailure, formSubmitting, organisedBy, suggestions, mustBeInternal } = this.state
     const { startDate, endDate, name, multiDay, venue, type, fullDay, internal, spaceOnly, description, regLink } = event
     const { eventTypes, spaces, buttonText, firebase, firestore, groupTypes } = this.props
 
