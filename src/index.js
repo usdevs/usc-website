@@ -27,6 +27,7 @@ import Settings from './components/Users/Settings'
 import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
+import Group from './components/Groups/Group'
 //import ModuleAdmin from './components/Modules/ModuleAdmin'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
@@ -120,6 +121,7 @@ render(
             <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
             <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>
             <Route path="/interestgroupadmin" component={InterestGroupAdmin}/>
+            <Route path="/group/:igID" component={Group}/>
             <Route path="/settings" component={Settings}/>
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>

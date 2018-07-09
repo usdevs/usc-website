@@ -29,7 +29,8 @@ class UserCard extends Component {
   }
 
   render() {
-    const { user, leader, hideContact, avatar } = this.props
+    const { avatar } = this.state
+    const { user, leader, hideContact } = this.props
     const { displayName, email } = user
 
     return(<Card body>

@@ -20,13 +20,13 @@ import {
   createInterestGroup as createFirestoreInterestGroup,
   updateInterestGroup as updateFirestoreInterestGroup,
   deleteGroup as deleteFirestoreGroup,
+  getGroupTypes as getFirestoreGroupTypes,
   getInterestGroupTypes as getFirestoreInterestGroupTypes,
   getInterestGroups as getFirestoreInterestGroups,
   getUserInterestGroups as getFirestoreUserInterestGroups,
   getGroup as getFirestoreGroup,
   getGroups as getFirestoreGroups,
   watchGroups as watchFirestoreGroups,
-  getGroupTypes as getFirestoreGroupTypes,
   getModuleTypes as getFirestoreModuleTypes,
   getModules as getFirestoreModules,
   getModule as getFirestoreModule,
@@ -284,6 +284,12 @@ export function deleteGroup(firestore, firebase, group, callback) {
 export function getInterestGroup(firestore, igID, callback = () => {}) {
   getInterestGroupTypes(firestore)
   getFirestoreGroup(firestore, igID, callback, 'interestGroup')
+  watchFirestoreGroups(firestore)
+}
+
+export function getGroup(firestore, groupID, callback = () => {}) {
+  getFirestoreGroupTypes(firestore, ()=>{})
+  getFirestoreGroup(firestore, groupID, callback)
   watchFirestoreGroups(firestore)
 }
 

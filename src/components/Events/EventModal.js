@@ -1,9 +1,19 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Button, Modal, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
 import { getFile } from '../../utils/actions'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firebaseConnect } from 'react-redux-firebase';
+import { getGroup } from '../../utils/actions'
+import GroupCard from '../Groups/GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class EventModal extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props)
 
@@ -20,6 +30,22 @@ class EventModal extends Component {
     }
   }
 
+  componentDidMount() {
+    const { firestore } = this.context.store
+    const { event } = this.props
+
+    if(event.organisedBy) {
+      getGroup(firestore, event.organisedBy, (snapshot) => {
+        this.setState({
+          group: {
+            ...snapshot.data(),
+            id: event.organisedBy
+          }
+        })
+      })
+    }
+  }
+
   dateDisplay = () => {
     const { event } = this.props
 
@@ -31,8 +57,9 @@ class EventModal extends Component {
   }
 
   render() {
-    const { poster } = this.state
-    const { isOpen, toggle, event, eventTypes, spaces } = this.props
+    const { firestore } = this.context.store
+    const { poster, group } = this.state
+    const { isOpen, toggle, event, eventTypes, spaces, groupTypes, firebase } = this.props
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} className="w-75">
@@ -77,6 +104,16 @@ class EventModal extends Component {
                 }
               </Row>
             </Container>
+            {
+              event.organisedBy && group && groupTypes ?
+                <GroupCard
+                  firebase={firebase}
+                  firestore={firestore}
+                  group={group}
+                  groupTypes={groupTypes}
+                />
+              : ''
+            }
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={toggle}>Done</Button>
@@ -85,4 +122,15 @@ class EventModal extends Component {
     )
   }
 }
-export default EventModal
+
+const mapStateToProps = state => {
+  return {
+    group: state.firestore.data.group,
+    groupTypes: state.firestore.data.groupTypes
+  }
+}
+
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(EventModal)

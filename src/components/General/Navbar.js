@@ -57,6 +57,8 @@ class SiteNavbar extends Component {
     if (newProps.auth && newProps.auth.uid && newProps.myProfile && newProps.myProfile) {
       console.log("test")
       this.setUpProfile(newProps.myProfile, newProps.auth.uid)
+    } else if (!this.state.profile && isLoaded(newProps.auth) && !isEmpty(newProps.auth)){
+      this.getProfile(newProps.auth)
     } else if (!isLoaded(this.props.auth) && isLoaded(newProps.auth)) {
       if(!isEmpty(newProps.auth)) {
         this.getProfile(newProps.auth)
@@ -199,7 +201,9 @@ class SiteNavbar extends Component {
                       if(isOpen) {
                         this.toggle()
                       }
-                      signOut(firebase, ()=>{})
+                      signOut(firebase, ()=>{
+                        history.push('/')
+                      })
                     }}>
                       <FontAwesomeIcon icon="sign-out-alt" />{ ' ' } Log Out
                     </DropdownItem>

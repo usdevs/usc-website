@@ -114,7 +114,6 @@ class InterestGroupForm extends Component {
           interestGroup: initialIG
         })
       } else {
-        console.log(this.state)
         this.setState({
           logo: null,
           interestGroup: initialIG
@@ -505,7 +504,6 @@ class InterestGroupForm extends Component {
     const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
     const { name, type, chat, description, activities, support } = interestGroup
     const errors = this.validate()
-      console.log(this.state)
 
     return (
       <Form className="m-3">

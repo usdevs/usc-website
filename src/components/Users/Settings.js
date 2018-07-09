@@ -220,12 +220,10 @@ class Settings extends Component {
     firebase.auth().currentUser
     .linkAndRetrieveDataWithCredential(credential)
     .then((result) => {
-      console.log(result)
       firebase.login({
         credential: credential
       })
       .then((result) => {
-        console.log(result)
         const { phoneField } = this.state
 
         this.setState({
@@ -237,7 +235,6 @@ class Settings extends Component {
       })
     })
     .catch((error) => {
-      console.log(error)
       this.setState({
         otpError: true
       })

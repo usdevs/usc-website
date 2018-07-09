@@ -153,6 +153,9 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
   firestore
   .get(query)
   .then(() => callback())
+
+  firestore
+  .onSnapshot(query)
 }
 
 export function getGroupEvents(firestore, groupID, callback = () => {}) {
@@ -255,15 +258,6 @@ export function getFile(firebase, path, callback) {
   .then((url) => callback(url))
 }
 
-export function getGroupTypes(firestore, callback = () => {}) {
-  firestore
-  .get({
-    collection: 'groupTypes',
-    orderBy: ['name']
-  })
-  .then((snapshot) => callback(snapshot))
-}
-
 export function getGroups(firestore, callback = () => {}) {
   firestore
   .get({
@@ -277,6 +271,15 @@ export function watchGroups(firestore) {
   firestore.setListeners([
     { collection: 'groups' },
   ])
+}
+
+export function getGroupTypes(firestore, callback = () => {}) {
+  firestore
+  .get({
+    collection: 'groupTypes',
+    orderBy: ['name']
+  })
+  .then((snapshot) => callback(snapshot))
 }
 
 export function getInterestGroupTypes(firestore, callback = () => {}) {
@@ -486,7 +489,6 @@ export function addModule(firestore, module, callback, errorCallback) {
   const mod = formatNUSModsModule(module)
 
   if(mod.type) {
-    console.log(mod)
     firestore
     .set({ collection: 'modules', doc: mod.code }, mod)
     .then((snapshot) => callback(snapshot))

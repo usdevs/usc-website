@@ -30,7 +30,6 @@ class AddReview extends Component {
       ...review,
       creator: auth.uid
     }, () => {
-      console.log('success')
       callback()
     })
   }

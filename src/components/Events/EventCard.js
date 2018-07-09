@@ -81,7 +81,7 @@ class EventCard extends Component {
             <CardText>
               <Button outline className="mb-1" color="primary" onClick={ buttonAction ? buttonAction : this.toggleModal}>{ buttonText }</Button>
             </CardText>
-            { hasModal ? <EventModal key={event.id} isOpen={modal} toggle={this.toggleModal} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} /> : ''}
+            { hasModal ? <EventModal key={event.id} isOpen={modal} toggle={this.toggleModal} event={event} eventTypes={eventTypes} spaces={spaces} /> : ''}
           </Col>
         </Row>
       </Container>

@@ -100,7 +100,7 @@ class DaySpaceCalendar extends Component {
     if(eventsUnordered) {
       var eventModal = []
       _.forOwn(eventsUnordered, (event, eventID) =>{
-        eventModal.push(<EventModal key={eventID} isOpen={eventModals[eventID]} toggle={() => this.toggleEventModal(eventID)} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} />)
+        eventModal.push(<EventModal key={eventID} isOpen={eventModals[eventID]} toggle={() => this.toggleEventModal(eventID)} event={event} eventTypes={eventTypes} spaces={spaces} />)
       })
       return eventModal
     } else {

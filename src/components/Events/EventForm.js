@@ -420,8 +420,6 @@ class EventForm extends Component {
     const begEDate = endDate.clone().startOf('day')
     const endEDate = endDate.clone().endOf('day')
 
-    console.log(errors)
-
     const inputProps = {
       placeholder: "Enter an IG or GUI Name",
       value: organisedBy,

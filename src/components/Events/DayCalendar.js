@@ -63,7 +63,7 @@ class DayCalendar extends Component {
                   this.toggleEventModal(event.id)
                 }}><small>See More...</small></NavLink>
               </Nav>
-              <EventModal isOpen={eventModals[event.id]} toggle={() => this.toggleEventModal(event.id)} event={event} eventTypes={eventTypes} spaces={spaces} firebase={firebase} />
+              <EventModal isOpen={eventModals[event.id]} toggle={() => this.toggleEventModal(event.id)} event={event} eventTypes={eventTypes} spaces={spaces} />
             </Col>
           </Row>
         ) : <h3 style={{fontWeight: 300}}>No events on this day</h3> : <h3 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading Events...</h3>

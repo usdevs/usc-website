@@ -94,6 +94,9 @@ export function formatMonthEvents(firestore) {
   //Iterate through all events
   var newEvents = {}
    _.forOwn(_.merge(eventsStartInMth, eventsEndInMth), function(Event, eventID) {
+     if(!Event) {
+       return false
+     }
     //Convert any formats needed after retrieval from firestore
     newEvents = {
       ...newEvents,
