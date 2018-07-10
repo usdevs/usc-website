@@ -27,6 +27,8 @@ import Settings from './components/Users/Settings'
 import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
+import EditReview from './components/Modules/EditReview'
+import ManageReviews from './components/Modules/ManageReviews'
 import Group from './components/Groups/Group'
 //import ModuleAdmin from './components/Modules/ModuleAdmin'
 import ScrollToTop from './components/reusable/ScrollToTop'
@@ -126,6 +128,8 @@ render(
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>
             <Route path="/addreview/" component={AddReview}/>
+            <Route path="/editreview/:reviewID" component={EditReview}/>
+            <Route path="/managereviews" component={ManageReviews}/>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

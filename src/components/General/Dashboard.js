@@ -76,6 +76,11 @@ const categories = [
       icon: 'chalkboard-teacher',
       link: '/addreview',
       color: 'sandybrown'
+    }, {
+      name: 'Manage Your Reviews',
+      icon: 'chalkboard-teacher',
+      link: '/managereviews',
+      color: 'sandybrown'
     }]
   }
 ]

@@ -389,6 +389,17 @@ export function getModule(firestore, moduleID, callback, alias = 'module') {
   .then((snapshot) => callback(snapshot))
 }
 
+export function getModuleReview(firestore, moduleReviewID, callback, alias = 'moduleReview') {
+  firestore
+  .get({
+    collection: 'moduleReviews',
+    doc: moduleReviewID,
+    storeAs: alias
+  })
+  .then((snapshot) => callback(snapshot))
+}
+
+
 export function getModuleReviews(firestore, moduleID, callback) {
   var query = {
     collection: 'moduleReviews',
@@ -405,6 +416,22 @@ export function getModuleReviews(firestore, moduleID, callback) {
   firestore
   .get(query)
   .then((snapshot) => callback(snapshot))
+}
+
+export function getUserModuleReviews(firestore, userID, callback) {
+  const query = {
+    collection: 'moduleReviews',
+    where: ['creator', '==', userID],
+    orderBy: ['semester', 'desc'],
+    storeAs: 'userReviews'
+  }
+
+  firestore
+  .get(query)
+  .then((snapshot) => callback(snapshot))
+
+  firestore
+  .onSnapshot(query)
 }
 
 export function getModules(firestore, type, callback = () => {}) {
@@ -501,6 +528,19 @@ export function addReview(firestore, review, callback, errorCallback) {
   .add({ collection: 'moduleReviews' }, review)
   .then((snapshot) => callback(snapshot))
   .catch((err) => errorCallback(err))
+}
+
+export function updateReview(firestore, review, callback, errorCallback) {
+  firestore
+  .set({ collection: 'moduleReviews', doc: review.id }, review)
+  .then((snapshot) => callback(snapshot))
+  .catch((err) => errorCallback(err))
+}
+
+export function deleteReview(firestore, review, callback) {
+  firestore
+  .delete({ collection: 'moduleReviews', doc: review.id })
+  .then(() => callback())
 }
 
 export function formatFirestoreProfile(profile) {

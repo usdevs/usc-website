@@ -30,9 +30,13 @@ import {
   getModuleTypes as getFirestoreModuleTypes,
   getModules as getFirestoreModules,
   getModule as getFirestoreModule,
+  getModuleReview as getFirestoreModuleReview,
   getModuleReviews as getFirestoreModuleReviews,
+  getUserModuleReviews as getFirestoreUserModuleReviews,
   addModule as addFirestoreModule,
   addReview as addFirestoreReview,
+  updateReview as updateFirestoreReview,
+  deleteReview as deleteFirestoreReview,
   saveProfile as saveFirestoreProfile,
   watchProfile as watchFirestoreProfile,
 } from './firestoreClient'
@@ -317,8 +321,16 @@ export function getModule(firestore, moduleID, callback = () => {}) {
   getFirestoreModule(firestore, moduleID, callback)
 }
 
+export function getModuleReview(firestore, moduleReviewID, callback = () => {}) {
+  getFirestoreModuleReview(firestore, moduleReviewID, callback )
+}
+
 export function getModuleReviews(firestore, moduleID = null, callback = () => {}) {
   getFirestoreModuleReviews(firestore, moduleID, callback )
+}
+
+export function getUserModuleReviews(firestore, userID, callback = () => {}) {
+  getFirestoreUserModuleReviews(firestore, userID, callback)
 }
 
 export function addModule(firestore, module, callback = () => {}, errorCallback = () => {}) {
@@ -327,6 +339,14 @@ export function addModule(firestore, module, callback = () => {}, errorCallback 
 
 export function addReview(firestore, review, callback = () => {}, errorCallback = () => {}) {
   addFirestoreReview(firestore, review, callback, errorCallback)
+}
+
+export function updateReview(firestore, review, callback = () => {}) {
+  updateFirestoreReview(firestore, review, callback)
+}
+
+export function deleteReview(firestore, review, callback = () => {}) {
+  deleteFirestoreReview(firestore, review, callback)
 }
 
 export function saveProfile(firestore, firebase, profile, callback = () => {}) {

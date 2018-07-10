@@ -22,6 +22,18 @@ class EventForm extends Component {
   constructor(props) {
     super(props);
 
+    var initialReview = newReview
+
+    if(props.review) {
+      initialReview = props.review
+    }
+
+    var initialModule = null
+
+    if(props.module) {
+      initialModule = props.module
+    }
+
     this.state = {
       moduleSearch: '',
       reviewEntry: false,
@@ -29,7 +41,8 @@ class EventForm extends Component {
       semesterEntry: false,
       submitFailure: false,
       suggestions: [],
-      review: newReview,
+      moduleData: initialModule,
+      review: initialReview,
     }
   }
 
@@ -150,10 +163,6 @@ class EventForm extends Component {
   clearSubmitting = (review) => {
     this.setState({
       formSubmitting: false,
-      review: {
-        ...review,
-        original: review
-      },
     })
   }
 
