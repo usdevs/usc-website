@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { compose } from 'redux'
 import { Card, Container, Row, Col } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getFile } from '../../utils/actions'
 
 class UserCard extends Component {
@@ -31,7 +32,9 @@ class UserCard extends Component {
   render() {
     const { avatar } = this.state
     const { user, leader, hideContact } = this.props
-    const { displayName, email } = user
+    const { displayName, email, telegram } = user
+
+    console.log(telegram)
 
     return(<Card body>
       <Container className="m-0 p-0">
@@ -45,8 +48,9 @@ class UserCard extends Component {
           }
           <Col xs="9">
             <h3 className="mb-0"><small>{displayName}</small></h3>
-            { !hideContact ? <h5 className="mb-0">{email}</h5> : '' }
-            { leader ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>Leader</h5> : ''}
+            { !hideContact ? <h4 className="mb-0">{email}</h4> : '' }
+            { !hideContact && telegram ? <h4 className="mb-0 text-primary" style={{fontWeight: 300}}><FontAwesomeIcon icon={['fab', 'telegram']} className="mr-2" />@{telegram}</h4> : '' }
+            { leader ? <h5 className="mb-0 text-info">Leader</h5> : ''}
           </Col>
         </Row>
       </Container>

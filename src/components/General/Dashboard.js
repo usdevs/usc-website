@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Row,
-  Col
-} from 'reactstrap';
+import {  Alert, Container, Row, Col } from 'reactstrap';
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
@@ -63,7 +59,8 @@ const categories = [
       link: '/manageinterestgroups',
       color: 'mediumseagreen'
     }]
-  },
+  }
+  /*,
   {
     name: 'Modules',
     buttons: [{
@@ -82,7 +79,7 @@ const categories = [
       link: '/managereviews',
       color: 'sandybrown'
     }]
-  }
+  }*/
 ]
 
 class Dashboard extends Component {
@@ -115,7 +112,7 @@ class Dashboard extends Component {
 
   render() {
     const { login } = this.state
-    const { auth, history } = this.props;
+    const { auth, history, myProfile } = this.props;
 
     if(!isLoaded(auth)) {
       return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
@@ -133,6 +130,13 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <h1 style={{fontWeight: 300}}>Dashboard</h1>
+            {
+              myProfile && !myProfile.telegram ?
+                <Alert color="primary">
+                  Please add your <FontAwesomeIcon icon={['fab', 'telegram']} /> Telegram handle in <a onClick={()=>history.push('/settings')} className="alert-link">Settings!</a>
+                </Alert>
+              : ''
+            }
           </Col>
         </Row>
         {
@@ -157,7 +161,14 @@ class Dashboard extends Component {
 
 }
 
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    myProfile: state.firestore.data.myProfile
+  }
+}
+
 export default withRouter(compose(
-  firebaseConnect(), // withFirebase can also be used
-  connect(({ firebase: { auth } }) => ({ auth }))
+  firebaseConnect(),
+  connect(mapStateToProps)
 )(Dashboard))

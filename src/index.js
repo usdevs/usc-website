@@ -44,6 +44,7 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
   faToolbox, faChalkboardTeacher, faMobileAlt, faTimes
 } from '@fortawesome/fontawesome-free-solid'
+import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
 import { initialiseGAPI } from './utils/actions'
@@ -51,7 +52,7 @@ import { initialiseGAPI } from './utils/actions'
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
   faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher,
-  faMobileAlt, faTimes)
+  faMobileAlt, faTimes, fab)
 
 
 firebase.initializeApp(firebaseConfig)
