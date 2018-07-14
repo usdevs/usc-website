@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import GoogleButton from 'react-google-button'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { initialiseGAPI, signIn } from '../../utils/actions'
+import { initialiseGAPI, signIn } from '../../actions/UsersActions'
 
 class LoginModal extends Component {
   constructor(props) {

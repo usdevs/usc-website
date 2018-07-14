@@ -227,7 +227,7 @@ export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces =
 export function eventTimeDisplay(event, selectedDate) {
   if (event.fullDay) {
     return ('Full Day')
-  } else if (!event.multiDay) {
+  } else if (event.startDate.isSame(event.endDate, 'day')) {
     return (event.startDate.format('hh:mm a') + ' - ' + event.endDate.format('hh:mm a'))
   } else {
     if(selectedDate.isSame(event.original.startDate, 'day')) {
@@ -254,4 +254,12 @@ export function formatModulesIntoTypes(firestore) {
   })
 
   return modulesByType
+}
+
+export function formatFirestoreData(firestore, alias) {
+  return {
+    isLoaded: firestore.data[alias] && firestore.ordered[alias] ? true : false,
+    ordered: firestore.ordered[alias],
+    data: firestore.data[alias]
+  }
 }

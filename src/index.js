@@ -18,7 +18,8 @@ import ManageEvents from './components/Events/ManageEvents'
 import EditEvent from './components/Events/EditEvent'
 //import EventAdmin from './components/Events/EventAdmin'
 import CreateInterestGroup from './components/InterestGroups/CreateInterestGroup'
-import InterestGroups from './components/InterestGroups/InterestGroups'
+import Groups from './components/Groups/Groups'
+import Group from './components/Groups/Group'
 import InterestGroup from './components/InterestGroups/InterestGroup'
 import ManageInterestGroups from './components/InterestGroups/ManageInterestGroups'
 import EditInterestGroup from './components/InterestGroups/EditInterestGroup'
@@ -29,7 +30,6 @@ import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
 import EditReview from './components/Modules/EditReview'
 import ManageReviews from './components/Modules/ManageReviews'
-import Group from './components/Groups/Group'
 //import ModuleAdmin from './components/Modules/ModuleAdmin'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
@@ -47,7 +47,7 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
-import { initialiseGAPI } from './utils/actions'
+import { initialiseGAPI } from './actions/UsersActions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
@@ -119,7 +119,8 @@ render(
             <Route path="/editevent/:eventID" component={EditEvent}/>
             <Route path="/eventadmin" component={InterestGroupAdmin}/>
             <Route path="/createinterestgroup" component={CreateInterestGroup}/>
-            <Route path="/interestgroups" component={InterestGroups}/>
+            <Route path="/groups" component={Groups}/>
+            <Route path="/group/:groupID" component={InterestGroup}/>
             <Route path="/interestgroup/:igID" component={InterestGroup}/>
             <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
             <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>

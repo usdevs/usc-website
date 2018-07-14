@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Container, Row, Col, Button } from 'reactstrap';
 import { config } from '../../resources/config'
-import { getModule } from '../../utils/actions'
+import { getModule } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 

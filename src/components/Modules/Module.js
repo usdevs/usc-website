@@ -6,7 +6,7 @@ import {
   Container, Row, Col
 } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
-import { getModule, getModuleReviews } from '../../utils/actions'
+import { getModule, getModuleReviews } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ModuleReviewCard from './ModuleReviewCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'

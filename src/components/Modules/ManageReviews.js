@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'reactstrap'
 import UserReviewCard from './UserReviewCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getUserModuleReviews } from '../../utils/actions'
+import { getUserModuleReviews } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 
 class ManageReviews extends Component {

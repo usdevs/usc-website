@@ -13,8 +13,8 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import DatePickerForm from '../reusable/DatePickerForm'
 import EventCard from './EventCard'
-import { getUserEvents } from '../../utils/actions'
-import { formatEvents } from '../../utils/utils'
+import { getUserEvents } from '../../actions/EventsActions'
+import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
@@ -150,7 +150,7 @@ class ManageEvents extends Component {
           </Col>
         </Row>
         {
-          isLoaded(userEvents) && isLoaded(eventTypes) && isLoaded(spaces) ?
+          userEvents && eventTypes.isLoaded && spaces.isLoaded ?
             <Row className="mb-2">
               <Col className="mb-2" xs="12">
                 <h4 className="mb-0">Show Events With Name</h4>
@@ -187,7 +187,7 @@ class ManageEvents extends Component {
         }
         <Row>
             {
-              isLoaded(userEvents) && isLoaded(eventTypes) && isLoaded(spaces) ?
+              userEvents && eventTypes.isLoaded && spaces.isLoaded ?
                 userEvents.length > 0 ?
                   userEvents.map((event) => this.displayEvent(event))
                 : <Col><h3><FontAwesomeIcon icon="frown" /> Either you have no events or no events match your filter.</h3></Col>
@@ -202,8 +202,8 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     userEvents: formatEvents(state.firestore, 'userEvents', true),
-    eventTypes: state.firestore.data.eventTypes,
-    spaces: state.firestore.data.spaces,
+    eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
+    spaces: formatFirestoreData(state.firestore, 'spaces'),
   }
 }
 

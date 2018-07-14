@@ -3,38 +3,56 @@ import { compose } from 'redux'
 import { Card, Container, Row, Col } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getFile } from '../../utils/actions'
+import { getFile } from '../../actions/FilesActions'
 
 class UserCard extends Component {
   constructor(props) {
     super(props)
 
-    var avatar = null
-    const { avatarUrl } = props.user
+    this.state = {
+      avatar: null
+    }
+  }
+
+  componentDidMount() {
+    this.loadAvatar(this.props.user)
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      avatar: null
+    })
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.user.email !== newProps.user.email) {
+      this.loadAvatar(newProps.user)
+    }
+  }
+
+  loadAvatar = (user) => {
+    const { avatarUrl } = user
 
     if(avatarUrl.startsWith('http')) {
-      avatar = avatarUrl
+      this.setState({
+        avatar: avatarUrl
+      })
     } else {
       const { firebase } = this.props
 
-      getFile(firebase, avatar, (url) => {
+      getFile(firebase, avatarUrl, (url) => {
         this.setState({
-          avatar: url,
+          avatar: url
         })
       })
     }
 
-    this.state = {
-      avatar: avatar,
-    }
   }
 
   render() {
     const { avatar } = this.state
     const { user, leader, hideContact } = this.props
     const { displayName, email, telegram } = user
-
-    console.log(telegram)
 
     return(<Card body>
       <Container className="m-0 p-0">

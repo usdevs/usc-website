@@ -13,8 +13,8 @@ import {
 } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventCard from '../Events/EventCard'
-import { getUpcomingEvents } from '../../utils/actions'
-import { formatEvents } from '../../utils/utils'
+import { getUpcomingEvents } from '../../actions/EventsActions'
+import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
@@ -52,6 +52,9 @@ class Home extends Component {
   render() {
     var { upcomingEvents, spaces, eventTypes, firebase, history } = this.props
 
+    console.log(upcomingEvents)
+        console.log(eventTypes)
+
     return (
       <Container className="mb-5">
         <Row>
@@ -73,7 +76,7 @@ class Home extends Component {
               <Container>
                 <Row>
                   {
-                    isLoaded(upcomingEvents) && isLoaded(eventTypes) ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
+                    upcomingEvents && eventTypes.isLoaded && spaces.isLoaded ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
                       <Col key={event.id} xs="12" md="6" className="mb-2">
                         <EventCard
                           event={event}
@@ -100,10 +103,11 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.firestore)
   return {
     upcomingEvents: formatEvents(state.firestore, 'upcomingEvents', true),
-    eventTypes: state.firestore.data.eventTypes,
-    spaces: state.firestore.data.spaces,
+    eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
+    spaces: formatFirestoreData(state.firestore, 'spaces'),
   }
 }
 

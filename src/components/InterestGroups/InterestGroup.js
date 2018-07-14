@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 import { Button, Container, Row, Col } from 'reactstrap';
 import EventCard from '../Events/EventCard'
 import UserCard from '../Users/UserCard'
-import { getInterestGroup, getFile, getGroupEvents, getUserProfile } from '../../utils/actions'
+import { getInterestGroup } from '../../actions/GroupsActions'
+import { getGroupEvents } from '../../actions/EventsActions'
+import { getFile } from '../../actions/FilesActions'
+import { getUserProfile } from '../../actions/UsersActions'
 import { formatEvents } from '../../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { withRouter } from 'react-router-dom'
@@ -16,45 +19,53 @@ class InterestGroup extends Component {
     store: PropTypes.object.isRequired
   }
 
+
   constructor(props) {
     super(props)
 
     this.state = {
       igID: this.props.match.params.igID,
-      logo: null,
+      logo: null
     }
   }
 
   componentWillMount() {
-    const { igID } = this.state
-    const { history } = this.props
+    const { igID, logo } = this.state
+    const { history, firebase } = this.props
     const { firestore } = this.context.store
 
     getInterestGroup(firestore, igID, (snapshot) => {
       if (!snapshot.exists) {
         history.push('/interestgroups')
       } else {
-        getUserProfile(firestore, snapshot.data().leaderID, (snapshot) => {})
+        const group = snapshot.data()
+        getUserProfile(firestore, group.leaderID, (snapshot) => {})
+
+        if (!logo && group.logo) {
+          getFile(firebase, group.logo, (url) => {
+            this.setState({
+              logo: url
+            })
+          })
+        }
       }
     })
 
     getGroupEvents(firestore, igID)
   }
 
+  componentWillUnmount() {
+    this.setState({
+      logo: null
+    })
+  }
+
   showInterestGroup = () => {
     const { logo } = this.state
     const { interestGroup, firebase, events, eventTypes, spaces, userProfile, auth } = this.props
-    const { name, description, activities, chat } = interestGroup
+    const { name, description, activities, chat, leaderID } = interestGroup
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
-
-    if (!logo && interestGroup.logo) {
-      getFile(firebase, interestGroup.logo, (url) => {
-        this.setState({
-          logo: url,
-        })
-      })
-    }
 
     return <Col>
       <Container>

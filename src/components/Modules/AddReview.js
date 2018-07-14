@@ -7,7 +7,7 @@ import {
   Button, Modal, ModalBody, ModalFooter
 } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
-import { getModules, addReview } from '../../utils/actions'
+import { getModules, addReview } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ReviewForm from './ReviewForm'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'

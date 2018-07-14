@@ -6,7 +6,8 @@ import {
   InputGroup, InputGroupAddon
 } from 'reactstrap';
 import { config } from '../../resources/config'
-import { getUserByEmail, getUserProfile, getFile } from '../../utils/actions'
+import { getUserByEmail, getUserProfile } from '../../actions/UsersActions'
+import { getFile } from '../../actions/FilesActions'
 import ImageUploader from '../reusable/ImageUploader'
 import UserCard from '../Users/UserCard'
 import _ from 'lodash'

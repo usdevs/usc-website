@@ -7,7 +7,7 @@ import {
   TabContent, TabPane, Nav, NavItem, NavLink
 } from 'reactstrap';
 import { firebaseConnect } from 'react-redux-firebase';
-import { getModule, getModuleReviews } from '../../utils/actions'
+import { getModule, getModuleReviews } from '../../actions/ModulesActions'
 import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 import ModuleCard from './ModuleCard'

@@ -1,16 +1,16 @@
 export const calendarID = "primary"
 export const uscalendarID = 'ggoope87t0hgl8u9upt44vv8bs@group.calendar.google.com'
 
-export function formatGoogleEvent(event, spaces) {
+export function formatGoogleEvent(event) {
   return {
     'summary': event.name,
-    'location': event.otherVenueSelected ? event.otherVenue : spaces[event.venue].name,
+    'location': event.venueName,
     'description': event.description,
     'start': {
-      'dateTime': event.startDate.format(),
+      'dateTime': event.startDate,
     },
     'end': {
-      'dateTime': event.endDate.format(),
+      'dateTime': event.endDate,
     },
     'attendees': [
       {'email': uscalendarID},
@@ -20,20 +20,20 @@ export function formatGoogleEvent(event, spaces) {
   }
 }
 
-export function createEvent(event, spaces, callback) {
+export function createEvent(event, callback) {
   var request = window.gapi.client.calendar.events.insert({
     'calendarId': calendarID,
-    'resource': formatGoogleEvent(event, spaces)
+    'resource': formatGoogleEvent(event)
   });
 
   request.execute((event) => callback(event));
 }
 
-export function updateEvent(event, spaces, callback) {
+export function updateEvent(event, callback) {
   var request = window.gapi.client.calendar.events.update({
     'calendarId': calendarID,
     'eventId': event.gCalID,
-    'resource': formatGoogleEvent(event, spaces)
+    'resource': formatGoogleEvent(event)
   });
 
   request.execute((event) => callback(event));

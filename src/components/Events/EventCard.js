@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import { compose } from 'redux'
+import { firebaseConnect } from 'react-redux-firebase';
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getFile } from '../../utils/actions'
+import { getFile } from '../../actions/FilesActions'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 
@@ -67,11 +69,11 @@ class EventCard extends Component {
           <Col xs="12" md={ poster ? "8" : "12" }>
             <div className="d-flex flex-wrap">
               <div className="align-self-center mr-2"><h3 className="mb-0">{event.name + '    '}</h3></div>
-              <div className="align-self-center mr-1"><FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} /></div>
-              <div className="align-self-center"><h4 className="mb-0" style={{fontWeight: 300}}>{eventTypes[event.type].name}</h4></div>
+              <div className="align-self-center mr-1"><FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes.data[event.type].colour} /></div>
+              <div className="align-self-center"><h4 className="mb-0" style={{fontWeight: 300}}>{eventTypes.data[event.type].name}</h4></div>
             </div>
             <h4 className="mb-0" style={{fontWeight: 300}}>{event.startDate.format('Do MMMM - hh:mm a')}</h4>
-            <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenueSelected ? event.venue : spaces[event.venue].name)  }</h4>
+            <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenueSelected ? event.venue : spaces.data[event.venue].name)  }</h4>
             { event.description ?
               <p>{ fullDescription ? event.description : _.truncate(event.description, { 'length': config.descriptionPreviewLength }) }
                 <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>
@@ -89,4 +91,6 @@ class EventCard extends Component {
   }
 }
 
-export default EventCard
+export default compose(
+  firebaseConnect()
+)(EventCard)

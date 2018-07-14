@@ -13,7 +13,8 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import ImageUploader from '../reusable/ImageUploader'
 import _ from 'lodash'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getMyProfile, saveProfile, getFile } from '../../utils/actions'
+import { getMyProfile, saveProfile } from '../../actions/UsersActions'
+import { getFile } from '../../actions/FilesActions'
 import { withRouter } from 'react-router-dom'
 
 class Settings extends Component {

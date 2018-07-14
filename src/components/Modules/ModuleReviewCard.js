@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, Container, Row, Col } from 'reactstrap';
-import { getUserProfile } from '../../utils/actions'
+import { getUserProfile } from '../../actions/UsersActions'
 import UserCard from '../Users/UserCard'
 
 class ModuleReviewCard extends Component {

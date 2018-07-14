@@ -4,7 +4,6 @@ import Moment from 'moment'
 import _ from 'lodash'
 import { extendMoment } from 'moment-range';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { isLoaded } from 'react-redux-firebase';
 
 const moment = extendMoment(Moment);
 
@@ -39,7 +38,7 @@ class Calendar extends Component {
     for (let day of mthDisplayRange.by('day')) {
       let belongsToSameMonth = day.isSame(moment(date), 'month')
 
-      const dayEvents = events && events[day.toString()] ? events[day.toString()] : []
+      const dayEvents = events.isLoaded && events.ordered[day.toString()] ? events.ordered[day.toString()] : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
 
       days.push(
@@ -60,11 +59,11 @@ class Calendar extends Component {
                 {
                     dayEvents ?
                       !bySpaces ?
-                        isLoaded(eventTypes) && eventTypes ?
+                        eventTypes.isLoaded ?
                           _.chunk(dayEvents, 3).map((eventChunk) => {
                             var tags = []
                             _.forOwn(eventChunk, (event) => {
-                              tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes[event.type].colour} key={event.id} />)
+                              tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={eventTypes.data[event.type].colour} key={event.id} />)
                             })
 
                             return (<Col className="d-flex justify-content-center pt-1" key={eventChunk[0].id}>
@@ -72,11 +71,11 @@ class Calendar extends Component {
                             </Col>)
                           })
                           : ''
-                      : isLoaded(spaces) && spaces ?
+                      : spaces.isLoaded ?
                         _.chunk(dayEvents.venuesUsed, 3).map((venues) => {
                           var tags = []
                           _.forOwn(venues, (venue, venueID) => {
-                            tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={spaces[venue].colour} key={venueID} />)
+                            tags.push(<FontAwesomeIcon className="inline-block" icon="circle" color={spaces.data[venue].colour} key={venueID} />)
                           })
 
                           return (<Col className="d-flex justify-content-center pt-1" key={venues[0]}>

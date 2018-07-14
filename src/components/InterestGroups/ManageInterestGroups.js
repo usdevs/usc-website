@@ -9,7 +9,7 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import InterestGroupCard from './InterestGroupCard'
-import { getUserInterestGroups } from '../../utils/actions'
+import { getUserInterestGroups } from '../../actions/GroupsActions'
 import { withRouter } from 'react-router-dom'
 
 class ManageInterestGroups extends Component {

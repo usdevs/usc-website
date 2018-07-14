@@ -9,16 +9,16 @@ import {
   Button,
   Input
 } from 'reactstrap';
-import InterestGroupCard from './InterestGroupCard'
+import GroupCard from './GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { getInterestGroups } from '../../actions/GroupsActions'
-import { config } from '../../resources/config'
-import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import { getGroups } from '../../actions/GroupsActions'
+import { formatFirestoreData } from '../../utils/utils'
+import { firebaseConnect } from 'react-redux-firebase';
 import { headerInterestGroups as header } from '../../resources/images.js'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
 
-class InterestGroups extends Component {
+class Groups extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
@@ -34,10 +34,10 @@ class InterestGroups extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.context.store
 
-    getInterestGroups(firestore, config.igStatuses.active)
+    getGroups(firestore)
   }
 
   handleValueChanged = (value, type) => {
@@ -68,20 +68,19 @@ class InterestGroups extends Component {
     }
   }
 
-  filterGroups = (interestGroups) => {
+  filterGroups = (groups) => {
     const { filter } = this.state
 
-    return _.filter(interestGroups, (interestGroup) => {
-      return (_.startsWith(_.lowerCase(interestGroup.name), _.lowerCase(filter.name))) && !filter.types[interestGroup.type]
+    return _.filter(groups.ordered, (group) => {
+      return (_.startsWith(_.lowerCase(group.name), _.lowerCase(filter.name))) && !filter.types[group.type]
     })
   }
 
   render() {
-    const { firestore } = this.context.store
     const { filter } = this.state
-    const { interestGroups, igTypes, firebase } = this.props
+    const { groups, groupTypes } = this.props
 
-    const filteredGroups = this.filterGroups(interestGroups)
+    const filteredGroups = this.filterGroups(groups)
 
     return(
       <Container>
@@ -92,17 +91,17 @@ class InterestGroups extends Component {
         </Row>
         <Row>
           <Col>
-            <h1 style={{fontWeight: 300}}>Interest Groups</h1>
+            <h1 style={{fontWeight: 300}}>Groups</h1>
           </Col>
         </Row>
         <Row>
           {
-            isLoaded(igTypes) ?
+            groupTypes.isLoaded ?
               <Col>
                 <Input type="text" className="mb-2" value={filter.name} placeholder="Filter Name" onChange={(event) => this.handleValueChanged(event.target.value, 'name')} />
                 {
-                  _.map(igTypes, (igType, igTypeID) => {
-                    return <Button key={igTypeID} color={ filter.types[igTypeID] ? 'danger' : 'primary' } outline={!filter.types[igTypeID]} className="mb-2 mr-2" onClick={(event) => this.handleValueChanged(igTypeID, 'type')}>{igType.subName}</Button>
+                  _.map(groupTypes.ordered, (groupType, groupTypeID) => {
+                    return <Button key={groupTypeID} color={ filter.types[groupTypeID] ? 'danger' : 'primary' } className="mb-2 mr-2" onClick={(event) => this.handleValueChanged(groupTypeID, 'type')}>{groupType.name}</Button>
                   })
                 }
               </Col>
@@ -111,18 +110,16 @@ class InterestGroups extends Component {
         </Row>
         <Row>
             {
-              isLoaded(interestGroups) && isLoaded(igTypes) ?
+              groups.isLoaded && groupTypes.isLoaded ?
                 filteredGroups.length > 0 ?
-                  filteredGroups.map((interestGroup) => <Col className="mb-3" xs="12" md="6" key={interestGroup.id}>
-                    <InterestGroupCard
-                      firebase={firebase}
-                      firestore={firestore}
-                      interestGroup={interestGroup}
-                      igTypes={igTypes}
+                  filteredGroups.map((group) => <Col className="mb-3" xs="12" md="6" key={group.id}>
+                    <GroupCard
+                      group={group}
+                      groupTypes={groupTypes}
                     />
                   </Col>)
-                : <Col><h3><FontAwesomeIcon icon="frown" /> No Interest Groups match your criteria </h3></Col>
-              : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Interest Groups...</h4></Col>
+                : <Col><h3><FontAwesomeIcon icon="frown" /> No Groups match your criteria </h3></Col>
+              : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Groups...</h4></Col>
             }
         </Row>
       </Container>)
@@ -132,12 +129,12 @@ class InterestGroups extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    interestGroups: state.firestore.ordered.interestGroups,
-    igTypes: state.firestore.data.igTypes,
+    groups: formatFirestoreData(state.firestore, 'groups'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
   }
 }
 
 export default withRouter(compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(InterestGroups))
+)(Groups))

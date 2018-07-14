@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
 import EventCard from '../Events/EventCard'
 import UserCard from '../Users/UserCard'
-import { getGroup, getFile, getGroupEvents, getUserProfile } from '../../utils/actions'
-import { formatEvents } from '../../utils/utils'
+import { getGroup } from '../../actions/GroupsActions'
+import { getGroupEvents } from '../../actions/EventsActions'
+import { getFile } from '../../actions/FilesActions'
+import { getUserProfile } from '../../actions/UsersActions'
+import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
@@ -141,10 +144,10 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     group: state.firestore.data.group,
-    groupTypes: state.firestore.data.groupTypes,
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
     events: formatEvents(state.firestore, 'groupEvents', true),
-    eventTypes: state.firestore.data.eventTypes,
-    spaces: state.firestore.data.spaces,
+    eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
+    spaces: formatFirestoreData(state.firestore, 'spaces'),
     userProfile: state.firestore.data.userProfile
   }
 }

@@ -18,7 +18,8 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { signOut } from '../../utils/actions'
 import { logo } from '../../resources/images'
-import { getMyProfile, getFile } from '../../utils/actions'
+import { getMyProfile } from '../../actions/UsersActions'
+import { getFile } from '../../actions/FilesActions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LoginModal from './LoginModal'
 
@@ -52,10 +53,7 @@ class SiteNavbar extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps)
-
     if (newProps.auth && newProps.auth.uid && newProps.myProfile && newProps.myProfile) {
-      console.log("test")
       this.setUpProfile(newProps.myProfile, newProps.auth.uid)
     } else if (!this.state.profile && isLoaded(newProps.auth) && !isEmpty(newProps.auth)){
       this.getProfile(newProps.auth)
@@ -153,8 +151,8 @@ class SiteNavbar extends Component {
                 if(isOpen) {
                   this.toggle()
                 }
-                history.push('/interestgroups')
-              }}>Interest Groups</NavLink>
+                history.push('/groups')
+              }}>Groups</NavLink>
             </NavItem>
             <NavItem>
               <NavLink onClick={() => {

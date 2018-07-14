@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import EventModal from './EventModal'
+import EventModal from '../EventModal'
 
 class DaySpaceCalendar extends Component {
   constructor(props) {
@@ -25,8 +25,9 @@ class DaySpaceCalendar extends Component {
   }
 
   spaceBookingDisplay = () => {
-    const { timeslots, isLoaded } = this.props
-    if(!isLoaded) {
+    const { timeslots, eventTypes, spaces } = this.props
+
+    if(!eventTypes.isLoaded || !spaces.isLoaded) {
       return(<h3 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading bookings...</h3>)
     } else if (timeslots) {
       return (<div>
@@ -40,6 +41,7 @@ class DaySpaceCalendar extends Component {
             { this.spaceBookingDisplayCols(6) }
           </Row>
         </Container>
+        { this.eventModals() }
       </div>)
     } else {
       return(<h3 style={{fontWeight: 300}}>No bookings on this day</h3>)
@@ -71,7 +73,7 @@ class DaySpaceCalendar extends Component {
       timeslotsCol.push(<div key={"timeslotDivider" + index} className="w-100"></div>)
 
       _.forEach(venuesUsed, (venueID) => {
-        timeslotsCol.push(<Col xs={ colSize }  key={venueID + index}><small>{spaces[venueID] ? spaces[venueID].shortName : ''}</small></Col>)
+        timeslotsCol.push(<Col xs={ colSize }  key={venueID + index}><small>{spaces.data[venueID] ? spaces.data[venueID].shortName : ''}</small></Col>)
 
         _.forEach(timeslotChunk, (timeslotString) => {
           if(events[timeslotString] && events[timeslotString][venueID]){
@@ -79,7 +81,7 @@ class DaySpaceCalendar extends Component {
 
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}
                  className={(spaceEvent.isStart ? 'rounded-left ' : '') + (spaceEvent.isEnd ? 'rounded-right' : '')}
-                 style={{backgroundColor: spaces[venueID] ? spaces[venueID].colour : ''}}
+                 style={{backgroundColor: spaces.data[venueID] ? spaces.data[venueID].colour : ''}}
                  onClick={() => this.toggleEventModal(events[timeslotString][venueID].event.id)}/>)
           } else {
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}/>)
@@ -114,7 +116,6 @@ class DaySpaceCalendar extends Component {
     return (<div>
       <h2 style={{fontWeight: 300}}><small>{ selectedDate.format('Do MMMM') }</small><small className="text-muted">{' ' + selectedDate.format('YYYY')}</small></h2>
       { this.spaceBookingDisplay() }
-      { this.eventModals() }
     </div>)
   }
 }

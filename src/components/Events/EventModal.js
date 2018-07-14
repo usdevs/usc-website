@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, ModalBody, ModalFooter, Container, Row, Col } from 'reactstrap';
-import { getFile } from '../../utils/actions'
+import { getFile } from '../../actions/FilesActions'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase';
-import { getGroup } from '../../utils/actions'
+import { getGroup } from '../../actions/GroupsActions'
 import GroupCard from '../Groups/GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
@@ -49,7 +49,7 @@ class EventModal extends Component {
   dateDisplay = () => {
     const { event } = this.props
 
-    if (!event.multiDay) {
+    if (event.startDate.isSame(event.endDate, 'day')) {
       return (event.startDate.format('Do MMMM hh:mm a') + ' - ' + event.endDate.format('hh:mm a'))
     } else {
       return (event.original.startDate.format('Do MMMM hh:mm a') + ' - ' + event.original.endDate.format('Do MMMM hh:mm a'))
@@ -66,15 +66,15 @@ class EventModal extends Component {
           <ModalBody>
             <h3 className="d-inline-block mb-0" style={{overflowWrap: 'break-word'}}>
               {event.name + '    '}
-              <FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes[event.type].colour} size="xs" />
+              <FontAwesomeIcon className="align-middle" icon="circle" color={eventTypes.data[event.type].colour} size="xs" />
             </h3>
-            <h5 className="mb-1 text-muted">{eventTypes[event.type].name}</h5>
+            <h5 className="mb-1 text-muted">{eventTypes.data[event.type].name}</h5>
             <h4 className="mb-0" style={{fontWeight: 300}}>
             { this.dateDisplay() }
             </h4>
             <h4 style={{fontWeight: 300}}>
             {
-               'at ' + (!event.otherVenueSelected ? spaces[event.venue].name : event.venue)
+               'at ' + (!event.otherVenueSelected ? spaces.data[event.venue].name : event.venue)
             }
             </h4>
             <Container>
