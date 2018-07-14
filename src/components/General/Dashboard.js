@@ -46,7 +46,7 @@ const categories = [
     buttons: [{
       name: 'See All Interest Groups',
       icon: 'users',
-      link: '/interestgroups',
+      link: '/groups',
       color: 'mediumseagreen'
     }, {
       name: 'Create Interest Group',
@@ -59,8 +59,7 @@ const categories = [
       link: '/manageinterestgroups',
       color: 'mediumseagreen'
     }]
-  }
-  /*,
+  },
   {
     name: 'Modules',
     buttons: [{
@@ -70,16 +69,16 @@ const categories = [
       color: 'sandybrown'
     }, {
       name: 'Add Review',
-      icon: 'chalkboard-teacher',
+      icon: 'plus',
       link: '/addreview',
       color: 'sandybrown'
     }, {
       name: 'Manage Your Reviews',
-      icon: 'chalkboard-teacher',
+      icon: 'file-alt',
       link: '/managereviews',
       color: 'sandybrown'
     }]
-  }*/
+  }
 ]
 
 class Dashboard extends Component {

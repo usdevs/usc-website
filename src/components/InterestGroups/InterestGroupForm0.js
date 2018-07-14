@@ -1,0 +1,578 @@
+import React, { Component } from 'react'
+import {
+  Container, Row, Col,
+  Alert, Button, Card,
+  Form, FormGroup, Label, Input, FormFeedback,
+  InputGroup, InputGroupAddon
+} from 'reactstrap';
+import { config } from '../../resources/config'
+import { getUserByEmail, getUserProfile } from '../../actions/UsersActions'
+import { getFile } from '../../actions/FilesActions'
+import ImageUploader from '../reusable/ImageUploader'
+import UserCard from '../Users/UserCard'
+import _ from 'lodash'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+
+const originalMembers = () => {
+  var members = []
+
+  for(var i = 0; i < config.minimumIGMembers; i++) {
+    members.push({
+      email: '',
+    })
+  }
+
+  return members
+}
+
+const newInterestGroup = {
+  status: 'active',
+  name: '',
+  type: '',
+  category: '',
+  logo: null,
+  chat: '',
+  description: '',
+  activities: '',
+  support: '',
+  members: originalMembers(),
+}
+
+const originalMembersEntry = () => {
+  var membersEntry = []
+
+  for(var i = 0; i < config.minimumIGMembers; i++) {
+    membersEntry.push(false)
+  }
+
+  return membersEntry
+}
+
+const originalState = {
+  noOfMembers: config.minimumIGMembers,
+  nameEntry: false,
+  typeEntry: false,
+  descriptionEntry: false,
+  activitiesEntry: false,
+  supportEntry: false,
+  formSubmitting: false,
+  membersEntry: originalMembersEntry(),
+  membersIsLoading: originalMembersEntry(),
+  submitFailure: false,
+  logo: null,
+  interestGroup: newInterestGroup,
+}
+
+class InterestGroupForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      ...originalState,
+      logo: null,
+      interestGroup: newInterestGroup
+    }
+  }
+
+  componentWillUnmount(){
+      this.setState({isMounted: false, interestGroup: null})
+  }
+
+  componentWillMount() {
+    this.setState({isMounted: true})
+    this.loadExistingIG(this.props.interestGroup, true)
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.interestGroup && newProps.interestGroup && this.props.interestGroup.id !== newProps.interestGroup.id) {
+      this.loadExistingIG(newProps.interestGroup)
+    }
+  }
+
+  loadExistingIG = (interestGroup, forceIsMounted) => {
+    var { isMounted } = this.state
+    const { firestore, firebase } = this.props
+
+    isMounted = forceIsMounted ? forceIsMounted : isMounted
+
+    var initialIG = newInterestGroup
+
+    if(interestGroup) {
+      initialIG = {
+        ...interestGroup,
+        original: interestGroup,
+        members: [],
+      }
+
+      if(interestGroup.logo) {
+        getFile(firebase, interestGroup.logo, (url) => {
+          this.setState({
+            logo: url,
+          })
+        })
+
+        this.setState({
+          interestGroup: initialIG
+        })
+      } else {
+        this.setState({
+          logo: null,
+          interestGroup: initialIG
+        })
+      }
+
+      const memberIDs = _.keys(interestGroup.members)
+
+      getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
+        const { interestGroup } = this.state
+
+        var profile = snapshot.data()
+        var profiles = []
+
+        profiles = profiles.concat({
+          id: interestGroup.leaderID,
+          profile: profile,
+          email: profile.email
+        })
+
+        if(memberIDs.length === profiles.length && isMounted) {
+          this.setState({
+            interestGroup: {
+              ...interestGroup,
+              members: profiles
+            }
+          })
+        } else {
+          _.forEach(memberIDs, (memberID) => {
+            if(memberID !== interestGroup.leaderID) {
+              getUserProfile(firestore, memberID, (snapshot) => {
+                var profile = snapshot.data()
+
+                profiles = profiles.concat({
+                  id: memberID,
+                  profile: profile,
+                  email: profile.email
+                })
+
+                if(memberIDs.length === profiles.length && isMounted) {
+                  const { interestGroup } = this.state
+                  this.setState({
+                    interestGroup: {
+                      ...interestGroup,
+                      members: profiles
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+  }
+
+  handleFormChange = (value, type, info) => {
+    const { interestGroup, membersEntry } = this.state
+    var { members } = interestGroup
+
+    switch(type) {
+      case 'name':
+        this.setState({
+          nameEntry: true,
+          interestGroup: {
+            ...interestGroup,
+            name: value,
+          }
+        })
+        break
+      case 'type':
+        const { igTypesUnordered } = this.props
+
+        this.setState({
+          typeEntry: true,
+          interestGroup: {
+            ...interestGroup,
+            type: value,
+            category: igTypesUnordered[value] ? igTypesUnordered[value].category : null
+          }
+        })
+        break
+      case 'logo':
+        this.setState({
+          logo: value ? value.preview : value,
+          interestGroup: {
+            ...interestGroup,
+            logo: value
+          }
+        })
+        break
+      case 'chat':
+        this.setState({
+          interestGroup: {
+            ...interestGroup,
+            chat: value,
+          }
+        })
+        break
+      case 'description':
+        this.setState({
+          descriptionEntry: true,
+          interestGroup: {
+            ...interestGroup,
+            description: value,
+          }
+        })
+        break
+      case 'activities':
+        this.setState({
+          activitiesEntry: true,
+          interestGroup: {
+            ...interestGroup,
+            activities: value,
+          }
+        })
+        break
+      case 'support':
+        this.setState({
+          supportEntry: true,
+          interestGroup: {
+            ...interestGroup,
+            support: value,
+          }
+        })
+        break
+      case 'memberEmail':
+        members[info] = {
+          ...members[info],
+          email: value
+        }
+
+        this.setState({
+          interestGroup: {
+            ...interestGroup,
+            members: members,
+          }
+        })
+        break
+      case 'memberProfile':
+        members[info] = {
+          ...members[info],
+          profile: value,
+          id: value ? value.id : value
+        }
+
+        membersEntry[info] = value ? true : false
+
+        this.setState({
+          interestGroup: {
+            ...interestGroup,
+            membersEntry: membersEntry,
+            members: members,
+          }
+        })
+        break
+      default: break
+    }
+  }
+
+  validate = (clearEntryChecks) => {
+    const { interestGroup, nameEntry, typeEntry, descriptionEntry, activitiesEntry, membersEntry } = this.state
+    const { name, type, description, activities, members, original } = interestGroup
+
+    return {
+      name: (nameEntry || clearEntryChecks) ? !name : false,
+      type: (typeEntry || clearEntryChecks) ? type === '' : false,
+      description: (descriptionEntry || clearEntryChecks) ? !description : false,
+      activities: (activitiesEntry || clearEntryChecks) ? !activities : false,
+      support: false,
+      members: membersEntry.map((memberEntry, index) => {
+        return (memberEntry || clearEntryChecks) ? members[index]? !(members[index].profile) : false : false
+      }),
+      membersLoaded: original ? _.keys(original.members).length !== members.length : false
+    }
+  }
+
+  showIGMembers = (errors) => {
+    const { noOfMembers, interestGroup, membersIsLoading } = this.state
+    const { members } = interestGroup
+
+    var igMembers = []
+
+    if(!_.isArray(members) || (interestGroup.original && (_.keys(interestGroup.original.members).length !== members.length))) {
+      return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
+    }
+
+    for(var i = 0; i < members.length; i++) {
+      const index = i
+      const igMember =
+      <Col xs="12" md="6" key={i}>
+        {
+          members[index].profile ?
+            <div className="mb-3">
+              <UserCard user={members[index].profile} leader={i === 0} />
+              <Button color="danger" className="mt-2" outline onClick={() => this.handleFormChange(null, 'memberProfile', index)}>
+                <FontAwesomeIcon icon="trash-alt" />
+              </Button>
+            </div>
+          : <Card className="p-3 mb-3" outline color="primary">
+              <h5 className="mb-0" style={{color: 'dodgerblue'}}>{ i === 0 ? 'Leader' : 'Member'}</h5>
+              <InputGroup>
+                <Input type="email" placeholder="Member Email" value={members[index].email} invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberEmail', index)} />
+                <InputGroupAddon addonType="append">
+                  <Button color="info" disabled={membersIsLoading[index]} onClick={() => this.addMember(index, members[index].email)}>
+                    { membersIsLoading[index] ? <FontAwesomeIcon icon="spinner" spin /> : ''} Add
+                  </Button>
+                </InputGroupAddon>
+                { errors.members[index] ? <FormFeedback>Please add a valid member. Check if email is valid, a duplicate or if the member has registered on this site.</FormFeedback> : ''}
+              </InputGroup>
+            </Card>
+        }
+      </Col>
+
+      igMembers.push(igMember)
+    }
+
+    igMembers.push(<Col xs="12" md="6" key="addremove">
+      <div className="d-flex justify-content-center" >
+        {
+          noOfMembers > config.minimumIGMembers ?
+            <Button outline color="danger" onClick={() => this.changeNoOfMember(false) } className="mr-3">Remove Member</Button>
+          : ''
+        }
+        <Button outline color="primary" onClick={() => this.changeNoOfMember(true)}>Add Member</Button>
+      </div>
+    </Col>)
+
+    return igMembers
+  }
+
+  addMember = (index, email) => {
+    const { firestore } = this.props
+    var { membersEntry, membersIsLoading, interestGroup } = this.state
+
+    var emailExists = false
+    _.forEach(interestGroup.members, (member) => {
+      if(member.profile && member.profile.email === email) {
+        emailExists = true
+      }
+    })
+
+    if(emailExists) {
+      membersEntry[index] = true
+
+      this.setState({
+        membersEntry: membersEntry,
+      })
+
+      return
+    }
+
+    membersIsLoading[index] = true
+
+    this.setState({
+      membersIsLoading: membersIsLoading,
+    })
+
+    getUserByEmail(firestore, email, (snapshot) => {
+        const { userProfiles } = this.props
+
+        membersEntry[index] = true
+        membersIsLoading[index] = false
+
+        this.setState({
+          membersEntry: membersEntry,
+          membersIsLoading: membersIsLoading,
+        })
+
+        const newUserProfiles = _.mapValues(userProfiles, (profile, profileKey) => {
+          return ({
+            ...profile,
+            id: profileKey
+          })
+        })
+        const userProfile = _.filter(newUserProfiles, (profile) => {return profile.email === email})
+
+        if(userProfile.length > 0) {
+          this.handleFormChange(userProfile[0], 'memberProfile', index)
+        }
+    })
+  }
+
+  changeNoOfMember = (increase) => {
+    const { noOfMembers, interestGroup } = this.state
+    var { members } = interestGroup
+
+    if (increase) {
+      members = members.concat({
+        email: ''
+      })
+    } else {
+      members.pop()
+    }
+
+    this.setState({
+      noOfMembers: increase ? noOfMembers + 1 : noOfMembers - 1,
+      interestGroup: {
+        ...interestGroup,
+        members: members
+      }
+    })
+  }
+
+  submitForm = () => {
+    const { membersEntry } = this.state
+    const errors = this.validate(true)
+
+    const noErrors = _.every(_.values(errors), (value) => {
+      if(_.isArray(value)) {
+        var hasTrue = false
+
+        _.forEach(value, (element) => {
+          hasTrue = hasTrue || element
+        })
+
+        return !hasTrue
+      } else {
+        return !value;
+      }
+    });
+
+    if(!noErrors) {
+      this.setState({
+        nameEntry: true,
+        typeEntry: true,
+        descriptionEntry: true,
+        activitiesEntry: true,
+        supportEntry: true,
+        membersEntry: membersEntry.map(() => true),
+        submitFailure: true,
+      })
+    } else {
+      const { interestGroup } = this.state
+      const { buttonOnSubmit } = this.props
+
+      this.setState({
+        formSubmitting: true,
+        submitError: null,
+      })
+
+      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), this.clearSubmitting, this.submitError)
+    }
+  }
+
+  submitError = (error) => {
+    this.setState({
+      submitError: error
+    })
+  }
+
+  clearSubmitting = (interestGroup) => {
+    const { firebase } = this.props
+
+    this.setState({
+      formSubmitting: false,
+      interestGroup: {
+        ...interestGroup,
+        original: interestGroup
+      },
+    })
+
+    if(interestGroup.logo) {
+      getFile(firebase, interestGroup.logo, (url) => {
+        this.setState({
+          logo: url,
+        })
+      })
+    }
+  }
+
+  resetForm = (interestGroup) => {
+    var newMembers = originalMembers()
+
+    this.setState({
+      ...originalState,
+      membersEntry: originalMembersEntry(),
+      membersIsLoading: originalMembersEntry(),
+      interestGroup: {
+        ...originalState.interestGroup,
+        members: newMembers
+      }
+    })
+  }
+
+  render() {
+    const { igTypes } = this.props
+    const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
+    const { name, type, chat, description, activities, support } = interestGroup
+    const errors = this.validate()
+
+    return (
+      <Form className="m-3">
+        <FormGroup>
+          <Label for="name"><h3>Name</h3></Label>
+          <Input type="text" value={ name } id="name" placeholder="Interest Group Name" invalid={errors.name} onChange={(event) => this.handleFormChange(event.target.value, 'name')} />
+          { errors.name ? <FormFeedback>Name cannot be empty.</FormFeedback> : ''}
+        </FormGroup>
+        <FormGroup>
+          <Label for="type"><h3>Type</h3></Label>
+          <Input type="select" invalid={errors.type} name="select" id="type" onChange={(event) => this.handleFormChange(event.target.value, 'type')} value={type}>
+            <option value=''>Please Select a Type</option>
+            {
+              igTypes.map((type) => <option key={ type.id } value={ type.id }>{ type.subName }</option>)
+            }
+          </Input>
+          { errors.type ? <FormFeedback>Please select an IG type.</FormFeedback> : ''}
+        </FormGroup>
+        <FormGroup>
+          <Label for="description"><h3>Description</h3></Label>
+          <Input style={{minHeight: '100px'}} type="textarea" value={ description } id="description" placeholder="Enter a short description of your intended Interest Group." invalid={errors.description} onChange={(event) => this.handleFormChange(event.target.value, 'description')} />
+          { errors.description ? <FormFeedback>Please enter a description.</FormFeedback> : ''}
+        </FormGroup>
+        <FormGroup>
+          <Label for="activities"><h3>Activities</h3></Label>
+          <Input style={{minHeight: '100px'}} type="textarea" value={ activities } id="activities" placeholder="Please include both regular activities, and proposed one-off events (if applicable)." invalid={errors.activities} onChange={(event) => this.handleFormChange(event.target.value, 'activities')} />
+          { errors.activities ? <FormFeedback>Please describe your activities.</FormFeedback> : ''}
+        </FormGroup>
+        <FormGroup>
+          <Label for="support"><h3>Required Support (Optional)</h3></Label>
+          <Input style={{minHeight: '100px'}} type="textarea" value={ support } id="support" placeholder="Let us know what your interest group would benefit from: Funding, venues, professor’s contacts, etc." invalid={errors.support} onChange={(event) => this.handleFormChange(event.target.value, 'support')} />
+          { errors.support ? <FormFeedback>Please enter the type of required support or enter NIL if unneeded.</FormFeedback> : ''}
+        </FormGroup>
+        <FormGroup>
+          <Label for="name"><h3>Group Chat Join Link (Optional)</h3></Label>
+          <Input type="text" value={ chat } placeholder="Telegram/Whatsapp Chat Link" onChange={(event) => this.handleFormChange(event.target.value, 'chat')} />
+        </FormGroup>
+        <FormGroup>
+          <Label for="description"><h3>Logo (Optional)</h3></Label>
+          <ImageUploader
+              imageSrc={logo}
+              onDrop={(file) => this.handleFormChange(file, 'logo')}
+              onDelete={() => this.handleFormChange(null, 'logo')}
+            />
+        </FormGroup>
+        <FormGroup>
+          <Label className="mb-0"><h3 className="mb-0">Member List</h3></Label>
+          <br/>
+          <Label><small>(at least {config.minimumIGMembers})</small></Label>
+          <Container>
+            <Row>
+              {
+                this.showIGMembers(errors)
+              }
+            </Row>
+          </Container>
+        </FormGroup>
+        <div className="d-flex justify-content-center" >
+          <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting || errors.membersLoaded}>
+            { formSubmitting || errors.membersLoaded ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
+          </Button>
+        </div>
+        <div className="d-flex justify-content-center" >
+          { submitFailure ? <Alert color="danger" className="mt-3">One or more inputs are invalid. Please check and try again.</Alert> : ''}
+          { submitError ? <Alert color="danger">{ submitError.message }</Alert> : ''}
+        </div>
+      </Form>)
+  }
+}
+
+export default InterestGroupForm

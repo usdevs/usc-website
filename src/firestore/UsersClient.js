@@ -7,7 +7,7 @@ export function getUserProfile(firestore, userID, callback = () => {}, alias = '
   .then((snapshot) => callback(snapshot))
 }
 
-export function getUserProfileByEmail(firestore, email, callback, alias = 'userProfiles') {
+export function getUserProfileByEmail(firestore, email, callback, alias = 'userProfile') {
   firestore
   .get({
     collection: 'users',

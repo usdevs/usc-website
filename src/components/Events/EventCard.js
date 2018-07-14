@@ -9,6 +9,8 @@ import { config } from '../../resources/config'
 import _ from 'lodash'
 
 class EventCard extends Component {
+  mounted = false
+
   constructor(props) {
     super(props)
 
@@ -26,6 +28,14 @@ class EventCard extends Component {
     }
   }
 
+  componentDidMount() {
+    this.mounted = true
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
+  }
+
   componentWillReceiveProps(newProps) {
     if (this.props.event.poster !== newProps.event.poster) {
       this.loadPoster(newProps.event.poster)
@@ -37,9 +47,11 @@ class EventCard extends Component {
 
     if(poster) {
       getFile(firebase, poster, (url) => {
-        this.setState({
-          poster: url,
-        })
+        if(this.mounted) {
+          this.setState({
+            poster: url,
+          })
+        }
       })
     }
   }

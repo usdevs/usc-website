@@ -120,12 +120,11 @@ render(
             <Route path="/eventadmin" component={InterestGroupAdmin}/>
             <Route path="/createinterestgroup" component={CreateInterestGroup}/>
             <Route path="/groups" component={Groups}/>
-            <Route path="/group/:groupID" component={InterestGroup}/>
+            <Route path="/group/:groupID" component={Group}/>
             <Route path="/interestgroup/:igID" component={InterestGroup}/>
             <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
             <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>
             <Route path="/interestgroupadmin" component={InterestGroupAdmin}/>
-            <Route path="/group/:igID" component={Group}/>
             <Route path="/settings" component={Settings}/>
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>

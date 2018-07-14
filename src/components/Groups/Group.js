@@ -23,34 +23,47 @@ class Group extends Component {
     super(props)
 
     this.state = {
-      igID: this.props.match.params.igID,
+      groupID: this.props.match.params.groupID,
       logo: null,
+      userProfile: null,
     }
   }
 
-  componentWillMount() {
-    const { igID } = this.state
+  componentDidMount() {
+    const { groupID } = this.state
     const { history } = this.props
     const { firestore } = this.context.store
 
-    getGroup(firestore, igID, (snapshot) => {
+    getGroup(firestore, groupID, (snapshot) => {
       if (!snapshot.exists) {
         history.push('/')
       } else {
         const group = snapshot.data()
-        getUserProfile(firestore, group.leaderID, (snapshot) => {})
         this.setState({
-          group: group
+          group: {
+            ...group,
+            id: groupID
+          }
+        })
+
+        getUserProfile(firestore, group.leaderID, (snapshot) => {
+          const leaderProfile = snapshot.data()
+          this.setState({
+            userProfile: {
+              ...leaderProfile,
+              id: group.leaderID
+            }
+          })
         })
       }
     })
 
-    getGroupEvents(firestore, igID)
+    getGroupEvents(firestore, groupID)
   }
 
   showInterestGroup = () => {
-    const { logo, group } = this.state
-    const { firebase, events, eventTypes, spaces, userProfile, auth } = this.props
+    const { logo, group, userProfile } = this.state
+    const { firebase, events, eventTypes, spaces, auth } = this.props
     const { name, description, activities } = group
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
@@ -76,7 +89,7 @@ class Group extends Component {
           <Col xs="12" md={logo ? "9" : "12"}>
             <h2 style={{fontWeight: 300}}>{ name }</h2>
               <p className="lead" style={{whiteSpace: 'pre-line'}}>{ description }</p>
-              <p style={{whiteSpace: 'pre-line'}}>{ activities }</p>
+              { activities ? <p style={{whiteSpace: 'pre-line'}}>{ activities }</p> : ''}
           </Col>
         </Row>
         <Row>
@@ -107,7 +120,7 @@ class Group extends Component {
         </Row>
         <Row>
             {
-              events ?
+              events && events.length > 0 ?
                 events.map((event) =>
                   <Col xs="12" md="6" key={event.id}>
                     <EventCard

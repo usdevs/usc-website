@@ -14,7 +14,6 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { roundTime, formatFirestoreData, eventTimesToMoment } from '../../utils/utils'
 import { getEventVenueBookingsAfter, getEventTypes, getSpaces } from '../../actions/EventsActions'
 import { withRouter } from 'react-router-dom'
-import Promise from 'bluebird'
 import LinkModal from '../reusable/LinkModal'
 
 class EventForm extends Component {
@@ -173,7 +172,7 @@ class EventForm extends Component {
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
        <div>
-          <h2>Name</h2>
+          <h3>Name</h3>
           <TextInput
             field="name"
             placeholder="Enter the event name"
@@ -181,7 +180,7 @@ class EventForm extends Component {
             validate={validateNotEmpty}
             validateOnBlur
             className="mb-3" />
-          <h2>Type</h2>
+          <h3>Type</h3>
           <DropdownInput
               field="type"
               placeholder="Select a Type"
@@ -204,7 +203,7 @@ class EventForm extends Component {
               text="Venue Booking Only"
               validateOnChange />
           </div>
-          <h2>Venue</h2>
+          <h3>Venue</h3>
           <div className="mb-3">
             <DropdownInput
               field="venue"
@@ -226,7 +225,7 @@ class EventForm extends Component {
                 className="mb-3" />
             </div>
           </div>
-          <h2 className="mb-2">Date and Time</h2>
+          <h3 className="mb-2">Date and Time</h3>
           <div className="mb-2">
             <CheckboxInput
               field="fullDay"
@@ -259,18 +258,18 @@ class EventForm extends Component {
                 default={roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes")}/>
             </div>
           </div>
-          <h2>Organised By <small><Badge color="secondary">Optional</Badge></small></h2>
+          <h3>Organised By <small><Badge color="secondary">Optional</Badge></small></h3>
           <div className="mb-3">
             <GroupInput field="organisedBy" />
           </div>
-          <h2>Poster <small><Badge color="secondary">Optional</Badge></small></h2>
+          <h3>Poster <small><Badge color="secondary">Optional</Badge></small></h3>
           <ImageInput field="poster" className="mb-3"  />
-          <h2>Description <small><Badge color="secondary">Optional</Badge></small></h2>
+          <h3>Description <small><Badge color="secondary">Optional</Badge></small></h3>
           <TextAreaInput
             field="description"
             placeholder="Enter a description (optional)"
             className="mb-3" />
-          <h2>Registration Link <small><Badge color="secondary">Optional</Badge></small></h2>
+          <h3>Registration Link <small><Badge color="secondary">Optional</Badge></small></h3>
           <TextInput
             field="regLink"
             placeholder="Paste your registration link here (optional)"
@@ -294,7 +293,6 @@ class EventForm extends Component {
   </div>)
   }
 }
-
 
 const mapStateToProps = state => {
   return {

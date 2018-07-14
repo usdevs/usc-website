@@ -80,7 +80,7 @@ class GroupCard extends Component {
             { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
             <p className="mb-2">{ fullDescription ? description : _.truncate(description, { 'length': config.descriptionPreviewLength }) }
               {
-                config.descriptionPreviewLength > description.length ?
+                config.descriptionPreviewLength < description.length ?
                   <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>
                 : ''
               }

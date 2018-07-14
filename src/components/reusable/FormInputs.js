@@ -4,6 +4,7 @@ import { asField } from 'informed';
 import DatePicker from 'react-datepicker'
 import DatePickerForm from './DatePickerForm'
 import GroupAutocomplete from './GroupAutocomplete'
+import UserForm from './UserForm'
 import ImageUploader from './ImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import moment from 'moment'
@@ -11,6 +12,13 @@ import { config } from '../../resources/config'
 
 export const validateNotEmpty = value => {
   return !value ? 'Field cannot be empty' : null;
+}
+
+export const duplicateValidation = (value, values, variable) => {
+  console.log(values)
+  console.log(variable)
+  console.log(values[variable])
+  return !values ? null : values[variable].filter( v => v === value ).length > 1 ? 'This field must be unique.' : null;
 }
 
 export const TextInput = asField(({ fieldState, fieldApi, ...props }) => {
@@ -292,5 +300,31 @@ export const ImageInput = asField(({ fieldState, fieldApi, ...props }) => {
         }}
         onDelete={() => setValue(null)}
       />
+  </React.Fragment>)
+});
+
+export const UserInput = asField(({ fieldState, fieldApi, ...props }) => {
+  const {
+    value
+  } = fieldState;
+  const {
+    setValue,
+    setTouched
+  } = fieldApi;
+  const {
+    onChange,
+    onBlur,
+    forwardedRef,
+    ...rest
+  } = props
+
+  return (<React.Fragment>
+    <UserForm
+      {...rest}
+      ref={forwardedRef}
+      fieldState={fieldState}
+      fieldApi={fieldApi}
+      onChange={onChange}
+      onBlur={onBlur} />
   </React.Fragment>)
 });

@@ -1,578 +1,207 @@
 import React, { Component } from 'react'
-import {
-  Container, Row, Col,
-  Alert, Button, Card,
-  Form, FormGroup, Label, Input, FormFeedback,
-  InputGroup, InputGroupAddon
-} from 'reactstrap';
-import { config } from '../../resources/config'
-import { getUserByEmail, getUserProfile } from '../../actions/UsersActions'
-import { getFile } from '../../actions/FilesActions'
-import ImageUploader from '../reusable/ImageUploader'
-import UserCard from '../Users/UserCard'
+import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
+import { firebaseConnect } from 'react-redux-firebase';
+import { Alert, Button, Badge, Container, Row, Col } from 'reactstrap';
+import { Form } from 'informed';
+import { TextInput, DropdownInput, ImageInput, TextAreaInput, UserInput,
+  validateNotEmpty, duplicateValidation } from '../reusable/FormInputs'
 import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-
-const originalMembers = () => {
-  var members = []
-
-  for(var i = 0; i < config.minimumIGMembers; i++) {
-    members.push({
-      email: '',
-    })
-  }
-
-  return members
-}
-
-const newInterestGroup = {
-  status: 'active',
-  name: '',
-  type: '',
-  category: '',
-  logo: null,
-  chat: '',
-  description: '',
-  activities: '',
-  support: '',
-  members: originalMembers(),
-}
-
-const originalMembersEntry = () => {
-  var membersEntry = []
-
-  for(var i = 0; i < config.minimumIGMembers; i++) {
-    membersEntry.push(false)
-  }
-
-  return membersEntry
-}
-
-const originalState = {
-  noOfMembers: config.minimumIGMembers,
-  nameEntry: false,
-  typeEntry: false,
-  descriptionEntry: false,
-  activitiesEntry: false,
-  supportEntry: false,
-  formSubmitting: false,
-  membersEntry: originalMembersEntry(),
-  membersIsLoading: originalMembersEntry(),
-  submitFailure: false,
-  logo: null,
-  interestGroup: newInterestGroup,
-}
+import { config } from '../../resources/config'
+import { formatFirestoreData } from '../../utils/utils'
+import { getInterestGroupTypes } from '../../actions/GroupsActions'
+import { withRouter } from 'react-router-dom'
+import LinkModal from '../reusable/LinkModal'
 
 class InterestGroupForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...originalState,
-      logo: null,
-      interestGroup: newInterestGroup
-    }
+  static contextTypes = {
+    store: PropTypes.object.isRequired
   }
 
-  componentWillUnmount(){
-      this.setState({isMounted: false, interestGroup: null})
+  formApi = null
+  modal = null
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      submitted: false
+    }
   }
 
   componentWillMount() {
-    this.setState({isMounted: true})
-    this.loadExistingIG(this.props.interestGroup, true)
+    const { firestore } = this.context.store
+
+    getInterestGroupTypes(firestore)
   }
 
-  componentWillReceiveProps(newProps) {
-    if (this.props.interestGroup && newProps.interestGroup && this.props.interestGroup.id !== newProps.interestGroup.id) {
-      this.loadExistingIG(newProps.interestGroup)
-    }
-  }
+  groupOptions = (igTypes) => {
+    var options = []
 
-  loadExistingIG = (interestGroup, forceIsMounted) => {
-    var { isMounted } = this.state
-    const { firestore, firebase } = this.props
-
-    isMounted = forceIsMounted ? forceIsMounted : isMounted
-
-    var initialIG = newInterestGroup
-
-    if(interestGroup) {
-      initialIG = {
-        ...interestGroup,
-        original: interestGroup,
-        members: [],
-      }
-
-      if(interestGroup.logo) {
-        getFile(firebase, interestGroup.logo, (url) => {
-          this.setState({
-            logo: url,
-          })
+    if(igTypes.isLoaded) {
+      _.forEach(igTypes.ordered, (type) => {
+        options.push({
+          id: type.id,
+          display: type.subName
         })
-
-        this.setState({
-          interestGroup: initialIG
-        })
-      } else {
-        this.setState({
-          logo: null,
-          interestGroup: initialIG
-        })
-      }
-
-      const memberIDs = _.keys(interestGroup.members)
-
-      getUserProfile(firestore, interestGroup.leaderID, (snapshot) => {
-        const { interestGroup } = this.state
-
-        var profile = snapshot.data()
-        var profiles = []
-
-        profiles = profiles.concat({
-          id: interestGroup.leaderID,
-          profile: profile,
-          email: profile.email
-        })
-
-        if(memberIDs.length === profiles.length && isMounted) {
-          this.setState({
-            interestGroup: {
-              ...interestGroup,
-              members: profiles
-            }
-          })
-        } else {
-          _.forEach(memberIDs, (memberID) => {
-            if(memberID !== interestGroup.leaderID) {
-              getUserProfile(firestore, memberID, (snapshot) => {
-                var profile = snapshot.data()
-
-                profiles = profiles.concat({
-                  id: memberID,
-                  profile: profile,
-                  email: profile.email
-                })
-
-                if(memberIDs.length === profiles.length && isMounted) {
-                  const { interestGroup } = this.state
-                  this.setState({
-                    interestGroup: {
-                      ...interestGroup,
-                      members: profiles
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
       })
     }
+
+    return (options)
   }
 
-  handleFormChange = (value, type, info) => {
-    const { interestGroup, membersEntry } = this.state
-    var { members } = interestGroup
+  showMembers = (formApi) => {
+    const noOfMembers = formApi.getValue('noOfMembers')
 
-    switch(type) {
-      case 'name':
-        this.setState({
-          nameEntry: true,
-          interestGroup: {
-            ...interestGroup,
-            name: value,
-          }
-        })
-        break
-      case 'type':
-        const { igTypesUnordered } = this.props
+    var members = []
 
-        this.setState({
-          typeEntry: true,
-          interestGroup: {
-            ...interestGroup,
-            type: value,
-            category: igTypesUnordered[value] ? igTypesUnordered[value].category : null
-          }
-        })
-        break
-      case 'logo':
-        this.setState({
-          logo: value ? value.preview : value,
-          interestGroup: {
-            ...interestGroup,
-            logo: value
-          }
-        })
-        break
-      case 'chat':
-        this.setState({
-          interestGroup: {
-            ...interestGroup,
-            chat: value,
-          }
-        })
-        break
-      case 'description':
-        this.setState({
-          descriptionEntry: true,
-          interestGroup: {
-            ...interestGroup,
-            description: value,
-          }
-        })
-        break
-      case 'activities':
-        this.setState({
-          activitiesEntry: true,
-          interestGroup: {
-            ...interestGroup,
-            activities: value,
-          }
-        })
-        break
-      case 'support':
-        this.setState({
-          supportEntry: true,
-          interestGroup: {
-            ...interestGroup,
-            support: value,
-          }
-        })
-        break
-      case 'memberEmail':
-        members[info] = {
-          ...members[info],
-          email: value
-        }
-
-        this.setState({
-          interestGroup: {
-            ...interestGroup,
-            members: members,
-          }
-        })
-        break
-      case 'memberProfile':
-        members[info] = {
-          ...members[info],
-          profile: value,
-          id: value ? value.id : value
-        }
-
-        membersEntry[info] = value ? true : false
-
-        this.setState({
-          interestGroup: {
-            ...interestGroup,
-            membersEntry: membersEntry,
-            members: members,
-          }
-        })
-        break
-      default: break
-    }
-  }
-
-  validate = (clearEntryChecks) => {
-    const { interestGroup, nameEntry, typeEntry, descriptionEntry, activitiesEntry, membersEntry } = this.state
-    const { name, type, description, activities, members, original } = interestGroup
-
-    return {
-      name: (nameEntry || clearEntryChecks) ? !name : false,
-      type: (typeEntry || clearEntryChecks) ? type === '' : false,
-      description: (descriptionEntry || clearEntryChecks) ? !description : false,
-      activities: (activitiesEntry || clearEntryChecks) ? !activities : false,
-      support: false,
-      members: membersEntry.map((memberEntry, index) => {
-        return (memberEntry || clearEntryChecks) ? members[index]? !(members[index].profile) : false : false
-      }),
-      membersLoaded: original ? _.keys(original.members).length !== members.length : false
-    }
-  }
-
-  showIGMembers = (errors) => {
-    const { noOfMembers, interestGroup, membersIsLoading } = this.state
-    const { members } = interestGroup
-
-    var igMembers = []
-
-    if(!_.isArray(members) || (interestGroup.original && (_.keys(interestGroup.original.members).length !== members.length))) {
-      return <p><FontAwesomeIcon icon="spinner" spin /> Loading...</p>
+    for(var i = 0; i < noOfMembers; i++) {
+      members.push(<Col xs="12" md="6" key={"members["+i+"]"}>
+        <UserInput
+          key={"members["+i+"]"}
+          id={"members["+i+"]"}
+          field={"members["+i+"]"}
+          validate={(value, values) => duplicateValidation(value, values, 'members')}
+          validateOnChange />
+      </Col>)
     }
 
-    for(var i = 0; i < members.length; i++) {
-      const index = i
-      const igMember =
-      <Col xs="12" md="6" key={i}>
-        {
-          members[index].profile ?
-            <div className="mb-3">
-              <UserCard user={members[index].profile} leader={i === 0} />
-              <Button color="danger" className="mt-2" outline onClick={() => this.handleFormChange(null, 'memberProfile', index)}>
-                <FontAwesomeIcon icon="trash-alt" />
-              </Button>
-            </div>
-          : <Card className="p-3 mb-3" outline color="primary">
-              <h5 className="mb-0" style={{color: 'dodgerblue'}}>{ i === 0 ? 'Leader' : 'Member'}</h5>
-              <InputGroup>
-                <Input type="email" placeholder="Member Email" value={members[index].email} invalid={errors.members[index]} onChange={(event) => this.handleFormChange(event.target.value, 'memberEmail', index)} />
-                <InputGroupAddon addonType="append">
-                  <Button color="info" disabled={membersIsLoading[index]} onClick={() => this.addMember(index, members[index].email)}>
-                    { membersIsLoading[index] ? <FontAwesomeIcon icon="spinner" spin /> : ''} Add
-                  </Button>
-                </InputGroupAddon>
-                { errors.members[index] ? <FormFeedback>Please add a valid member. Check if email is valid, a duplicate or if the member has registered on this site.</FormFeedback> : ''}
-              </InputGroup>
-            </Card>
-        }
-      </Col>
-
-      igMembers.push(igMember)
-    }
-
-    igMembers.push(<Col xs="12" md="6" key="addremove">
+    members.push(<Col xs="12" md="6" key="addremove">
       <div className="d-flex justify-content-center" >
         {
           noOfMembers > config.minimumIGMembers ?
-            <Button outline color="danger" onClick={() => this.changeNoOfMember(false) } className="mr-3">Remove Member</Button>
+            <Button outline color="danger" onClick={() => {
+              console.log(formApi.getState())
+              formApi.setValue("members["+ (noOfMembers - 1) + "]", null)
+              formApi.setValue('noOfMembers', noOfMembers - 1)
+            }} className="mr-3">Remove Member</Button>
           : ''
         }
-        <Button outline color="primary" onClick={() => this.changeNoOfMember(true)}>Add Member</Button>
+        <Button outline color="primary" onClick={() => formApi.setValue('noOfMembers', noOfMembers + 1)}>Add Member</Button>
       </div>
     </Col>)
 
-    return igMembers
+    return members
   }
 
-  addMember = (index, email) => {
-    const { firestore } = this.props
-    var { membersEntry, membersIsLoading, interestGroup } = this.state
+  submit = (values) => {
+    this.props.submit(values, this.submitCallback)
+  }
 
-    var emailExists = false
-    _.forEach(interestGroup.members, (member) => {
-      if(member.profile && member.profile.email === email) {
-        emailExists = true
-      }
-    })
-
-    if(emailExists) {
-      membersEntry[index] = true
-
-      this.setState({
-        membersEntry: membersEntry,
-      })
-
-      return
+  submitCallback = (reset) => {
+    if(reset) {
+      this.formApi.reset()
     }
 
-    membersIsLoading[index] = true
+    this.modal.toggle()
 
     this.setState({
-      membersIsLoading: membersIsLoading,
-    })
-
-    getUserByEmail(firestore, email, (snapshot) => {
-        const { userProfiles } = this.props
-
-        membersEntry[index] = true
-        membersIsLoading[index] = false
-
-        this.setState({
-          membersEntry: membersEntry,
-          membersIsLoading: membersIsLoading,
-        })
-
-        const newUserProfiles = _.mapValues(userProfiles, (profile, profileKey) => {
-          return ({
-            ...profile,
-            id: profileKey
-          })
-        })
-        const userProfile = _.filter(newUserProfiles, (profile) => {return profile.email === email})
-
-        if(userProfile.length > 0) {
-          this.handleFormChange(userProfile[0], 'memberProfile', index)
-        }
-    })
-  }
-
-  changeNoOfMember = (increase) => {
-    const { noOfMembers, interestGroup } = this.state
-    var { members } = interestGroup
-
-    if (increase) {
-      members = members.concat({
-        email: ''
-      })
-    } else {
-      members.pop()
-    }
-
-    this.setState({
-      noOfMembers: increase ? noOfMembers + 1 : noOfMembers - 1,
-      interestGroup: {
-        ...interestGroup,
-        members: members
-      }
-    })
-  }
-
-  submitForm = () => {
-    const { membersEntry } = this.state
-    const errors = this.validate(true)
-
-    const noErrors = _.every(_.values(errors), (value) => {
-      if(_.isArray(value)) {
-        var hasTrue = false
-
-        _.forEach(value, (element) => {
-          hasTrue = hasTrue || element
-        })
-
-        return !hasTrue
-      } else {
-        return !value;
-      }
-    });
-
-    if(!noErrors) {
-      this.setState({
-        nameEntry: true,
-        typeEntry: true,
-        descriptionEntry: true,
-        activitiesEntry: true,
-        supportEntry: true,
-        membersEntry: membersEntry.map(() => true),
-        submitFailure: true,
-      })
-    } else {
-      const { interestGroup } = this.state
-      const { buttonOnSubmit } = this.props
-
-      this.setState({
-        formSubmitting: true,
-        submitError: null,
-      })
-
-      buttonOnSubmit(interestGroup, () => this.resetForm(interestGroup), this.clearSubmitting, this.submitError)
-    }
-  }
-
-  submitError = (error) => {
-    this.setState({
-      submitError: error
-    })
-  }
-
-  clearSubmitting = (interestGroup) => {
-    const { firebase } = this.props
-
-    this.setState({
-      formSubmitting: false,
-      interestGroup: {
-        ...interestGroup,
-        original: interestGroup
-      },
-    })
-
-    if(interestGroup.logo) {
-      getFile(firebase, interestGroup.logo, (url) => {
-        this.setState({
-          logo: url,
-        })
-      })
-    }
-  }
-
-  resetForm = (interestGroup) => {
-    var newMembers = originalMembers()
-
-    this.setState({
-      ...originalState,
-      membersEntry: originalMembersEntry(),
-      membersIsLoading: originalMembersEntry(),
-      interestGroup: {
-        ...originalState.interestGroup,
-        members: newMembers
-      }
+      submitting: false
     })
   }
 
   render() {
-    const { igTypes } = this.props
-    const { interestGroup, submitFailure, logo, formSubmitting, submitError } = this.state
-    const { name, type, chat, description, activities, support } = interestGroup
-    const errors = this.validate()
+    const { submitting } = this.state
+    var { igTypes, btnText, modal, history, initialValues } = this.props
+    initialValues = initialValues ? initialValues : {
+      noOfMembers: config.minimumIGMembers
+    }
 
-    return (
-      <Form className="m-3">
-        <FormGroup>
-          <Label for="name"><h3>Name</h3></Label>
-          <Input type="text" value={ name } id="name" placeholder="Interest Group Name" invalid={errors.name} onChange={(event) => this.handleFormChange(event.target.value, 'name')} />
-          { errors.name ? <FormFeedback>Name cannot be empty.</FormFeedback> : ''}
-        </FormGroup>
-        <FormGroup>
-          <Label for="type"><h3>Type</h3></Label>
-          <Input type="select" invalid={errors.type} name="select" id="type" onChange={(event) => this.handleFormChange(event.target.value, 'type')} value={type}>
-            <option value=''>Please Select a Type</option>
-            {
-              igTypes.map((type) => <option key={ type.id } value={ type.id }>{ type.subName }</option>)
-            }
-          </Input>
-          { errors.type ? <FormFeedback>Please select an IG type.</FormFeedback> : ''}
-        </FormGroup>
-        <FormGroup>
-          <Label for="description"><h3>Description</h3></Label>
-          <Input style={{minHeight: '100px'}} type="textarea" value={ description } id="description" placeholder="Enter a short description of your intended Interest Group." invalid={errors.description} onChange={(event) => this.handleFormChange(event.target.value, 'description')} />
-          { errors.description ? <FormFeedback>Please enter a description.</FormFeedback> : ''}
-        </FormGroup>
-        <FormGroup>
-          <Label for="activities"><h3>Activities</h3></Label>
-          <Input style={{minHeight: '100px'}} type="textarea" value={ activities } id="activities" placeholder="Please include both regular activities, and proposed one-off events (if applicable)." invalid={errors.activities} onChange={(event) => this.handleFormChange(event.target.value, 'activities')} />
-          { errors.activities ? <FormFeedback>Please describe your activities.</FormFeedback> : ''}
-        </FormGroup>
-        <FormGroup>
-          <Label for="support"><h3>Required Support (Optional)</h3></Label>
-          <Input style={{minHeight: '100px'}} type="textarea" value={ support } id="support" placeholder="Let us know what your interest group would benefit from: Funding, venues, professor’s contacts, etc." invalid={errors.support} onChange={(event) => this.handleFormChange(event.target.value, 'support')} />
-          { errors.support ? <FormFeedback>Please enter the type of required support or enter NIL if unneeded.</FormFeedback> : ''}
-        </FormGroup>
-        <FormGroup>
-          <Label for="name"><h3>Group Chat Join Link (Optional)</h3></Label>
-          <Input type="text" value={ chat } placeholder="Telegram/Whatsapp Chat Link" onChange={(event) => this.handleFormChange(event.target.value, 'chat')} />
-        </FormGroup>
-        <FormGroup>
-          <Label for="description"><h3>Logo (Optional)</h3></Label>
-          <ImageUploader
-              imageSrc={logo}
-              onDrop={(file) => this.handleFormChange(file, 'logo')}
-              onDelete={() => this.handleFormChange(null, 'logo')}
-            />
-        </FormGroup>
-        <FormGroup>
-          <Label className="mb-0"><h3 className="mb-0">Member List</h3></Label>
-          <br/>
-          <Label><small>(at least {config.minimumIGMembers})</small></Label>
-          <Container>
+    return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
+      { ({ formApi }) => (
+       <div>
+          <h3>Name</h3>
+          <TextInput
+            field="name"
+            placeholder="Enter the event name"
+            errortext="Please enter a name"
+            validate={ validateNotEmpty }
+            validateOnBlur
+            className="mb-3" />
+          <h3>Type</h3>
+          <DropdownInput
+              field="type"
+              placeholder="Select a Type"
+              errortext="Please select a type"
+              validate={ validateNotEmpty }
+              disabled={ !igTypes.isLoaded }
+              loading={ !igTypes.isLoaded }
+              validateOnChange
+              options={this.groupOptions(igTypes)}
+              className="mb-3"/>
+          <h3>Description</h3>
+          <TextAreaInput
+            field="description"
+            placeholder="Enter a short description of your intended Interest Group."
+            errortext="Please enter a description"
+            validate={ validateNotEmpty }
+            validateOnBlur
+            className="mb-3" />
+          <h3>Activities</h3>
+          <TextAreaInput
+            field="activities"
+            placeholder="Please include both regular activities, and proposed one-off events (if applicable)."
+            errortext="Please describe your activities"
+            validate={ validateNotEmpty }
+            validateOnBlur
+            className="mb-3" />
+          <h3>Required Support <small><Badge color="secondary">Optional</Badge></small></h3>
+          <TextAreaInput
+            field="support"
+            placeholder="Let us know what your interest group would benefit from: Funding, venues, professor’s contacts, etc."
+            className="mb-3" />
+         <h3>Group Chat Join Link <small><Badge color="secondary">Optional</Badge></small></h3>
+         <TextInput
+           field="chat"
+           placeholder="Telegram/Whatsapp Chat Link"
+           className="mb-3" />
+          <h3>Logo/Image <small><Badge color="secondary">Optional</Badge></small></h3>
+          <ImageInput field="logo" className="mb-3"  />
+          <h3>Registration Link <small><Badge color="secondary">Optional</Badge></small></h3>
+          <TextInput
+            field="regLink"
+            placeholder="Paste your registration link here (optional)"
+            className="mb-5"/>
+          <h3 className="mb-0">Member List <small><Badge color="primary">Required</Badge></small></h3>
+          <p><small>(at least {config.minimumIGMembers})</small></p>
+          <TextInput
+            field="noOfMembers"
+            hidden={true} />
+          <Container className="mb-3">
             <Row>
-              {
-                this.showIGMembers(errors)
-              }
+              { this.showMembers(formApi) }
             </Row>
           </Container>
-        </FormGroup>
-        <div className="d-flex justify-content-center" >
-          <Button color="primary" onClick={this.submitForm} block disabled={formSubmitting || errors.membersLoaded}>
-            { formSubmitting || errors.membersLoaded ? <FontAwesomeIcon icon="spinner" spin /> : '' } Submit
+          <Button color="primary" type="submit" block disabled={submitting}>
+            { submitting ? <FontAwesomeIcon icon="spinner" spin /> : '' } { btnText }
           </Button>
-        </div>
-        <div className="d-flex justify-content-center" >
-          { submitFailure ? <Alert color="danger" className="mt-3">One or more inputs are invalid. Please check and try again.</Alert> : ''}
-          { submitError ? <Alert color="danger">{ submitError.message }</Alert> : ''}
-        </div>
-      </Form>)
+          { formApi.getState().invalid ? <Alert color="danger" className="mt-2 mb-2">One or more inputs are invalid. Please check and try again.</Alert> : ''}
+       </div>
+     )}
+   </Form>
+   <LinkModal
+     ref={element => { this.modal = element }}
+     title={ modal.title }
+     body={ modal.body }
+     primaryBtnText={ modal.primaryBtnText }
+     secondaryBtnText={ modal.secondaryBtnText }
+     link={ modal.link }
+     history={ history }
+   />
+  </div>)}
+}
+
+const mapStateToProps = state => {
+  return {
+    auth: state.firebase.auth,
+    userProfiles: state.firestore.data.userProfiles,
+    igTypes: formatFirestoreData(state.firestore, 'igTypes')
   }
 }
 
-export default InterestGroupForm
+export default withRouter(compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(InterestGroupForm))

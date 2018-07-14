@@ -91,7 +91,7 @@ export function getUserProfile(firestore, userID, callback) {
   getFirestoreUserProfile(firestore, userID, callback)
 }
 
-export function getUserByEmail(firestore, email, callback) {
+export function getUserByEmail(firestore, email, callback = () => {}) {
   getFirestoreUserProfileByEmail(firestore, email, callback)
 }
 

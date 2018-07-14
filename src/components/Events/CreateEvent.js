@@ -18,9 +18,7 @@ class CreateEvent extends Component {
     const { firebase } = this.props
     const { firestore } = this.context.store
 
-    createEvent(firestore, firebase, event, () => {
-      callback(true)
-    })
+    createEvent(firestore, firebase, event, () => callback(true))
   }
 
   render() {

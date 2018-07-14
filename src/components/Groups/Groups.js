@@ -71,9 +71,9 @@ class Groups extends Component {
   filterGroups = (groups) => {
     const { filter } = this.state
 
-    return _.filter(groups.ordered, (group) => {
+    return _.orderBy(_.filter(groups.ordered, (group) => {
       return (_.startsWith(_.lowerCase(group.name), _.lowerCase(filter.name))) && !filter.types[group.type]
-    })
+    }), ['name'], ['asc'])
   }
 
   render() {
@@ -100,8 +100,8 @@ class Groups extends Component {
               <Col>
                 <Input type="text" className="mb-2" value={filter.name} placeholder="Filter Name" onChange={(event) => this.handleValueChanged(event.target.value, 'name')} />
                 {
-                  _.map(groupTypes.ordered, (groupType, groupTypeID) => {
-                    return <Button key={groupTypeID} color={ filter.types[groupTypeID] ? 'danger' : 'primary' } className="mb-2 mr-2" onClick={(event) => this.handleValueChanged(groupTypeID, 'type')}>{groupType.name}</Button>
+                  _.map(groupTypes.ordered, (groupType) => {
+                    return <Button key={groupType.id} color={ filter.types[groupType.id] ? 'danger' : 'primary' } className="mb-2 mr-2" onClick={(event) => this.handleValueChanged(groupType.id, 'type')}>{groupType.name}</Button>
                   })
                 }
               </Col>
