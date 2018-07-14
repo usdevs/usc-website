@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'reactstrap'
 import EventForm from './EventForm'
 import EventCalendar from './Calendar/EventCalendar'
+import DeleteModal from '../reusable/DeleteModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { updateEvent, deleteEvent, getEvent } from '../../actions/EventsActions'
 import { eventTimesToMoment } from '../../utils/utils'
@@ -15,6 +16,8 @@ class EditEvent extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
+
+  deleteModal = null
 
   constructor(props) {
     super(props)
@@ -60,11 +63,12 @@ class EditEvent extends Component {
     })
   }
 
-  deleteEvent = (event, callback) => {
-    const { firebase } = this.props
+  deleteEvent = () => {
+    const { event } = this.state
+    const { firebase, history } = this.props
     const { firestore } = this.context.store
 
-    deleteEvent(firestore, firebase, event, callback)
+    deleteEvent(firestore, firebase, event, () => history.push('/manageevents'))
   }
 
   render() {
@@ -72,6 +76,7 @@ class EditEvent extends Component {
     const { history } = this.props
 
     return (<Container>
+      <DeleteModal ref={element => { this.deleteModal = element }} onDelete={() => this.deleteEvent()} />
       <Row>
         <Col>
           <div className="d-flex">
@@ -86,7 +91,7 @@ class EditEvent extends Component {
             <EventForm
               submit={this.updateEvent}
               initialValues={event}
-              btnText="Create Event"
+              btnText="Update Event"
               modal={{
                 title: 'Event Updated!',
                 body: 'Your event details have been successfully updated!',
@@ -95,7 +100,7 @@ class EditEvent extends Component {
                 link: '/manageevents'
               }}/>
             <div className="d-flex justify-content-center">
-              <Button className="w-75" color="danger" block disabled={!window.gapi.client}>
+              <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>
                 { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } <FontAwesomeIcon icon="trash-alt" />{' '}Delete Event
               </Button>
             </div>
