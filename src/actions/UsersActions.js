@@ -2,6 +2,7 @@
 
 import {
   getUserProfile as getFirestoreUserProfile,
+  getUserTypes as getFirestoreUserTypes,
   getUserProfileByEmail as getFirestoreUserProfileByEmail,
   saveProfile as saveFirestoreProfile,
   watchProfile as watchFirestoreProfile,
@@ -93,6 +94,10 @@ export function getUserProfile(firestore, userID, callback) {
 
 export function getUserByEmail(firestore, email, callback = () => {}) {
   getFirestoreUserProfileByEmail(firestore, email, callback)
+}
+
+export function getUserTypes(firestore, callback = () => {}) {
+  getFirestoreUserTypes(firestore, callback)
 }
 
 //Utility

@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export function formatFirestoreEvent(event) {
   if(event.regLink && event.regLink !== '' && !(event.regLink.startsWith("http://") || event.regLink.startsWith("https://"))) {
     event = {
@@ -12,7 +14,7 @@ export function formatFirestoreEvent(event) {
     endDate: event.endDate.toDate(),
   }
 
-  return event
+  return _.pickBy(event, _.identity)
 }
 
 export function createEvent(firestore, event, callback, errorCallback) {

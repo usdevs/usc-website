@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export function getUserProfile(firestore, userID, callback = () => {}, alias = 'userProfile') {
   firestore
   .get({
@@ -18,14 +20,24 @@ export function getUserProfileByEmail(firestore, email, callback, alias = 'userP
   .then((snapshot) => callback(snapshot))
 }
 
+export function getUserTypes(firestore, callback) {
+  firestore
+  .get({
+    collection: 'userTypes'
+  })
+  .then((snapshot) => callback(snapshot))
+}
+
 export function formatFirestoreProfile(profile) {
-  return {
+  var newProfile = {
     avatarUrl: profile.avatarUrl,
     displayName: profile.displayName,
     email: profile.email,
     providerData: profile.providerData,
     telegram: profile.telegram
   }
+
+  return _.pickBy(newProfile, _.identity)
 }
 
 export function saveProfile(firestore, profile, callback) {

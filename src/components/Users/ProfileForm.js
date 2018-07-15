@@ -7,11 +7,17 @@ import { Alert, Button, Badge, Container, Row, Col, InputGroup, InputGroupAddon 
 import { Form } from 'informed';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
+import _ from 'lodash'
 import { TextInput, DropdownInput, ImageInput, TextAreaInput, UserInput,
   validateNotEmpty, duplicateValidation } from '../reusable/FormInputs'
+import { getUserTypes } from '../../actions/UsersActions'
 import { formatFirestoreData } from '../../utils/utils'
 
 class ProfileForm extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props)
 
@@ -20,11 +26,34 @@ class ProfileForm extends Component {
     }
   }
 
+  componentDidMount() {
+    const { firestore } = this.context.store
+
+    getUserTypes(firestore)
+  }
+
+  userTypeOptions = () => {
+    const { userTypes } = this.props
+
+    var options = []
+
+    if(userTypes.isLoaded) {
+      _.forEach(userTypes.ordered, (type) => {
+        options.push({
+          id: type.id,
+          display: type.name
+        })
+      })
+    }
+
+    return (options)
+  }
+
   submit = (values) => {
     this.setState({
       submitting: true,
     })
-    
+
     this.props.submit(values, this.submitCallback)
   }
 
@@ -38,11 +67,15 @@ class ProfileForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { initialValues, modal, btnText } = this.props
+    var { initialValues, modal, btnText } = this.props
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
        <div>
+         <DropdownInput
+             field="type"
+             hidden={true}
+             options={ this.userTypeOptions() } />
           <h3>Display Name</h3>
           <TextInput
             field="displayName"
