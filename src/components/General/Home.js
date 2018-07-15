@@ -15,7 +15,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventCard from '../Events/EventCard'
 import { getUpcomingEvents } from '../../actions/EventsActions'
 import { formatEvents, formatFirestoreData } from '../../utils/utils'
-import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
 const items = [
@@ -51,9 +51,6 @@ class Home extends Component {
 
   render() {
     var { upcomingEvents, spaces, eventTypes, firebase, history } = this.props
-
-    console.log(upcomingEvents)
-        console.log(eventTypes)
 
     return (
       <Container className="mb-5">
@@ -103,7 +100,6 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.firestore)
   return {
     upcomingEvents: formatEvents(state.firestore, 'upcomingEvents', true),
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),

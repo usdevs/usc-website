@@ -4,7 +4,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Alert, Card, Button, InputGroup, Input, InputGroupAddon, FormFeedback } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 import UserCard from '../Users/UserCard'
 import { getUserProfile, getUserByEmail } from '../../actions/UsersActions'
 import { firebaseConnect } from 'react-redux-firebase';
@@ -27,7 +26,7 @@ class UserForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { value, groups } = this.props
+    const { value } = this.props
 
     if(value && value !== '') {
       getUserProfile(firestore, value, (snapshot) => {
@@ -91,7 +90,7 @@ class UserForm extends Component {
   }
 
   setProfile = (profile, profileID) => {
-    const { fieldApi, onChange, onBlur } = this.props
+    const { fieldApi } = this.props
     const { setValue, setTouched } = fieldApi;
 
     setValue(profileID)
@@ -108,9 +107,7 @@ class UserForm extends Component {
 
   removeMember = () => {
     const {
-      fieldApi,
-      onChange,
-      onBlur
+      fieldApi
     } = this.props
     const {
       setValue,

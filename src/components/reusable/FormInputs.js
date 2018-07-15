@@ -283,6 +283,7 @@ export const ImageInput = asField(({ fieldState, fieldApi, ...props }) => {
     <ImageUploader
         {...rest}
         ref={forwardedRef}
+        fieldState={fieldState}
         imageSrc={value ? value.preview ? value.preview : value : ''}
         onDrop={file => {
           setValue(file)
@@ -295,7 +296,18 @@ export const ImageInput = asField(({ fieldState, fieldApi, ...props }) => {
             onBlur(file)
           }
         }}
-        onDelete={() => setValue(null)}
+        onDelete={() => {
+          setValue(null)
+          setTouched()
+
+          if (onChange) {
+            onChange(null)
+          }
+
+          if (onBlur) {
+            onBlur(null)
+          }
+        }}
       />
   </React.Fragment>)
 });

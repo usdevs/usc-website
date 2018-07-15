@@ -8,7 +8,7 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import GroupCard from '../Groups/GroupCard'
+import InterestGroupGrid from './InterestGroupGrid'
 import { getUserInterestGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
@@ -18,7 +18,7 @@ class ManageInterestGroups extends Component {
     store: PropTypes.object.isRequired
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.context.store
     const { auth } = this.props
 
@@ -36,30 +36,6 @@ class ManageInterestGroups extends Component {
     }
   }
 
-  displayInterestGroups = () => {
-    const { firestore } = this.context.store
-    const { auth, interestGroups, igTypes, firebase } = this.props
-
-    var igs = []
-
-    _.forOwn(interestGroups.data, (interestGroup, igID) => {
-      if(interestGroup) {
-        igs.push(<Col className="mb-3" xs="12" md="6" key={igID}>
-          <GroupCard
-            group={{
-              ...interestGroup,
-              id: igID
-            }}
-            groupTypes={igTypes}
-            manageMode={auth.uid === interestGroup.leaderID}
-          />
-          </Col>)
-      }
-    })
-
-    return igs
-  }
-
   render() {
     const { auth, history, interestGroups, igTypes } = this.props
 
@@ -74,13 +50,11 @@ class ManageInterestGroups extends Component {
         </Col>
       </Row>
       <Row>
-          {
-            interestGroups.isLoaded && igTypes.isLoaded ?
-              _.keys(interestGroups).length > 0 ?
-                this.displayInterestGroups()
-              : <Col><h3><FontAwesomeIcon icon="frown" /> No Interest Groups match your criteria </h3></Col>
-            : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Interest Groups...</h4></Col>
-          }
+          <Col>
+            <InterestGroupGrid
+              interestGroups={interestGroups}
+              igTypes={igTypes} />
+          </Col>
       </Row>
     </Container>)
   }

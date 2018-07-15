@@ -24,7 +24,7 @@ class UserReviewCard extends Component {
   render() {
     const { module } = this.state
     const { moduleReview, history } = this.props
-    const { review, semester, isAnon, id } = moduleReview
+    const { review, semester, id } = moduleReview
 
     return(<Card body>
       <Container className="m-0 p-0">

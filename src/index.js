@@ -47,7 +47,7 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
-import { initialiseGAPI } from './actions/UsersActions'
+import { initialiseGAPI, getMyProfile } from './actions/UsersActions'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
@@ -89,6 +89,13 @@ const createStoreWithFirebase = compose(
 )(createStore)
 
 const store = createStoreWithFirebase(reducers)
+
+firebase.auth().onAuthStateChanged(function(user) {
+  // Make sure there is a valid user object
+  if(user){
+    console.log(user)
+  }
+})
 
 const typography = new Typography({
   baseFontSize: '16px',

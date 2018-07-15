@@ -4,12 +4,11 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'reactstrap'
 import EventForm from './EventForm'
-import EventCalendar from './Calendar/EventCalendar'
 import DeleteModal from '../reusable/DeleteModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { updateEvent, deleteEvent, getEvent } from '../../actions/EventsActions'
 import { eventTimesToMoment } from '../../utils/utils'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
 class EditEvent extends Component {
@@ -97,7 +96,7 @@ class EditEvent extends Component {
                 body: 'Your event details have been successfully updated!',
                 primaryBtnText: 'Manage Events',
                 secondaryBtnText: 'Dismiss',
-                onSubmit: () => history.push('/manageevents') 
+                onSubmit: () => history.push('/manageevents')
               }}/>
             <div className="d-flex justify-content-center">
               <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>

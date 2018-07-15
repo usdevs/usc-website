@@ -21,7 +21,7 @@ class DeleteModal extends Component {
 
   render() {
     const { isOpen } = this.state
-    const { history, onDelete } = this.props
+    const { onDelete } = this.props
 
     return(<Modal isOpen={isOpen} toggle={this.toggle}>
       <ModalBody>

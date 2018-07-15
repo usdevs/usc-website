@@ -57,11 +57,11 @@ export function signOut(firebase, callback) {
 
 //Update
 
-export function saveProfile(firestore, firebase, profile, callback = () => {}) {
+export function saveProfile(firestore, firebase, profile, originalProfile, callback = () => {}) {
   watchFirestoreProfile(firestore, profile, 'myProfile')
-  if(profile.avatarUrl !== profile.original.avatarUrl) {
-    if(profile.original.avatarUrl && !profile.original.avatarUrl.startsWith("http")) {
-      deleteFirebaseFile(firebase, profile.original.avatarUrl, () => {})
+  if(profile.avatarUrl !== originalProfile.avatarUrl) {
+    if(originalProfile.avatarUrl && !originalProfile.avatarUrl.startsWith("http")) {
+      deleteFirebaseFile(firebase, originalProfile.avatarUrl, () => {})
     }
 
     if(profile.avatarUrl) {

@@ -57,8 +57,8 @@ class InterestGroupForm extends Component {
     var members = []
     var memberIDs = []
 
-    for(var i = 0; i < noOfMembers; i++) {
-      memberIDs.push("members["+i+"]")
+    for(var j = 0; j < noOfMembers; j++) {
+      memberIDs.push("members["+j+"]")
     }
 
     for(var i = 0; i < noOfMembers; i++) {

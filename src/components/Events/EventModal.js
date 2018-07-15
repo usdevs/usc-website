@@ -20,30 +20,41 @@ class EventModal extends Component {
     this.state = {
       poster: null,
     }
-
-    if(props.event.poster) {
-      getFile(props.firebase, props.event.poster, (url) => {
-        this.setState({
-          poster: url,
-        })
-      })
-    }
   }
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { event } = this.props
+    const { event, firebase } = this.props
+
+    this.mounted = true
+
+
+    if(event.poster) {
+      getFile(firebase, event.poster, (url) => {
+        if(this.mounted) {
+          this.setState({
+            poster: url,
+          })
+        }
+      })
+    }
 
     if(event.organisedBy) {
       getGroup(firestore, event.organisedBy, (snapshot) => {
-        this.setState({
-          group: {
-            ...snapshot.data(),
-            id: event.organisedBy
-          }
-        })
+        if(this.mounted) {
+          this.setState({
+            group: {
+              ...snapshot.data(),
+              id: event.organisedBy
+            }
+          })
+        }
       })
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
   }
 
   dateDisplay = () => {
