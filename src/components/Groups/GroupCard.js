@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Button, Card, Container, Row, Col } from 'reactstrap';
+import { Badge, Button, Card, Container, Row, Col } from 'reactstrap';
 import { getFile } from '../../actions/FilesActions'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase';
-import { statusColor } from '../../resources/config'
+import { groupStatuses } from '../../resources/config'
 
 class GroupCard extends Component {
   mounted = false
@@ -74,7 +74,7 @@ class GroupCard extends Component {
             <h5 className="mb-0">{groupTypes.data[type].subName}</h5>
             {
               manageMode ?
-                <div className="d-flex align-items-left"><h5 className={"p-1 mb-2 mt-2 align-middle border rounded border-" + statusColor[group.status] +"  text-" + statusColor[group.status]}>Status: {_.capitalize(group.status)}</h5></div>
+                <h4 className="mb-2"><Badge color={groupStatuses[group.status].colour}>{_.capitalize(group.status)}</Badge></h4>
               : ''
             }
             { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}

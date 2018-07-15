@@ -13,7 +13,6 @@ import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { roundTime, formatFirestoreData, eventTimesToMoment } from '../../utils/utils'
 import { getEventVenueBookingsAfter, getEventTypes, getSpaces } from '../../actions/EventsActions'
-import { withRouter } from 'react-router-dom'
 import LinkModal from '../reusable/LinkModal'
 
 class EventForm extends Component {
@@ -167,7 +166,7 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, btnText, modal, history, initialValues } = this.props
+    const { eventTypes, spaces, btnText, modal, initialValues } = this.props
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
@@ -288,7 +287,7 @@ class EventForm extends Component {
      primaryBtnText={ modal.primaryBtnText }
      secondaryBtnText={ modal.secondaryBtnText }
      link={ modal.link }
-     history={ history }
+     onSubmit={ modal.onSubmit }
    />
   </div>)
   }
@@ -303,7 +302,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
+export default compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(EventForm))
+)(EventForm)

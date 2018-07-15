@@ -80,7 +80,7 @@ const config = {
   userProfile: 'users', // firebase root where user profiles are stored
   useFirestoreForProfile: true,
   enableLogging: false, // enable/disable Firebase's database logging
-  attachAuthIsReady: true,
+  attachAuthIsReady: true
 }
 
 const createStoreWithFirebase = compose(

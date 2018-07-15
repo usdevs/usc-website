@@ -97,7 +97,7 @@ class EditEvent extends Component {
                 body: 'Your event details have been successfully updated!',
                 primaryBtnText: 'Manage Events',
                 secondaryBtnText: 'Dismiss',
-                link: '/manageevents'
+                onSubmit: () => history.push('/manageevents') 
               }}/>
             <div className="d-flex justify-content-center">
               <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>

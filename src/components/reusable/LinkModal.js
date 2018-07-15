@@ -20,7 +20,7 @@ class LinkModal extends Component {
 
   render() {
     const { isOpen } = this.state
-    const { history, title, body, primaryBtnText, secondaryBtnText, link } = this.props
+    const { title, body, primaryBtnText, secondaryBtnText, onSubmit } = this.props
 
     return(<Modal isOpen={isOpen} toggle={this.toggle}>
       <ModalBody>
@@ -28,7 +28,7 @@ class LinkModal extends Component {
         <p>{ body }</p>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={() => history.push({link})}>{ primaryBtnText }</Button>{' '}
+        <Button color="primary" onClick={() => onSubmit()}>{ primaryBtnText }</Button>{' '}
         <Button color="secondary" onClick={this.toggle}>{ secondaryBtnText }</Button>
       </ModalFooter>
     </Modal>)

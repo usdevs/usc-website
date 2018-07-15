@@ -8,8 +8,9 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import InterestGroupCard from './InterestGroupCard'
+import GroupCard from '../Groups/GroupCard'
 import { getUserInterestGroups } from '../../actions/GroupsActions'
+import { formatFirestoreData } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 
 class ManageInterestGroups extends Component {
@@ -41,19 +42,19 @@ class ManageInterestGroups extends Component {
 
     var igs = []
 
-    _.forOwn(interestGroups, (interestGroup, igID) => {
-      igs.push(<Col className="mb-3" xs="12" md="6" key={igID}>
-        <InterestGroupCard
-          firebase={firebase}
-          firestore={firestore}
-          interestGroup={{
-            ...interestGroup,
-            id: igID
-          }}
-          igTypes={igTypes}
-          manageMode={auth.uid === interestGroup.leaderID}
-        />
-      </Col>)
+    _.forOwn(interestGroups.data, (interestGroup, igID) => {
+      if(interestGroup) {
+        igs.push(<Col className="mb-3" xs="12" md="6" key={igID}>
+          <GroupCard
+            group={{
+              ...interestGroup,
+              id: igID
+            }}
+            groupTypes={igTypes}
+            manageMode={auth.uid === interestGroup.leaderID}
+          />
+          </Col>)
+      }
     })
 
     return igs
@@ -74,7 +75,7 @@ class ManageInterestGroups extends Component {
       </Row>
       <Row>
           {
-            isLoaded(interestGroups) && isLoaded(igTypes) ?
+            interestGroups.isLoaded && igTypes.isLoaded ?
               _.keys(interestGroups).length > 0 ?
                 this.displayInterestGroups()
               : <Col><h3><FontAwesomeIcon icon="frown" /> No Interest Groups match your criteria </h3></Col>
@@ -88,8 +89,8 @@ class ManageInterestGroups extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    interestGroups: state.firestore.data.userInterestGroups,
-    igTypes: state.firestore.data.igTypes,
+    interestGroups: formatFirestoreData(state.firestore, 'userInterestGroups'),
+    igTypes: formatFirestoreData(state.firestore, 'igTypes'),
   }
 }
 

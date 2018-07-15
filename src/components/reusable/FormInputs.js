@@ -14,11 +14,8 @@ export const validateNotEmpty = value => {
   return !value ? 'Field cannot be empty' : null;
 }
 
-export const duplicateValidation = (value, values, variable) => {
-  console.log(values)
-  console.log(variable)
-  console.log(values[variable])
-  return !values ? null : values[variable].filter( v => v === value ).length > 1 ? 'This field must be unique.' : null;
+export const duplicateValidation = (value, values) => {
+  return values.filter( v => v === value ).length > 1 ? 'This field must be unique.' : null;
 }
 
 export const TextInput = asField(({ fieldState, fieldApi, ...props }) => {
@@ -120,7 +117,7 @@ export const DropdownInput = asField(({ fieldState, fieldApi, ...props }) => {
         {...rest}
         type="select"
         ref={forwardedRef}
-        loading={props.loading.toString()}
+        loading={props.loading ? props.loading.toString() : null}
         value={!value && value !== 0 ? '' : value}
         onChange={e => {
           setValue(e.target.value)
@@ -324,7 +321,19 @@ export const UserInput = asField(({ fieldState, fieldApi, ...props }) => {
       ref={forwardedRef}
       fieldState={fieldState}
       fieldApi={fieldApi}
-      onChange={onChange}
-      onBlur={onBlur} />
+      value={value}
+      onChange={e => {
+        setValue(e)
+        setTouched()
+        if (onChange) {
+          onChange(e)
+        }
+      }}
+      onBlur={e => {
+        setTouched()
+        if (onBlur) {
+          onBlur(e)
+        }
+      }} />
   </React.Fragment>)
 });

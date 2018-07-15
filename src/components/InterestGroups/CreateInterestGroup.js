@@ -21,6 +21,8 @@ class CreateInterestGroup extends Component {
   }
 
   render() {
+    const { history } = this.props
+    
     return (<Container>
       <Row>
         <Col>
@@ -39,7 +41,7 @@ class CreateInterestGroup extends Component {
               body: 'Your application has been successfully submitted! You will be contacted in future regarding it!',
               primaryBtnText: 'To Dashboard',
               secondaryBtnText: 'Dismiss',
-              link: '/dashboard'
+              onSubmit: () => history.push('/dashboard')
             }}/>
         </Col>
       </Row>

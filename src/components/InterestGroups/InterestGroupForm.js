@@ -9,10 +9,9 @@ import { TextInput, DropdownInput, ImageInput, TextAreaInput, UserInput,
   validateNotEmpty, duplicateValidation } from '../reusable/FormInputs'
 import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { config } from '../../resources/config'
+import { config, groupStatuses } from '../../resources/config'
 import { formatFirestoreData } from '../../utils/utils'
 import { getInterestGroupTypes } from '../../actions/GroupsActions'
-import { withRouter } from 'react-router-dom'
 import LinkModal from '../reusable/LinkModal'
 
 class InterestGroupForm extends Component {
@@ -56,6 +55,11 @@ class InterestGroupForm extends Component {
     const noOfMembers = formApi.getValue('noOfMembers')
 
     var members = []
+    var memberIDs = []
+
+    for(var i = 0; i < noOfMembers; i++) {
+      memberIDs.push("members["+i+"]")
+    }
 
     for(var i = 0; i < noOfMembers; i++) {
       members.push(<Col xs="12" md="6" key={"members["+i+"]"}>
@@ -63,7 +67,9 @@ class InterestGroupForm extends Component {
           key={"members["+i+"]"}
           id={"members["+i+"]"}
           field={"members["+i+"]"}
-          validate={(value, values) => duplicateValidation(value, values, 'members')}
+          notify={memberIDs}
+          validate={this.memberValidation}
+          leader={i === 0}
           validateOnChange />
       </Col>)
     }
@@ -86,8 +92,47 @@ class InterestGroupForm extends Component {
     return members
   }
 
+  memberValidation = ( value, values ) => {
+    return validateNotEmpty(value) || duplicateValidation( value, values.members )
+  }
+
   submit = (values) => {
-    this.props.submit(values, this.submitCallback)
+
+    var group = values
+    var memberObject = {}
+
+    _.forEach(values.members, (memberID, index) => {
+      if(index === 0) {
+        group = {
+          ...group,
+          leaderID: memberID
+        }
+      } else {
+        memberObject = {
+          ...memberObject,
+          [memberID]: true
+        }
+      }
+    })
+
+    if(group.logo && group.logo.preview) {
+      group = {
+        ...group,
+        logo: group.logo.preview
+      }
+    } else {
+      group = {
+        ...group,
+        logo: null
+      }
+    }
+
+    group = {
+      ...group,
+      members: memberObject
+    }
+
+    this.props.submit(group, this.submitCallback)
   }
 
   submitCallback = (reset) => {
@@ -104,14 +149,19 @@ class InterestGroupForm extends Component {
 
   render() {
     const { submitting } = this.state
-    var { igTypes, btnText, modal, history, initialValues } = this.props
+    var { igTypes, btnText, modal, initialValues } = this.props
     initialValues = initialValues ? initialValues : {
-      noOfMembers: config.minimumIGMembers
+      noOfMembers: config.minimumIGMembers,
+      status: "active"
     }
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
        <div>
+         <DropdownInput
+             field="status"
+             hidden={true}
+             options={_.flatMap(groupStatuses, (status) => {return({id: status.id, display: status.name})})}/>
           <h3>Name</h3>
           <TextInput
             field="name"
@@ -188,7 +238,7 @@ class InterestGroupForm extends Component {
      primaryBtnText={ modal.primaryBtnText }
      secondaryBtnText={ modal.secondaryBtnText }
      link={ modal.link }
-     history={ history }
+     onSubmit={ modal.onSubmit }
    />
   </div>)}
 }
@@ -201,7 +251,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
+export default compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(InterestGroupForm))
+)(InterestGroupForm)

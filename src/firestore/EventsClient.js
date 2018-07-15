@@ -85,7 +85,6 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
 }
 
 export function getGroupEvents(firestore, groupID, callback = () => {}) {
-  console.log(groupID)
   firestore
   .get({
     collection: 'events',

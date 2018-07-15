@@ -22,6 +22,8 @@ class CreateEvent extends Component {
   }
 
   render() {
+    const { history } = this.props
+    
     return (<Container>
       <Row>
         <Col>
@@ -40,7 +42,7 @@ class CreateEvent extends Component {
               body: 'Your event has been successfully created!',
               primaryBtnText: 'To Events',
               secondaryBtnText: 'Dismiss',
-              link: '/events'
+              onSubmit: () => history.push('/events')
             }}/>
         </Col>
         <Col className="my-2 d-none d-lg-block" md="4">

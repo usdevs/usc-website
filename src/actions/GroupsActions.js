@@ -31,10 +31,10 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
   }
 }
 
-export function updateInterestGroup(firestore, firebase, interestGroup, callback = () => {}, errorCallback = () => {}) {
-  if(interestGroup.original.logo !== interestGroup.logo) {
-    if(interestGroup.original.logo) {
-      deleteFirebaseFile(firebase, interestGroup.original.logo, () => {})
+export function updateInterestGroup(firestore, firebase, interestGroup, originalInterestGroup, callback = () => {}, errorCallback = () => {}) {
+  if(originalInterestGroup.logo !== interestGroup.logo) {
+    if(originalInterestGroup.logo) {
+      deleteFirebaseFile(firebase, originalInterestGroup.logo, () => {})
     }
 
     if(interestGroup.logo) {

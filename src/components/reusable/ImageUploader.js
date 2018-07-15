@@ -1,10 +1,41 @@
 import React, { Component } from 'react'
+import { compose } from 'redux'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import Dropzone from 'react-dropzone'
 import { Button } from 'reactstrap';
+import { getFile } from '../../actions/FilesActions'
+import { firebaseConnect } from 'react-redux-firebase';
 
 class ImageUploader extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      image: null,
+    }
+  }
+
+  componentDidMount() {
+    const { imageSrc, firebase } = this.props
+    this.mounted = true
+
+    if(imageSrc && imageSrc !== '' && !(imageSrc.startsWith("http://") || imageSrc.startsWith("https://"))) {
+      getFile(firebase, imageSrc, (url) => {
+        if(this.mounted) {
+          this.setState({
+            image: url,
+          })
+        }
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false
+  }
+
   render() {
+    const { image } = this.state
     const { imageSrc, onDrop, onDelete } = this.props
 
       return (
@@ -12,13 +43,18 @@ class ImageUploader extends Component {
           <div className="d-flex justify-content-center flex-wrap">
             {
               imageSrc ?
-                <img src={imageSrc} className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />
+                <img src={ image ? image : imageSrc} className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />
               : ''
             }
             '    '
             <Dropzone
               accept="image/jpeg, image/png"
-              onDrop={(files) => onDrop(files[0])}>
+              onDrop={(files) => {
+                onDrop(files[0])
+                this.setState({
+                  image: null,
+                })
+              }}>
               <div className="w-100 h-100 d-flex justify-content-center">
                 <span className="w-100 h-100 fa-layers fa-fw" style={{marginTop: '.7em'}}>
                   <FontAwesomeIcon icon="upload" size="4x" transform="up-15"/>
@@ -39,4 +75,6 @@ class ImageUploader extends Component {
     }
 }
 
-export default ImageUploader
+export default compose(
+  firebaseConnect()
+)(ImageUploader)

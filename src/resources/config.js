@@ -18,10 +18,10 @@ export const config = {
   }
 }
 
-export const statusColor = {
-  "active": 'success',
-  "pending": 'info',
-  "inactive": 'danger',
+export const groupStatuses = {
+  "active": { id: 'active', name: "Active", colour: 'success'},
+  "pending": { id: 'pending', name: "Pending", colour: 'info'},
+  "inactive": { id: 'inactive', name: "Inactive", colour: 'danger'},
 }
 
 export const firebaseConfig = {

@@ -6,7 +6,7 @@ import { Alert, Card, Button, InputGroup, Input, InputGroupAddon, FormFeedback }
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import UserCard from '../Users/UserCard'
-import { getUserByEmail } from '../../actions/UsersActions'
+import { getUserProfile, getUserByEmail } from '../../actions/UsersActions'
 import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
@@ -21,19 +21,56 @@ class UserForm extends Component {
     this.state = {
       email: '',
       profile: null,
-      submitting: false,
+      submitting: false
     }
   }
 
   componentDidMount() {
+    const { firestore } = this.context.store
+    const { value, groups } = this.props
+
+    if(value && value !== '') {
+      getUserProfile(firestore, value, (snapshot) => {
+        this.setState({
+          profile: {
+            ...snapshot.data(),
+            id: value
+          }
+        })
+      })
+    }
   }
 
+  componentWillReceiveProps(newProps) {
+    const { firestore } = this.context.store
+    const { profile } = this.state
+    const { value } = newProps
+
+    if(value && value !== '' && profile && value !== profile.id) {
+      getUserProfile(firestore, value, (snapshot) => {
+        this.setState({
+          profile: {
+            ...snapshot.data(),
+            id: value
+          }
+        })
+      })
+    } else if (!value) {
+      this.setState({
+        email: '',
+        profile: null
+      })
+    }
+  }
 
   addMember = () => {
     const { email } = this.state
     const { firestore } = this.context.store
+    const { fieldApi, } = this.props
+    const { setError } = fieldApi;
 
     this.setState({
+      error: null,
       submitting: true,
     })
 
@@ -42,34 +79,29 @@ class UserForm extends Component {
         const profileDoc = snapshot.docs[0]
         const profile = profileDoc.data()
 
-        const {
-          fieldApi,
-          onChange,
-          onBlur
-        } = this.props
-        const {
-          setValue,
-          setTouched
-        } = fieldApi;
-
-        setValue(profileDoc.id)
-        setTouched()
-
-        if (onChange) {
-          onChange(profileDoc.id)
-        }
-
-        if (onBlur) {
-          onBlur(profileDoc.id)
-        }
-
+        this.setProfile(profile, profileDoc.id)
+      } else {
+        setError('User does not exist! Please check user has registered on this site!')
         this.setState({
+          error: 'User does not exist! Please check user has registered on this site!',
           submitting: false,
-          profile: {
-            ...profile,
-            id: profileDoc.id
-          }
         })
+      }
+    })
+  }
+
+  setProfile = (profile, profileID) => {
+    const { fieldApi, onChange, onBlur } = this.props
+    const { setValue, setTouched } = fieldApi;
+
+    setValue(profileID)
+    setTouched()
+
+    this.setState({
+      submitting: false,
+      profile: {
+        ...profile,
+        id: profileID
       }
     })
   }
@@ -88,21 +120,13 @@ class UserForm extends Component {
     setValue(null)
     setTouched()
 
-    if (onChange) {
-      onChange(null)
-    }
-
-    if (onBlur) {
-      onBlur(null)
-    }
-
     this.setState({
       profile: null
     })
   }
 
   render() {
-    const { email, profile, submitting } = this.state
+    const { email, profile, submitting, error } = this.state
     const { leader, fieldState, errortext } = this.props
 
     if(profile) {
@@ -131,7 +155,7 @@ class UserForm extends Component {
                 { submitting ? <FontAwesomeIcon icon="spinner" spin /> : ''} Add
               </Button>
             </InputGroupAddon>
-            { fieldState.error ? <FormFeedback>{ errortext ? errortext : fieldState.error}</FormFeedback> : null }
+            { fieldState.error || error ? <FormFeedback>{ error ? error : errortext ? errortext : fieldState.error}</FormFeedback> : null }
           </InputGroup>
         </Card>)
   }
