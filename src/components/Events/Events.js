@@ -37,7 +37,7 @@ class Events extends Component {
         </Row>
         <Row>
           <Col>
-            <EventCalendar/>
+            <EventCalendar hideSpaceOnly={true}/>
           </Col>
         </Row>
       </Container>

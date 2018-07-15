@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Input, Button } from 'reactstrap'
+import { Input, Button, FormFeedback } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import Autosuggest from 'react-autosuggest';
 import GroupCard from '../Groups/GroupCard'
-import { getGroups } from '../../actions/GroupsActions'
+import { getGroups, getGroup } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase';
@@ -44,16 +44,24 @@ class GroupAutocomplete extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if(!this.props.groups.isLoaded && newProps.groups.isLoaded) {
-      const { fieldState, groups } = newProps
+    const { firestore } = this.context.store
+    const { selected } = this.state
+    const { value } = newProps
 
-      const { value } = fieldState
-
-      if(value && value !== '') {
+    if(value && value !== '' && selected && value !== selected.id) {
+      getGroup(firestore, value, (snapshot) => {
         this.setState({
-          selected: groups.data[value]
+          selected: {
+            ...snapshot.data(),
+            id: value
+          }
         })
-      }
+      })
+    } else if (!value) {
+      this.setState({
+        searchText: '',
+        selected: null
+      })
     }
   }
 
@@ -122,7 +130,7 @@ class GroupAutocomplete extends Component {
 
   renderInputComponent = inputProps => {
     const { selected } = this.state
-    const { groups, groupTypes, fieldApi, fieldState } = this.props
+    const { groups, groupTypes, fieldApi, fieldState, errortext } = this.props
 
     var inputComponents = []
 
@@ -149,12 +157,16 @@ class GroupAutocomplete extends Component {
               selected: null,
             })
           }}
-          key={fieldState.value.id + 'delete'}>
+          key='deleteGroup'>
           <FontAwesomeIcon icon="trash-alt" />
         </Button>)
     } else {
-      inputComponents.push(<Input type="text" {...inputProps} disabled={ !groups.isLoaded || !groupTypes.isLoaded } invalid={ this.props.fieldState.error } />)
+      inputComponents.push(<Input key="groupInput" type="text" {...inputProps} disabled={ !groups.isLoaded || !groupTypes.isLoaded } invalid={ this.props.fieldState.error ? true : false } />)
+      if(fieldState.error) {
+        inputComponents.push(<FormFeedback key="groupError">{ errortext ? errortext : fieldState.error}</FormFeedback>)
+      }
     }
+
 
     return inputComponents
   }

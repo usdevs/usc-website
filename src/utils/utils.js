@@ -115,7 +115,7 @@ export function formatMonthEvents(firestore) {
 }
 
 //Arrange events into arrays of events with a key of the date
-export function formatEventsByDate(firestore) {
+export function formatEventsByDate(firestore, hideSpaceOnly = false) {
   //Combine all events with a start date in the month, and an end date in the month
   const allEvents = formatMonthEvents(firestore)
 
@@ -136,6 +136,10 @@ export function formatEventsByDate(firestore) {
 
   //Iterate through all events
   _.forOwn(allEvents, function(Event, eventID) {
+    if(hideSpaceOnly && Event.spaceOnly) {
+      return
+    }
+
     //Convert any formats needed after retrieval from firestore
     var event = formatFirestoreEvent(Event, eventID)
     const noOfDays = moment.duration(event.endDate.diff(event.startDate)).days()

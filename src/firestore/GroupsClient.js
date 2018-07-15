@@ -17,7 +17,7 @@ export function formatFirestoreGroup(group, type) {
   }
 }
 
-export function createInterestGroup(firestore, interestGroup, callback, errorCallback) {
+export function createGroup(firestore, interestGroup, callback, errorCallback) {
   const group = formatFirestoreGroup(interestGroup, 'interestGroup')
   firestore
   .add({ collection: 'groups' }, group)
@@ -25,9 +25,9 @@ export function createInterestGroup(firestore, interestGroup, callback, errorCal
   .catch((err) => errorCallback(err))
 }
 
-export function updateInterestGroup(firestore, interestGroup, callback, errorCallback) {
+export function updateGroup(firestore, interestGroup, callback, errorCallback) {
   const group = formatFirestoreGroup(interestGroup, 'interestGroup')
-  console.log(interestGroup)
+  
   firestore
   .set({ collection: 'groups' , doc: interestGroup.id }, group)
   .then((snapshot) => callback(group))
@@ -50,12 +50,21 @@ export function getGroup(firestore, groupID, callback, alias = 'group') {
   .then((snapshot) => callback(snapshot))
 }
 
-export function getGroups(firestore, callback = () => {}) {
-  firestore
-  .get({
+export function getGroups(firestore, callback = () => {}, exceptIG = false) {
+  var query = {
     collection: 'groups',
     orderBy: ['name']
-  })
+  }
+
+  if(exceptIG) {
+    query = {
+      ...query,
+      where: ['category', '!=', config.categoryIDs.ig]
+    }
+  }
+
+  firestore
+  .get(query)
   .then((snapshot) => callback(snapshot))
 }
 
@@ -106,6 +115,24 @@ export function getInterestGroups(firestore, status) {
         storeAs: 'interestGroups'
       })
     }
+}
+
+export function getUserGroups(firestore, userID, callback, alias, exceptIG = false) {
+  //const whereField = 'members.' + userID
+  var query = {
+    collection: 'groups',
+    where: [
+      ['leaderID', '==', userID]
+    ],
+    storeAs: alias
+  }
+
+  firestore
+  .get(query)
+  .then((snapshot) => callback(snapshot))
+
+  firestore
+  .onSnapshot(query)
 }
 
 export function getUserInterestGroups(firestore, userID, callback, alias) {

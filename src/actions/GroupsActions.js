@@ -1,11 +1,12 @@
 import {
-  createInterestGroup as createFirestoreInterestGroup,
-  updateInterestGroup as updateFirestoreInterestGroup,
+  createGroup as createFirestoreGroup,
+  updateGroup as updateFirestoreGroup,
   deleteGroup as deleteFirestoreGroup,
   getGroupTypes as getFirestoreGroupTypes,
   getInterestGroupTypes as getFirestoreInterestGroupTypes,
   getInterestGroups as getFirestoreInterestGroups,
   getUserInterestGroups as getFirestoreUserInterestGroups,
+  getUserGroups as getFirestoreUserGroups,
   getGroup as getFirestoreGroup,
   getGroups as getFirestoreGroups,
   watchGroups as watchFirestoreGroups
@@ -16,7 +17,7 @@ import {
 } from '../firestore/FilesClient'
 import { config } from '../resources/config'
 
-export function createInterestGroup(firestore, firebase, interestGroup, callback, errorCallback = () => {}) {
+export function createGroup(firestore, firebase, interestGroup, callback, errorCallback = () => {}) {
   if (interestGroup.logo) {
     uploadLogo(firebase, interestGroup.logo, (filePath) => {
       interestGroup = {
@@ -24,14 +25,14 @@ export function createInterestGroup(firestore, firebase, interestGroup, callback
         logo: filePath,
       }
 
-      createFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
+      createFirestoreGroup(firestore, interestGroup, callback, errorCallback)
     })
   } else {
-    createFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
+    createFirestoreGroup(firestore, interestGroup, callback, errorCallback)
   }
 }
 
-export function updateInterestGroup(firestore, firebase, interestGroup, originalInterestGroup, callback = () => {}, errorCallback = () => {}) {
+export function updateGroup(firestore, firebase, interestGroup, originalInterestGroup, callback = () => {}, errorCallback = () => {}) {
   if(originalInterestGroup.logo !== interestGroup.logo) {
     if(originalInterestGroup.logo) {
       deleteFirebaseFile(firebase, originalInterestGroup.logo, () => {})
@@ -44,13 +45,13 @@ export function updateInterestGroup(firestore, firebase, interestGroup, original
           logo: filePath,
         }
 
-        updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
+        updateFirestoreGroup(firestore, interestGroup, callback, errorCallback)
       })
     } else {
-      updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
+      updateFirestoreGroup(firestore, interestGroup, callback, errorCallback)
     }
   } else {
-    updateFirestoreInterestGroup(firestore, interestGroup, callback, errorCallback)
+    updateFirestoreGroup(firestore, interestGroup, callback, errorCallback)
   }
 }
 
@@ -92,9 +93,20 @@ export function getGroupTypes(firestore, callback = () => {}) {
   getFirestoreGroupTypes(firestore, callback)
 }
 
+export function getUserGroups(firestore, userID, callback = () => {}, alias = 'userGroups') {
+  getGroupTypes(firestore)
+  getFirestoreUserGroups(firestore, userID, callback, alias)
+}
+
 export function getGroups(firestore, callback = () => {}) {
   getGroupTypes(firestore, callback)
   getFirestoreGroups(firestore, callback)
+  watchFirestoreGroups(firestore)
+}
+
+export function getGroupsExceptIG(firestore, callback = () => {}) {
+  getGroupTypes(firestore, callback)
+  getFirestoreGroups(firestore, callback, true)
   watchFirestoreGroups(firestore)
 }
 

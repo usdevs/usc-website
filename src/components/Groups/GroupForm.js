@@ -11,7 +11,8 @@ import _ from 'lodash'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { config, groupStatuses } from '../../resources/config'
 import { formatFirestoreData } from '../../utils/utils'
-import { getInterestGroupTypes } from '../../actions/GroupsActions'
+import { getGroupTypes } from '../../actions/GroupsActions'
+import ability from '../../utils/ability'
 import LinkModal from '../reusable/LinkModal'
 
 class InterestGroupForm extends Component {
@@ -33,18 +34,22 @@ class InterestGroupForm extends Component {
   componentWillMount() {
     const { firestore } = this.context.store
 
-    getInterestGroupTypes(firestore)
+    getGroupTypes(firestore)
   }
 
-  groupOptions = (igTypes) => {
+  groupOptions = (groupTypes) => {
+    const { forInterestGroup, initialValues } = this.props
+
     var options = []
 
-    if(igTypes.isLoaded) {
-      _.forEach(igTypes.ordered, (type) => {
-        options.push({
-          id: type.id,
-          display: type.subName
-        })
+    if(groupTypes.isLoaded) {
+      _.forEach(groupTypes.ordered, (type) => {
+        if(!(forInterestGroup && type.category !== config.categoryIDs.ig)) {
+          options.push({
+            id: type.id,
+            display: forInterestGroup ? type.subName : type.name
+          })
+        }
       })
     }
 
@@ -79,7 +84,6 @@ class InterestGroupForm extends Component {
         {
           noOfMembers > config.minimumIGMembers ?
             <Button outline color="danger" onClick={() => {
-              console.log(formApi.getState())
               formApi.setValue("members["+ (noOfMembers - 1) + "]", null)
               formApi.setValue('noOfMembers', noOfMembers - 1)
             }} className="mr-3">Remove Member</Button>
@@ -94,6 +98,13 @@ class InterestGroupForm extends Component {
 
   memberValidation = ( value, values ) => {
     return validateNotEmpty(value) || duplicateValidation( value, values.members )
+  }
+
+  typeValidate = (formApi, value) => {
+    const { groupTypes } = this.props
+    formApi.setValue('category', groupTypes.data[value] ? groupTypes.data[value].category : null)
+
+    return validateNotEmpty(value)
   }
 
   submit = (values) => {
@@ -149,11 +160,13 @@ class InterestGroupForm extends Component {
 
   render() {
     const { submitting } = this.state
-    var { igTypes, btnText, modal, initialValues } = this.props
+    var { groupTypes, btnText, modal, initialValues, forInterestGroup } = this.props
     initialValues = initialValues ? initialValues : {
       noOfMembers: config.minimumIGMembers,
       status: "active"
     }
+
+    const isInterestGroup = initialValues ? initialValues.category === config.categoryIDs.ig : forInterestGroup ? true : false
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
@@ -162,6 +175,9 @@ class InterestGroupForm extends Component {
              field="status"
              hidden={true}
              options={_.flatMap(groupStatuses, (status) => {return({id: status.id, display: status.name})})}/>
+         <TextInput
+             field="category"
+             hidden={true} />
           <h3>Name</h3>
           <TextInput
             field="name"
@@ -175,11 +191,11 @@ class InterestGroupForm extends Component {
               field="type"
               placeholder="Select a Type"
               errortext="Please select a type"
-              validate={ validateNotEmpty }
-              disabled={ !igTypes.isLoaded }
-              loading={ !igTypes.isLoaded }
+              validate={ (value) => this.typeValidate(formApi, value) }
+              disabled={ !groupTypes.isLoaded ? true : this.props.initialValues ? true : false }
+              loading={ !groupTypes.isLoaded }
               validateOnChange
-              options={this.groupOptions(igTypes)}
+              options={this.groupOptions(groupTypes)}
               className="mb-3"/>
           <h3>Description</h3>
           <TextAreaInput
@@ -197,23 +213,20 @@ class InterestGroupForm extends Component {
             validate={ validateNotEmpty }
             validateOnBlur
             className="mb-3" />
-          <h3>Required Support <small><Badge color="secondary">Optional</Badge></small></h3>
+          <h3 hidden={!isInterestGroup}>Required Support <small><Badge color="secondary">Optional</Badge></small></h3>
           <TextAreaInput
             field="support"
+            hidden={!isInterestGroup}
             placeholder="Let us know what your interest group would benefit from: Funding, venues, professor’s contacts, etc."
             className="mb-3" />
-         <h3>Group Chat Join Link <small><Badge color="secondary">Optional</Badge></small></h3>
+         <h3 hidden={!isInterestGroup}>Group Chat Join Link <small><Badge color="secondary">Optional</Badge></small></h3>
          <TextInput
            field="chat"
+           hidden={!isInterestGroup}
            placeholder="Telegram/Whatsapp Chat Link"
            className="mb-3" />
           <h3>Logo/Image <small><Badge color="secondary">Optional</Badge></small></h3>
           <ImageInput field="logo" className="mb-3"  />
-          <h3>Registration Link <small><Badge color="secondary">Optional</Badge></small></h3>
-          <TextInput
-            field="regLink"
-            placeholder="Paste your registration link here (optional)"
-            className="mb-5"/>
           <h3 className="mb-0">Member List <small><Badge color="primary">Required</Badge></small></h3>
           <p><small>(at least {config.minimumIGMembers})</small></p>
           <TextInput
@@ -247,7 +260,7 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     userProfiles: state.firestore.data.userProfiles,
-    igTypes: formatFirestoreData(state.firestore, 'igTypes')
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }
 

@@ -3,21 +3,21 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
-import GroupForm from '../Groups/GroupForm'
+import GroupForm from './GroupForm'
 import { createGroup } from '../../actions/GroupsActions'
 import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 
-class CreateInterestGroup extends Component {
+class CreateGroup extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
 
-  createIG = (interestGroup, callback) => {
+  createGroup = (group, callback) => {
     const { firestore } = this.context.store
     const { firebase } = this.props
 
-    createGroup(firestore, firebase, interestGroup, () => callback(true))
+    createGroup(firestore, firebase, group, () => callback(true))
   }
 
   render() {
@@ -27,16 +27,15 @@ class CreateInterestGroup extends Component {
       <Row>
         <Col>
           <div className="d-flex">
-            <h1 className="display-3">Create Interest Group</h1>
+            <h1 className="display-3">Create Group</h1>
           </div>
         </Col>
       </Row>
       <Row>
         <Col>
           <GroupForm
-            submit={this.createIG}
+            submit={this.createGroup}
             btnText="Submit Application"
-            forInterestGroup={true}
             modal={{
               title: 'Application Submitted!',
               body: 'Your application has been successfully submitted! You will be contacted in future regarding it!',
@@ -52,4 +51,4 @@ class CreateInterestGroup extends Component {
 
 export default withRouter(compose(
   firebaseConnect()
-)(CreateInterestGroup))
+)(CreateGroup))

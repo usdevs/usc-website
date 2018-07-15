@@ -20,17 +20,18 @@ import EditEvent from './components/Events/EditEvent'
 import CreateInterestGroup from './components/InterestGroups/CreateInterestGroup'
 import Groups from './components/Groups/Groups'
 import Group from './components/Groups/Group'
-import InterestGroup from './components/InterestGroups/InterestGroup'
-import ManageInterestGroups from './components/InterestGroups/ManageInterestGroups'
-import EditInterestGroup from './components/InterestGroups/EditInterestGroup'
-import InterestGroupAdmin from './components/InterestGroups/InterestGroupAdmin'
+import GroupAdmin from './components/Groups/GroupAdmin'
+import CreateGroup from './components/Groups/CreateGroup'
+import ManageGroups from './components/Groups/ManageGroups'
+import EditGroup from './components/Groups/EditGroup'
 import Settings from './components/Users/Settings'
 import Modules from './components/Modules/Modules'
 import Module from './components/Modules/Module'
 import AddReview from './components/Modules/AddReview'
 import EditReview from './components/Modules/EditReview'
 import ManageReviews from './components/Modules/ManageReviews'
-//import ModuleAdmin from './components/Modules/ModuleAdmin'
+import ModuleAdmin from './components/Modules/ModuleAdmin'
+import Feedback from './components/General/Feedback'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -42,17 +43,18 @@ import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
-  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes
+  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes, faComment
 } from '@fortawesome/fontawesome-free-solid'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
 import { initialiseGAPI, getMyProfile } from './actions/UsersActions'
+import Can from './utils/Can'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
   faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher,
-  faMobileAlt, faTimes, fab)
+  faMobileAlt, faTimes, fab, faComment)
 
 
 firebase.initializeApp(firebaseConfig)
@@ -90,13 +92,6 @@ const createStoreWithFirebase = compose(
 
 const store = createStoreWithFirebase(reducers)
 
-firebase.auth().onAuthStateChanged(function(user) {
-  // Make sure there is a valid user object
-  if(user){
-    console.log(user)
-  }
-})
-
 const typography = new Typography({
   baseFontSize: '16px',
   baseLineHeight: 1.45,
@@ -121,23 +116,29 @@ render(
             <Route path="/contactus" component={ContactUs}/>
             <Route path="/dashboard/:login" component={Dashboard}/>
             <Route path="/dashboard/" component={Dashboard}/>
+            <Route path="/feedback" component={Feedback}/>
             <Route path="/createevent" component={CreateEvent}/>
             <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/editevent/:eventID" component={EditEvent}/>
-            <Route path="/eventadmin" component={InterestGroupAdmin}/>
             <Route path="/createinterestgroup" component={CreateInterestGroup}/>
             <Route path="/groups" component={Groups}/>
             <Route path="/group/:groupID" component={Group}/>
-            <Route path="/interestgroup/:igID" component={InterestGroup}/>
-            <Route path="/manageinterestgroups" component={ManageInterestGroups}/>
-            <Route path="/editinterestgroup/:igID" component={EditInterestGroup}/>
-            <Route path="/interestgroupadmin" component={InterestGroupAdmin}/>
+            <Route path="/managegroups" component={ManageGroups}/>
+            <Route path="/editgroup/:groupID" component={EditGroup}/>
             <Route path="/settings" component={Settings}/>
             <Route path="/modules" component={Modules}/>
             <Route path="/module/:moduleID" component={Module}/>
             <Route path="/addreview/" component={AddReview}/>
             <Route path="/editreview/:reviewID" component={EditReview}/>
             <Route path="/managereviews" component={ManageReviews}/>
+            <Can I="manage" a="Admin">
+              <div>
+                <Route path="/creategroup" component={CreateGroup}/>
+                <Route path="/eventadmin" component={GroupAdmin}/>
+                <Route path="/groupadmin" component={GroupAdmin}/>
+                <Route path="/moduleadmin" component={ModuleAdmin}/>
+              </div>
+            </Can>
             <Route component={Home}/>
           </Switch>
           <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>

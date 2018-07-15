@@ -111,7 +111,7 @@ class EventForm extends Component {
 
     const normalVenue = values.venue !== "Others"
     const startDate = moment(values.startDate)
-    const endDate =  moment(values.endDate)
+    const endDate =  !values.fullDay ? moment(values.endDate) : moment(values.startDate).add(1, 'day').add(-30, 'minutes')
 
     const formattedEvent = {
       ...values,
@@ -257,9 +257,13 @@ class EventForm extends Component {
                 default={roundTime(moment(), config.timeInterval).clone().add(config.timeInterval, "minutes")}/>
             </div>
           </div>
-          <h3>Organised By <small><Badge color="secondary">Optional</Badge></small></h3>
+          <h3>Organised By</h3>
           <div className="mb-3">
-            <GroupInput field="organisedBy" />
+            <GroupInput
+              field="organisedBy"
+              errortext="Please indicate the organising group"
+              validate={ validateNotEmpty }
+              validateOnBlur/>
           </div>
           <h3>Poster <small><Badge color="secondary">Optional</Badge></small></h3>
           <ImageInput field="poster" className="mb-3"  />

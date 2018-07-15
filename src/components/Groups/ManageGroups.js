@@ -8,12 +8,12 @@ import {
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import InterestGroupGrid from './InterestGroupGrid'
-import { getInterestGroups } from '../../actions/GroupsActions'
+import GroupGrid from '../Groups/GroupGrid'
+import { getUserGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 
-class InterestGroupAdmin extends Component {
+class ManageGroups extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
@@ -22,11 +22,22 @@ class InterestGroupAdmin extends Component {
     const { firestore } = this.context.store
     const { auth } = this.props
 
-    getInterestGroups(firestore)
+    if(isLoaded(auth) && !isEmpty(auth)) {
+      getUserGroups(firestore, auth.uid)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { firestore } = this.context.store
+    const { auth } = this.props
+
+    if(!isLoaded(auth) && isLoaded(nextProps.auth) && !isEmpty(nextProps.auth)) {
+      getUserGroups(firestore, nextProps.auth.uid)
+    }
   }
 
   render() {
-    const { auth, history, interestGroups, igTypes } = this.props
+    const { auth, history, groups, groupTypes } = this.props
 
     if(isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
@@ -35,14 +46,14 @@ class InterestGroupAdmin extends Component {
     return(<Container>
       <Row>
         <Col>
-          <h1 style={{fontWeight: 300}}>Interest Groups Admin</h1>
+          <h1 style={{fontWeight: 300}}>Manage Groups</h1>
         </Col>
       </Row>
       <Row>
           <Col>
-            <InterestGroupGrid
-              interestGroups={interestGroups}
-              igTypes={igTypes} />
+            <GroupGrid
+              groups={groups}
+              groupTypes={groupTypes} />
           </Col>
       </Row>
     </Container>)
@@ -52,12 +63,12 @@ class InterestGroupAdmin extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    interestGroups: formatFirestoreData(state.firestore, 'interestGroups'),
-    igTypes: formatFirestoreData(state.firestore, 'igTypes'),
+    groups: formatFirestoreData(state.firestore, 'userGroups'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
   }
 }
 
 export default withRouter(compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(InterestGroupAdmin))
+)(ManageGroups))

@@ -3,26 +3,16 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import {
-  Badge,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+import { Badge, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { signOut } from '../../actions/UsersActions'
 import { logo } from '../../resources/images'
-import { getMyProfile } from '../../actions/UsersActions'
+import { getMyProfile, getUserType } from '../../actions/UsersActions'
 import { getFile } from '../../actions/FilesActions'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LoginModal from './LoginModal'
+import ability from '../../utils/ability'
 import _ from 'lodash'
 
 var logoStyle = {
@@ -55,9 +45,10 @@ class SiteNavbar extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const { auth } = newProps
+    const { profile } = this.state
+    const { auth, myProfile } = newProps
 
-    if(isLoaded(auth) && !isEmpty(auth)) {
+    if((isLoaded(auth) && !isEmpty(auth) && !profile) || (profile && myProfile && (profile.displayName !== myProfile.displayName || profile.avatarUrl !== myProfile.avatarUrl))) {
       this.getProfile(auth)
     }
   }
@@ -80,6 +71,12 @@ class SiteNavbar extends Component {
           })
         })
       }
+
+      getUserType(firestore, profile.type, (snapshot) => {
+        var permissions = snapshot.data().permissions
+
+        ability.update(permissions)
+      } ,'myUserType')
 
       this.setState({
         avatarUrl: avatarUrl,

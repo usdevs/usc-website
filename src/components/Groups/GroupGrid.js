@@ -10,39 +10,39 @@ import GroupCard from '../Groups/GroupCard'
 
 class InterestGroupGrid extends Component {
   displayInterestGroups = () => {
-    const { auth, interestGroups, igTypes } = this.props
+    const { auth, groups, groupTypes } = this.props
 
-    var igs = []
+    var groupCards = []
 
-    _.forOwn(interestGroups.data, (interestGroup, igID) => {
-      if(interestGroup) {
-        igs.push(<Col className="mb-3" xs="12" md="6" key={igID}>
+    _.forOwn(groups.data, (group, groupID) => {
+      if(groups) {
+        groupCards.push(<Col className="mb-3" xs="12" md="6" key={groupID}>
           <GroupCard
             group={{
-              ...interestGroup,
-              id: igID
+              ...group,
+              id: groupID
             }}
-            groupTypes={igTypes}
-            manageMode={auth.uid === interestGroup.leaderID}
+            groupTypes={groupTypes}
+            manageMode={true}
           />
           </Col>)
       }
     })
 
-    return igs
+    return groupCards
   }
 
   render() {
-    const { interestGroups, igTypes } = this.props
+    const { groups, groupTypes } = this.props
 
     return(<Container>
       <Row>
           {
-            interestGroups.isLoaded && igTypes.isLoaded ?
-              _.keys(interestGroups).length > 0 ?
+            groups.isLoaded && groupTypes.isLoaded ?
+              _.keys(groups).length > 0 ?
                 this.displayInterestGroups()
-              : <Col><h3><FontAwesomeIcon icon="frown" /> No Interest Groups match your criteria </h3></Col>
-            : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Interest Groups...</h4></Col>
+              : <Col><h3><FontAwesomeIcon icon="frown" /> No Groups match your criteria </h3></Col>
+            : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Groups...</h4></Col>
           }
       </Row>
     </Container>)

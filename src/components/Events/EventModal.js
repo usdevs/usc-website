@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase';
 import { getGroup } from '../../actions/GroupsActions'
+import { formatFirestoreData } from '../../utils/utils'
 import GroupCard from '../Groups/GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
@@ -19,6 +20,7 @@ class EventModal extends Component {
 
     this.state = {
       poster: null,
+      group: null
     }
   }
 
@@ -27,7 +29,6 @@ class EventModal extends Component {
     const { event, firebase } = this.props
 
     this.mounted = true
-
 
     if(event.poster) {
       getFile(firebase, event.poster, (url) => {
@@ -116,7 +117,7 @@ class EventModal extends Component {
               </Row>
             </Container>
             {
-              event.organisedBy && group && groupTypes ?
+              event.organisedBy && group && groupTypes.isLoaded ?
                 <GroupCard
                   firebase={firebase}
                   firestore={firestore}
@@ -136,8 +137,8 @@ class EventModal extends Component {
 
 const mapStateToProps = state => {
   return {
-    group: state.firestore.data.group,
-    groupTypes: state.firestore.data.groupTypes
+    group: formatFirestoreData(state.firestore, 'group'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }
 

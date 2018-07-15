@@ -139,7 +139,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     events: {
       isLoaded: state.firestore.data.eventsStartInMth && state.firestore.data.eventsEndInMth,
-      ordered: formatEventsByDate(state.firestore),
+      ordered: formatEventsByDate(state.firestore, true),
       data: _.merge(state.firestore.data.eventsStartInMth, state.firestore.data.eventsEndInMth)
     },
     timeslots: {

@@ -24,7 +24,7 @@ class DatePickerForm extends Component {
           onChange={ onChange }
           onBlur={ onBlur }
           readOnly />
-        { invalid ? <FormFeedback>{errortext}</FormFeedback> : null }
+        { invalid ? <FormFeedback hidden={ hidden ? true : false}>{errortext}</FormFeedback> : null }
       </FormGroup>
     )
   }

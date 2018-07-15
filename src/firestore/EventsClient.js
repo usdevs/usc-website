@@ -67,10 +67,6 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
     }
   }
 
-  if (spaceOnly) {
-    where.push(['otherVenueSelected', '==', false])
-  }
-
   if (where.length > 0) {
     query = {
       ...query,

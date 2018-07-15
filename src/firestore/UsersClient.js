@@ -20,6 +20,15 @@ export function getUserProfileByEmail(firestore, email, callback, alias = 'userP
   .then((snapshot) => callback(snapshot))
 }
 
+export function getUserType(firestore, typeID, callback = () => {}, alias = 'myUserType') {
+  firestore
+  .get({
+    collection: 'userTypes',
+    doc: typeID,
+    storeAs: alias})
+  .then((snapshot) => callback(snapshot))
+}
+
 export function getUserTypes(firestore, callback) {
   firestore
   .get({
@@ -29,15 +38,7 @@ export function getUserTypes(firestore, callback) {
 }
 
 export function formatFirestoreProfile(profile) {
-  var newProfile = {
-    avatarUrl: profile.avatarUrl,
-    displayName: profile.displayName,
-    email: profile.email,
-    providerData: profile.providerData,
-    telegram: profile.telegram
-  }
-
-  return _.pickBy(newProfile, _.identity)
+  return _.pickBy(profile, _.identity)
 }
 
 export function saveProfile(firestore, profile, callback) {

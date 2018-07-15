@@ -5,7 +5,35 @@ import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import Can from '../../utils/Can'
 import { headerDashboard as header } from '../../resources/images.js'
+
+const adminCategories = [{
+  name: 'Events Admin Panel',
+  icon: 'calendar-alt',
+  link: '/eventsadmin',
+  color: 'tomato'
+}, {
+  name: 'Add Group',
+  icon: 'plus',
+  link: '/creategroup',
+  color: 'steelblue'
+},{
+  name: 'Group Admin Panel',
+  icon: 'users',
+  link: '/groupadmin',
+  color: 'steelblue'
+}, {
+  name: 'Modules Admin Panel',
+  icon: 'chalkboard-teacher',
+  link: '/modulesadmin',
+  color: 'sandybrown'
+}, {
+  name: 'Users Admin Panel',
+  icon: 'chalkboard-teacher',
+  link: '/useradmin',
+  color: 'sandybrown'
+}]
 
 const categories = [
 /*  {
@@ -22,45 +50,54 @@ const categories = [
       color: 'dodgerblue'
     }]
   },*/
-  {
-    name: 'Events',
-    buttons: [{
-      name: 'See All Events',
-      icon: 'calendar-alt',
-      link: '/events',
-      color: 'tomato'
-    }, {
-      name: 'Create Event',
-      icon: 'plus',
-      link: '/createevent',
-      color: 'tomato'
-    }, {
-      name: 'Manage My Events',
-      icon: 'user-clock',
-      link: '/manageevents',
-      color: 'tomato'
-    }]
-  },
-  {
-    name: 'Interest Groups',
-    buttons: [{
-      name: 'See All Interest Groups',
-      icon: 'users',
-      link: '/groups',
-      color: 'mediumseagreen'
-    }, {
-      name: 'Create Interest Group',
-      icon: 'plus',
-      link: '/createinterestgroup',
-      color: 'mediumseagreen'
-    }, {
-      name: 'Manage My Interest Groups',
-      icon: 'file-alt',
-      link: '/manageinterestgroups',
-      color: 'mediumseagreen'
-    }]
-  },
-  {
+    {
+      name: 'General',
+      buttons: [{
+        name: 'Feed-back',
+        icon: 'comment',
+        link: '/feedback',
+        color: 'mediumseagreen'
+      }]
+    },
+    {
+      name: 'Events',
+      buttons: [{
+        name: 'See All Events',
+        icon: 'calendar-alt',
+        link: '/events',
+        color: 'tomato'
+      }, {
+        name: 'Create Event',
+        icon: 'plus',
+        link: '/createevent',
+        color: 'tomato'
+      }, {
+        name: 'Manage My Events',
+        icon: 'user-clock',
+        link: '/manageevents',
+        color: 'tomato'
+      }]
+    },
+    {
+      name: 'Groups',
+      buttons: [{
+        name: 'See All Groups',
+        icon: 'users',
+        link: '/groups',
+        color: 'steelblue'
+      }, {
+        name: 'Create Interest Group',
+        icon: 'plus',
+        link: '/createinterestgroup',
+        color: 'steelblue'
+      }, {
+        name: 'Manage My Groups',
+        icon: 'users',
+        link: '/managegroups',
+        color: 'steelblue'
+      }]
+    }
+/*  , {
     name: 'Modules',
     buttons: [{
       name: 'See All Modules',
@@ -78,7 +115,7 @@ const categories = [
       link: '/managereviews',
       color: 'sandybrown'
     }]
-  }
+  }*/
 ]
 
 class Dashboard extends Component {
@@ -154,6 +191,20 @@ class Dashboard extends Component {
           </div>)
 
         }
+        <Can I="manage" a="Admin">
+          <div>
+            <Row>
+              <Col>
+                <h2>Admin Functions</h2>
+              </Col>
+            </Row>
+            <Row>
+            {
+              adminCategories.map((button) => this.createButton(button))
+            }
+            </Row>
+          </div>
+        </Can>
       </Container>
     )
   }

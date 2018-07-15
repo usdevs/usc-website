@@ -7,6 +7,9 @@ import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase';
 import { groupStatuses } from '../../resources/config'
+import Can from '../../utils/Can'
+import ability from '../../utils/ability'
+
 
 class GroupCard extends Component {
   mounted = false
@@ -75,7 +78,6 @@ class GroupCard extends Component {
                 <h4 className="mb-2"><Badge color={groupStatuses[group.status].colour}>{_.capitalize(group.status)}</Badge></h4>
               : ''
             }
-            { isLeader && manageMode ? <h5 className="mb-0" style={{color: 'dodgerblue'}}>You are the leader</h5> : ''}
             <p className="mb-2">{ fullDescription ? description : _.truncate(description, { 'length': config.descriptionPreviewLength }) }
               {
                 config.descriptionPreviewLength < description.length ?
@@ -88,7 +90,9 @@ class GroupCard extends Component {
                 <Button color="primary" onClick={() => history.push('/group/'+id)}>Details</Button>
               : ''
             }
-            { isLeader && manageMode && !hideButtons ? <Button outline color="info" className="ml-3" onClick={() => history.push('/editinterestgroup/'+id)}>Edit</Button> : ''}
+            { manageMode && !hideButtons && (isLeader || ability.can('manage', 'group')) ?
+                <Button outline color="info" className="ml-3" onClick={() => history.push('/editgroup/'+id)}>Edit</Button>
+              : ''}
           </Col>
         </Row>
       </Container>

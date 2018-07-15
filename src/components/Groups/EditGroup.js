@@ -3,15 +3,16 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Button } from 'reactstrap'
-import InterestGroupForm from './InterestGroupForm'
+import GroupForm from './GroupForm'
 import DeleteModal from '../reusable/DeleteModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
-import { getInterestGroup, updateInterestGroup, deleteGroup } from '../../actions/GroupsActions'
+import { getGroup, updateGroup, deleteGroup } from '../../actions/GroupsActions'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import ability from '../../utils/ability'
 import { withRouter } from 'react-router-dom'
 
-class CreateInterestGroup extends Component {
+class EditGroup extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
@@ -22,61 +23,59 @@ class CreateInterestGroup extends Component {
     super(props)
 
     this.state = {
-      interestGroup: null
+      group: null
     }
   }
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { igID } = this.props.match.params
+    const { groupID } = this.props.match.params
     const { history, auth } = this.props
 
-    getInterestGroup(firestore, igID, (snapshot) => {
+    getGroup(firestore, groupID, (snapshot) => {
       if (!snapshot.exists) {
-        history.push('/manageinterestgroups')
+        history.push('/managegroups')
       } else {
-        var interestGroup = snapshot.data()
+        var group = snapshot.data()
 
-        if(isLoaded(auth) && interestGroup.leaderID === auth.uid) {
-          var members = [interestGroup.leaderID]
-          members.concat(_.keys(interestGroup.members))
+        if((isLoaded(auth) && group.leaderID === auth.uid) || ability.can('manage', 'group')) {
+          var members = [group.leaderID]
+          members.concat(_.keys(group.members))
 
-          interestGroup = {
-            ...interestGroup,
-            id: igID,
+          group = {
+            ...group,
+            id: groupID,
             members: members,
             noOfMembers: members.length
           }
-          this.setState({ interestGroup: interestGroup })
+          this.setState({ group: group })
         } else {
-          history.push('/manageinterestgroups')
+          history.push('/managegroups')
         }
       }
     })
   }
 
-  updateInterestGroup = (interestGroup, callback) => {
+  updateGroup = (group, callback) => {
     const { firebase } = this.props
     const { firestore } = this.context.store
-    const originalInterestGroup = this.state.interestGroup
+    const originalGroup = this.state.group
 
-    console.log(interestGroup)
-
-    updateInterestGroup(firestore, firebase, interestGroup, originalInterestGroup, (interestGroup) => {
+    updateGroup(firestore, firebase, group, originalGroup, (group) => {
       callback(false)
     })
   }
 
   deleteGroup = () => {
-    const { interestGroup } = this.state
+    const { group } = this.state
     const { firebase, history } = this.props
     const { firestore } = this.context.store
 
-    deleteGroup(firestore, firebase, interestGroup, () => history.push('/manageinterestgroups'))
+    deleteGroup(firestore, firebase, group, () => history.push('/managegroups'))
   }
 
   render() {
-    const { interestGroup } = this.state
+    const { group } = this.state
     const { history } = this.props
 
     return (<Container>
@@ -90,18 +89,18 @@ class CreateInterestGroup extends Component {
       </Row>
       <Row>
         {
-          interestGroup ?<Col>
-            <InterestGroupForm
-              submit={this.updateInterestGroup}
-              initialValues={interestGroup}
+          group ?<Col>
+            <GroupForm
+              submit={this.updateGroup}
+              initialValues={group}
               history={history}
-              btnText="Update Interest Group"
+              btnText="Update Group"
               modal={{
                 title: 'Details Updated!',
-                body: 'Your Interest Group has been updated!',
-                primaryBtnText: 'Manage Interest Groups',
+                body: 'Your Group has been updated!',
+                primaryBtnText: 'Manage Groups',
                 secondaryBtnText: 'Dismiss',
-                onSubmit: () => history.push('/manageinterestgroups')
+                onSubmit: () => history.push('/managegroups')
               }}/>
             <div className="d-flex justify-content-center">
               <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>
@@ -109,8 +108,8 @@ class CreateInterestGroup extends Component {
               </Button>
             </div>
             <div className="d-flex justify-content-center">
-              <Button className="w-75 mt-3" color="secondary" onClick={() => history.push('/manageinterestgroups')} outline block>
-                Back to Manage Interest Groups
+              <Button className="w-75 mt-3" color="secondary" onClick={() => history.push('/managegroups')} outline block>
+                Back to Manage Groups
               </Button>
             </div>
           </Col>
@@ -130,4 +129,4 @@ const mapStateToProps = state => {
 export default withRouter(compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(CreateInterestGroup))
+)(EditGroup))
