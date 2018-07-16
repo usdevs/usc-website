@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import { Container, Row, Col } from 'reactstrap';
+import { Container, Row, Col, Button } from 'reactstrap';
 import EventCard from '../Events/EventCard'
 import UserCard from '../Users/UserCard'
 import { getGroup } from '../../actions/GroupsActions'
@@ -64,7 +64,7 @@ class Group extends Component {
   showInterestGroup = () => {
     const { logo, group, userProfile } = this.state
     const { firebase, events, eventTypes, spaces, auth } = this.props
-    const { name, description, activities } = group
+    const { name, description, activities, chat } = group
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 
@@ -112,6 +112,27 @@ class Group extends Component {
                 </Col>
               : ''
             }
+            <Col xs="12" md={{size: 4, offset: 4}}>
+              <div className="d-flex align-items-center justify-content-end">
+                <div>
+                  { chat ? <Button outline color="primary" className="mb-1" href={chat} disabled={!signedIn}><FontAwesomeIcon icon="comments" /> { ' ' }Join Chat Group</Button> : ''}
+                  <br/>
+                  {
+                    /*
+                    <div className="d-flex justify-content-end">
+                      <Button outline color="primary" className="mt-1" disabled={!signedIn}><FontAwesomeIcon icon="sign-in-alt" />{ ' ' }Join IG</Button>
+                    </div>
+                    */
+                  }
+                  { !signedIn
+                    ? <div>
+                        <p><small>Please Sign In</small></p>
+                      </div>
+                    : ''
+                  }
+                </div>
+              </div>
+            </Col>
         </Row>
         {
           events && events.length > 0 ?
