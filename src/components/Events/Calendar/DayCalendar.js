@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { Container, Row, Col } from 'reactstrap'
 import EventCard from '../EventCard'
+import _ from 'lodash'
 
 class DayCalendar extends Component {
   constructor(props) {
@@ -22,6 +23,25 @@ class DayCalendar extends Component {
     })
   }
 
+  showEvents = () => {
+    const { events, eventTypes, spaces } = this.props
+
+    const eventCards = []
+
+    _.forEach(events, (event) => {
+      eventCards.push(<Col key={event.id} className="mb-2" xs="12">
+        <EventCard
+          event={event}
+          eventTypes={eventTypes}
+          spaces={spaces}
+          buttonText='See More'
+          hasModal={true} />
+      </Col>)
+    })
+
+    return eventCards
+  }
+
   render() {
     const { selectedDate, events, eventTypes, spaces } = this.props
 
@@ -36,16 +56,7 @@ class DayCalendar extends Component {
             ?
               <h3 style={{fontWeight: 300}}>No events on this day</h3>
             :
-            events.map((event) =>
-              <Col key={event.id} className="mb-2" xs="12">
-                <EventCard
-                  event={event}
-                  eventTypes={eventTypes}
-                  spaces={spaces}
-                  buttonText='See More'
-                  hasModal={true} />
-              </Col>
-            )
+              this.showEvents()
           : <h3 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading Events...</h3>
         }
         </Row>

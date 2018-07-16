@@ -12,37 +12,44 @@ class Calendar extends Component {
     super(props)
 
     this.state = {
-      date: moment()
+      selectedDate: moment(),
     }
   }
 
-  changeSelectedDate = (date) => {
+  componentDidMount() {
+    const { initialDate } = this.props
+    this.setState({
+      selectedDate: initialDate,
+    })
+  }
+
+  changeSelectedDate = (selectedDate) => {
     this.setState({
       ...this.state,
-      date: date
+      selectedDate: selectedDate
     })
-    this.props.onDayClick(date)
+    this.props.onDayClick(selectedDate)
   }
 
   days() {
     var days = []
 
-    var { date } = this.state
-    var { selectedDate, events, eventTypes, bySpaces, spaces } = this.props
+    var { selectedDate } = this.state
+    var { events, eventTypes, bySpaces, spaces } = this.props
 
     const mthDisplayRange = moment.range(
-      moment(date).startOf('month').startOf('week'),
-      moment(date).endOf('month').endOf('week')
+      moment(selectedDate).startOf('month').startOf('week'),
+      moment(selectedDate).endOf('month').endOf('week')
     )
 
     for (let day of mthDisplayRange.by('day')) {
-      let belongsToSameMonth = day.isSame(moment(date), 'month')
+      let belongsToSameMonth = day.isSame(moment(selectedDate), 'month')
 
       const dayEvents = events.isLoaded && events.ordered[day.toString()] ? events.ordered[day.toString()] : []
       const sameDay = selectedDate.isSame(moment(day), 'day')
 
       days.push(
-        <Col key={day.format('YYYYMMDD')} onClick={belongsToSameMonth ? () => this.props.onDayClick(day) : () => this.changeSelectedDate(day)}
+        <Col key={day.format('YYYYMMDD')} onClick={() => this.changeSelectedDate(day)}
           className={"embed-responsive embed-responsive-1by1 d-flex justify-content-center "+ (!belongsToSameMonth ? 'text-muted' : '')}>
           <Container>
             <Row>
@@ -95,9 +102,9 @@ class Calendar extends Component {
 
   dayHeaders() {
     var dayHeaders = []
-    const { date } = this.state
+    const { selectedDate } = this.state
 
-    const wkRange = moment.range(moment(date).startOf('week'),moment(date).endOf('week'))
+    const wkRange = moment.range(moment(selectedDate).startOf('week'),moment(selectedDate).endOf('week'))
 
     for (let day of wkRange.by('day')) {
       dayHeaders.push(<Col key={day.format('YYYYMMDD')} className="dayHeader">{day.format('dd')}</Col>)
@@ -106,29 +113,29 @@ class Calendar extends Component {
     return dayHeaders;
   }
 
-  previousMonth = (date) => {
-    this.props.loadMonth(date.clone())
+  previousMonth = (selectedDate) => {
+    this.props.loadMonth(selectedDate.clone())
 
     this.setState({
       ...this.state,
-      date: moment(date).subtract(1, 'months')
+      selectedDate: moment(selectedDate).subtract(1, 'months')
     })
   }
 
-  nextMonth = (date) => {
-    this.props.loadMonth(date.clone())
+  nextMonth = (selectedDate) => {
+    this.props.loadMonth(selectedDate.clone())
 
     this.setState({
       ...this.state,
-      date: moment(date).add(1, 'months')
+      selectedDate: moment(selectedDate).add(1, 'months')
     })
   }
 
   monthDisplay() {
-    const { date } = this.state
+    const { selectedDate } = this.state
 
-    const previousButton = <Button color="link" onClick={() => this.previousMonth(date)}><FontAwesomeIcon icon="arrow-circle-left" size="3x" /></Button>
-    const nextButton = <Button color="link" onClick={() => this.nextMonth(date)}><FontAwesomeIcon icon="arrow-circle-right" size="3x" /></Button>
+    const previousButton = <Button color="link" onClick={() => this.previousMonth(selectedDate)}><FontAwesomeIcon icon="arrow-circle-left" size="3x" /></Button>
+    const nextButton = <Button color="link" onClick={() => this.nextMonth(selectedDate)}><FontAwesomeIcon icon="arrow-circle-right" size="3x" /></Button>
 
     return (
       <div>
@@ -136,7 +143,7 @@ class Calendar extends Component {
           <Col className="d-flex justify-content-between">
             { previousButton }
             <h2>
-              { moment(date).format('MMMM') } <small className="text-muted">{ moment(date).format('YYYY') } </small>
+              { moment(selectedDate).format('MMMM') } <small className="text-muted">{ moment(selectedDate).format('YYYY') } </small>
             </h2>
               { nextButton }
           </Col>

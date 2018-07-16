@@ -24,6 +24,7 @@ class EventCalendar extends Component {
 
     this.state = {
       selectedDate: moment().startOf('day'),
+      initialDate: moment().startOf('day'),
     }
   }
 
@@ -59,12 +60,12 @@ class EventCalendar extends Component {
   }
 
   calender = () => {
-    const { selectedDate } = this.state
+    const { initialDate } = this.state
     const { events, timeslots, eventTypes, spaces, bySpaces } = this.props
 
     return(<Calendar
       onDayClick={(date) => this.changeSelectedDate(date)}
-      selectedDate={ selectedDate }
+      initialDate={ initialDate }
       events={ bySpaces ? timeslots : events }
       eventTypes={eventTypes}
       spaces={spaces}
@@ -109,6 +110,7 @@ class EventCalendar extends Component {
 
   bottomComponent = () => {
     const { bySpaces, stack } = this.props
+
     if(bySpaces && !stack) {
       return this.calender()
     } else if (bySpaces) {
@@ -120,6 +122,7 @@ class EventCalendar extends Component {
 
   render() {
     const { bySpaces, stack } = this.props
+
     return(<Container>
       <Row>
         <Col xs="12" lg={stack ? "12" : bySpaces ? "8" : "6"}>

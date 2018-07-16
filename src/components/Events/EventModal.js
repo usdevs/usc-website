@@ -26,7 +26,7 @@ class EventModal extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { event, firebase } = this.props
+    const { event, firebase, group, groupTypes } = this.props
 
     this.mounted = true
 
@@ -40,7 +40,7 @@ class EventModal extends Component {
       })
     }
 
-    if(event.organisedBy) {
+    if(event.organisedBy && (!group.isLoaded || !groupTypes.isLoaded)) {
       getGroup(firestore, event.organisedBy, (snapshot) => {
         if(this.mounted) {
           this.setState({
