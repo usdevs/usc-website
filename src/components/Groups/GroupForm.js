@@ -161,12 +161,12 @@ class InterestGroupForm extends Component {
   render() {
     const { submitting } = this.state
     var { groupTypes, btnText, modal, initialValues, forInterestGroup } = this.props
+    const isInterestGroup = initialValues ? initialValues.category === config.categoryIDs.ig : forInterestGroup ? true : false
+
     initialValues = initialValues ? initialValues : {
       noOfMembers: config.minimumIGMembers,
       status: "active"
     }
-
-    const isInterestGroup = initialValues ? initialValues.category === config.categoryIDs.ig : forInterestGroup ? true : false
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (

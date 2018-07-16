@@ -58,7 +58,7 @@ class GroupCard extends Component {
     const { logo, fullDescription } = this.state
     const { group, groupTypes, firebase, history, hideButtons, manageMode } = this.props
     const { id, name, type, description, leader } = group
-
+    
     const isLeader = firebase.auth ? leader === firebase.auth.uid : false
     return(<Card body className="h-100">
       <Container className="m-0 p-0">

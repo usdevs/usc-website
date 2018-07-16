@@ -15,7 +15,7 @@ class InterestGroupGrid extends Component {
     var groupCards = []
 
     _.forOwn(groups.data, (group, groupID) => {
-      if(groups) {
+      if(group) {
         groupCards.push(<Col className="mb-3" xs="12" md="6" key={groupID}>
           <GroupCard
             group={{
