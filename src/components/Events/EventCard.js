@@ -85,7 +85,7 @@ class EventCard extends Component {
               <div className="align-self-center"><h4 className="mb-0" style={{fontWeight: 300}}>{eventTypes.data[event.type].name}</h4></div>
             </div>
             <h4 className="mb-0" style={{fontWeight: 300}}>{event.startDate.format('Do MMMM - hh:mm a')}</h4>
-            <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenueSelected ? event.venue : spaces.data[event.venue].name)  }</h4>
+            <h4 className="mb-2" style={{fontWeight: 300}}>{ 'at ' + (event.otherVenue ? event.venue : spaces.data[event.venue].name)  }</h4>
             { event.description ?
               <p>{ fullDescription ? event.description : _.truncate(event.description, { 'length': config.descriptionPreviewLength }) }
                 <Button onClick={() => this.setState({fullDescription: !fullDescription})} className="d-inline m-0 p-0" color="link">{ fullDescription ? 'See Less' : 'See More' }</Button>

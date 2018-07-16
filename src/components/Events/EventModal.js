@@ -86,7 +86,7 @@ class EventModal extends Component {
             </h4>
             <h4 style={{fontWeight: 300}}>
             {
-               'at ' + (!event.otherVenueSelected ? spaces.data[event.venue].name : event.venue)
+               'at ' + (!event.otherVenue ? spaces.data[event.venue].name : event.venue)
             }
             </h4>
             <Container>
