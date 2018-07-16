@@ -4,12 +4,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase';
-import { Button, Container, Row, Col } from 'reactstrap';
-import { Form } from 'informed';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { Container, Row, Col } from 'reactstrap';
 import FeedbackForm from './FeedbackForm'
-import _ from 'lodash'
-import { TextInput, TextAreaInput, validateNotEmpty } from '../reusable/FormInputs'
 import { submitFeedback } from '../../actions/GeneralActions'
 
 class Feedback extends Component {
@@ -40,7 +36,7 @@ class Feedback extends Component {
             <FeedbackForm
               initialValues = {{ type: 'site' }}
               btnText = "Submit Feedback"
-              submit = {this.submitFeedback}
+              submit={this.submitFeedback}
               modal={{
                   title: 'Feedback Submitted!',
                   body: 'The site administrator appreciates your feedback!',

@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase';
-import { Alert, Button, Container, Row, Col } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 import { Form } from 'informed';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
-import _ from 'lodash'
 import { TextInput, TextAreaInput, validateNotEmpty } from '../reusable/FormInputs'
 
 class FeedbackForm extends Component {
@@ -51,7 +50,7 @@ class FeedbackForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { initialValues, btnText, submit, modal } = this.props
+    const { initialValues, btnText, modal } = this.props
 
     return(<div>
             <Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>

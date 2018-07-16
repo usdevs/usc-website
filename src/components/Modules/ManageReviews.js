@@ -14,10 +14,6 @@ class ManageReviews extends Component {
     store: PropTypes.object.isRequired
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   componentWillMount() {
     const { auth } = this.props
     const { firestore } = this.context.store

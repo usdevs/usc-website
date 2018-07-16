@@ -87,7 +87,7 @@ export function getGroupEvents(firestore, groupID, callback = () => {}) {
   .get({
     collection: 'events',
     where: ['organisedBy', '==', groupID],
-    orderBy: ['startDate'],
+    orderBy: ['startDate', 'desc'],
     storeAs: 'groupEvents'
   })
   .then((snapshot) => callback(snapshot))

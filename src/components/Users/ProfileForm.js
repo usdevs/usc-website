@@ -3,13 +3,12 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase';
-import { Alert, Button, Badge, Container, Row, Col, InputGroup, InputGroupAddon } from 'reactstrap';
+import { Alert, Button, InputGroup, InputGroupAddon } from 'reactstrap';
 import { Form } from 'informed';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
 import _ from 'lodash'
-import { TextInput, DropdownInput, ImageInput, TextAreaInput, UserInput,
-  validateNotEmpty, duplicateValidation } from '../reusable/FormInputs'
+import { TextInput, DropdownInput, ImageInput, validateNotEmpty } from '../reusable/FormInputs'
 import { getUserTypes } from '../../actions/UsersActions'
 import { formatFirestoreData } from '../../utils/utils'
 

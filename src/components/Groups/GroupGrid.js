@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap';
@@ -8,9 +7,9 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import GroupCard from '../Groups/GroupCard'
 
-class InterestGroupGrid extends Component {
+class GroupGrid extends Component {
   displayInterestGroups = () => {
-    const { auth, groups, groupTypes } = this.props
+    const { groups, groupTypes } = this.props
 
     var groupCards = []
 
@@ -58,4 +57,4 @@ const mapStateToProps = state => {
 export default compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(InterestGroupGrid)
+)(GroupGrid)

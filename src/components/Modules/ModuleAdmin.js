@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {
-  Button,
-  Container, Row, Col,
-  Form, FormGroup, Label, Input, FormFeedback,
-} from 'reactstrap';
+import { Button, Container, Row, Col, Form, FormGroup, Label, Input } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { addModule } from '../../actions/ModulesActions'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase';
 
 class ModuleAdmin extends Component {
   static contextTypes = {

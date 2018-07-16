@@ -48,7 +48,7 @@ import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
-import { initialiseGAPI, getMyProfile } from './actions/UsersActions'
+import { initialiseGAPI } from './actions/UsersActions'
 import Can from './utils/Can'
 
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,

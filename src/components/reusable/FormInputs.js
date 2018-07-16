@@ -260,7 +260,6 @@ export const GroupInput = asField(({ fieldState, fieldApi, ...props }) => {
       value={!value && value !== 0 ? '' : value}
       fieldState={fieldState}
       fieldApi={fieldApi}
-      value={value}
     />
   </React.Fragment>)
 });

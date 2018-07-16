@@ -12,7 +12,6 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { config, groupStatuses } from '../../resources/config'
 import { formatFirestoreData } from '../../utils/utils'
 import { getGroupTypes } from '../../actions/GroupsActions'
-import ability from '../../utils/ability'
 import LinkModal from '../reusable/LinkModal'
 
 class InterestGroupForm extends Component {
@@ -38,7 +37,7 @@ class InterestGroupForm extends Component {
   }
 
   groupOptions = (groupTypes) => {
-    const { forInterestGroup, initialValues } = this.props
+    const { forInterestGroup } = this.props
 
     var options = []
 

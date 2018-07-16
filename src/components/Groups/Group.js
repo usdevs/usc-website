@@ -113,14 +113,13 @@ class Group extends Component {
               : ''
             }
         </Row>
-        <Row>
-          <Col>
-            <h3>Our Events</h3>
-          </Col>
-        </Row>
-        <Row>
-            {
-              events && events.length > 0 ?
+        {
+          events && events.length > 0 ?
+            <Row>
+              <Col xs="12">
+                <h3>Our Events</h3>
+              </Col>
+              {
                 events.map((event) =>
                   <Col xs="12" md="6" key={event.id}>
                     <EventCard
@@ -131,9 +130,10 @@ class Group extends Component {
                       firebase={firebase}
                       hasModal={true} />
                   </Col>)
-              : <h4><FontAwesomeIcon icon="frown" /> There are currently no events for this Interest Group.</h4>
-            }
-        </Row>
+              }
+            </Row>
+          : ''
+        }
       </Container>
     </Col>
   }

@@ -48,7 +48,6 @@ class EditReview extends Component {
 
   updateReview = (review, callback, optionalCallback) => {
     const { firestore } = this.context.store
-    const { auth } = this.props
 
     updateReview(firestore, review, () => {
       this.toggle('success')
@@ -112,7 +111,7 @@ class EditReview extends Component {
 
   render() {
     const { review, module } = this.state
-    const { modules, moduleTypes, history } = this.props
+    const { history } = this.props
 
     return(<Container>
       { this.successModal() }
@@ -127,7 +126,6 @@ class EditReview extends Component {
           review && module ?
             <Col>
               <ReviewForm
-                buttonText="Submit Review"
                 buttonOnSubmit={this.updateReview}
                 module={module}
                 review={review}

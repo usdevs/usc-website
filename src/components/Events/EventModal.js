@@ -5,7 +5,7 @@ import { getFile } from '../../actions/FilesActions'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase';
-import { getGroup } from '../../actions/GroupsActions'
+import { getGroup, getGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
 import GroupCard from '../Groups/GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -26,7 +26,7 @@ class EventModal extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { event, firebase, group, groupTypes } = this.props
+    const { event, firebase, groups } = this.props
 
     this.mounted = true
 
@@ -40,7 +40,8 @@ class EventModal extends Component {
       })
     }
 
-    if(event.organisedBy && (!group.isLoaded || !groupTypes.isLoaded)) {
+    if(event.organisedBy && !groups.isLoaded) {
+      getGroups(firestore)
       getGroup(firestore, event.organisedBy, (snapshot) => {
         if(this.mounted) {
           this.setState({
@@ -49,6 +50,13 @@ class EventModal extends Component {
               id: event.organisedBy
             }
           })
+        }
+      })
+    } else if (event.organisedBy && this.mounted) {
+      this.setState({
+        group: {
+          ...groups.data[event.organisedBy],
+          id: event.organisedBy
         }
       })
     }
@@ -137,7 +145,7 @@ class EventModal extends Component {
 
 const mapStateToProps = state => {
   return {
-    group: formatFirestoreData(state.firestore, 'group'),
+    groups: formatFirestoreData(state.firestore, 'groups'),
     groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }

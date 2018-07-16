@@ -7,7 +7,6 @@ import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase';
 import { groupStatuses } from '../../resources/config'
-import Can from '../../utils/Can'
 import ability from '../../utils/ability'
 
 
@@ -58,7 +57,7 @@ class GroupCard extends Component {
     const { logo, fullDescription } = this.state
     const { group, groupTypes, firebase, history, hideButtons, manageMode } = this.props
     const { id, name, type, description, leader } = group
-    
+
     const isLeader = firebase.auth ? leader === firebase.auth.uid : false
     return(<Card body className="h-100">
       <Container className="m-0 p-0">

@@ -113,7 +113,7 @@ class EventForm extends Component {
     const startDate = moment(values.startDate)
     const endDate =  !values.fullDay ? moment(values.endDate) : moment(values.startDate).add(1, 'day').add(-30, 'minutes')
 
-    const formattedEvent = {
+    var formattedEvent = {
       ...values,
       startDate: startDate,
       endDate: endDate,
@@ -147,6 +147,19 @@ class EventForm extends Component {
           submitting: false,
         })
       } else {
+
+      if(formattedEvent.poster && formattedEvent.poster.preview) {
+        formattedEvent = {
+          ...formattedEvent,
+          poster: formattedEvent.poster.preview
+        }
+      } else {
+        formattedEvent = {
+          ...formattedEvent,
+          poster: null
+        }
+      }
+
         this.props.submit(formattedEvent, this.submitCallback)
       }
     })

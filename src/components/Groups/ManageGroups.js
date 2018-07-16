@@ -6,8 +6,6 @@ import {
   Container, Row, Col,
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 import GroupGrid from '../Groups/GroupGrid'
 import { getUserGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'

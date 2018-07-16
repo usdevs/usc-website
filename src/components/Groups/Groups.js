@@ -36,8 +36,11 @@ class Groups extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
+    const { groups } = this.props
 
-    getGroups(firestore)
+    if(!groups.isLoaded) {
+      getGroups(firestore)
+    }
   }
 
   handleValueChanged = (value, type) => {

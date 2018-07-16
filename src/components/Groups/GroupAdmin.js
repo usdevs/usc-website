@@ -6,8 +6,6 @@ import {
   Container, Row, Col,
 } from 'reactstrap';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import _ from 'lodash'
 import GroupGrid from '../Groups/GroupGrid'
 import { getGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
@@ -20,7 +18,6 @@ class GroupAdmin extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { auth } = this.props
 
     getGroups(firestore)
   }

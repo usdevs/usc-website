@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import GroupForm from '../Groups/GroupForm'
 import { createGroup } from '../../actions/GroupsActions'

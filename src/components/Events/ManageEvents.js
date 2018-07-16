@@ -156,6 +156,8 @@ class ManageEvents extends Component {
                 <h4 className="mb-0">Show Events With Name</h4>
                 <Input type="text" value={filter.name} placeholder="Filter Name" onChange={(event) => this.handleValueChanged(event.target.value, 'nameFilter')} />
               </Col>
+              {
+                false ?
               <Col className="mb-2" xs="12">
                 <h4 className="mb-0">Show Events Between</h4>
                 <div className="d-flex flex-wrap">
@@ -182,6 +184,8 @@ class ManageEvents extends Component {
                   <div className="p-2"><Button color="link" onClick={() => this.resetFilter()}>Reset Filter</Button></div>
                 </div>
               </Col>
+              : ''
+            }
             </Row>
           : ''
         }
