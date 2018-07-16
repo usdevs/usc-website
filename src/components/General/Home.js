@@ -17,6 +17,7 @@ import { getUpcomingEvents } from '../../actions/EventsActions'
 import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
+import _ from 'lodash'
 
 const items = [
   {
@@ -73,7 +74,7 @@ class Home extends Component {
               <Container>
                 <Row>
                   {
-                    upcomingEvents && eventTypes.isLoaded && spaces.isLoaded ? upcomingEvents.length > 0 ? upcomingEvents.map((event)=>
+                    upcomingEvents && eventTypes.isLoaded && spaces.isLoaded ? upcomingEvents.length > 0 ? _.filter(upcomingEvents, (e) => { return !e.spaceOnly }).map((event)=>
                       <Col key={event.id} xs="12" md="6" className="mb-2">
                         <EventCard
                           event={event}
