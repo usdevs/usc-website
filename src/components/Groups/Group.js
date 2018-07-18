@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux';
-import { Container, Row, Col, Button } from 'reactstrap';
+import { Container, Row, Col, Button, Badge } from 'reactstrap';
 import EventCard from '../Events/EventCard'
 import UserCard from '../Users/UserCard'
 import { getGroup } from '../../actions/GroupsActions'
@@ -124,9 +124,9 @@ class Group extends Component {
                     </div>
                     */
                   }
-                  { !signedIn
+                  { !signedIn && chat
                     ? <div>
-                        <p><small>Please Sign In</small></p>
+                        <Badge color="danger">Please Sign In</Badge>
                       </div>
                     : ''
                   }

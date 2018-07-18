@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { compose } from 'redux'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import Dropzone from 'react-dropzone'
+import _ from 'lodash'
 import { Button, Alert } from 'reactstrap';
 import { getFile } from '../../actions/FilesActions'
 import { firebaseConnect } from 'react-redux-firebase';
@@ -38,22 +39,23 @@ class ImageUploader extends Component {
     const { image } = this.state
     const { onDrop, onDelete, fieldState, errortext } = this.props
 
-    const hasImage = fieldState.value ? true : false
+    const hasImages = fieldState.value ? true : false
 
     return (
       <div>
         <div className="d-flex justify-content-center flex-wrap">
           {
-            hasImage ?
-              <img src={ fieldState.value } className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />
+            hasImages ?
+              fieldState.value.map(image => <img key={image} src={ image } className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />)
             : ''
           }
           '    '
           <Dropzone
             accept="image/jpeg, image/png"
-            multiple={false}
+            multiple={true}
             onDrop={(files) => {
-              onDrop(files[0].preview)
+              var initialImages = fieldState.value ? fieldState.value : []
+              onDrop(_.concat(initialImages, _.map(files, 'preview')))
             }}>
             <div className="w-100 h-100 d-flex justify-content-center">
               <span className="w-100 h-100 fa-layers fa-fw" style={{marginTop: '.7em'}}>
@@ -65,7 +67,7 @@ class ImageUploader extends Component {
         </div>
         <div className="d-flex justify-content-center">
           { fieldState.error ? <Alert color="danger">{ errortext ? errortext : fieldState.error}</Alert> : null }
-          { hasImage ? <Button outline color="danger" onClick={onDelete}>Delete Image</Button> : '' }
+          { hasImages ? <Button outline color="danger" onClick={onDelete}>Delete All Images</Button> : '' }
         </div>
       </div>)
     }

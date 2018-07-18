@@ -10,7 +10,7 @@ export function getFile(firebase, path, callback) {
   .then((url) => callback(url))
 }
 
-export function uploadFile(firebase, filePath, file, callback) {
+export function uploadFile(firebase, filePath, file, callback, metadataPath) {
   axios({
         method: 'get',
         url: file, // blob url eg. blob:http://127.0.0.1:8000/e89c5d87-a634-4540-974c-30dc476825cc
@@ -21,8 +21,9 @@ export function uploadFile(firebase, filePath, file, callback) {
         convertSize: 1000000})
         .then((result) => {
           firebase
-          .uploadFile(filePath, result, null, { name: newUUID() })
+          .uploadFile(filePath, result, metadataPath, { name: newUUID() })
           .then((snapshot) => {
+            window.URL.revokeObjectURL(file)
             callback(snapshot.uploadTaskSnaphot.metadata.fullPath)
           })
         })

@@ -147,19 +147,6 @@ class EventForm extends Component {
           submitting: false,
         })
       } else {
-
-      if(formattedEvent.poster && formattedEvent.poster.preview) {
-        formattedEvent = {
-          ...formattedEvent,
-          poster: formattedEvent.poster.preview
-        }
-      } else {
-        formattedEvent = {
-          ...formattedEvent,
-          poster: null
-        }
-      }
-
         this.props.submit(formattedEvent, this.submitCallback)
       }
     })

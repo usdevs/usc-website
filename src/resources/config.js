@@ -3,6 +3,7 @@ export const config = {
   posterFilePath: 'poster',
   logoFilePath: 'logo',
   avatarFilePath: 'avatar',
+  intlProgsFilePath: 'intlProgs',
   minimumIGMembers: 1,
   descriptionPreviewLength: 200,
   reviewStartYear: -4,

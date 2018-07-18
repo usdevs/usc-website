@@ -12,6 +12,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { config, groupStatuses } from '../../resources/config'
 import { formatFirestoreData } from '../../utils/utils'
 import { getGroupTypes } from '../../actions/GroupsActions'
+import ability from '../../utils/ability'
 import LinkModal from '../reusable/LinkModal'
 
 class InterestGroupForm extends Component {
@@ -125,18 +126,6 @@ class InterestGroupForm extends Component {
       }
     })
 
-    if(group.logo && group.logo.preview) {
-      group = {
-        ...group,
-        logo: group.logo.preview
-      }
-    } else {
-      group = {
-        ...group,
-        logo: null
-      }
-    }
-
     group = {
       ...group,
       members: memberObject
@@ -191,7 +180,7 @@ class InterestGroupForm extends Component {
               placeholder="Select a Type"
               errortext="Please select a type"
               validate={ (value) => this.typeValidate(formApi, value) }
-              disabled={ !groupTypes.isLoaded ? true : this.props.initialValues ? true : false }
+              disabled={ !groupTypes.isLoaded ? true : ability.can('manage', 'groups') ? false : this.props.initialValues ? true : false }
               loading={ !groupTypes.isLoaded }
               validateOnChange
               options={this.groupOptions(groupTypes)}

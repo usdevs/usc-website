@@ -6,6 +6,7 @@ import DatePickerForm from './DatePickerForm'
 import GroupAutocomplete from './GroupAutocomplete'
 import UserForm from './UserForm'
 import ImageUploader from './ImageUploader'
+import MultiImageUploader from './MultiImageUploader'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import moment from 'moment'
 import { config } from '../../resources/config'
@@ -284,7 +285,6 @@ export const ImageInput = asField(({ fieldState, fieldApi, ...props }) => {
         {...rest}
         ref={forwardedRef}
         fieldState={fieldState}
-        imageSrc={value ? value.preview ? value.preview : value : ''}
         onDrop={file => {
           setValue(file)
           setTouched()
@@ -294,6 +294,54 @@ export const ImageInput = asField(({ fieldState, fieldApi, ...props }) => {
 
           if (onBlur) {
             onBlur(file)
+          }
+        }}
+        onDelete={() => {
+          setValue(null)
+          setTouched()
+
+          if (onChange) {
+            onChange(null)
+          }
+
+          if (onBlur) {
+            onBlur(null)
+          }
+        }}
+      />
+  </React.Fragment>)
+});
+
+export const MultiImageInput = asField(({ fieldState, fieldApi, ...props }) => {
+  const {
+    value
+  } = fieldState;
+  const {
+    setValue,
+    setTouched
+  } = fieldApi;
+  const {
+    onChange,
+    onBlur,
+    forwardedRef,
+    ...rest
+  } = props
+
+  return (<React.Fragment>
+    <MultiImageUploader
+        {...rest}
+        ref={forwardedRef}
+        fieldState={fieldState}
+        imageSrc={value ? value.preview ? value.preview : value : ''}
+        onDrop={files => {
+          setValue(files)
+          setTouched()
+          if (onChange) {
+            onChange(files)
+          }
+
+          if (onBlur) {
+            onBlur(files)
           }
         }}
         onDelete={() => {

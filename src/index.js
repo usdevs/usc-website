@@ -32,6 +32,8 @@ import EditReview from './components/Modules/EditReview'
 import ManageReviews from './components/Modules/ManageReviews'
 import ModuleAdmin from './components/Modules/ModuleAdmin'
 import Feedback from './components/General/Feedback'
+import IntlProgs from './components/IntlProgs/IntlProgs'
+import CreateIntlProg from './components/IntlProgs/CreateIntlProg'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -82,7 +84,13 @@ const config = {
   userProfile: 'users', // firebase root where user profiles are stored
   useFirestoreForProfile: true,
   enableLogging: false, // enable/disable Firebase's database logging
-  attachAuthIsReady: true
+  attachAuthIsReady: true,
+  fileMetadataFactory: (uploadRes) => {
+    // upload response from Firebase's storage upload
+    const { metadata: { fullPath } } = uploadRes
+    // default factory includes name, fullPath, downloadURL
+    return fullPath
+  }
 }
 
 const createStoreWithFirebase = compose(
@@ -131,6 +139,8 @@ render(
             <Route path="/addreview/" component={AddReview}/>
             <Route path="/editreview/:reviewID" component={EditReview}/>
             <Route path="/managereviews" component={ManageReviews}/>
+            <Route path="/intlprogs" component={IntlProgs}/>
+            <Route path="/createintlprog" component={CreateIntlProg}/>
             <Can I="manage" a="Admin">
               <div>
                 <Route path="/creategroup" component={CreateGroup}/>
