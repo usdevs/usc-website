@@ -25,7 +25,6 @@ export function createIntlProg(firestore, firebase, intlProg, callback = () => {
 
   if (intlProg.additionalImg && intlProg.additionalImg != '') {
     uploadFiles(firebase, config.intlProgsFilePath, intlProg.additionalImg, (filePaths) => {
-      console.log(filePaths)
       createProg({
         ...intlProg,
         additionalImg: filePaths

@@ -47,7 +47,6 @@ export function uploadFiles(firebase, filePath, files, callback) {
         quality: .6,
         convertSize: 1000000})
         .then((result) => {
-          console.log(result)
           var newResult = result
           newResult.name = newUUID()
           fileBlobs.push(newResult)

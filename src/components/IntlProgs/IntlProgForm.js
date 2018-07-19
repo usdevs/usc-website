@@ -57,7 +57,6 @@ class IntlProgForm extends Component {
   }
 
   submitCallback = (shouldReset) => {
-    console.log('sucess')
     if(shouldReset) {
       this.formApi.reset()
     }
