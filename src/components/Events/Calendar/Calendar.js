@@ -151,6 +151,24 @@ class Calendar extends Component {
       </div>);
   }
 
+  legendDisplay = () => {
+    const { eventTypes, spaces, bySpaces } = this.props
+
+    var legendCols = []
+
+    if(bySpaces && spaces.isLoaded){
+      _.forEach(spaces.ordered, (space) => {
+        legendCols.push(<Col xs="6" key={space.id}><FontAwesomeIcon className="inline-block" icon="circle" color={space.colour} />{ space.name }</Col>)
+      })
+    } else if (!bySpaces && eventTypes.isLoaded) {
+      _.forEach(eventTypes.ordered, (type) => {
+        legendCols.push(<Col xs="6" key={type.id}><FontAwesomeIcon className="inline-block" icon="circle" color={type.colour}  />{ type.name }</Col>)
+      })
+    }
+
+    return legendCols
+  }
+
   render() {
     return (
       <Container>
@@ -166,6 +184,15 @@ class Calendar extends Component {
               { week }
             </Row>
           )
+        }
+        {
+          <Row>
+            <Container className="p-0">
+              <Row>
+                { this.legendDisplay() }
+              </Row>
+            </Container>
+          </Row>
         }
       </Container>
     );

@@ -1,35 +1,40 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { firebaseConnect } from 'react-redux-firebase';
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap';
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getFile } from '../../actions/FilesActions'
+import { getGroup } from '../../actions/GroupsActions'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 
 class EventCard extends Component {
+  static contextTypes = {
+    store: PropTypes.object.isRequired
+  }
+
   mounted = false
+  modal = null
 
   constructor(props) {
     super(props)
 
     this.state = {
       poster: null,
-      modal: false,
-    }
-
-    this.toggleModal = this.toggleModal.bind(this);
-
-    const { poster } = props.event
-
-    if(poster) {
-      this.loadPoster(poster)
     }
   }
 
   componentDidMount() {
     this.mounted = true
+
+    const { event } = this.props
+    const { poster, organisedBy } = event
+
+    if(poster) {
+      this.loadPoster(poster)
+    }
   }
 
   componentWillUnmount() {
@@ -65,8 +70,9 @@ class EventCard extends Component {
   }
 
   render() {
+    const { firestore } = this.context.store
     const { poster, modal, fullDescription } = this.state
-    const { event, eventTypes, spaces, buttonAction, buttonText, hasModal } = this.props
+    const { event, eventTypes, spaces, buttonAction, buttonText, groups, groupTypes, hasModal, firebase } = this.props
 
     return(<Card body>
       <Container className="m-0 p-0">
@@ -93,9 +99,19 @@ class EventCard extends Component {
               : ''
             }
             <CardText>
-              <Button outline className="mb-1" color="primary" onClick={ buttonAction ? buttonAction : this.toggleModal}>{ buttonText }</Button>
+              <Button outline className="mb-1" color="primary" onClick={ buttonAction ? buttonAction : () => this.modal.toggle() }>{ buttonText }</Button>
             </CardText>
-            { hasModal ? <EventModal key={event.id} isOpen={modal} toggle={this.toggleModal} event={event} eventTypes={eventTypes} spaces={spaces} /> : ''}
+            { hasModal ?
+              <EventModal
+                key={event.id}
+                ref={element => { this.modal = element }}
+                firebase={firebase}
+                firestore={firestore}
+                event={event}
+                eventTypes={eventTypes}
+                spaces={spaces}
+                groups={groups}
+                groupTypes={groupTypes} /> : ''}
           </Col>
         </Row>
       </Container>

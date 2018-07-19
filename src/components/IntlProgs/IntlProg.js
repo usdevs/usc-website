@@ -7,6 +7,7 @@ import { Container, Row, Col, UncontrolledCarousel } from 'reactstrap'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
+import IntlProgReviewCard from './IntlProgReviewCard'
 import { getIntlProg, getIntlProgReviews } from '../../actions/IntlProgsActions'
 import { getFile } from '../../actions/FilesActions'
 import { formatFirestoreData } from '../../utils/utils'
@@ -98,8 +99,21 @@ class IntlProg extends Component {
     return
   }
 
+  showReviews() {
+    const { intlProgReviews } = this.props
+
+    var reviewCards = []
+
+    _.forEach(intlProgReviews.ordered, (review) => {
+      reviewCards.push(<Col key={review.id} xs="4"><IntlProgReviewCard intlProgReview={review} /></Col>)
+    })
+
+    return reviewCards
+  }
+
   render() {
     const { intlProg, displayImg, flag } = this.state
+    const { intlProgReviews } = this.props
 
     return(<Container>
       {
@@ -153,6 +167,14 @@ class IntlProg extends Component {
                 </Col>
               : ''
             }
+            {
+              intlProgReviews.isLoaded ?
+                <Col xs="12">
+                  <h3>Reviews</h3>
+                  { this.showReviews() }
+                </Col>
+              : ''
+            }
           </Row>
         : <Row><Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading...</h4></Col></Row>
       }
@@ -164,7 +186,7 @@ class IntlProg extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    intlProgReviews: formatFirestoreData(state.firestore, 'intlProgReviews', true),
+    intlProgReviews: formatFirestoreData(state.firestore, 'intlProgReviews'),
   }
 }
 

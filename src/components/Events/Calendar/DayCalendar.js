@@ -5,35 +5,21 @@ import EventCard from '../EventCard'
 import _ from 'lodash'
 
 class DayCalendar extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      eventModals: {},
-    }
-  }
-
-  toggleEventModal(eventID) {
-    const { eventModals } = this.state
-    this.setState({
-      eventModals: {
-        ...eventModals,
-        [eventID]: !eventModals[eventID]
-      }
-    })
-  }
-
   showEvents = () => {
-    const { events, eventTypes, spaces } = this.props
+    const { events, eventTypes, spaces, groups, groupTypes, firebase, firestore } = this.props
 
     const eventCards = []
 
     _.forEach(events, (event) => {
       eventCards.push(<Col key={event.id} className="mb-2" xs="12">
         <EventCard
+          firebase={firebase}
+          firestore={firestore}
           event={event}
           eventTypes={eventTypes}
           spaces={spaces}
+          groups={groups}
+          groupTypes={groupTypes}
           buttonText='See More'
           hasModal={true} />
       </Col>)

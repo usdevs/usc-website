@@ -106,7 +106,7 @@ const categories = [
       name: 'International Programmes',
       buttons: [{
         name: 'See All International Programmes',
-        icon: 'users',
+        icon: 'globe',
         link: '/intlprogs',
         color: 'steelblue'
       }, {

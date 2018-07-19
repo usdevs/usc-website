@@ -14,7 +14,7 @@ class Spaces extends Component {
           <Col><div className="p-2"><h1 className="display-3">Spaces</h1></div><hr className="my-2" /></Col>
         </Row>
         <Row className="mb-5">
-          <Col>
+          <Col className="d-none d-lg-block">
             <EventCalendar bySpaces={true}/>
           </Col>
         </Row>

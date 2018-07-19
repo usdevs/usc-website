@@ -11,21 +11,24 @@ import GroupCard from '../Groups/GroupCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 class EventModal extends Component {
-  static contextTypes = {
-    store: PropTypes.object.isRequired
-  }
-
   constructor(props) {
     super(props)
 
     this.state = {
-      poster: null,
-      group: null
+      isOpen: false,
+      poster: null
     }
   }
 
+  toggle = () => {
+    const { isOpen } = this.state
+
+    this.setState({
+      isOpen: !isOpen
+    })
+  }
+
   componentDidMount() {
-    const { firestore } = this.context.store
     const { event, firebase, groups } = this.props
 
     this.mounted = true
@@ -36,27 +39,6 @@ class EventModal extends Component {
           this.setState({
             poster: url,
           })
-        }
-      })
-    }
-
-    if(event.organisedBy && !groups.isLoaded) {
-      getGroups(firestore)
-      getGroup(firestore, event.organisedBy, (snapshot) => {
-        if(this.mounted) {
-          this.setState({
-            group: {
-              ...snapshot.data(),
-              id: event.organisedBy
-            }
-          })
-        }
-      })
-    } else if (event.organisedBy && this.mounted) {
-      this.setState({
-        group: {
-          ...groups.data[event.organisedBy],
-          id: event.organisedBy
         }
       })
     }
@@ -77,12 +59,11 @@ class EventModal extends Component {
   }
 
   render() {
-    const { firestore } = this.context.store
-    const { poster, group } = this.state
-    const { isOpen, toggle, event, eventTypes, spaces, groupTypes, firebase } = this.props
+    const { poster, isOpen } = this.state
+    const { event, eventTypes, spaces, group, groups, groupTypes, firebase, firestore } = this.props
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} className="w-75">
+      <Modal isOpen={isOpen} toggle={this.toggle} className="w-75">
           <ModalBody>
             <h3 className="d-inline-block mb-0" style={{overflowWrap: 'break-word'}}>
               {event.name + '    '}
@@ -125,32 +106,24 @@ class EventModal extends Component {
               </Row>
             </Container>
             {
-              event.organisedBy && group && groupTypes.isLoaded ?
+              event.organisedBy && groups.isLoaded && groupTypes.isLoaded ?
                 <GroupCard
                   firebase={firebase}
                   firestore={firestore}
-                  group={group}
+                  group={{
+                    ...groups.data[event.organisedBy],
+                    id: event.organisedBy
+                  }}
                   groupTypes={groupTypes}
                 />
               : ''
             }
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={toggle}>Done</Button>
+            <Button color="primary" onClick={this.toggle}>Done</Button>
           </ModalFooter>
         </Modal>
     )
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    groups: formatFirestoreData(state.firestore, 'groups'),
-    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
-  }
-}
-
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(EventModal)
+export default EventModal

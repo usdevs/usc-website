@@ -34,12 +34,11 @@ class CreateIntlProgReview extends Component {
         <Row>
           <Col>
             <IntlProgReviewForm
-              initialValues = {{ type: 'site' }}
-              btnText = "Submit Feedback"
+              btnText = "Submit REview"
               submit={this.submitFeedback}
               modal={{
-                  title: 'Feedback Submitted!',
-                  body: 'The site administrator appreciates your feedback!',
+                  title: 'Review Received!',
+                  body: 'It will be displayed together with the International Programme!',
                   primaryBtnText: 'Dashboard',
                   secondaryBtnText: 'Dismiss',
                   onSubmit: () => history.push('/dashboard')

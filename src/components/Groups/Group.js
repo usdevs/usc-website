@@ -63,7 +63,7 @@ class Group extends Component {
 
   showInterestGroup = () => {
     const { logo, group, userProfile } = this.state
-    const { firebase, events, eventTypes, spaces, auth } = this.props
+    const { firebase, events, eventTypes, spaces, auth, groups, groupTypes } = this.props
     const { name, description, activities, chat } = group
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
@@ -147,6 +147,8 @@ class Group extends Component {
                       event={event}
                       eventTypes={eventTypes}
                       spaces={spaces}
+                      groups={groups}
+                      groupTypes={groupTypes}
                       buttonText='See More'
                       firebase={firebase}
                       hasModal={true} />
@@ -178,6 +180,7 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     group: state.firestore.data.group,
+    groups: formatFirestoreData(state.firestore, 'groups'),
     groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
     events: formatEvents(state.firestore, 'groupEvents', true),
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),

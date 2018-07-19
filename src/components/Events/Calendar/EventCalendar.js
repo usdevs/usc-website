@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { Container, Row, Col } from 'reactstrap'
 import { getEvents, getEventsByMonth } from '../../../actions/EventsActions'
+import { getGroups } from '../../../actions/GroupsActions'
 import { formatEventsByDateTimeAndVenue, formatMonthEvents,
   formatFirestoreData, formatEventsByDate } from '../../../utils/utils'
 import { firebaseConnect } from 'react-redux-firebase';
@@ -32,6 +33,7 @@ class EventCalendar extends Component {
     const { firestore } = this.context.store
 
     getEvents(firestore, () => {}, moment())
+    getGroups(firestore)
   }
 
   changeSelectedDate = (date) => {
@@ -45,18 +47,6 @@ class EventCalendar extends Component {
     const { firestore } = this.context.store
 
     getEventsByMonth(firestore, () => {}, month.clone())
-  }
-
-  legend = () => {
-    const { spaces, bySpaces } = this.props
-
-    if(!bySpaces) {
-      return null
-    } else {
-      return _.map(spaces.data, (space, spaceID) =>
-        <h4 className="d-inline-block mb-0" key={spaceID}><FontAwesomeIcon className="align-middle" icon="circle" color={space.colour} size="xs" />{'    ' + space.name + '    '}</h4>
-      )
-    }
   }
 
   calender = () => {
@@ -75,19 +65,21 @@ class EventCalendar extends Component {
 
   dayCalendar = () => {
     const { selectedDate } = this.state
-    const { events, eventTypes, spaces, firebase } = this.props
+    const { events, eventTypes, spaces, firebase, groups, groupTypes } = this.props
 
     return(<DayCalendar
       selectedDate={ selectedDate }
       events={ events.isLoaded ? events.ordered[selectedDate.toString()] : null }
       eventTypes={eventTypes}
       spaces={spaces}
+      groups={groups}
+      groupTypes={groupTypes}
       firebase={firebase} />)
   }
 
   spaceCalendar = () => {
     const { selectedDate } = this.state
-    const { timeslots, eventTypes, spaces, firebase } = this.props
+    const { timeslots, eventTypes, spaces, firebase, groups, groupTypes } = this.props
 
     return(<DaySpaceCalendar
       selectedDate={ selectedDate }
@@ -95,6 +87,8 @@ class EventCalendar extends Component {
       spaces={ spaces }
       eventTypes={ eventTypes }
       eventsUnordered={ timeslots.isLoaded ? timeslots.data : null }
+      groups={groups}
+      groupTypes={groupTypes}
       firebase={ firebase }
     />)
   }
@@ -128,10 +122,10 @@ class EventCalendar extends Component {
         <Col xs="12" lg={stack ? "12" : bySpaces ? "8" : "6"}>
           { this.topComponent() }
         </Col>
-          <Col xs="12" lg={stack ? "12" : bySpaces ? "4" : "6"}>
-            <hr className="my-2 d-block d-lg-none" />
-            { this.bottomComponent() }
-          </Col>
+        <Col xs="12" lg={stack ? "12" : bySpaces ? "4" : "6"}>
+          <hr className="my-2 d-block d-lg-none" />
+          { this.bottomComponent() }
+        </Col>
       </Row>
     </Container>)
   }
@@ -150,6 +144,8 @@ const mapStateToProps = state => {
       ordered: formatEventsByDateTimeAndVenue(state.firestore),
       data: formatMonthEvents(state.firestore),
     },
+    groups: formatFirestoreData(state.firestore, 'groups'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces')
   }

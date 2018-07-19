@@ -14,6 +14,7 @@ import {
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import EventCard from '../Events/EventCard'
 import { getUpcomingEvents } from '../../actions/EventsActions'
+import { getGroups } from '../../actions/GroupsActions'
 import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { firebaseConnect } from 'react-redux-firebase';
 import { withRouter } from 'react-router-dom'
@@ -48,10 +49,11 @@ class Home extends Component {
   componentWillMount() {
     const { firestore } = this.context.store
     getUpcomingEvents(firestore, 10)
+    getGroups(firestore)
   }
 
   render() {
-    var { upcomingEvents, spaces, eventTypes, firebase, history } = this.props
+    var { upcomingEvents, spaces, eventTypes, firebase, history, groups, groupTypes } = this.props
 
     return (
       <Container className="mb-5">
@@ -74,12 +76,14 @@ class Home extends Component {
               <Container>
                 <Row>
                   {
-                    upcomingEvents && eventTypes.isLoaded && spaces.isLoaded ? upcomingEvents.length > 0 ? _.filter(upcomingEvents, (e) => { return !e.spaceOnly }).map((event)=>
+                    upcomingEvents && eventTypes.isLoaded && spaces.isLoaded && groups.isLoaded && groupTypes.isLoaded ? upcomingEvents.length > 0 ? _.filter(upcomingEvents, (e) => { return !e.spaceOnly }).map((event)=>
                       <Col key={event.id} xs="12" md="6" className="mb-2">
                         <EventCard
                           event={event}
                           eventTypes={eventTypes}
                           spaces={spaces}
+                          groups={groups}
+                          groupTypes={groupTypes}
                           buttonText='See More'
                           firebase={firebase}
                           hasModal={true} />
@@ -105,6 +109,8 @@ const mapStateToProps = state => {
     upcomingEvents: formatEvents(state.firestore, 'upcomingEvents', true),
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
+    groups: formatFirestoreData(state.firestore, 'groups'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
   }
 }
 

@@ -14,6 +14,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import DatePickerForm from '../reusable/DatePickerForm'
 import EventCard from './EventCard'
 import { getUserEvents } from '../../actions/EventsActions'
+import { getGroups } from '../../actions/GroupsActions'
 import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { config } from '../../resources/config'
 import _ from 'lodash'
@@ -46,6 +47,7 @@ class ManageEvents extends Component {
     if(isLoaded(auth) && !isEmpty(auth)) {
       getUserEvents(firestore, auth.uid)
     }
+    getGroups(firestore)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,7 +126,7 @@ class ManageEvents extends Component {
   }
 
   displayEvents = () => {
-    const { userEvents, eventTypes, spaces, history } = this.props
+    const { userEvents, eventTypes, spaces, history, groups, groupTypes } = this.props
 
     const eventCards = []
 
@@ -134,6 +136,8 @@ class ManageEvents extends Component {
           event={event}
           eventTypes={eventTypes}
           spaces={spaces}
+          groups={groups}
+          groupTypes={groupTypes}
           buttonAction={() => history.push('/editevent/' + event.id)}
           buttonText='Manage'
           hasModal={false} />
@@ -217,6 +221,8 @@ const mapStateToProps = state => {
     userEvents: formatEvents(state.firestore, 'userEvents', true),
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
+    groups: formatFirestoreData(state.firestore, 'groups'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
   }
 }
 

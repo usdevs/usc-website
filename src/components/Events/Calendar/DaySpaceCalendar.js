@@ -5,27 +5,10 @@ import _ from 'lodash'
 import EventModal from '../EventModal'
 
 class DaySpaceCalendar extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      eventModals: {},
-    }
-  }
-
-  toggleEventModal(eventID) {
-    const { eventModals } = this.state
-
-    this.setState({
-      eventModals: {
-        ...eventModals,
-        [eventID]: !eventModals[eventID]
-      }
-    })
-  }
+  modals = {}
 
   spaceBookingDisplay = () => {
-    const { timeslots, eventTypes, spaces } = this.props
+    const { timeslots, eventTypes, spaces, groups, groupTypes } = this.props
 
     if(!eventTypes.isLoaded || !spaces.isLoaded) {
       return(<h3 style={{fontWeight: 300}}><FontAwesomeIcon icon="spinner" spin /> Loading bookings...</h3>)
@@ -82,7 +65,7 @@ class DaySpaceCalendar extends Component {
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}
                  className={(spaceEvent.isStart ? 'rounded-left ' : '') + (spaceEvent.isEnd ? 'rounded-right' : '')}
                  style={{backgroundColor: spaces.data[venueID] ? spaces.data[venueID].colour : ''}}
-                 onClick={() => this.toggleEventModal(events[timeslotString][venueID].event.id)}/>)
+                 onClick={() => this.modals[events[timeslotString][venueID].event.id].toggle()}/>)
           } else {
             timeslotsCol.push(<Col xs={ colSize }  key={venueID + timeslotString}/>)
           }
@@ -96,13 +79,21 @@ class DaySpaceCalendar extends Component {
   }
 
   eventModals = () => {
-    const { eventModals } = this.state
-    const { eventsUnordered, eventTypes, spaces } = this.props
+    const { eventsUnordered, eventTypes, spaces, firebase, groups, groupTypes } = this.props
 
     if(eventsUnordered) {
       var eventModal = []
       _.forOwn(eventsUnordered, (event, eventID) =>{
-        eventModal.push(<EventModal key={eventID} isOpen={eventModals[eventID]} toggle={() => this.toggleEventModal(eventID)} event={event} eventTypes={eventTypes} spaces={spaces} />)
+        eventModal.push(
+          <EventModal
+            key={eventID}
+            ref={element => { this.modals[eventID] = element }}
+            firebase={firebase}
+            event={event}
+            eventTypes={eventTypes}
+            spaces={spaces}
+            groups={groups}
+            groupTypes={groupTypes} />)
       })
       return eventModal
     } else {

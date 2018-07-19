@@ -47,8 +47,8 @@ import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
-  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes, faComment
-} from '@fortawesome/fontawesome-free-solid'
+  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes, faComment, faGlobe
+} from '@fortawesome/pro-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
@@ -58,7 +58,7 @@ import Can from './utils/Can'
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
   faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher,
-  faMobileAlt, faTimes, fab, faComment)
+  faMobileAlt, faTimes, fab, faComment, faGlobe)
 
 
 firebase.initializeApp(firebaseConfig)
@@ -111,7 +111,7 @@ render(
     <div>
       <Router>
         <ScrollToTop>
-          <Navbar/>
+          <Navbar className="mb-3"/>
           <Switch>
             <Route exact path="/" component={Home}/>
             <Route path="/about" component={AboutUs}/>
@@ -149,7 +149,7 @@ render(
             </Can>
             <Route component={Home}/>
           </Switch>
-          <Jumbotron className="mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>
+          <Jumbotron className="mt-5 mb-0"><h5 className="mb-0">© Copyright 2018. All Rights Reserved. NUS Students' University Scholars Club</h5></Jumbotron>
         </ScrollToTop>
       </Router>
     </div>

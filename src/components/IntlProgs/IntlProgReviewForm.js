@@ -7,7 +7,9 @@ import { Alert, Button } from 'reactstrap';
 import { Form } from 'informed';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
-import { IntlProgInput, TextInput, TextAreaInput, validateNotEmpty } from '../reusable/FormInputs'
+import { IntlProgInput, TextInput, DropdownInput, TextAreaInput, validateNotEmpty } from '../reusable/FormInputs'
+import moment from 'moment'
+import { config } from '../../resources/config'
 
 class IntlProgReviewForm extends Component {
   static contextTypes = {
@@ -25,6 +27,19 @@ class IntlProgReviewForm extends Component {
     }
   }
 
+  yearOptions = () => {
+    var options = []
+
+    const startDate = moment().add(config.reviewStartYear, 'year')
+
+    for(var i = 0; i <= -config.reviewStartYear; i++) {
+      const year = startDate.clone().add(i, 'year').format('YYYY')
+      options.push({id: year, display: year})
+    }
+
+    return options
+  }
+
   submit = (values) => {
     this.setState({
       submitting: true,
@@ -32,7 +47,7 @@ class IntlProgReviewForm extends Component {
 
     this.props.submit({
       ...values,
-      submittedBy: this.props.auth.uid
+      creator: this.props.auth.uid
     }, this.submitCallback)
   }
 
@@ -56,9 +71,6 @@ class IntlProgReviewForm extends Component {
             <Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
               { ({ formApi }) => (
                <div>
-                 <TextInput
-                     field="type"
-                     hidden={true} />
                   <h3>Programme Name</h3>
                   <div className="mb-3">
                     <IntlProgInput
@@ -68,6 +80,13 @@ class IntlProgReviewForm extends Component {
                       validate={ validateNotEmpty }
                       validateOnBlur/>
                   </div>
+                  <h3>Year Went</h3>
+                  <DropdownInput
+                    field="year"
+                    placeholder="Select a Year"
+                    validate={validateNotEmpty}
+                    validateOnChange
+                    options={this.yearOptions()} />
                   <h3>Review</h3>
                   <TextAreaInput
                     field="review"
