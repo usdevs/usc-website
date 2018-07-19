@@ -134,7 +134,7 @@ export function getUserEvents(firestore, userID, callback) {
     where: [
       ['creator', '==', userID]
     ],
-    orderBy: ['startDate'],
+    orderBy: ['startDate', 'desc'],
     storeAs: 'userEvents'})
   .then((snapshot) => callback(snapshot))
 }

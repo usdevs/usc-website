@@ -18,7 +18,7 @@ const adminCategories = [{
   icon: 'plus',
   link: '/creategroup',
   color: 'steelblue'
-},{
+}, {
   name: 'Group Admin Panel',
   icon: 'users',
   link: '/groupadmin',
@@ -33,6 +33,11 @@ const adminCategories = [{
   icon: 'chalkboard-teacher',
   link: '/useradmin',
   color: 'sandybrown'
+}, {
+  name: 'Add International Programme',
+  icon: 'plus',
+  link: '/createintlprog',
+  color: 'steelblue'
 }]
 
 const categories = [
@@ -96,7 +101,21 @@ const categories = [
         link: '/managegroups',
         color: 'steelblue'
       }]
-    }
+    },
+  /*  {
+      name: 'International Programmes',
+      buttons: [{
+        name: 'See All International Programmes',
+        icon: 'users',
+        link: '/intlprogs',
+        color: 'steelblue'
+      }, {
+        name: 'Add International Programme Review',
+        icon: 'plus',
+        link: '/createintlprogreview',
+        color: 'steelblue'
+      }]
+    }*/
 /*  , {
     name: 'Modules',
     buttons: [{

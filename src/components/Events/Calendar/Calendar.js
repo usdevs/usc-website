@@ -107,7 +107,7 @@ class Calendar extends Component {
     const wkRange = moment.range(moment(selectedDate).startOf('week'),moment(selectedDate).endOf('week'))
 
     for (let day of wkRange.by('day')) {
-      dayHeaders.push(<Col key={day.format('YYYYMMDD')} className="dayHeader">{day.format('dd')}</Col>)
+      dayHeaders.push(<Col key={day.format('YYYYMMDD')} className="dayHeader p-0">{day.format('dd')}</Col>)
     }
 
     return dayHeaders;

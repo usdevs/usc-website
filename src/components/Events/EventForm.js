@@ -103,7 +103,8 @@ class EventForm extends Component {
   }
 
   submit = (values) => {
-    const { auth, spaces } = this.props
+    const { auth, spaces, initialValues } = this.props
+    const { firestore } = this.context.store
 
     this.setState({
       submitting: true,
@@ -123,7 +124,7 @@ class EventForm extends Component {
       otherVenue: normalVenue ? false : true
     }
 
-    getEventVenueBookingsAfter(this.context.store.firestore, formattedEvent.venue, startDate, 'venueBookings', (snapshot) => {
+    getEventVenueBookingsAfter(firestore, formattedEvent.venue, startDate, 'venueBookings', (snapshot) => {
       const { venueBookings } = this.props
 
       var clashes = false
@@ -134,6 +135,10 @@ class EventForm extends Component {
                     || endDate.isBetween(booking.startDate, booking.endDate)
                     || booking.startDate.isBetween(startDate, endDate)
                     || booking.endDate.isBetween(startDate, endDate)
+
+        if(initialValues && initialValues.id && booking.id === initialValues.id) {
+          clashes = false
+        }
 
         if(clashes) {
           return false
@@ -261,6 +266,7 @@ class EventForm extends Component {
           <div className="mb-3">
             <GroupInput
               field="organisedBy"
+              placeholder="Please enter the organising group (e.g. IG/GUI/House Name etc.)"
               errortext="Please indicate the organising group"
               validate={ validateNotEmpty }
               validateOnBlur/>

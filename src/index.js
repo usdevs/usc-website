@@ -32,8 +32,10 @@ import EditReview from './components/Modules/EditReview'
 import ManageReviews from './components/Modules/ManageReviews'
 import ModuleAdmin from './components/Modules/ModuleAdmin'
 import Feedback from './components/General/Feedback'
+import IntlProg from './components/IntlProgs/IntlProg'
 import IntlProgs from './components/IntlProgs/IntlProgs'
 import CreateIntlProg from './components/IntlProgs/CreateIntlProg'
+import CreateIntlProgReview from './components/IntlProgs/CreateIntlProgReview'
 import ScrollToTop from './components/reusable/ScrollToTop'
 import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -84,13 +86,7 @@ const config = {
   userProfile: 'users', // firebase root where user profiles are stored
   useFirestoreForProfile: true,
   enableLogging: false, // enable/disable Firebase's database logging
-  attachAuthIsReady: true,
-  fileMetadataFactory: (uploadRes) => {
-    // upload response from Firebase's storage upload
-    const { metadata: { fullPath } } = uploadRes
-    // default factory includes name, fullPath, downloadURL
-    return fullPath
-  }
+  attachAuthIsReady: true
 }
 
 const createStoreWithFirebase = compose(
@@ -140,6 +136,8 @@ render(
             <Route path="/editreview/:reviewID" component={EditReview}/>
             <Route path="/managereviews" component={ManageReviews}/>
             <Route path="/intlprogs" component={IntlProgs}/>
+            <Route path="/intlprog/:intlProgID" component={IntlProg}/>
+            <Route path="/createintlprogreview" component={CreateIntlProgReview}/>
             <Route path="/createintlprog" component={CreateIntlProg}/>
             <Can I="manage" a="Admin">
               <div>

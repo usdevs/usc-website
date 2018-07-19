@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { Container, Row, Col } from 'reactstrap'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { getMyProfile, saveProfile } from '../../actions/UsersActions'
+import { createIntlProg } from '../../actions/IntlProgsActions'
 import IntlProgForm from './IntlProgForm'
 
 class CreateIntlProg extends Component {
@@ -15,12 +15,17 @@ class CreateIntlProg extends Component {
   }
 
   createIntlProg = (intlProg, callback) => {
-    console.log(intlProg)
+    const { firestore } = this.context.store
+    const { firebase } = this.props
+
+    createIntlProg(firestore, firebase, intlProg, () => {
+      callback(true)
+    })
   }
 
   render() {
     const { history } = this.props
-    
+
     return (
     <Container>
       <Row>

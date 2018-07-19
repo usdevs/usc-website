@@ -4,6 +4,7 @@ import { asField } from 'informed';
 import DatePicker from 'react-datepicker'
 import DatePickerForm from './DatePickerForm'
 import GroupAutocomplete from './GroupAutocomplete'
+import IntlProgAutocomplete from './IntlProgAutocomplete'
 import UserForm from './UserForm'
 import ImageUploader from './ImageUploader'
 import MultiImageUploader from './MultiImageUploader'
@@ -256,6 +257,28 @@ export const GroupInput = asField(({ fieldState, fieldApi, ...props }) => {
 
   return (<React.Fragment>
     <GroupAutocomplete
+      {...rest}
+      ref={forwardedRef}
+      value={!value && value !== 0 ? '' : value}
+      fieldState={fieldState}
+      fieldApi={fieldApi}
+    />
+  </React.Fragment>)
+});
+
+export const IntlProgInput = asField(({ fieldState, fieldApi, ...props }) => {
+  const {
+    value
+  } = fieldState;
+  const {
+    onChange,
+    onBlur,
+    forwardedRef,
+    ...rest
+  } = props
+
+  return (<React.Fragment>
+    <IntlProgAutocomplete
       {...rest}
       ref={forwardedRef}
       value={!value && value !== 0 ? '' : value}

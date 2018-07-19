@@ -115,23 +115,34 @@ class ManageEvents extends Component {
     const { filter } = this.state
     const { spaces, history, firebase, eventTypes } = this.props
 
+    console.log(event)
+
     if(!_.startsWith(_.lowerCase(event.name), _.lowerCase(filter.name)) ||
       event.startDate.isBefore(filter.startDate) ||
       event.endDate.isAfter(filter.endDate)) {
       return ('')
     }
 
-    return (
-    <Col xs="12" md="4" className="mb-2" key={event.id}>
-      <EventCard
-        event={event}
-        eventTypes={eventTypes}
-        spaces={spaces}
-        buttonAction={() => history.push('/editevent/' + event.id)}
-        buttonText='Manage'
-        firebase={firebase}
-        hasModal={false} />
-    </Col>)
+  }
+
+  displayEvents = () => {
+    const { userEvents, eventTypes, spaces, history } = this.props
+
+    const eventCards = []
+
+    _.forEach(userEvents, (event) => {
+      eventCards.push(<Col xs="12" md="4" className="mb-2" key={event.id}>
+        <EventCard
+          event={event}
+          eventTypes={eventTypes}
+          spaces={spaces}
+          buttonAction={() => history.push('/editevent/' + event.id)}
+          buttonText='Manage'
+          hasModal={false} />
+      </Col>)
+    })
+
+    return eventCards
   }
 
   render() {
@@ -190,13 +201,13 @@ class ManageEvents extends Component {
           : ''
         }
         <Row>
-            {
-              userEvents && eventTypes.isLoaded && spaces.isLoaded ?
-                userEvents.length > 0 ?
-                  userEvents.map((event) => this.displayEvent(event))
-                : <Col><h3><FontAwesomeIcon icon="frown" /> Either you have no events or no events match your filter.</h3></Col>
-              : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Your Events...</h4></Col>
-            }
+          {
+            userEvents && eventTypes.isLoaded && spaces.isLoaded ?
+              userEvents.length > 0 ?
+                this.displayEvents()
+              : <Col><h3><FontAwesomeIcon icon="frown" /> Either you have no events or no events match your filter.</h3></Col>
+            : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Your Events...</h4></Col>
+          }
         </Row>
       </Container>)
   }

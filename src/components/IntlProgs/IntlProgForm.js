@@ -26,6 +26,9 @@ class IntlProgForm extends Component {
     store: PropTypes.object.isRequired
   }
 
+  modal = null
+  formApi = null
+
   constructor(props) {
     super(props)
 
@@ -45,10 +48,20 @@ class IntlProgForm extends Component {
       submitting: true,
     })
 
-    this.props.submit(values, this.submitCallback)
+    const review = {
+      ...values,
+      reviewer: this.props.auth.uid
+    }
+
+    this.props.submit(review, this.submitCallback)
   }
 
-  submitCallback = () => {
+  submitCallback = (shouldReset) => {
+    console.log('sucess')
+    if(shouldReset) {
+      this.formApi.reset()
+    }
+
     this.modal.toggle()
 
     this.setState({
@@ -77,10 +90,18 @@ class IntlProgForm extends Component {
             errortext="You must have an display image"
             validate={ validateNotEmpty }
             validateOnBlur />
+           <h3>Usual Period</h3>
+           <TextInput
+             field="usualPeriod"
+             placeholder="Enter the usual period (e.g. May)"
+             errortext="Please enter the usual period"
+             validate={ validateNotEmpty }
+             validateOnBlur
+             className="mb-3" />
            <h3>Country</h3>
            <TextInput
              field="country"
-             placeholder="Enter the country/region"
+             placeholder="Enter the country or area"
              errortext="Please enter the country/region"
              validate={ validateNotEmpty }
              validateOnBlur
@@ -88,6 +109,7 @@ class IntlProgForm extends Component {
             <h3>Region</h3>
              <DropdownInput
                  field="region"
+                 placeholder="Please select a region."
                  options={continentOptions}/>
              <h3 className="mt-3">Flag Display</h3>
              <ImageInput
@@ -95,7 +117,15 @@ class IntlProgForm extends Component {
                errortext="You must upload a flag"
                validate={ validateNotEmpty }
                validateOnBlur />
-             <h3>Description</h3>
+             <h3>Synopsis</h3>
+             <TextAreaInput
+               field="synopsis"
+               placeholder="Enter the synopsis for the programme."
+               errortext="Please enter a synopsis"
+               validate={ validateNotEmpty }
+               validateOnBlur
+               className="mb-3" />
+             <h3>Additional Description</h3>
              <TextAreaInput
                field="description"
                placeholder="Enter the description for the programme."
@@ -120,7 +150,7 @@ class IntlProgForm extends Component {
            <h3>Other Information <small><Badge color="secondary">Optional</Badge></small></h3>
            <TextAreaInput
              field="otherInfo"
-             placeholder="Enter the programme costs."
+             placeholder="Enter any other information."
              className="mb-3" />
           <Button className="mt-3" color="primary" type="submit" block disabled={submitting}>
             { submitting ? <FontAwesomeIcon icon="spinner" spin /> : '' } { btnText }
@@ -143,6 +173,7 @@ class IntlProgForm extends Component {
 
 const mapStateToProps = state => {
   return {
+    auth: state.firebase.auth,
     userTypes: formatFirestoreData(state.firestore, 'userTypes'),
   }
 }

@@ -10,6 +10,7 @@ import {
   Input
 } from 'reactstrap';
 import GroupCard from './GroupCard'
+import GroupGrid from './GroupGrid'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
@@ -112,18 +113,7 @@ class Groups extends Component {
           }
         </Row>
         <Row>
-            {
-              groups.isLoaded && groupTypes.isLoaded ?
-                filteredGroups.length > 0 ?
-                  filteredGroups.map((group) => <Col className="mb-3" xs="12" md="6" key={group.id}>
-                    <GroupCard
-                      group={group}
-                      groupTypes={groupTypes}
-                    />
-                  </Col>)
-                : <Col><h3><FontAwesomeIcon icon="frown" /> No Groups match your criteria </h3></Col>
-              : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Groups...</h4></Col>
-            }
+          <GroupGrid groups={groups} groupTypes={groupTypes} />
         </Row>
       </Container>)
   }
