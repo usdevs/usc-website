@@ -31,11 +31,17 @@ class EventForm extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.context.store
+    const { eventTypes, spaces } = this.props
 
-    getEventTypes(firestore)
-    getSpaces(firestore)
+    if(!eventTypes.isLoaded) {
+      getEventTypes(firestore)
+    }
+
+    if(!spaces.isLoaded) {
+      getSpaces(firestore)
+    }
   }
 
   eventTypeOptions = (eventTypes) => {

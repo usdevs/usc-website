@@ -37,7 +37,10 @@ class GroupAutocomplete extends Component {
 
       if(value && value !== '') {
         this.setState({
-          selected: groups.data[value]
+          selected: {
+            ...groups.data[value],
+            id: value
+          }
         })
       }
     }
@@ -46,16 +49,14 @@ class GroupAutocomplete extends Component {
   componentWillReceiveProps(newProps) {
     const { firestore } = this.context.store
     const { selected } = this.state
-    const { value } = newProps
+    const { value, groups } = newProps
 
-    if(value && value !== '' && selected && value !== selected.id) {
-      getGroup(firestore, value, (snapshot) => {
-        this.setState({
-          selected: {
-            ...snapshot.data(),
-            id: value
-          }
-        })
+    if(value && value !== '' && groups.isLoaded && selected && value !== selected.id) {
+      this.setState({
+        selected: {
+          ...groups.data[value],
+          id: value
+        }
       })
     } else if (!value) {
       this.setState({

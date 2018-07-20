@@ -16,11 +16,11 @@ class ImageUploader extends Component {
   }
 
   componentDidMount() {
-    const { imageSrc, firebase } = this.props
+    const { fieldState, firebase } = this.props
     this.mounted = true
 
-    if(imageSrc && imageSrc !== '' && !(imageSrc.startsWith("http://") || imageSrc.startsWith("https://"))) {
-      getFile(firebase, imageSrc, (url) => {
+    if(fieldState.value && fieldState.value !== '' && !(fieldState.value.startsWith("http://") || fieldState.value.startsWith("https://"))) {
+      getFile(firebase, fieldState.value, (url) => {
         if(this.mounted) {
           this.setState({
             image: url,
@@ -44,7 +44,9 @@ class ImageUploader extends Component {
       <div>
         <div className="d-flex justify-content-center flex-wrap">
           {
-            hasImage ?
+            image ?
+              <img src={ image } className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />
+            : hasImage ?
               <img src={ fieldState.value } className="img-fluid d-inline" alt="poster" style={{maxHeight: '200px'}} />
             : ''
           }
@@ -53,6 +55,9 @@ class ImageUploader extends Component {
             accept="image/jpeg, image/png"
             multiple={false}
             onDrop={(files) => {
+              this.setState({
+                image: null
+              })
               onDrop(files[0].preview)
             }}>
             <div className="w-100 h-100 d-flex justify-content-center">
@@ -65,7 +70,12 @@ class ImageUploader extends Component {
         </div>
         <div className="d-flex justify-content-center">
           { fieldState.error ? <Alert color="danger">{ errortext ? errortext : fieldState.error}</Alert> : null }
-          { hasImage ? <Button outline color="danger" onClick={onDelete}>Delete Image</Button> : '' }
+          { hasImage ? <Button outline color="danger" onClick={() => {
+            this.setState({
+              image: null
+            })
+            onDelete()
+          }}>Delete Image</Button> : '' }
         </div>
       </div>)
     }
