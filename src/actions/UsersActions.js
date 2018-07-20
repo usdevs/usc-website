@@ -14,6 +14,7 @@ import {
 } from '../firestore/FilesClient'
 import { config } from '../resources/config'
 import { firebaseConfig } from '../resources/config'
+import ability from '../utils/ability'
 
 //Login
 
@@ -52,6 +53,7 @@ export function signOut(firebase, callback) {
 
   firebase.logout().then(() => {
   	auth.signOut().then(() => {
+      ability.update([])
   		callback()
   	})
   })

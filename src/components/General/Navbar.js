@@ -9,7 +9,9 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { signOut } from '../../actions/UsersActions'
 import { logo } from '../../resources/images'
 import { getMyProfile, getUserType } from '../../actions/UsersActions'
+import { getGroups } from '../../actions/GroupsActions'
 import { getFile } from '../../actions/FilesActions'
+import { formatFirestoreData } from '../../utils/utils'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import LoginModal from './LoginModal'
 import ability from '../../utils/ability'
@@ -25,6 +27,8 @@ class SiteNavbar extends Component {
     store: PropTypes.object.isRequired
   }
 
+  loadProfile = false
+
   constructor(props) {
     super(props);
 
@@ -32,60 +36,61 @@ class SiteNavbar extends Component {
     this.state = {
       isOpen: false,
       loginIsOpen: false,
-      profile: null,
     };
   }
 
-  componentWillMount() {
-    const { auth } = this.props
+  componentDidMount() {
+    const { groups } = this.props
+    const { firestore } = this.context.store
 
-    if(isLoaded(auth) && !isEmpty(auth)) {
-      this.getProfile(auth)
+    if(!groups.isLoaded) {
+      getGroups(firestore)
     }
   }
 
   componentWillReceiveProps(newProps) {
-    const { profile } = this.state
-    const { auth, myProfile } = newProps
+    const { firestore } = this.context.store
+    const { auth, myProfile, firebase } = newProps
 
-    if((isLoaded(auth) && !isEmpty(auth) && !profile) || (profile && myProfile && (profile.displayName !== myProfile.displayName || profile.avatarUrl !== myProfile.avatarUrl))) {
-      this.getProfile(auth)
+    if (isLoaded(auth) && !isEmpty(auth) && !myProfile.isLoaded && !this.loadProfile) {
+      this.loadProfile = true
+
+      getMyProfile(firestore, auth, (snapshot) => {
+        var profile = snapshot.data()
+        var avatarUrl = null
+
+        this.setAvatarUrl(profile.avatarUrl)
+
+        getUserType(firestore, profile.type, (snapshot) => {
+          var permissions = snapshot.data().permissions
+
+          ability.update(permissions)
+        } ,'myUserType')
+
+        this.loadProfile = false
+      })
+    }
+
+    if (this.props.myProfile.isLoaded && myProfile.isLoaded
+      && this.props.myProfile.data.avatarUrl !== myProfile.data.avatarUrl) {
+      this.setAvatarUrl(myProfile.data.avatarUrl)
     }
   }
 
-  getProfile = (auth) => {
-    const { firestore } = this.context.store
-
-    getMyProfile(firestore, auth, (snapshot) => {
-      var profile = snapshot.data()
-      var avatarUrl = null
-
-      if(profile.avatarUrl.startsWith('http')) {
-        avatarUrl = profile.avatarUrl
-      } else {
-        const { firebase } = this.props
-
-        getFile(firebase, profile.avatarUrl, (url) => {
-          this.setState({
-            avatarUrl: url,
-          })
-        })
-      }
-
-      getUserType(firestore, profile.type, (snapshot) => {
-        var permissions = snapshot.data().permissions
-
-        ability.update(permissions)
-      } ,'myUserType')
-
+  setAvatarUrl = (avatarUrl) => {
+    if(avatarUrl.startsWith('http')) {
       this.setState({
         avatarUrl: avatarUrl,
-        profile: {
-          ...profile,
-          id: auth.uid
-        }
       })
-    })
+    } else {
+      const { firebase } = this.props
+
+      getFile(firebase, avatarUrl, (url) => {
+        this.setState({
+          avatarUrl: url,
+        })
+      })
+    }
   }
 
   toggle() {
@@ -118,8 +123,8 @@ class SiteNavbar extends Component {
   }]
 
   showNavbarItems = () => {
-    const { isOpen, profile, avatarUrl } = this.state
-    const { auth, firebase, history } = this.props;
+    const { isOpen, avatarUrl } = this.state
+    const { auth, firebase, history, myProfile } = this.props;
 
     const signedIn = isLoaded(auth) && !isEmpty(auth)
 
@@ -147,7 +152,7 @@ class SiteNavbar extends Component {
       </NavItem>)
     }
 
-    if(!isLoaded(auth) || (signedIn && !profile)) {
+    if(!isLoaded(auth) || (signedIn && !myProfile.isLoaded)) {
       items.push(<div key='loading' className="d-flex align-items-center"><FontAwesomeIcon icon="spinner" spin /></div>)
     } else if (!signedIn) {
       items.push(
@@ -159,7 +164,7 @@ class SiteNavbar extends Component {
         <UncontrolledDropdown nav inNavbar key='userSettings'>
           <DropdownToggle nav caret className="text-primary">
             <h4 className="d-inline" style={{fontWeight: 500}}>
-              { profile.displayName }
+              { myProfile.data.displayName }
               { avatarUrl ? <img src={avatarUrl} className="rounded-circle mb-0 ml-2" alt="Avatar" style={{maxHeight: "30px"}} /> : '' }
             </h4>
           </DropdownToggle>
@@ -220,7 +225,8 @@ class SiteNavbar extends Component {
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
-    myProfile: state.firestore.data.myProfile
+    myProfile: formatFirestoreData(state.firestore, 'myProfile'),
+    groups: formatFirestoreData(state.firestore, 'groups'),
   }
 }
 

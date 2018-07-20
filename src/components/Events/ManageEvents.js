@@ -40,14 +40,17 @@ class ManageEvents extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.context.store
-    const { auth } = this.props
+    const { auth, groups } = this.props
 
     if(isLoaded(auth) && !isEmpty(auth)) {
       getUserEvents(firestore, auth.uid)
     }
-    getGroups(firestore)
+
+    if(!groups.isLoaded) {
+      getGroups(firestore)
+    }
   }
 
   componentWillReceiveProps(nextProps) {

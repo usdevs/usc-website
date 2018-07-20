@@ -31,32 +31,55 @@ class Group extends Component {
 
   componentDidMount() {
     const { groupID } = this.state
-    const { history } = this.props
+    const { history, groups } = this.props
     const { firestore } = this.context.store
 
-    getGroup(firestore, groupID, (snapshot) => {
-      if (!snapshot.exists) {
-        history.push('/')
-      } else {
-        const group = snapshot.data()
+    if(groups.isLoaded && !groups.data[groupID]) {
+      history.push('/')
+    } else if (groups.isLoaded && groups.data[groupID]) {
+      const group = {
+        ...groups.data[groupID],
+        id: groupID
+      }
+
+      this.setState({
+        group: group
+      })
+
+      getUserProfile(firestore, group.leaderID, (snapshot) => {
+        const leaderProfile = snapshot.data()
         this.setState({
-          group: {
-            ...group,
-            id: groupID
+          userProfile: {
+            ...leaderProfile,
+            id: group.leaderID
           }
         })
-
-        getUserProfile(firestore, group.leaderID, (snapshot) => {
-          const leaderProfile = snapshot.data()
+      })
+    } else {
+      getGroup(firestore, groupID, (snapshot) => {
+        if (!snapshot.exists) {
+          history.push('/')
+        } else {
+          const group = snapshot.data()
           this.setState({
-            userProfile: {
-              ...leaderProfile,
-              id: group.leaderID
+            group: {
+              ...group,
+              id: groupID
             }
           })
-        })
-      }
-    })
+
+          getUserProfile(firestore, group.leaderID, (snapshot) => {
+            const leaderProfile = snapshot.data()
+            this.setState({
+              userProfile: {
+                ...leaderProfile,
+                id: group.leaderID
+              }
+            })
+          })
+        }
+      })
+    }
 
     getGroupEvents(firestore, groupID)
   }

@@ -1,12 +1,18 @@
 import _ from 'lodash'
 
 export function getUserProfile(firestore, userID, callback = () => {}, alias = 'userProfile') {
-  firestore
-  .get({
+  const query = {
     collection: 'users',
     doc: userID,
-    storeAs: alias})
+    storeAs: alias
+  }
+
+  firestore
+  .get(query)
   .then((snapshot) => callback(snapshot))
+
+  firestore
+  .onSnapshot(query)
 }
 
 export function getUserProfileByEmail(firestore, email, callback, alias = 'userProfile') {

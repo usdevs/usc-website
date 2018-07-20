@@ -61,14 +61,6 @@ class EventCard extends Component {
     }
   }
 
-  toggleModal() {
-    const { modal } = this.state
-
-    this.setState({
-      modal: !modal
-    })
-  }
-
   render() {
     const { firestore } = this.context.store
     const { poster, modal, fullDescription } = this.state

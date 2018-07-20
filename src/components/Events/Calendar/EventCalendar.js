@@ -29,11 +29,15 @@ class EventCalendar extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { firestore } = this.context.store
+    const { groups } = this.props
 
     getEvents(firestore, () => {}, moment())
-    getGroups(firestore)
+
+    if(!groups.isLoaded) {
+      getGroups(firestore)
+    }
   }
 
   changeSelectedDate = (date) => {
