@@ -17,6 +17,9 @@ class Spaces extends Component {
           <Col className="d-none d-lg-block">
             <EventCalendar bySpaces={true}/>
           </Col>
+          <Col className="d-block d-lg-none">
+            <EventCalendar bySpaces={true} stack={true}/>
+          </Col>
         </Row>
       </Container>
     );
