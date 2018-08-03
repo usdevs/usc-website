@@ -113,7 +113,10 @@ class Groups extends Component {
           }
         </Row>
         <Row>
-          <GroupGrid groups={groups} groupTypes={groupTypes} />
+          <GroupGrid groups={{
+            ...groups,
+            ordered: filteredGroups
+          }} groupTypes={groupTypes} />
         </Row>
       </Container>)
   }

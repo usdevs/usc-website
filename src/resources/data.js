@@ -178,11 +178,11 @@ export const uscCommittees = [
     image: vpwelfareComm,
     teams: [{
       name: "Welfare Projects Team",
-      members: "Wan Nur Syafiqa B Syed Yusoff (Director), Charmaine Lee (Deputy Director), Sanchita Sachdev (Deputy Director), Ong Ci Wen, Jaymee Mariano Justiniano, Melanie Chng, Wee Su-Ann, Jasmie Liew, Kagen Lim, Jade Ng & Lee Chun Min"
+      members: "Wan Nur Syafiqa B Syed Yusoff (Director), Charmaine Lee (Deputy Director), Sanchita Sachdev (Deputy Director), Ong Ci Wen, Jaymee Mariano Justiniano, Melanie Chng, Wee Su-Ann, Jasmine Liew, Kagen Lim, Jade Ng & Lee Chun Min"
     },
     {
       name: "Academic Team",
-      members: "Atharv Joshi (Director), Melvin Soh, Deter Thng, Devesh Narayanan & Loh Xiang Bin"
+      members: "Atharv Joshi (Director), Melvin Soh, Dexter Thng, Devesh Narayanan & Loh Xiang Bin"
     },
     {
       name: "Residential Welfare Team",

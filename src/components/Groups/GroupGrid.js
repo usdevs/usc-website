@@ -13,19 +13,14 @@ class GroupGrid extends Component {
 
     var groupCards = []
 
-    _.forOwn(groups.data, (group, groupID) => {
-      if(group) {
-        groupCards.push(<Col className="mb-3" xs="12" md="6" key={groupID}>
-          <GroupCard
-            group={{
-              ...group,
-              id: groupID
-            }}
-            groupTypes={groupTypes}
-            manageMode={true}
-          />
-          </Col>)
-      }
+    _.forEach(groups.ordered, group => {
+      groupCards.push(<Col className="mb-3" xs="12" md="6" key={group.id}>
+        <GroupCard
+          group={group}
+          groupTypes={groupTypes}
+          manageMode={true}
+        />
+        </Col>)
     })
 
     return groupCards
@@ -38,7 +33,7 @@ class GroupGrid extends Component {
       <Row>
           {
             groups.isLoaded && groupTypes.isLoaded ?
-              _.keys(groups).length > 0 ?
+              groups.ordered.length > 0 ?
                 this.displayInterestGroups()
               : <Col><h3><FontAwesomeIcon icon="frown" /> No Groups match your criteria </h3></Col>
             : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Groups...</h4></Col>

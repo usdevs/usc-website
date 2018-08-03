@@ -31,9 +31,11 @@ class EventCalendar extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { groups } = this.props
+    const { groups, events } = this.props
 
-    getEvents(firestore, () => {}, moment())
+    if(!events.isLoaded) {
+      getEvents(firestore, () => {}, moment())
+    }
 
     if(!groups.isLoaded) {
       getGroups(firestore)
@@ -135,6 +137,15 @@ class EventCalendar extends Component {
   }
 }
 
+const areStatesEqual = (next, prev) => {
+  return false
+  /*return (
+    prev.users.all === next.users.all &&
+    prev.options === next.options &&
+    prev.currentUser === next.currentUser
+  );*/
+}
+
 const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
@@ -157,5 +168,5 @@ const mapStateToProps = state => {
 
 export default compose(
   firebaseConnect(),
-  connect(mapStateToProps)
+  connect(mapStateToProps, null, null, areStatesEqual)
 )(EventCalendar)

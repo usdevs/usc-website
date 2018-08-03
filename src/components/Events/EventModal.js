@@ -97,7 +97,7 @@ class EventModal extends Component {
                       }
                       {
                         event.description ?
-                        <p>{ event.description }</p>
+                        <p style={{whiteSpace: 'pre-line'}}>{ event.description }</p>
                         : ''
                       }
                     </Col>
