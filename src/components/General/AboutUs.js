@@ -40,7 +40,7 @@ class AboutUs extends Component {
       var commTags = []
       committees.map((member) => {
         commTags.push(
-        <Col key={member.name} xs={!modal ? "4" : "6" } md={!modal ? "2" : "4" }>
+        <Col key={member.name} xs={!modal ? null : "6" } md={!modal ? null : "4" }>
           <div className="text-center">
             <Img src={member.image} className="img-fluid rounded-circle" />
             <h5>{member.title}</h5>
@@ -137,7 +137,7 @@ class AboutUs extends Component {
             <li>To Bridge the Students, Faculty & Alumni</li>
             <li>To encourage and facilitate ground up initiatives</li>
           </ol>
-          <a href="http://www.nususc.com/USC_Constitution.zip">
+          <a href="http://bit.ly/USConsitution">
               <Button color="primary">View Our Constitution</Button>
           </a>
           <br/>
@@ -147,11 +147,11 @@ class AboutUs extends Component {
       <Row>
         <Col>
           <div className="p-3 mb-2 bg-dark text-white">
-            <h3 className="mb-0">17th Management Committee</h3>
+            <h3 className="mb-0">18th Management Committee</h3>
           </div>
         </Col>
       </Row>
-      <Row>{ mcMembers(this.props.mcMembers['17th'], false) }</Row>
+      <Row>{ mcMembers(this.props.mcMembers['18th'], false) }</Row>
       <Row>
         <Col>
           <Button color="primary" onClick={this.toggle}>View Previous</Button>

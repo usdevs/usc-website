@@ -40,6 +40,7 @@ class DaySpaceCalendar extends Component {
     const timeslotsCol = []
 
     const listOfTimeslots = _.sortBy(_.keys(events));
+    console.log(listOfTimeslots)
 
     var index = 0
     const colSize = 12/noOfColumns

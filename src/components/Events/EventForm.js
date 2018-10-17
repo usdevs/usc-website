@@ -122,8 +122,8 @@ class EventForm extends Component {
 
     var formattedEvent = {
       ...values,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate.second(0),
+      endDate: endDate.second(0),
       creator: auth.uid,
       venueName: normalVenue ? spaces.data[values.venue].name : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,

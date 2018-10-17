@@ -1,9 +1,10 @@
-import president from './images/MC/president.jpg';
-import vpwelfare from './images/MC/vpwelfare.jpg';
-import vpcommlife from './images/MC/vpcommlife.jpg';
-import honfinsec from './images/MC/honfinsec.jpg';
-import hongensec from './images/MC/hongensec.jpg';
-import fopdirector from './images/MC/fopdirector.jpg';
+import eighteenthpresident from './images/MC/18th/president.png';
+import eighteenthvpwelfare from './images/MC/18th/vpwelfare.png';
+import eighteenthvpcommlife from './images/MC/18th/vpcommlife.png';
+import eighteenthacaddirector from './images/MC/18th/acaddirector.png';
+import eighteenthhonfinsec from './images/MC/18th/honfinsec.png';
+import eighteenthhongensec from './images/MC/18th/hongensec.png';
+import eighteenthfopdirector from './images/MC/18th/fopdirector.png';
 
 import sixteenthpresident from './images/MC/16th/president.jpg';
 import sixteenthvpwelfare from './images/MC/16th/vpwelfare.jpg';
@@ -12,13 +13,22 @@ import sixteenthhonfinsec from './images/MC/16th/honfinsec.jpg';
 import sixteenthhongensec from './images/MC/16th/hongensec.jpg';
 import sixteenthfopdirector from './images/MC/16th/fopdirector.jpg';
 
-import presidentComm from './images/USCommitees/publicrelations.jpg';
+import seventeethpresident from './images/MC/17th/president.jpg';
+import seventeethvpwelfare from './images/MC/17th/vpwelfare.jpg';
+import seventeethvpcommlife from './images/MC/17th/vpcommlife.jpg';
+import seventeethhonfinsec from './images/MC/17th/honfinsec.jpg';
+import seventeethhongensec from './images/MC/17th/hongensec.jpg';
+import seventeethfopdirector from './images/MC/17th/fopdirector.jpg';
+
+import presidentComm from './images/USCommitees/advisory.jpg';
 import vpwelfareComm from './images/USCommitees/welfare.jpg';
 import vpcommlifeComm from './images/USCommitees/commlife.jpg';
+import academicComm from './images/USCommitees/academic.jpg';
 import honfinsecComm from './images/USCommitees/finance.jpg';
 import hongensecComm from './images/USCommitees/secretariat.jpg';
 import fopdirectorComm from './images/USCommitees/fop.jpg';
 
+import housecapts from './images/USCommitees/housecapts.jpg';
 import ursaia from './images/House/Ursaia.jpg';
 import nocturna from './images/House/Nocturna.jpg';
 import ianthe from './images/House/Ianthe.jpg';
@@ -128,149 +138,240 @@ export const mcMembers = {
     {
       name: "THAM Jun Han",
       title: "President",
-      image: president,
+      image: seventeethpresident,
     },
     {
       name: "WOO Qi Yun",
       title: "Vice-President (Welfare)",
-      image: vpwelfare,
+      image: seventeethvpwelfare,
     },
     {
       name: "TEE Shu Yun",
       title: "Vice-President (Community Life)",
-      image: vpcommlife,
+      image: seventeethvpcommlife,
     },
     {
       name: "Jeremy JEE",
       title: "Honorary General Secretary",
-      image: hongensec,
+      image: seventeethhongensec,
     },
     {
       name: "Melissa TANG",
       title: "Honorary Financial Secretary",
-      image: honfinsec,
+      image: seventeethhonfinsec,
     },
     {
       name: "ZHANG Quyi",
       title: "Freshmen Orientation Project Director",
-      image: fopdirector,
+      image: seventeethfopdirector,
+    }
+  ],
+  "18th" :
+  [
+    {
+      name: "Jeremy JEE",
+      title: "President",
+      image: eighteenthpresident,
+    },
+    {
+      name: "TEOH Xin Yi",
+      title: "Vice-President (Community Life)",
+      image: eighteenthvpcommlife,
+    },
+    {
+      name: "Sanchita SACHDEV",
+      title: "Vice-President (Welfare)",
+      image: eighteenthvpwelfare,
+    },
+    {
+      name: "CHOW Kit Ying",
+      title: "Academic Director",
+      image: eighteenthacaddirector,
+    },
+    {
+      name: "CHIK Cheng Yao",
+      title: "Honorary General Secretary",
+      image: eighteenthhongensec,
+    },
+    {
+      name: "QUEK Siying",
+      title: "Honorary Financial Secretary",
+      image: eighteenthhonfinsec,
+    },
+    {
+      name: "Charmaine GOH",
+      title: "Freshmen Orientation Project Director",
+      image: eighteenthfopdirector,
     }
   ]
 };
 
 export const uscCommittees = [
   {
-    name: "Public Relations",
-    headedBy: "Tham Jun Han, President",
+    name: "Advisory",
+    headedBy: "Jeremy Jee, President",
     image: presidentComm,
     teams: [{
       name: "Communications Team",
-      members: "Royston Chua (Communications Secretary), Koh Kai Qian & Nur Ridhuan"
+      members: "Annina Zhang (Communications Secretary), Quah Yan Hsien, Teoh Xin Yi & Tho Jia Yi"
     },
     {
       name: "Alumni Relations Team",
-      members: "Shien Hian Lim & Marcus Ng"
-    }]
-  },
-  {
-    name: "Student Welfare",
-    headedBy: "Woo Qiyun, Vice-President (Welfare)",
-    image: vpwelfareComm,
-    teams: [{
-      name: "Welfare Projects Team",
-      members: "Wan Nur Syafiqa B Syed Yusoff (Director), Charmaine Lee (Deputy Director), Sanchita Sachdev (Deputy Director), Ong Ci Wen, Jaymee Mariano Justiniano, Melanie Chng, Wee Su-Ann, Jasmine Liew, Kagen Lim, Jade Ng & Lee Chun Min"
+      members: "Chan Qiu Qing & Roxanne Kwek"
     },
     {
-      name: "Academic Team",
-      members: "Atharv Joshi (Director), Melvin Soh, Dexter Thng, Devesh Narayanan & Loh Xiang Bin"
-    },
-    {
-      name: "Residential Welfare Team",
-      members: "Wang Chiew Hui (Spaces Director), Pang Chee Him (Dining Hall Director), Seah Wan Yu & Philina Lai"
-    },
-    {
-      name: "House Captains Team",
-      members: "Gerald Seet (Ursaia), Kelvin Neo (Nocturna), Engracia Loh (Ianthe), Myat Thu Kyaw (Triton), Ng Jingrong (Ankaa), Arnold Teo (Saren) with Tan Kit Yung (Coordinating Director - Interhouse Events)"
+      name: "USP Think Tank",
+      members: "Jerald Lim (Support Systems), Eric Toh (Ragxit), Sean Auyok (Toho), Darren Lim, Jazreel Low, Myat TK & Joyce Yeo"
     }]
   },
   {
     name: "Community Life",
-    headedBy: "Tee Shu Yun, Vice-President (Community Life)",
+    headedBy: "Teoh Xin Yi, Vice-President (Community Life)",
     image: vpcommlifeComm,
     teams: [{
-      name: "Deputy Directors",
-      members: "Tan Yan Tyng & Joyce Foo"
+      name: "Deputy Director",
+      members: "Sean Heng"
     },
     {
-      name: "Sports Director",
-      members: "Jeremy Png"
+      name: "Sports Directorate",
+      members: "Chua Jiin-Linn (Director), Sebastian Gwek & Ashley Goh"
     },
     {
-      name: "IG Coordinators",
-      members: "Edward Goh (Sports) & Andrea Tan (Non-Sports)"
+      name: "Cultural & Arts Directorate",
+      members: "Samantha Rin (Director), Xiang Min (Director), Taira Robles (Dinner Committee I/C), Preeteashwari, Soh Kai Xin, Yan Jean Lai"
+    },
+    {
+      name: "Operations & Logistics Directors",
+      members: "Eric Toh & Jazreel Low"
+    },
+    {
+      name: "IG & USProject Coordinators",
+      members: "Sean Heng (Non-Sports), Chua Jiin-Linn (Sports) & Teoh Xin Yi (USProjects)"
     },
     {
       name: "GUI Coordinators",
-      members: "Kathy Tan (Social, Cultural & Sports), Jazreel Low (Social, Cultural & Sports), Loh Xiang Bin (Welfare & Acad) & Teoh Xin Yi (Community Service)"
+      members: "Cheryl Tan, Jane Ang & Hsi Ning (Community Service)"
+    }]
+  },
+  {
+    name: "Student Welfare",
+    headedBy: "Sanchita Sachdev, Vice-President (Welfare)",
+    image: vpwelfareComm,
+    teams: [{
+      name: "Welfare Projects Team",
+      members: "Charmaine Lee (Director), Stella Soon (Deputy Director), Valeria Poh (Deputy Director), Andrea Chua, Nur Haziqah Mohd Yazib, Li Xin Foo, Kai Sen Chong, Kia Sim Kathy Tan, Tabitha Lee"
+    },
+    {
+      name: "Residential Welfare Team",
+      members: "Darren Lim & Raivat"
+    },
+    {
+      name: "Inter-House Coordinators",
+      members: "Arnold Teo & Ng Jingrong"
+    },
+    {
+      name: "Finance and Sponsorship",
+      members: "Archana"
+    }]
+  },
+  {
+    name: "Academic",
+    headedBy: "Chow Kit Ying, Academic Director",
+    image: academicComm,
+    teams: [{
+      name: "Deputy Academic Directors",
+      members: "Annina Zhang & Yan Chun"
+    },
+    {
+      name: "External Liaison Officers",
+      members: "Jazreel Low & Chaitanya"
+    },
+    {
+      name: "Internal Liaison Officers",
+      members: "Mark Goh, Mitchell, Tomoe Suzuki, Shuin Hern & Jasper"
+    },
+    {
+      name: "Data and Communications Coordinator",
+      members: "Nur Ridhuan, Zhu Tongyao & Jevon Neo"
     }]
   },
   {
     name: "Secretariat",
-    headedBy: "Jeremy Jee, Honorary General Secretary",
+    headedBy: "Chik Cheng Yao, Honorary General Secretary",
     image: hongensecComm,
     teams: [{
       name: "Spaces Design Team",
-      members: "Matthew Lee (Lead), Chia Yu Xuan (Lead), Chu Khoon Hwa & Andrea Tan"
+      members: "Ng Hui Ren (Lead), Soh Kai Yuan, Cheryl Ng, Andrea Tan, Joyce Yeo & Daniel Ho"
     },
     {
       name: "Visual Design Team",
-      members: "Carina Lim (Lead), Vandhana Jeyaram, Dong Yunfan, & Andrea Tan"
+      members: "Soh Kai Yuan (Lead), Andrea Tan, Zhang Yiyue, Anlydia, Xiang Min, Foo Yong Qing, Yan Chun, Jen Chik, Jasmine Liew"
     },
     {
       name: "Technology Development Team",
-      members: "Yuan Yuchuan (Lead), Varun Patro, Ahan Gupta, Sean Ng, Low Yew Woei & Chik Cheng Yao"
-    },
-    {
-      name: "Operations Manager",
-      members: "Gwyneth Cheng"
+      members: "Yuan Yuchuan (Internet of Things), Ahan Gupta (Website), Sean Ng & Chaitanya (Cinnabot) & Hong Shao Yang (Lobby Display)"
     }]
   },
   {
     name: "Finance",
-    headedBy: "Melissa Tang, Honorary Financial Secretary",
+    headedBy: "Quek Siying, Honorary Financial Secretary",
     image: honfinsecComm,
     teams: [{
       name: "Deputy Honorary Financial Secretary",
-      members: "Maria Teresa Boey"
+      members: "Daniel Chin Kiat Lam"
     },
     {
-      name: "Business Development Executives",
-      members: "Low Yew Woei (External) & Rachel Thomas (Internal)"
+      name: "Business Development & Marketing Executives (External)",
+      members: "Jong-Gang (Ayden) Bae (Lead), Tay Ming Kiat (Lead), Wee Su-Ann & Samantha Rin (Welfare)"
     },
     {
-      name: "Marketing Executives",
-      members: "Ng Shi Kai & Michelle Quek"
+      name: "Business Development & Marketing Executives (Internal)",
+      members: "Alvin Choo (Lead), Wee Su-Ann, Archana"
     },
     {
       name: "Financial Attaches",
-      members: "Quek Siying (Secretariat & Public Relations), Pang Chee Him (Welfare) & Andrea Chou Lim (Community Life)"
+      members: "Wee Su-Ann (Secretariat & Public Relations), Archana (Welfare) & Mandy Wang (Community Life)"
     }]
   },
   {
     name: "Freshmen Orientation",
-    headedBy: "Zhang Quyi, Freshmen Orientation Director",
+    headedBy: "Charmaine Goh, Freshmen Orientation Director",
     image: fopdirectorComm,
     teams: [{
       name: "Deputy Director",
-      members: "Annina Zhang"
+      members: "Cheryl Ng"
     },
     {
-      name: "Directors",
-      members: "Jazreel Low (Finance), Joyce Yeo (Creative), Merilynn Seng (Public Relations) & Jesmine Woon (Operations)"
+      name: "Orientation Camp (O'Camp)",
+      members: "Tarandeep Bardh (Project Director), Amanda Ho (Vice Project Director), Dinise Chng, Tanya Ang, Foo Lixin, Lin Yuan"
     },
     {
-      name: "Project Directors",
-      members: "Beatrice Low (Camp), Jenn (O’Week), Kathy Tan (Events), Jadyn Teo (Batch Project) & Teoh Xinyi (Community Engagement)"
+      name: "Orientation Week (O'Week)",
+      members: "Lee Chan Wai (Project Director), Tiffany Tee (Vice Project Director), Valerie Chua, Yip Sze Kay"
+    },
+    {
+      name: "Events",
+      members: "Bernice Lim (Project Director), Andrea Chua, Chloe Ng"
+    },
+    {
+      name: "Batch Project",
+      members: "Charlotte The (Project Director), Haziqah (Vice Project Director), Lee Zhi Xuan, Manita Goh"
+    },
+    {
+      name: "Finance",
+      members: "Valary Lim (Project Director), Chloe Lee, Mandy Wang, Tay Ming Kiat"
+    },
+    {
+      name: "Public Relations",
+      members: "Chan Qiu Qing (Project Director)"
+    },
+    {
+      name: "Creative",
+      members: "Soh Kai Xin (Project Director), Foo Yong Qing"
+    },
+    {
+      name: "Operations",
+      members: "Alvin Choo (Project Director), Jerlyn Ng, Chloe Lee, Claudine Tan"
     }]
   }
 ]
@@ -278,132 +379,132 @@ export const uscCommittees = [
 export const houseCommittees = [
   {
     name: "Ursaia",
-    image: ursaia,
+    image: housecapts,
     members: [
       {
-        name: "Gerald Seet",
+        name: "Wong Wen Wei",
         title: "House Captain"
       },
       {
-        name: "Pratyay Jaidev",
+        name: "Ryan Tan Wei Young",
         title: "Vice House Captain"
       },
       {
-        name: "Taira Robles",
+        name: "Manita Goh",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Samantha Rin",
+        name: "Ong Sing Huat, Jonathan",
         title: "Vice Chief Orientation Group Leader"
       }
     ]
   },
   {
     name: "Nocturna",
-    image: nocturna,
+    image: housecapts,
     members: [
       {
-        name: "Kelvin Neo",
+        name: "Ahmed Bahajjaj",
         title: "House Captain"
       },
       {
-        name: "Oh Pei Shan",
+        name: "Qian Zihan",
         title: "Vice House Captain"
       },
       {
-        name: "Gordon Chua",
+        name: "Taha Jailani",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Lee Weiqi",
+        name: "Venny Lewis",
         title: "Vice Chief Orientation Group Leader"
       }
     ]
   },
   {
     name: "Ianthe",
-    image: ianthe,
+    image: housecapts,
     members: [
       {
-        name: "Engracia Loh Qian Ying",
+        name: "Teow Junhao",
         title: "House Captain"
       },
       {
-        name: "Chik Cheng Yao",
+        name: "Lim Qian Hui",
         title: "Vice House Captain"
       },
       {
-        name: "Clara Lim Pei Ying",
+        name: "Rachel Huang",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Yap Joon Kiat Mitchell",
+        name: "Ajeya Mantri",
         title: "Vice Chief Orientation Group Leader"
       }
     ]
   },
   {
     name: "Triton",
-    image: triton,
+    image: housecapts,
     members: [
       {
-        name: "Myat Thu Kyaw",
+        name: "Cheong Siu Hong",
         title: "House Captain"
       },
       {
-        name: "Lee Chun Min",
+        name: "Vanessa Leong Kar Mun",
         title: "Vice House Captain"
       },
       {
-        name: "Chng Hui Ru Melanie",
+        name: "Jeslyn Ong Ting Ting",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Nikita Gupta",
+        name: "Ahmad Zaki Bin Yazid",
         title: "Vice Chief Orientation Group Leader"
       }
     ]
   },
   {
     name: "Ankaa",
-    image: ankaa,
+    image: housecapts,
     members: [
       {
-        name: "Ng Jingrong",
+        name: "Peng Yun Ting",
         title: "House Captain"
       },
       {
-        name: "Nadine Quah",
+        name: "Marion Kua Xin Yi",
         title: "Vice House Captain"
       },
       {
-        name: "Mohd Asyraf Zaidi",
+        name: "Dhameem Ansar S/O Bathusha",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Kew Yu Jing",
+        name: "Mohamad Rafi Bin Kamsani Chia",
         title: "Vice Chief Orientation Group Leader"
       }
     ]
   },
   {
     name: "Saren",
-    image: saren,
+    image: housecapts,
     members: [
       {
-        name: "Teo Kun Ho Arnold",
+        name: "Lam Wei Qi Vicki",
         title: "House Captain"
       },
       {
-        name: "Teo Xi Hui",
+        name: "Lee Wei Ren Matthew",
         title: "Vice House Captain"
       },
       {
-        name: "Jasmine Liew Yee Theng",
+        name: "Tho Jia Yi",
         title: "Chief Orientation Group Leader"
       },
       {
-        name: "Cheung Wai Him Samantha",
+        name: "Ooi Wen Ting",
         title: "Vice Chief Orientation Group Leader"
       }
     ]

@@ -211,7 +211,7 @@ export function formatEventsByDateTimeAndVenue(firestore, ignoreStandardSpaces =
       }
 
       for(var timeslot = 0; timeslot <= noOfTimeslots; timeslot++) {
-        const tempStartTime = event.startDate.clone().add(config.timeInterval * timeslot, 'minutes')
+        const tempStartTime = event.startDate.clone().add(config.timeInterval * timeslot, 'minutes').seconds(0)
 
         if (timeslot < noOfTimeslots) {
           _.merge(eventsByDateTime, {[tempStartTime.toString()]: {
