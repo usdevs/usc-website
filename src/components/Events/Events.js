@@ -3,11 +3,12 @@ import { Container, Row, Col, Button } from 'reactstrap';
 import { headerEvent as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import CreateEventButton from '../reusable/CreateEventButton.js';
 
-const calendarLink = "http://bit.ly/uspcalendar"
+const calendarLink = "http://bit.ly/uspcalendar";
 
 class Events extends Component {
-  googleCalendarBtn = () => <Button color="primary" className="d-block d-sm-none" block><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
+googleCalendarBtn = () => <Button color="primary" className="d-block d-sm-none" block><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
 
   render() {
     return (
@@ -25,12 +26,8 @@ class Events extends Component {
                 <a href={calendarLink}>
                   <Button color="primary" className="d-none d-sm-block"><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
                 </a>
+                <CreateEventButton/>
               </div>
-            </div>
-            <div>
-              <a href={calendarLink}>
-                <Button color="primary" className="d-block d-sm-none" block><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
-              </a>
             </div>
             <hr className="my-2" />
           </Col>
