@@ -62,6 +62,11 @@ const categories = [
         icon: 'comment',
         link: '/feedback',
         color: 'mediumseagreen'
+      }, {
+        name: 'Dining Credit System',
+        icon: 'comment',
+        link: 'http://gg.gg/hungrycinnamon',
+        color: 'mediumseagreen'
       }]
     },
     {

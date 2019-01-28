@@ -379,7 +379,7 @@ export const uscCommittees = [
 export const houseCommittees = [
   {
     name: "Ursaia",
-    image: housecapts,
+    image: ursaia,
     members: [
       {
         name: "Wong Wen Wei",
@@ -401,7 +401,7 @@ export const houseCommittees = [
   },
   {
     name: "Nocturna",
-    image: housecapts,
+    image: nocturna,
     members: [
       {
         name: "Ahmed Bahajjaj",
@@ -423,7 +423,7 @@ export const houseCommittees = [
   },
   {
     name: "Ianthe",
-    image: housecapts,
+    image: ianthe,
     members: [
       {
         name: "Teow Junhao",
@@ -445,7 +445,7 @@ export const houseCommittees = [
   },
   {
     name: "Triton",
-    image: housecapts,
+    image: triton,
     members: [
       {
         name: "Cheong Siu Hong",
@@ -467,7 +467,7 @@ export const houseCommittees = [
   },
   {
     name: "Ankaa",
-    image: housecapts,
+    image: ankaa,
     members: [
       {
         name: "Peng Yun Ting",
@@ -489,7 +489,7 @@ export const houseCommittees = [
   },
   {
     name: "Saren",
-    image: housecapts,
+    image: saren,
     members: [
       {
         name: "Lam Wei Qi Vicki",
