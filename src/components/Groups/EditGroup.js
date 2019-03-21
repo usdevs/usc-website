@@ -83,13 +83,13 @@ class EditGroup extends Component {
       <Row>
         <Col>
           <div className="d-flex">
-            <h1 className="display-3">Edit Interest Group</h1>
+            <h1 className="display-3">Edit Group</h1>
           </div>
         </Col>
       </Row>
       <Row>
         {
-          group ?<Col>
+          group ? <Col>
             <GroupForm
               submit={this.updateGroup}
               initialValues={group}

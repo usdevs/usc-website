@@ -55,18 +55,79 @@ const categories = [
       color: 'dodgerblue'
     }]
   },*/
-    {
-      name: 'General',
+  {
+    name: 'USC',
+    buttons: [{
+      name: 'MC Minutes & AGM Report',
+      icon: 'file-alt',
+      link: 'https://orgsync.com/134647/files/1302496',
+      color: 'dodgerblue'
+    }, {
+      name: 'USC Constitution',
+      icon: 'file-alt',
+      link: 'https://orgsync.com/134647/files/1559870',
+      color: 'dodgerblue'
+    }, {
+      name: 'USC + USP Logos',
+      icon: 'file-alt',
+      link: 'https://orgsync.com/134647/files/1066978',
+      color: 'dodgerblue'
+    }, {
+      name: 'Logistics List',
+      icon: 'box-open',
+      link: 'http://gg.gg/USPlogs',
+      color: 'dodgerblue'
+    },{
+      name: 'Welfare Pack Survey Results',
+      icon: 'comment',
+      link: 'https://orgsync.com/134647/files/1485601',
+      color: 'dodgerblue'
+    }]
+  }, {
+      name: 'Useful Links',
       buttons: [{
-        name: 'Feed-back',
-        icon: 'comment',
-        link: '/feedback',
-        color: 'mediumseagreen'
+        name: 'Cinna Bot',
+        icon: 'robot',
+        link: 'http://t.me/cinnabot',
+        color: 'darkorange'
+      }, {
+        name: 'USP Module Timetable',
+        icon: 'chalkboard-teacher',
+        link: 'http://gg.gg/uspmodules',
+        color: 'darkorange'
       }, {
         name: 'Dining Credit System',
-        icon: 'comment',
+        icon: 'utensils',
         link: 'http://gg.gg/hungrycinnamon',
-        color: 'mediumseagreen'
+        color: 'darkorange'
+      }, {
+        name: 'Room Fault Reporting',
+        icon: 'wrench',
+        link: 'http://gg.gg/faultycinnamon',
+        color: 'darkorange'
+      },{
+        name: 'Site Feedback',
+        icon: 'globe',
+        link: '/feedback',
+        color: 'darkorange'
+      }]
+    }, {
+      name: 'Communication Channels',
+      buttons: [{
+        name: 'USChannel on Telegram',
+        icon: ['fab', 'telegram'],
+        link: 'http://t.me/USPChannel',
+        color: 'steelblue'
+      }, {
+        name: 'USP Life on Facebook',
+        icon: ['fab', 'facebook'],
+        link: 'http://fb.com/groups/usplife',
+        color: 'steelblue'
+      }, {
+        name: 'USP Group on LinkedIn',
+        icon: ['fab', 'linkedin'],
+        link: 'http://gg.gg/usplinkedin',
+        color: 'steelblue'
       }]
     },
     {
@@ -87,24 +148,28 @@ const categories = [
         link: '/manageevents',
         color: 'tomato'
       }]
-    },
-    {
+    }, {
       name: 'Groups',
       buttons: [{
         name: 'See All Groups',
         icon: 'users',
         link: '/groups',
-        color: 'steelblue'
+        color: 'mediumseagreen'
       }, {
         name: 'Create Interest Group',
         icon: 'plus',
         link: '/createinterestgroup',
-        color: 'steelblue'
+        color: 'mediumseagreen'
+      }, {
+        name: 'Create Circle',
+        icon: 'plus',
+        link: '/createcircle',
+        color: 'mediumseagreen'
       }, {
         name: 'Manage My Groups',
         icon: 'users',
         link: '/managegroups',
-        color: 'steelblue'
+        color: 'mediumseagreen'
       }]
     },
   /*  {
@@ -157,16 +222,33 @@ class Dashboard extends Component {
 
     return (
       <Col key={name+link} xs="4" md="2">
-        <div onClick={() => history.push(link)} className="h-100 w-100 rounded d-flex align-items-center justify-content-center" style={{backgroundColor: color, maxWidth: '150px'}}>
-          <div className="pt-3 pb-3">
-            <div className="d-flex justify-content-center w-100 mb-2">
-              <FontAwesomeIcon icon={icon} color="white" size="3x" />
+      {
+        link.startsWith("http") ?
+          <a href={link}>
+            <div className="h-100 w-100 rounded d-flex align-items-center justify-content-center" style={{backgroundColor: color, maxWidth: '150px'}}>
+              <div className="pt-3 pb-3">
+                <div className="d-flex justify-content-center w-100 mb-2">
+                  <FontAwesomeIcon icon={icon} color="white" size="3x" />
+                </div>
+                <div className="d-flex justify-content-center w-100">
+                  <h4 className="text-center text-white mb-0 w-75">{name}</h4>
+                </div>
+              </div>
             </div>
-            <div className="d-flex justify-content-center w-100">
-              <h4 className="text-center text-white mb-0 w-75">{name}</h4>
+          </a>
+        :
+          <div onClick={() => history.push(link)} className="h-100 w-100 rounded d-flex align-items-center justify-content-center" style={{backgroundColor: color, maxWidth: '150px'}}>
+            <div className="pt-3 pb-3">
+              <div className="d-flex justify-content-center w-100 mb-2">
+                <FontAwesomeIcon icon={icon} color="white" size="3x" />
+              </div>
+              <div className="d-flex justify-content-center w-100">
+                <h4 className="text-center text-white mb-0 w-75">{name}</h4>
+              </div>
             </div>
           </div>
-        </div>
+      }
+
       </Col>)
   }
 

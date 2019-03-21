@@ -15,7 +15,7 @@ import { getGroupTypes } from '../../actions/GroupsActions'
 import ability from '../../utils/ability'
 import LinkModal from '../reusable/LinkModal'
 
-class InterestGroupForm extends Component {
+class CircleForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
@@ -29,31 +29,6 @@ class InterestGroupForm extends Component {
     this.state = {
       submitted: false
     }
-  }
-
-  componentWillMount() {
-    const { firestore } = this.context.store
-
-    getGroupTypes(firestore)
-  }
-
-  groupOptions = (groupTypes) => {
-    const { forInterestGroup } = this.props
-
-    var options = []
-
-    if(groupTypes.isLoaded) {
-      _.forEach(groupTypes.ordered, (type) => {
-        if(!(forInterestGroup && type.category !== config.categoryIDs.ig)) {
-          options.push({
-            id: type.id,
-            display: forInterestGroup ? type.subName : type.name
-          })
-        }
-      })
-    }
-
-    return (options)
   }
 
   showMembers = (formApi) => {
@@ -100,13 +75,6 @@ class InterestGroupForm extends Component {
     return validateNotEmpty(value) || duplicateValidation( value, values.members )
   }
 
-  typeValidate = (formApi, value) => {
-    const { groupTypes } = this.props
-    formApi.setValue('category', groupTypes.data[value] ? groupTypes.data[value].category : null)
-
-    return validateNotEmpty(value)
-  }
-
   submit = (values) => {
 
     var group = values
@@ -149,69 +117,46 @@ class InterestGroupForm extends Component {
   render() {
     const { submitting } = this.state
     var { groupTypes, btnText, modal, initialValues, forInterestGroup } = this.props
-    const isInterestGroup = initialValues ? initialValues.category === config.categoryIDs.ig : forInterestGroup ? true : false
 
     initialValues = initialValues ? initialValues : {
       noOfMembers: config.minimumIGMembers,
-      status: "active"
+      status: "active",
+      category: "G3RcP1MuBTbGIgCxqWXj",
+      type: "eou8taQznNBJ8vvGyejp"
     }
 
     return(<div><Form initialValues={initialValues} getApi={(api) => {this.formApi = api}} onSubmit={ (values) => this.submit(values) }>
       { ({ formApi }) => (
        <div>
-         <DropdownInput
-             field="status"
-             hidden={true}
-             options={_.flatMap(groupStatuses, (status) => {return({id: status.id, display: status.name})})}/>
          <TextInput
              field="category"
+             hidden={true} />
+         <TextInput
+             field="type"
              hidden={true} />
           <h3>Name</h3>
           <TextInput
             field="name"
-            placeholder="Enter the group name"
+            placeholder="Enter the Circle name"
             errortext="Please enter a name"
             validate={ validateNotEmpty }
             validateOnBlur
             className="mb-3" />
-          <h3>Type</h3>
-          <DropdownInput
-              field="type"
-              placeholder="Select a Type"
-              errortext="Please select a type"
-              validate={ (value) => this.typeValidate(formApi, value) }
-              disabled={ !groupTypes.isLoaded ? true : ability.can('manage', 'groups') ? false : this.props.initialValues ? true : false }
-              loading={ !groupTypes.isLoaded }
-              validateOnChange
-              options={this.groupOptions(groupTypes)}
-              className="mb-3"/>
           <h3>Description</h3>
           <TextAreaInput
             field="description"
-            placeholder="Enter a short description of your intended Interest Group."
+            placeholder="Enter a short description of your Circle."
             errortext="Please enter a description"
             validate={ validateNotEmpty }
             validateOnBlur
             className="mb-3" />
-          <h3>Activities</h3>
-          <TextAreaInput
-            field="activities"
-            placeholder="Please include both regular activities, and proposed one-off events (if applicable)."
-            errortext="Please describe your activities"
-            validate={ validateNotEmpty }
-            validateOnBlur
-            className="mb-3" />
-          <h3 hidden={!isInterestGroup}>Required Support <small><Badge color="secondary">Optional</Badge></small></h3>
-          <TextAreaInput
-            field="support"
-            hidden={!isInterestGroup}
-            placeholder="Let us know what your interest group would benefit from: Funding, venues, professor’s contacts, etc."
-            className="mb-3" />
-         <h3 hidden={!isInterestGroup}>Group Chat Join Link <small><Badge color="secondary">Optional</Badge></small></h3>
+         <h3>Group Chat Join Link</h3>
          <TextInput
            field="chat"
-           hidden={!isInterestGroup}
-           placeholder="Telegram/Whatsapp Chat Link"
+           placeholder="Telegram Chat Link"
+           errortext="Please enter the chat link"
+           validate={ validateNotEmpty }
+           validateOnBlur
            className="mb-3" />
           <h3>Logo/Image <small><Badge color="secondary">Optional</Badge></small></h3>
           <ImageInput field="logo" className="mb-3"  />
@@ -248,11 +193,10 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     userProfiles: state.firestore.data.userProfiles,
-    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }
 
 export default compose(
   firebaseConnect(),
   connect(mapStateToProps)
-)(InterestGroupForm)
+)(CircleForm)

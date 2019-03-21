@@ -22,6 +22,7 @@ import Groups from './components/Groups/Groups'
 import Group from './components/Groups/Group'
 import GroupAdmin from './components/Groups/GroupAdmin'
 import CreateGroup from './components/Groups/CreateGroup'
+import CreateCircle from './components/Groups/CreateCircle'
 import ManageGroups from './components/Groups/ManageGroups'
 import EditGroup from './components/Groups/EditGroup'
 import Settings from './components/Users/Settings'
@@ -47,9 +48,10 @@ import { Jumbotron } from 'reactstrap'
 import { faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock,
   faTrashAlt, faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt,
-  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes, faComment, faGlobe
+  faToolbox, faChalkboardTeacher, faMobileAlt, faTimes, faComment, faGlobe, faRobot,
+  faUtensils, faWrench, faBoxOpen
 } from '@fortawesome/pro-solid-svg-icons'
-import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fab, faTelegram } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
 import { initialiseGAPI } from './actions/UsersActions'
@@ -58,7 +60,7 @@ import Can from './utils/Can'
 fontawesome.library.add(brands, faArrowCircleLeft, faArrowCircleRight, faCircle, faSpinner,
   faUpload, faPlus, faHeart, faSquare, faCalendarAlt, faFileAlt, faUserClock, faTrashAlt,
   faFrown, faUsers, faComments, faSignInAlt, faColumns, faSignOutAlt, faToolbox, faChalkboardTeacher,
-  faMobileAlt, faTimes, fab, faComment, faGlobe)
+  faMobileAlt, faTimes, fab, faComment, faGlobe, faRobot, faUtensils, faWrench, faBoxOpen, faTelegram)
 
 
 firebase.initializeApp(firebaseConfig)
@@ -125,6 +127,7 @@ render(
             <Route path="/manageevents" component={ManageEvents}/>
             <Route path="/editevent/:eventID" component={EditEvent}/>
             <Route path="/createinterestgroup" component={CreateInterestGroup}/>
+            <Route path="/createcircle" component={CreateCircle}/>
             <Route path="/groups" component={Groups}/>
             <Route path="/group/:groupID" component={Group}/>
             <Route path="/managegroups" component={ManageGroups}/>
