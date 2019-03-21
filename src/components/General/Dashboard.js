@@ -93,7 +93,7 @@ const categories = [
       }, {
         name: 'USP Module Timetable',
         icon: 'chalkboard-teacher',
-        link: 'http://gg.gg/uspmodules',
+        link: 'http://www.usp.nus.edu.sg/curriculum/module-timetable',
         color: 'darkorange'
       }, {
         name: 'Dining Credit System',

@@ -16,6 +16,10 @@
 .env.test.local
 .env.production.local
 
+# api key
+apiGoogleconfig.json
+config.js
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

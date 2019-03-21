@@ -1,33 +1,27 @@
-import React, { Component } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Jumbotron
-} from 'reactstrap';
+import React, { Component } from "react";
+import { Container, Row, Col, Jumbotron } from "reactstrap";
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker,
+  Marker
 } from "react-google-maps";
-import { headerContactUs as header } from '../../resources/images.js'
+import { headerContactUs as header } from "../../resources/images.js";
 
-const MapWithAMarker = withScriptjs(withGoogleMap(props =>
-  <GoogleMap
-    defaultZoom={16}
-    defaultCenter={{ lat: 1.3067028, lng: 103.7729797 }}
-  >
-    <Marker
-      position={{ lat: 1.3067028, lng: 103.7734000 }}
-    />
-  </GoogleMap>
-));
-
+const MapWithAMarker = withScriptjs(
+  withGoogleMap(props => (
+    <GoogleMap
+      defaultZoom={16}
+      defaultCenter={{ lat: 1.3067028, lng: 103.7729797 }}
+    >
+      <Marker position={{ lat: 1.3067028, lng: 103.7734 }} />
+    </GoogleMap>
+  ))
+);
 
 class ContactUs extends Component {
   render() {
-    return(
+    return (
       <Container>
         <Row>
           <Col>
@@ -51,20 +45,31 @@ class ContactUs extends Component {
           <Col sm="12" md="6">
             <Jumbotron className="pb-0 mb-0 h-100">
               <h4>NUS Students' University Scholars Club</h4>
-              <p className="lead">National University of Singapore<br/>Cinnamon College, University Town<br/>18 College Avenue East S138593</p>
-              <br/>
-              <p>If you have any queries or questions regarding the University Scholars Club and would like to speak to someone,
-                please email <a href="mailto:usc.hongensec@u.nus.edu">usc.hongensec@u.nus.edu</a>.</p>
+              <p className="lead">
+                National University of Singapore
+                <br />
+                Cinnamon College, University Town
+                <br />
+                18 College Avenue East S138593
+              </p>
+              <br />
+              <p>
+                If you have any queries or questions regarding the University
+                Scholars Club and would like to speak to someone, please email{" "}
+                <a href="mailto:usc.hongensec@u.nus.edu">
+                  usc.hongensec@u.nus.edu
+                </a>
+                .
+              </p>
             </Jumbotron>
           </Col>
         </Row>
         <Row>
-          <br/>
+          <br />
         </Row>
       </Container>
-    )
+    );
   }
-
 }
 
 export default ContactUs;
