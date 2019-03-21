@@ -26,7 +26,7 @@ export const groupStatuses = {
 }
 
 export const firebaseConfig = {
-    apiKey: "***REMOVED***",
+    apiKey: "AIzaSyAb6W6yLDpM_E7qPgh3lOmw6iqERysHUDg",
     authDomain: "usc-website-206715.firebaseapp.com",
     databaseURL: "https://usc-website-206715.firebaseio.com",
     projectId: "usc-website-206715",

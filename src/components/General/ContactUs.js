@@ -42,7 +42,7 @@ class ContactUs extends Component {
         <Row>
           <Col sm="12" md="6">
             <MapWithAMarker
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&v=3.exp&libraries=geometry,drawing,places"
+              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAb6W6yLDpM_E7qPgh3lOmw6iqERysHUDg&v=3.exp&libraries=geometry,drawing,places"
               loadingElement={<div style={{ height: `100%` }} />}
               containerElement={<div style={{ height: `400px` }} />}
               mapElement={<div style={{ height: `100%` }} />}
