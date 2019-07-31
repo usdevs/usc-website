@@ -7,6 +7,7 @@ import {
   Marker
 } from "react-google-maps";
 import { headerContactUs as header } from "../../resources/images.js";
+import { firebaseConfig } from "../../resources/config.js";
 
 const MapWithAMarker = withScriptjs(
   withGoogleMap(props => (
@@ -18,6 +19,8 @@ const MapWithAMarker = withScriptjs(
     </GoogleMap>
   ))
 );
+
+const firebaseApiKey = firebaseConfig.apiKey;
 
 class ContactUs extends Component {
   render() {
@@ -36,7 +39,7 @@ class ContactUs extends Component {
         <Row>
           <Col sm="12" md="6">
             <MapWithAMarker
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&v=3.exp&libraries=geometry,drawing,places"
+              googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${firebaseApiKey}&v=3.exp&libraries=geometry,drawing,places`}
               loadingElement={<div style={{ height: `100%` }} />}
               containerElement={<div style={{ height: `400px` }} />}
               mapElement={<div style={{ height: `100%` }} />}

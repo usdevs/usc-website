@@ -20,6 +20,7 @@
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^4.3.0",
+    "dotenv": "^8.0.0",
     "enzyme": "^3.3.0",
     "eslint": "^4.18.2",
     "firebase": "^5.1.0",
