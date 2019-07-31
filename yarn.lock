@@ -936,10 +936,10 @@
   dependencies:
     sift "^7.0.1"
 
-"@casl/react@^0.7.1":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@casl/react/-/react-0.7.2.tgz#a5d79942187da7a236bd4697caf0edd0fc48203f"
-  integrity sha512-XCxE/digjUxy2LCvz/4fWugvd0aXPssOFnH3qr9dE1EIzn3ssiMG5HAILll9y5PffH8POWBnbJe2sp/4TCgN4w==
+"@casl/react@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@casl/react/-/react-1.0.4.tgz#7e3adad4c811c51b787e8573aa747c60bfa18cfe"
+  integrity sha512-vdFkjlqFM7FaBPja8LZ/E8/jYiln/r/ol9eARwSR2NkT358Q8SdvVLg9TkIm3kOh17P1irOcT8U5za+VscNRHA==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
