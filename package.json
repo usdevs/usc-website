@@ -23,7 +23,7 @@
     "dotenv": "^8.0.0",
     "enzyme": "^3.3.0",
     "eslint": "^4.18.2",
-    "firebase": "^5.1.0",
+    "firebase": "^6.3.3",
     "formik": "^0.11.11",
     "googlemaps": "^1.12.0",
     "history": "^4.7.2",
