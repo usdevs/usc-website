@@ -80,7 +80,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "moment": "^2.22.2",
     "prettier": "^1.18.2",
-    "react-big-calendar": "^0.19.1",
+    "react-big-calendar": "^0.22.0",
     "style-loader": "^0.21.0",
     "webpack-dev-server": "3.2.1"
   },
