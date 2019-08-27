@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { Container, Row, Col } from 'reactstrap'
 import CircleForm from './CircleForm'
 import { createGroup } from '../../actions/GroupsActions'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router-dom'
 
 class CreateGroup extends Component {
@@ -22,32 +22,34 @@ class CreateGroup extends Component {
   render() {
     const { history } = this.props
 
-    return (<Container>
-      <Row>
-        <Col>
-          <div className="d-flex">
-            <h1 className="display-3">Create Circle</h1>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <CircleForm
-            submit={this.createGroup}
-            btnText="Submit Application"
-            modal={{
-              title: 'Application Submitted!',
-              body: 'Your application has been successfully submitted! You will be contacted in future regarding it!',
-              primaryBtnText: 'To Dashboard',
-              secondaryBtnText: 'Dismiss',
-              onSubmit: () => history.push('/dashboard')
-            }}/>
-        </Col>
-      </Row>
-    </Container>)
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <div className="d-flex">
+              <h1 className="display-3">Create Circle</h1>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <CircleForm
+              submit={this.createGroup}
+              btnText="Submit Application"
+              modal={{
+                title: 'Application Submitted!',
+                body:
+                  'Your application has been successfully submitted! You will be contacted in future regarding it!',
+                primaryBtnText: 'To Dashboard',
+                secondaryBtnText: 'Dismiss',
+                onSubmit: () => history.push('/dashboard')
+              }}
+            />
+          </Col>
+        </Row>
+      </Container>
+    )
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect()
-)(CreateGroup))
+export default withRouter(compose(firebaseConnect())(CreateGroup))

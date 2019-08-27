@@ -6,7 +6,7 @@ import { Container, Row, Col } from 'reactstrap'
 import EventForm from './EventForm'
 import EventCalendar from './Calendar/EventCalendar'
 import { createEvent } from '../../actions/EventsActions'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router-dom'
 
 class CreateEvent extends Component {
@@ -23,43 +23,48 @@ class CreateEvent extends Component {
 
   render() {
     const { history } = this.props
-    
-    return (<Container>
-      <Row>
-        <Col>
-          <div className="d-flex">
-            <h1 className="display-3">Create Event</h1>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs="12" lg="8">
-          <EventForm
-            submit={this.createEvent}
-            btnText="Create Event"
-            modal={{
-              title: 'Event Created!',
-              body: 'Your event has been successfully created!',
-              primaryBtnText: 'To Events',
-              secondaryBtnText: 'Dismiss',
-              onSubmit: () => history.push('/events')
-            }}/>
-        </Col>
-        <Col className="my-2 d-none d-lg-block" md="4">
-          <EventCalendar bySpaces={true} stack={true}/>
-        </Col>
-      </Row>
-    </Container>)
+
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <div className="d-flex">
+              <h1 className="display-3">Create Event</h1>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12" lg="8">
+            <EventForm
+              submit={this.createEvent}
+              btnText="Create Event"
+              modal={{
+                title: 'Event Created!',
+                body: 'Your event has been successfully created!',
+                primaryBtnText: 'To Events',
+                secondaryBtnText: 'Dismiss',
+                onSubmit: () => history.push('/events')
+              }}
+            />
+          </Col>
+          <Col className="my-2 d-none d-lg-block" md="4">
+            <EventCalendar bySpaces={true} stack={true} />
+          </Col>
+        </Row>
+      </Container>
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth,
+    auth: state.firebase.auth
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(CreateEvent))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(CreateEvent)
+)

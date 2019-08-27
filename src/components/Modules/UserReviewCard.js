@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Container, Row, Col, Button } from 'reactstrap';
+import { Card, Container, Row, Col, Button } from 'reactstrap'
 import { config } from '../../resources/config'
 import { getModule } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
@@ -14,7 +14,7 @@ class UserReviewCard extends Component {
     }
 
     const { firestore, moduleReview } = props
-    getModule(firestore, moduleReview.module, (snapshot) => {
+    getModule(firestore, moduleReview.module, snapshot => {
       this.setState({
         module: snapshot.data()
       })
@@ -26,21 +26,33 @@ class UserReviewCard extends Component {
     const { moduleReview, history } = this.props
     const { review, semester, id } = moduleReview
 
-    return(<Card body>
-      <Container className="m-0 p-0">
-        <Row className="d-flex align-items-center">
-          <Col xs="12">
-            { module  ?
-              <h3 className="text-primary mb-0">{module.name}<small className="text-muted">{' '}({module.code})</small></h3>
-              : ''
-            }
-            <h4 className="mt-2 text-secondary">taken in {semester}</h4>
-            <p className="mb-2">{_.truncate(review, { 'length': config.descriptionPreviewLength })}</p>
-            <Button outline onClick={() => history.push('/editreview/'+id)}>Edit</Button>
-          </Col>
-        </Row>
-      </Container>
-    </Card>)
+    return (
+      <Card body>
+        <Container className="m-0 p-0">
+          <Row className="d-flex align-items-center">
+            <Col xs="12">
+              {module ? (
+                <h3 className="text-primary mb-0">
+                  {module.name}
+                  <small className="text-muted"> ({module.code})</small>
+                </h3>
+              ) : (
+                ''
+              )}
+              <h4 className="mt-2 text-secondary">taken in {semester}</h4>
+              <p className="mb-2">
+                {_.truncate(review, {
+                  length: config.descriptionPreviewLength
+                })}
+              </p>
+              <Button outline onClick={() => history.push('/editreview/' + id)}>
+                Edit
+              </Button>
+            </Col>
+          </Row>
+        </Container>
+      </Card>
+    )
   }
 }
 

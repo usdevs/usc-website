@@ -4,12 +4,12 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Input, Button, FormFeedback } from 'reactstrap'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import Autosuggest from 'react-autosuggest';
+import Autosuggest from 'react-autosuggest'
 import IntlCard from '../IntlProgs/IntlCard'
 import { getIntlProgs, getIntlProg } from '../../actions/IntlProgsActions'
 import { formatFirestoreData } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 
 class GroupAutocomplete extends Component {
   static contextTypes = {
@@ -30,12 +30,12 @@ class GroupAutocomplete extends Component {
     const { firestore } = this.context.store
     const { fieldState, intlProgs } = this.props
 
-    if(!intlProgs.isLoaded) {
+    if (!intlProgs.isLoaded) {
       getIntlProgs(firestore)
     } else {
       const { value } = fieldState
 
-      if(value && value !== '') {
+      if (value && value !== '') {
         this.setState({
           selected: intlProgs.data[value]
         })
@@ -48,8 +48,8 @@ class GroupAutocomplete extends Component {
     const { selected } = this.state
     const { value } = newProps
 
-    if(value && value !== '' && selected && value !== selected.id) {
-      getIntlProg(firestore, value, (snapshot) => {
+    if (value && value !== '' && selected && value !== selected.id) {
+      getIntlProg(firestore, value, snapshot => {
         this.setState({
           selected: {
             ...snapshot.data(),
@@ -68,22 +68,20 @@ class GroupAutocomplete extends Component {
   getSuggestions = value => {
     const { intlProgs } = this.props
 
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
+    const inputValue = value.trim().toLowerCase()
+    const inputLength = inputValue.length
 
-    return inputLength === 0 ? [] : intlProgs.ordered.filter(intlProg =>
-      intlProg.name.toLowerCase().slice(0, inputLength) === inputValue
-    );
-  };
+    return inputLength === 0
+      ? []
+      : intlProgs.ordered.filter(
+          intlProg =>
+            intlProg.name.toLowerCase().slice(0, inputLength) === inputValue
+        )
+  }
 
   getSuggestionValue = suggestion => {
-    const {
-      fieldApi
-    } = this.props
-    const {
-      setValue,
-      setTouched
-    } = fieldApi;
+    const { fieldApi } = this.props
+    const { setValue, setTouched } = fieldApi
 
     setValue(suggestion.id)
     setTouched()
@@ -93,39 +91,41 @@ class GroupAutocomplete extends Component {
     })
 
     return suggestion.name
-  };
+  }
 
-  renderSuggestion = suggestion => <span className="suggestion-content list-unstyled">
-    <IntlCard
-      key={suggestion.id}
-      intlProg={suggestion}
-      isHorizontal
-      hideButtons
-    />
-  </span>
+  renderSuggestion = suggestion => (
+    <span className="suggestion-content list-unstyled">
+      <IntlCard
+        key={suggestion.id}
+        intlProg={suggestion}
+        isHorizontal
+        hideButtons
+      />
+    </span>
+  )
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: this.getSuggestions(value)
-    });
-  };
+    })
+  }
 
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
-    });
-  };
+    })
+  }
 
   inputProps = () => {
-    return ({
-      placeholder: "Enter an International Programme Name",
+    return {
+      placeholder: 'Enter an International Programme Name',
       value: this.state.searchText,
       onChange: (event, { newValue }) => {
         this.setState({
           searchText: newValue
-        });
+        })
       }
-    })
+    }
   }
 
   renderInputComponent = inputProps => {
@@ -134,18 +134,26 @@ class GroupAutocomplete extends Component {
 
     var inputComponents = []
 
-    if(!intlProgs.isLoaded) {
-      inputComponents.push(<FontAwesomeIcon icon="spinner" className="mr-2" spin key="groupLoader" />)
+    if (!intlProgs.isLoaded) {
+      inputComponents.push(
+        <FontAwesomeIcon
+          icon="spinner"
+          className="mr-2"
+          spin
+          key="groupLoader"
+        />
+      )
     }
 
-    if(selected && intlProgs.isLoaded) {
+    if (selected && intlProgs.isLoaded) {
       inputComponents.push(
         <IntlCard
           intlProg={selected}
           key={selected.id + 'selected'}
           isHorizontal
           hideButtons
-        />)
+        />
+      )
       inputComponents.push(
         <Button
           color="danger"
@@ -154,19 +162,32 @@ class GroupAutocomplete extends Component {
           onClick={() => {
             fieldApi.setValue(null)
             this.setState({
-              selected: null,
+              selected: null
             })
           }}
-          key='deleteSelection'>
+          key="deleteSelection"
+        >
           <FontAwesomeIcon icon="trash-alt" />
-        </Button>)
+        </Button>
+      )
     } else {
-      inputComponents.push(<Input key="groupInput" type="text" {...inputProps} disabled={ !intlProgs.isLoaded } invalid={ this.props.fieldState.error ? true : false } />)
-      if(fieldState.error) {
-        inputComponents.push(<FormFeedback key="groupError">{ errortext ? errortext : fieldState.error}</FormFeedback>)
+      inputComponents.push(
+        <Input
+          key="groupInput"
+          type="text"
+          {...inputProps}
+          disabled={!intlProgs.isLoaded}
+          invalid={this.props.fieldState.error ? true : false}
+        />
+      )
+      if (fieldState.error) {
+        inputComponents.push(
+          <FormFeedback key="groupError">
+            {errortext ? errortext : fieldState.error}
+          </FormFeedback>
+        )
       }
     }
-
 
     return inputComponents
   }
@@ -174,7 +195,7 @@ class GroupAutocomplete extends Component {
   render() {
     const { suggestions } = this.state
 
-    return(
+    return (
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -183,7 +204,8 @@ class GroupAutocomplete extends Component {
         renderSuggestion={this.renderSuggestion}
         inputProps={this.inputProps()}
         renderInputComponent={this.renderInputComponent}
-      />)
+      />
+    )
   }
 }
 
@@ -193,7 +215,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(GroupAutocomplete))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(GroupAutocomplete)
+)

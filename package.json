@@ -69,12 +69,17 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "format:ci": "prettier --list-different \"src/**/*.{js,jsx}\""
   },
   "devDependencies": {
     "css-loader": "^3.1.0",
     "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "moment": "^2.22.2",
+    "prettier": "^1.18.2",
     "react-big-calendar": "^0.19.1",
     "style-loader": "^0.21.0",
     "webpack-dev-server": "3.2.1"

@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
+import React, { Component } from 'react'
+import { Container, Row, Col, Button } from 'reactstrap'
 import { headerEvent as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import CreateEventButton from '../reusable/CreateEventButton.js';
+import CreateEventButton from '../reusable/CreateEventButton.js'
 
-const calendarLink = "http://bit.ly/uspcalendar";
+const calendarLink = 'http://bit.ly/uspcalendar'
 
 class Events extends Component {
-googleCalendarBtn = () => <Button color="primary" className="d-block d-sm-none" block><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
+  googleCalendarBtn = () => (
+    <Button color="primary" className="d-block d-sm-none" block>
+      <FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />
+      View on Google Calendar
+    </Button>
+  )
 
   render() {
     return (
@@ -21,12 +26,22 @@ googleCalendarBtn = () => <Button color="primary" className="d-block d-sm-none" 
         <Row>
           <Col>
             <div className="d-flex">
-              <div className="p-2"><h1 className="mb-0" style={{fontWeight: 300}}>Events</h1></div>
+              <div className="p-2">
+                <h1 className="mb-0" style={{ fontWeight: 300 }}>
+                  Events
+                </h1>
+              </div>
               <div className="d-flex ml-auto mr-3 p-2 align-items-center">
                 <a href={calendarLink}>
-                  <Button color="primary" className="d-none d-sm-block"><FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />View on Google Calendar</Button>
+                  <Button color="primary" className="d-none d-sm-block">
+                    <FontAwesomeIcon
+                      icon={['fab', 'google']}
+                      className="mr-2"
+                    />
+                    View on Google Calendar
+                  </Button>
                 </a>
-                <CreateEventButton/>
+                <CreateEventButton />
               </div>
             </div>
             <hr className="my-2" />
@@ -34,11 +49,11 @@ googleCalendarBtn = () => <Button color="primary" className="d-block d-sm-none" 
         </Row>
         <Row>
           <Col>
-            <EventCalendar hideSpaceOnly={true}/>
+            <EventCalendar hideSpaceOnly={true} />
           </Col>
         </Row>
       </Container>
-    );
+    )
   }
 }
 

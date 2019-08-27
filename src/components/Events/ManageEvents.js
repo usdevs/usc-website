@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { connect } from 'react-redux';
-import {
-  Container, Row, Col,
-  Button,
-  Input
-} from 'reactstrap';
+import { connect } from 'react-redux'
+import { Container, Row, Col, Button, Input } from 'reactstrap'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import DatePickerForm from '../reusable/DatePickerForm'
 import EventCard from './EventCard'
@@ -36,7 +32,7 @@ class ManageEvents extends Component {
         name: '',
         startDate: firstUserEvent ? firstUserEvent.startDate : moment(),
         endDate: lastUserEvent ? lastUserEvent.endDate : moment()
-      },
+      }
     }
   }
 
@@ -44,11 +40,11 @@ class ManageEvents extends Component {
     const { firestore } = this.context.store
     const { auth, groups } = this.props
 
-    if(isLoaded(auth) && !isEmpty(auth)) {
+    if (isLoaded(auth) && !isEmpty(auth)) {
       getUserEvents(firestore, auth.uid)
     }
 
-    if(!groups.isLoaded) {
+    if (!groups.isLoaded) {
       getGroups(firestore)
     }
   }
@@ -57,20 +53,24 @@ class ManageEvents extends Component {
     const { firestore } = this.context.store
     const { auth, userEvents } = this.props
 
-    if(!isLoaded(auth) && isLoaded(nextProps.auth) && !isEmpty(nextProps.auth)) {
+    if (
+      !isLoaded(auth) &&
+      isLoaded(nextProps.auth) &&
+      !isEmpty(nextProps.auth)
+    ) {
       getUserEvents(firestore, nextProps.auth.uid)
     }
 
-    if(userEvents.length === 0 && nextProps.userEvents.length > 0) {
+    if (userEvents.length === 0 && nextProps.userEvents.length > 0) {
       this.resetFilter(nextProps.userEvents)
     }
   }
 
-  resetFilter = (newUserEvents) => {
+  resetFilter = newUserEvents => {
     const { filter } = this.state
     var { userEvents } = this.props
 
-    if(newUserEvents) {
+    if (newUserEvents) {
       userEvents = newUserEvents
     }
 
@@ -86,12 +86,12 @@ class ManageEvents extends Component {
   handleValueChanged = (value, type) => {
     const { filter } = this.state
 
-    switch(type) {
+    switch (type) {
       case 'nameFilter':
         this.setState({
           filter: {
             ...filter,
-            name: value,
+            name: value
           }
         })
         break
@@ -99,7 +99,7 @@ class ManageEvents extends Component {
         this.setState({
           filter: {
             ...filter,
-            startDate: value,
+            startDate: value
           }
         })
         break
@@ -107,7 +107,7 @@ class ManageEvents extends Component {
         this.setState({
           filter: {
             ...filter,
-            endDate: value,
+            endDate: value
           }
         })
         break
@@ -116,35 +116,45 @@ class ManageEvents extends Component {
     }
   }
 
-  displayEvent = (event) => {
+  displayEvent = event => {
     const { filter } = this.state
-    const { spaces, history, firebase, eventTypes } = this.props
 
-    if(!_.startsWith(_.lowerCase(event.name), _.lowerCase(filter.name)) ||
+    if (
+      !_.startsWith(_.lowerCase(event.name), _.lowerCase(filter.name)) ||
       event.startDate.isBefore(filter.startDate) ||
-      event.endDate.isAfter(filter.endDate)) {
-      return ('')
+      event.endDate.isAfter(filter.endDate)
+    ) {
+      return ''
     }
-
   }
 
   displayEvents = () => {
-    const { userEvents, eventTypes, spaces, history, groups, groupTypes } = this.props
+    const {
+      userEvents,
+      eventTypes,
+      spaces,
+      history,
+      groups,
+      groupTypes
+    } = this.props
 
     const eventCards = []
 
-    _.forEach(userEvents, (event) => {
-      eventCards.push(<Col xs="12" md="4" className="mb-2" key={event.id}>
-        <EventCard
-          event={event}
-          eventTypes={eventTypes}
-          spaces={spaces}
-          groups={groups}
-          groupTypes={groupTypes}
-          buttonAction={() => history.push('/editevent/' + event.id)}
-          buttonText='Manage'
-          hasModal={false} />
-      </Col>)
+    _.forEach(userEvents, event => {
+      eventCards.push(
+        <Col xs="12" md="4" className="mb-2" key={event.id}>
+          <EventCard
+            event={event}
+            eventTypes={eventTypes}
+            spaces={spaces}
+            groups={groups}
+            groupTypes={groupTypes}
+            buttonAction={() => history.push('/editevent/' + event.id)}
+            buttonText="Manage"
+            hasModal={false}
+          />
+        </Col>
+      )
     })
 
     return eventCards
@@ -154,67 +164,106 @@ class ManageEvents extends Component {
     const { filter } = this.state
     const { auth, history, userEvents, eventTypes, spaces } = this.props
 
-    if(isLoaded(auth) && isEmpty(auth)) {
+    if (isLoaded(auth) && isEmpty(auth)) {
       history.push('/')
     }
 
-    return(
+    return (
       <Container>
         <Row>
           <Col>
             <h1 className="display-4">Manage Events</h1>
           </Col>
         </Row>
-        {
-          userEvents && eventTypes.isLoaded && spaces.isLoaded ?
-            <Row className="mb-2">
-              <Col className="mb-2" xs="12">
-                <h4 className="mb-0">Show Events With Name</h4>
-                <Input type="text" value={filter.name} placeholder="Filter Name" onChange={(event) => this.handleValueChanged(event.target.value, 'nameFilter')} />
-              </Col>
-              {
-                false ?
+        {userEvents && eventTypes.isLoaded && spaces.isLoaded ? (
+          <Row className="mb-2">
+            <Col className="mb-2" xs="12">
+              <h4 className="mb-0">Show Events With Name</h4>
+              <Input
+                type="text"
+                value={filter.name}
+                placeholder="Filter Name"
+                onChange={event =>
+                  this.handleValueChanged(event.target.value, 'nameFilter')
+                }
+              />
+            </Col>
+            {false ? (
               <Col className="mb-2" xs="12">
                 <h4 className="mb-0">Show Events Between</h4>
                 <div className="d-flex flex-wrap">
-                  <div className="p-2"><DatePicker
-                    showTimeSelect
-                    className="d-inline"
-                    selected={filter.startDate}
-                    customInput={<DatePickerForm placeholder="Select Start Filter" />}
-                    timeFormat="HH:mm"
-                    timeInterval={config.timeInterval}
-                    dateFormat="LLL"
-                    timeCaption="time"
-                    onChange={(date) => this.handleValueChanged(date, 'startDate')} /></div>
-                  <div className="p-2 align-self-center"><h4 className="mb-0">to</h4></div>
-                  <div className="p-2"><DatePicker
-                    showTimeSelect
-                    selected={filter.endDate}
-                    customInput={<DatePickerForm placeholder="Select Start Filter" />}
-                    timeFormat="HH:mm"
-                    timeInterval={config.timeInterval}
-                    dateFormat="LLL"
-                    timeCaption="time"
-                    onChange={(date) => this.handleValueChanged(date, 'endDate')} /></div>
-                  <div className="p-2"><Button color="link" onClick={() => this.resetFilter()}>Reset Filter</Button></div>
+                  <div className="p-2">
+                    <DatePicker
+                      showTimeSelect
+                      className="d-inline"
+                      selected={filter.startDate}
+                      customInput={
+                        <DatePickerForm placeholder="Select Start Filter" />
+                      }
+                      timeFormat="HH:mm"
+                      timeInterval={config.timeInterval}
+                      dateFormat="LLL"
+                      timeCaption="time"
+                      onChange={date =>
+                        this.handleValueChanged(date, 'startDate')
+                      }
+                    />
+                  </div>
+                  <div className="p-2 align-self-center">
+                    <h4 className="mb-0">to</h4>
+                  </div>
+                  <div className="p-2">
+                    <DatePicker
+                      showTimeSelect
+                      selected={filter.endDate}
+                      customInput={
+                        <DatePickerForm placeholder="Select Start Filter" />
+                      }
+                      timeFormat="HH:mm"
+                      timeInterval={config.timeInterval}
+                      dateFormat="LLL"
+                      timeCaption="time"
+                      onChange={date =>
+                        this.handleValueChanged(date, 'endDate')
+                      }
+                    />
+                  </div>
+                  <div className="p-2">
+                    <Button color="link" onClick={() => this.resetFilter()}>
+                      Reset Filter
+                    </Button>
+                  </div>
                 </div>
               </Col>
-              : ''
-            }
-            </Row>
-          : ''
-        }
+            ) : (
+              ''
+            )}
+          </Row>
+        ) : (
+          ''
+        )}
         <Row>
-          {
-            userEvents && eventTypes.isLoaded && spaces.isLoaded ?
-              userEvents.length > 0 ?
-                this.displayEvents()
-              : <Col><h3><FontAwesomeIcon icon="frown" /> Either you have no events or no events match your filter.</h3></Col>
-            : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading Your Events...</h4></Col>
-          }
+          {userEvents && eventTypes.isLoaded && spaces.isLoaded ? (
+            userEvents.length > 0 ? (
+              this.displayEvents()
+            ) : (
+              <Col>
+                <h3>
+                  <FontAwesomeIcon icon="frown" /> Either you have no events or
+                  no events match your filter.
+                </h3>
+              </Col>
+            )
+          ) : (
+            <Col>
+              <h4>
+                <FontAwesomeIcon icon="spinner" spin /> Loading Your Events...
+              </h4>
+            </Col>
+          )}
         </Row>
-      </Container>)
+      </Container>
+    )
   }
 }
 
@@ -225,11 +274,13 @@ const mapStateToProps = state => {
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
     groups: formatFirestoreData(state.firestore, 'groups'),
-    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(ManageEvents))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(ManageEvents)
+)

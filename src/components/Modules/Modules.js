@@ -3,16 +3,22 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Container, Row, Col,
-  TabContent, TabPane, Nav, NavItem, NavLink
-} from 'reactstrap';
-import { firebaseConnect } from 'react-redux-firebase';
+  Container,
+  Row,
+  Col,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap'
+import { firebaseConnect } from 'react-redux-firebase'
 import { getModule, getModuleReviews } from '../../actions/ModulesActions'
 import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 import ModuleCard from './ModuleCard'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import classnames from 'classnames';
+import classnames from 'classnames'
 import _ from 'lodash'
 
 class Modules extends Component {
@@ -21,12 +27,12 @@ class Modules extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.toggle = this.toggle.bind(this);
+    this.toggle = this.toggle.bind(this)
     this.state = {
       activeTab: ''
-    };
+    }
   }
 
   componentWillMount() {
@@ -39,18 +45,21 @@ class Modules extends Component {
     const { moduleReviews } = newProps
 
     if (!this.props.moduleReviews && moduleReviews) {
-      const moduleCodes = _.map(_.uniqBy(moduleReviews, 'module'), (moduleReview) => moduleReview.module)
+      const moduleCodes = _.map(
+        _.uniqBy(moduleReviews, 'module'),
+        moduleReview => moduleReview.module
+      )
 
       var modules = {}
       var completed = 0
-      _.forEach(moduleCodes, (moduleCode) => {
-        getModule(firestore, moduleCode, (snapshot) => {
+      _.forEach(moduleCodes, moduleCode => {
+        getModule(firestore, moduleCode, snapshot => {
           var module = {
             ...snapshot.data(),
             id: moduleCode
           }
 
-          if(modules[module.type]) {
+          if (modules[module.type]) {
             modules[module.type] = modules[module.type].concat(module)
           } else {
             modules[module.type] = [module]
@@ -58,7 +67,7 @@ class Modules extends Component {
 
           completed += 1
 
-          if(completed === moduleCodes.length) {
+          if (completed === moduleCodes.length) {
             this.setState({
               modules: modules,
               activeTab: _.keys(modules)[0]
@@ -73,7 +82,7 @@ class Modules extends Component {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
-      });
+      })
     }
   }
 
@@ -82,24 +91,26 @@ class Modules extends Component {
 
     const moduleTabs = []
 
-    _.forEach(_.keys(modules), (typeID) => {
+    _.forEach(_.keys(modules), typeID => {
       const moduleCards = []
-      _.forEach(modules[typeID], (module) => {
-          moduleCards.push(<Col xs="12" md="6" key={module.id}>
+      _.forEach(modules[typeID], module => {
+        moduleCards.push(
+          <Col xs="12" md="6" key={module.id}>
             <ModuleCard module={module} />
-          </Col>)
+          </Col>
+        )
       })
 
-      moduleTabs.push(<TabPane key={typeID} tabId={typeID} className="m-3">
-        <Row>
-          { moduleCards }
-        </Row>
-      </TabPane>)
+      moduleTabs.push(
+        <TabPane key={typeID} tabId={typeID} className="m-3">
+          <Row>{moduleCards}</Row>
+        </TabPane>
+      )
     })
 
-    return(<TabContent activeTab={this.state.activeTab}>
-      { moduleTabs }
-    </TabContent>)
+    return (
+      <TabContent activeTab={this.state.activeTab}>{moduleTabs}</TabContent>
+    )
   }
 
   renderModuleTypeTabs = () => {
@@ -108,52 +119,64 @@ class Modules extends Component {
 
     const moduleTypeTabs = []
 
-    _.forEach(_.keys(modules), (moduleTypeID) => {
+    _.forEach(_.keys(modules), moduleTypeID => {
       const moduleType = moduleTypes[moduleTypeID]
 
-      moduleTypeTabs.push(<NavItem key={moduleTypeID}>
-        <NavLink
-          className={classnames({ active: this.state.activeTab === moduleTypeID })}
-          onClick={() => { this.toggle(moduleTypeID); }}
-        >
-          { moduleType.name }
-        </NavLink>
-      </NavItem>)
+      moduleTypeTabs.push(
+        <NavItem key={moduleTypeID}>
+          <NavLink
+            className={classnames({
+              active: this.state.activeTab === moduleTypeID
+            })}
+            onClick={() => {
+              this.toggle(moduleTypeID)
+            }}
+          >
+            {moduleType.name}
+          </NavLink>
+        </NavItem>
+      )
     })
 
-    return(<Nav tabs>
-      {
-        moduleTypeTabs
-      }
-      </Nav>)
+    return <Nav tabs>{moduleTypeTabs}</Nav>
   }
 
   render() {
     const { modules } = this.state
     const { moduleTypes } = this.props
 
-    return(<Container>
-      <Row>
-        <Col>
-          <div className="d-flex">
-            <div className="p-2">
-              <h1 style={{fontWeight: 300}} className="mb-0">Modules</h1>
-              <h4 className="mb-4 text-primary">Only Modules with Reviews are Displayed</h4>
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <div className="d-flex">
+              <div className="p-2">
+                <h1 style={{ fontWeight: 300 }} className="mb-0">
+                  Modules
+                </h1>
+                <h4 className="mb-4 text-primary">
+                  Only Modules with Reviews are Displayed
+                </h4>
+              </div>
             </div>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          { moduleTypes ? this.renderModuleTypeTabs() : <h4><FontAwesomeIcon icon="spinner" spin /> Loading Modules...</h4> }
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          { modules ? this.renderModules() : '' }
-        </Col>
-      </Row>
-    </Container>)
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {moduleTypes ? (
+              this.renderModuleTypeTabs()
+            ) : (
+              <h4>
+                <FontAwesomeIcon icon="spinner" spin /> Loading Modules...
+              </h4>
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col>{modules ? this.renderModules() : ''}</Col>
+        </Row>
+      </Container>
+    )
   }
 }
 
@@ -166,7 +189,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(Modules))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(Modules)
+)

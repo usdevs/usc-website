@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { firebaseConnect } from 'react-redux-firebase';
-import { Container, Row, Col } from 'reactstrap';
+import { firebaseConnect } from 'react-redux-firebase'
+import { Container, Row, Col } from 'reactstrap'
 import FeedbackForm from './FeedbackForm'
 import { submitFeedback } from '../../actions/GeneralActions'
 
@@ -16,7 +16,7 @@ class Feedback extends Component {
   submitFeedback = (feedback, callback) => {
     const { firestore } = this.context.store
 
-    submitFeedback(firestore, feedback, (snapshot) => {
+    submitFeedback(firestore, feedback, snapshot => {
       callback(true)
     })
   }
@@ -24,26 +24,28 @@ class Feedback extends Component {
   render() {
     const { history } = this.props
 
-    return(
+    return (
       <Container>
         <Row>
           <Col>
-            <h1 style={{fontWeight: 300}} className="mt-3">Feedback</h1>
+            <h1 style={{ fontWeight: 300 }} className="mt-3">
+              Feedback
+            </h1>
           </Col>
         </Row>
         <Row>
           <Col>
             <FeedbackForm
-              initialValues = {{ type: 'site' }}
-              btnText = "Submit Feedback"
+              initialValues={{ type: 'site' }}
+              btnText="Submit Feedback"
               submit={this.submitFeedback}
               modal={{
-                  title: 'Feedback Submitted!',
-                  body: 'The site administrator appreciates your feedback!',
-                  primaryBtnText: 'Dashboard',
-                  secondaryBtnText: 'Dismiss',
-                  onSubmit: () => history.push('/dashboard')
-                }}
+                title: 'Feedback Submitted!',
+                body: 'The site administrator appreciates your feedback!',
+                primaryBtnText: 'Dashboard',
+                secondaryBtnText: 'Dismiss',
+                onSubmit: () => history.push('/dashboard')
+              }}
             />
           </Col>
         </Row>
@@ -58,7 +60,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(Feedback))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(Feedback)
+)

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { firebaseConnect } from 'react-redux-firebase';
-import { Container, Row, Col } from 'reactstrap';
+import { firebaseConnect } from 'react-redux-firebase'
+import { Container, Row, Col } from 'reactstrap'
 import IntlProgReviewForm from './IntlProgReviewForm'
 import { submitIntlProgReview } from '../../actions/IntlProgsActions'
 
@@ -16,7 +16,7 @@ class CreateIntlProgReview extends Component {
   submitFeedback = (review, callback) => {
     const { firestore } = this.context.store
 
-    submitIntlProgReview(firestore, review, (snapshot) => {
+    submitIntlProgReview(firestore, review, snapshot => {
       callback(true)
     })
   }
@@ -24,25 +24,28 @@ class CreateIntlProgReview extends Component {
   render() {
     const { history } = this.props
 
-    return(
+    return (
       <Container>
         <Row>
           <Col>
-            <h1 style={{fontWeight: 300}} className="mt-3">Review International Programme</h1>
+            <h1 style={{ fontWeight: 300 }} className="mt-3">
+              Review International Programme
+            </h1>
           </Col>
         </Row>
         <Row>
           <Col>
             <IntlProgReviewForm
-              btnText = "Submit REview"
+              btnText="Submit REview"
               submit={this.submitFeedback}
               modal={{
-                  title: 'Review Received!',
-                  body: 'It will be displayed together with the International Programme!',
-                  primaryBtnText: 'Dashboard',
-                  secondaryBtnText: 'Dismiss',
-                  onSubmit: () => history.push('/dashboard')
-                }}
+                title: 'Review Received!',
+                body:
+                  'It will be displayed together with the International Programme!',
+                primaryBtnText: 'Dashboard',
+                secondaryBtnText: 'Dismiss',
+                onSubmit: () => history.push('/dashboard')
+              }}
             />
           </Col>
         </Row>
@@ -57,7 +60,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(CreateIntlProgReview))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(CreateIntlProgReview)
+)

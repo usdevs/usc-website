@@ -1,4 +1,4 @@
-import { Model } from 'react-axiom';
+import { Model } from 'react-axiom'
 
 class Group extends Model {
   static defaultState() {
@@ -15,6 +15,6 @@ class Group extends Model {
       status: '',
       support: null,
       type: ''
-    };
+    }
   }
 }
