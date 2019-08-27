@@ -1,20 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { connect } from 'react-redux';
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Input
-} from 'reactstrap';
-import GroupCard from './GroupCard'
+import { connect } from 'react-redux'
+import { Container, Row, Col, Button, Input } from 'reactstrap'
 import GroupGrid from './GroupGrid'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getGroups } from '../../actions/GroupsActions'
 import { formatFirestoreData } from '../../utils/utils'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 import { headerInterestGroups as header } from '../../resources/images.js'
 import { withRouter } from 'react-router-dom'
 import _ from 'lodash'
@@ -30,7 +22,7 @@ class Groups extends Component {
     this.state = {
       filter: {
         name: '',
-        types: {},
+        types: {}
       }
     }
   }
@@ -39,7 +31,7 @@ class Groups extends Component {
     const { firestore } = this.context.store
     const { groups } = this.props
 
-    if(!groups.isLoaded) {
+    if (!groups.isLoaded) {
       getGroups(firestore)
     }
   }
@@ -72,12 +64,19 @@ class Groups extends Component {
     }
   }
 
-  filterGroups = (groups) => {
+  filterGroups = groups => {
     const { filter } = this.state
 
-    return _.orderBy(_.filter(groups.ordered, (group) => {
-      return (_.startsWith(_.lowerCase(group.name), _.lowerCase(filter.name))) && !filter.types[group.type]
-    }), ['name'], ['asc'])
+    return _.orderBy(
+      _.filter(groups.ordered, group => {
+        return (
+          _.startsWith(_.lowerCase(group.name), _.lowerCase(filter.name)) &&
+          !filter.types[group.type]
+        )
+      }),
+      ['name'],
+      ['asc']
+    )
   }
 
   render() {
@@ -86,7 +85,7 @@ class Groups extends Component {
 
     const filteredGroups = this.filterGroups(groups)
 
-    return(
+    return (
       <Container>
         <Row>
           <Col>
@@ -95,30 +94,51 @@ class Groups extends Component {
         </Row>
         <Row>
           <Col>
-            <h1 style={{fontWeight: 300}}>Groups</h1>
+            <h1 style={{ fontWeight: 300 }}>Groups</h1>
           </Col>
         </Row>
         <Row>
-          {
-            groupTypes.isLoaded ?
-              <Col>
-                <Input type="text" className="mb-2" value={filter.name} placeholder="Filter Name" onChange={(event) => this.handleValueChanged(event.target.value, 'name')} />
-                {
-                  _.map(groupTypes.ordered, (groupType) => {
-                    return <Button key={groupType.id} color={ filter.types[groupType.id] ? 'danger' : 'primary' } className="mb-2 mr-2" onClick={(event) => this.handleValueChanged(groupType.id, 'type')}>{groupType.name}</Button>
-                  })
+          {groupTypes.isLoaded ? (
+            <Col>
+              <Input
+                type="text"
+                className="mb-2"
+                value={filter.name}
+                placeholder="Filter Name"
+                onChange={event =>
+                  this.handleValueChanged(event.target.value, 'name')
                 }
-              </Col>
-            : ''
-          }
+              />
+              {_.map(groupTypes.ordered, groupType => {
+                return (
+                  <Button
+                    key={groupType.id}
+                    color={filter.types[groupType.id] ? 'danger' : 'primary'}
+                    className="mb-2 mr-2"
+                    onClick={event =>
+                      this.handleValueChanged(groupType.id, 'type')
+                    }
+                  >
+                    {groupType.name}
+                  </Button>
+                )
+              })}
+            </Col>
+          ) : (
+            ''
+          )}
         </Row>
         <Row>
-          <GroupGrid groups={{
-            ...groups,
-            ordered: filteredGroups
-          }} groupTypes={groupTypes} />
+          <GroupGrid
+            groups={{
+              ...groups,
+              ordered: filteredGroups
+            }}
+            groupTypes={groupTypes}
+          />
         </Row>
-      </Container>)
+      </Container>
+    )
   }
 }
 
@@ -126,11 +146,13 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     groups: formatFirestoreData(state.firestore, 'groups'),
-    groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
+    groupTypes: formatFirestoreData(state.firestore, 'groupTypes')
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(Groups))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(Groups)
+)

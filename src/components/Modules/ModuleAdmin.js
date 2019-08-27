@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Button, Container, Row, Col, Form, FormGroup, Label, Input } from 'reactstrap';
+import {
+  Button,
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { addModule } from '../../actions/ModulesActions'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 
 class ModuleAdmin extends Component {
   static contextTypes = {
@@ -25,42 +34,53 @@ class ModuleAdmin extends Component {
     const { nusmodsAPI } = this.state
     const { firestore } = this.context.store
 
-    axios.get(nusmodsAPI)
-      .then(function (response) {
-        console.log(response.data);
+    axios
+      .get(nusmodsAPI)
+      .then(function(response) {
+        console.log(response.data)
 
-        _.forEach(response.data, (module) => {
+        _.forEach(response.data, module => {
           addModule(firestore, module)
         })
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch(function(error) {
+        console.log(error)
+      })
   }
 
   render() {
     const { nusmodsAPI } = this.state
 
-    return(<Container>
-      <Row>
-        <Col>
-          <h1>Module Admin</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form className="m-3">
-            <FormGroup>
-              <Label for="type"><h3>Get Modules</h3></Label>
-              <Input type="text" onChange={(event) => this.setState({
-                nusmodsAPI: event.target.value
-              })} value={nusmodsAPI} />
-            </FormGroup>
-            <Button onClick={this.btnOnClick}>Submit</Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>)
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <h1>Module Admin</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Form className="m-3">
+              <FormGroup>
+                <Label for="type">
+                  <h3>Get Modules</h3>
+                </Label>
+                <Input
+                  type="text"
+                  onChange={event =>
+                    this.setState({
+                      nusmodsAPI: event.target.value
+                    })
+                  }
+                  value={nusmodsAPI}
+                />
+              </FormGroup>
+              <Button onClick={this.btnOnClick}>Submit</Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    )
   }
 }
 

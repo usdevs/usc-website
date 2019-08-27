@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { Container, Row, Col } from 'reactstrap'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import { getMyProfile, saveProfile } from '../../actions/UsersActions'
 import ProfileForm from './ProfileForm'
 
@@ -18,22 +18,21 @@ class Settings extends Component {
     super(props)
 
     this.state = {
-      profile: null,
+      profile: null
     }
   }
 
   componentDidMount() {
     const { auth } = this.props
 
-    if(isLoaded(auth) && !isEmpty(auth)) {
+    if (isLoaded(auth) && !isEmpty(auth)) {
       this.getProfile(auth)
     }
   }
 
   componentWillReceiveProps(newProps) {
     if (!isLoaded(this.props.auth) && isLoaded(newProps.auth)) {
-
-      if(!isEmpty(newProps.auth)) {
+      if (!isEmpty(newProps.auth)) {
         this.getProfile(newProps.auth)
       } else {
         this.props.history.push('/')
@@ -41,9 +40,9 @@ class Settings extends Component {
     }
   }
 
-  getProfile = (auth) => {
+  getProfile = auth => {
     const { firestore } = this.context.store
-    getMyProfile(firestore, auth, (snapshot) => {
+    getMyProfile(firestore, auth, snapshot => {
       this.setState({
         profile: {
           ...snapshot.data(),
@@ -58,7 +57,7 @@ class Settings extends Component {
     const { firebase } = this.props
     const originalProfile = this.state.profile
 
-    saveProfile(firestore, firebase, profile, originalProfile, (snapshot) => {
+    saveProfile(firestore, firebase, profile, originalProfile, snapshot => {
       callback()
     })
   }
@@ -68,16 +67,17 @@ class Settings extends Component {
     const { history } = this.props
 
     return (
-    <Container>
-      <Row>
-        <Col>
-          <h1 style={{fontWeight: 300}} className="mt-3">Your Settings</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {
-            profile ?
+      <Container>
+        <Row>
+          <Col>
+            <h1 style={{ fontWeight: 300 }} className="mt-3">
+              Your Settings
+            </h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {profile ? (
               <ProfileForm
                 submit={this.updateProfile}
                 initialValues={profile}
@@ -88,12 +88,17 @@ class Settings extends Component {
                   primaryBtnText: 'Dashboard',
                   secondaryBtnText: 'Dismiss',
                   onSubmit: () => history.push('/dashboard')
-                }} />
-              : <h4><FontAwesomeIcon icon="spinner" spin /> Loading Your Profile...</h4>
-          }
-        </Col>
-      </Row>
-    </Container>)
+                }}
+              />
+            ) : (
+              <h4>
+                <FontAwesomeIcon icon="spinner" spin /> Loading Your Profile...
+              </h4>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    )
   }
 }
 
@@ -103,7 +108,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(Settings))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(Settings)
+)

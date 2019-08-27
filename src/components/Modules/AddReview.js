@@ -3,10 +3,15 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Container, Row, Col,
-  Button, Modal, ModalBody, ModalFooter
-} from 'reactstrap';
-import { firebaseConnect } from 'react-redux-firebase';
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter
+} from 'reactstrap'
+import { firebaseConnect } from 'react-redux-firebase'
 import { getModules, addReview } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ReviewForm from './ReviewForm'
@@ -35,59 +40,80 @@ class AddReview extends Component {
     const { firestore } = this.context.store
     const { auth } = this.props
 
-    addReview(firestore, {
-      ...review,
-      creator: auth.uid
-    }, () => {
-      this.toggle()
-      callback()
-    })
+    addReview(
+      firestore,
+      {
+        ...review,
+        creator: auth.uid
+      },
+      () => {
+        this.toggle()
+        callback()
+      }
+    )
   }
 
   successModal = () => {
     const { modal } = this.state
     const { history } = this.props
 
-    return(<Modal isOpen={modal} toggle={this.toggle}>
-      <ModalBody>
-        <h3 style={{fontWeight: 300}}>Review Submitted!</h3>
-        <p>Your review has been submitted!</p>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={() => history.push('/modules/')}>To Modules</Button>{' '}
-        <Button color="secondary" onClick={() => {
-          this.toggle()
-        }}>Dismiss</Button>
-      </ModalFooter>
-    </Modal>)
+    return (
+      <Modal isOpen={modal} toggle={this.toggle}>
+        <ModalBody>
+          <h3 style={{ fontWeight: 300 }}>Review Submitted!</h3>
+          <p>Your review has been submitted!</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={() => history.push('/modules/')}>
+            To Modules
+          </Button>{' '}
+          <Button
+            color="secondary"
+            onClick={() => {
+              this.toggle()
+            }}
+          >
+            Dismiss
+          </Button>
+        </ModalFooter>
+      </Modal>
+    )
   }
 
   toggle = () => {
     this.setState({
       modal: !this.state.modal
-    });
+    })
   }
 
   render() {
     const { modules, moduleTypes } = this.props
 
-    return(<Container>
-      { this.successModal() }
-      <Row>
-        <Col>
-          <h1 style={{fontWeight: 300}}>Add Review</h1>
-        </Col>
-      </Row>
-      <Row>
-        {
-          modules && moduleTypes ?
+    return (
+      <Container>
+        {this.successModal()}
+        <Row>
+          <Col>
+            <h1 style={{ fontWeight: 300 }}>Add Review</h1>
+          </Col>
+        </Row>
+        <Row>
+          {modules && moduleTypes ? (
             <Col>
-              <ReviewForm buttonText="Submit Review" buttonOnSubmit={this.addReview} modules={modules} />
+              <ReviewForm
+                buttonText="Submit Review"
+                buttonOnSubmit={this.addReview}
+                modules={modules}
+              />
             </Col>
-          : <h3 className="mt-2"><FontAwesomeIcon icon="spinner" spin /> Loading Review...</h3>
-        }
-      </Row>
-    </Container>)
+          ) : (
+            <h3 className="mt-2">
+              <FontAwesomeIcon icon="spinner" spin /> Loading Review...
+            </h3>
+          )}
+        </Row>
+      </Container>
+    )
   }
 }
 
@@ -99,7 +125,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(AddReview))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(AddReview)
+)

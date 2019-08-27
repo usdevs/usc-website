@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import { getEvents, getEventsByMonth } from '../../../actions/EventsActions'
 import { getGroups } from '../../../actions/GroupsActions'
-import { formatEventsByDateTimeAndVenue, formatMonthEvents,
-  formatFirestoreData, formatEventsByDate } from '../../../utils/utils'
-import { firebaseConnect } from 'react-redux-firebase';
+import {
+  formatEventsByDateTimeAndVenue,
+  formatMonthEvents,
+  formatFirestoreData,
+  formatEventsByDate
+} from '../../../utils/utils'
+import { firebaseConnect } from 'react-redux-firebase'
 import moment from 'moment'
 import _ from 'lodash'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import Calendar from './Calendar'
 import DayCalendar from './DayCalendar'
 import DaySpaceCalendar from './DaySpaceCalendar'
@@ -21,11 +24,11 @@ class EventCalendar extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       selectedDate: moment().startOf('day'),
-      initialDate: moment().startOf('day'),
+      initialDate: moment().startOf('day')
     }
   }
 
@@ -33,19 +36,19 @@ class EventCalendar extends Component {
     const { firestore } = this.context.store
     const { groups, events } = this.props
 
-    if(!events.isLoaded) {
+    if (!events.isLoaded) {
       getEvents(firestore, () => {}, moment())
     }
 
-    if(!groups.isLoaded) {
+    if (!groups.isLoaded) {
       getGroups(firestore)
     }
   }
 
-  changeSelectedDate = (date) => {
+  changeSelectedDate = date => {
     this.setState({
       ...this.state,
-      selectedDate: date.clone(),
+      selectedDate: date.clone()
     })
   }
 
@@ -59,49 +62,75 @@ class EventCalendar extends Component {
     const { initialDate } = this.state
     const { events, timeslots, eventTypes, spaces, bySpaces } = this.props
 
-    return(<Calendar
-      onDayClick={(date) => this.changeSelectedDate(date)}
-      initialDate={ initialDate }
-      events={ bySpaces ? timeslots : events }
-      eventTypes={eventTypes}
-      spaces={spaces}
-      bySpaces={bySpaces}
-      loadMonth={ this.loadMonth.bind(this) }/>)
+    return (
+      <Calendar
+        onDayClick={date => this.changeSelectedDate(date)}
+        initialDate={initialDate}
+        events={bySpaces ? timeslots : events}
+        eventTypes={eventTypes}
+        spaces={spaces}
+        bySpaces={bySpaces}
+        loadMonth={this.loadMonth.bind(this)}
+      />
+    )
   }
 
   dayCalendar = () => {
     const { selectedDate } = this.state
-    const { events, eventTypes, spaces, firebase, groups, groupTypes } = this.props
+    const {
+      events,
+      eventTypes,
+      spaces,
+      firebase,
+      groups,
+      groupTypes
+    } = this.props
 
-    return(<DayCalendar
-      selectedDate={ selectedDate }
-      events={ events.isLoaded ? events.ordered[selectedDate.toString()] : null }
-      eventTypes={eventTypes}
-      spaces={spaces}
-      groups={groups}
-      groupTypes={groupTypes}
-      firebase={firebase} />)
+    return (
+      <DayCalendar
+        selectedDate={selectedDate}
+        events={
+          events.isLoaded ? events.ordered[selectedDate.toString()] : null
+        }
+        eventTypes={eventTypes}
+        spaces={spaces}
+        groups={groups}
+        groupTypes={groupTypes}
+        firebase={firebase}
+      />
+    )
   }
 
   spaceCalendar = () => {
     const { selectedDate } = this.state
-    const { timeslots, eventTypes, spaces, firebase, groups, groupTypes } = this.props
+    const {
+      timeslots,
+      eventTypes,
+      spaces,
+      firebase,
+      groups,
+      groupTypes
+    } = this.props
 
-    return(<DaySpaceCalendar
-      selectedDate={ selectedDate }
-      timeslots={ timeslots.isLoaded ? timeslots.ordered[selectedDate.toString()] : null }
-      spaces={ spaces }
-      eventTypes={ eventTypes }
-      eventsUnordered={ timeslots.isLoaded ? timeslots.data : null }
-      groups={groups}
-      groupTypes={groupTypes}
-      firebase={ firebase }
-    />)
+    return (
+      <DaySpaceCalendar
+        selectedDate={selectedDate}
+        timeslots={
+          timeslots.isLoaded ? timeslots.ordered[selectedDate.toString()] : null
+        }
+        spaces={spaces}
+        eventTypes={eventTypes}
+        eventsUnordered={timeslots.isLoaded ? timeslots.data : null}
+        groups={groups}
+        groupTypes={groupTypes}
+        firebase={firebase}
+      />
+    )
   }
 
   topComponent = () => {
-    const { bySpaces, stack} = this.props
-    if(bySpaces && !stack) {
+    const { bySpaces, stack } = this.props
+    if (bySpaces && !stack) {
       return this.spaceCalendar()
     } else {
       return this.calender()
@@ -111,7 +140,7 @@ class EventCalendar extends Component {
   bottomComponent = () => {
     const { bySpaces, stack } = this.props
 
-    if(bySpaces && !stack) {
+    if (bySpaces && !stack) {
       return this.calender()
     } else if (bySpaces) {
       return this.spaceCalendar()
@@ -123,17 +152,19 @@ class EventCalendar extends Component {
   render() {
     const { bySpaces, stack } = this.props
 
-    return(<Container>
-      <Row>
-        <Col xs="12" lg={stack ? "12" : bySpaces ? "8" : "6"}>
-          { this.topComponent() }
-        </Col>
-        <Col xs="12" lg={stack ? "12" : bySpaces ? "4" : "6"}>
-          <hr className="my-2 d-block d-lg-none" />
-          { this.bottomComponent() }
-        </Col>
-      </Row>
-    </Container>)
+    return (
+      <Container>
+        <Row>
+          <Col xs="12" lg={stack ? '12' : bySpaces ? '8' : '6'}>
+            {this.topComponent()}
+          </Col>
+          <Col xs="12" lg={stack ? '12' : bySpaces ? '4' : '6'}>
+            <hr className="my-2 d-block d-lg-none" />
+            {this.bottomComponent()}
+          </Col>
+        </Row>
+      </Container>
+    )
   }
 }
 
@@ -150,14 +181,21 @@ const mapStateToProps = state => {
   return {
     auth: state.firebase.auth,
     events: {
-      isLoaded: state.firestore.data.eventsStartInMth && state.firestore.data.eventsEndInMth,
+      isLoaded:
+        state.firestore.data.eventsStartInMth &&
+        state.firestore.data.eventsEndInMth,
       ordered: formatEventsByDate(state.firestore, true),
-      data: _.merge(state.firestore.data.eventsStartInMth, state.firestore.data.eventsEndInMth)
+      data: _.merge(
+        state.firestore.data.eventsStartInMth,
+        state.firestore.data.eventsEndInMth
+      )
     },
     timeslots: {
-      isLoaded: state.firestore.data.eventsStartInMth && state.firestore.data.eventsEndInMth,
+      isLoaded:
+        state.firestore.data.eventsStartInMth &&
+        state.firestore.data.eventsEndInMth,
       ordered: formatEventsByDateTimeAndVenue(state.firestore),
-      data: formatMonthEvents(state.firestore),
+      data: formatMonthEvents(state.firestore)
     },
     groups: formatFirestoreData(state.firestore, 'groups'),
     groupTypes: formatFirestoreData(state.firestore, 'groupTypes'),
@@ -168,5 +206,10 @@ const mapStateToProps = state => {
 
 export default compose(
   firebaseConnect(),
-  connect(mapStateToProps, null, null, areStatesEqual)
+  connect(
+    mapStateToProps,
+    null,
+    null,
+    areStatesEqual
+  )
 )(EventCalendar)

@@ -8,7 +8,7 @@ import DeleteModal from '../reusable/DeleteModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import _ from 'lodash'
 import { getGroup, updateGroup, deleteGroup } from '../../actions/GroupsActions'
-import { firebaseConnect, isLoaded } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import ability from '../../utils/ability'
 import { withRouter } from 'react-router-dom'
 
@@ -32,13 +32,16 @@ class EditGroup extends Component {
     const { groupID } = this.props.match.params
     const { history, auth } = this.props
 
-    getGroup(firestore, groupID, (snapshot) => {
+    getGroup(firestore, groupID, snapshot => {
       if (!snapshot.exists) {
         history.push('/managegroups')
       } else {
         var group = snapshot.data()
 
-        if((isLoaded(auth) && group.leaderID === auth.uid) || ability.can('manage', 'group')) {
+        if (
+          (isLoaded(auth) && group.leaderID === auth.uid) ||
+          ability.can('manage', 'group')
+        ) {
           var members = [group.leaderID]
           members.concat(_.keys(group.members))
 
@@ -61,7 +64,7 @@ class EditGroup extends Component {
     const { firestore } = this.context.store
     const originalGroup = this.state.group
 
-    updateGroup(firestore, firebase, group, originalGroup, (group) => {
+    updateGroup(firestore, firebase, group, originalGroup, group => {
       callback(false)
     })
   }
@@ -78,55 +81,87 @@ class EditGroup extends Component {
     const { group } = this.state
     const { history } = this.props
 
-    return (<Container>
-      <DeleteModal ref={element => { this.deleteModal = element }} onDelete={() => this.deleteGroup()} />
-      <Row>
-        <Col>
-          <div className="d-flex">
-            <h1 className="display-3">Edit Group</h1>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        {
-          group ? <Col>
-            <GroupForm
-              submit={this.updateGroup}
-              initialValues={group}
-              history={history}
-              btnText="Update Group"
-              modal={{
-                title: 'Details Updated!',
-                body: 'Your Group has been updated!',
-                primaryBtnText: 'Manage Groups',
-                secondaryBtnText: 'Dismiss',
-                onSubmit: () => history.push('/managegroups')
-              }}/>
-            <div className="d-flex justify-content-center">
-              <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>
-                { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } <FontAwesomeIcon icon="trash-alt" />{' '}Delete Group
-              </Button>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Button className="w-75 mt-3" color="secondary" onClick={() => history.push('/managegroups')} outline block>
-                Back to Manage Groups
-              </Button>
+    return (
+      <Container>
+        <DeleteModal
+          ref={element => {
+            this.deleteModal = element
+          }}
+          onDelete={() => this.deleteGroup()}
+        />
+        <Row>
+          <Col>
+            <div className="d-flex">
+              <h1 className="display-3">Edit Group</h1>
             </div>
           </Col>
-          : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading...</h4></Col>
-        }
-      </Row>
-    </Container>)
+        </Row>
+        <Row>
+          {group ? (
+            <Col>
+              <GroupForm
+                submit={this.updateGroup}
+                initialValues={group}
+                history={history}
+                btnText="Update Group"
+                modal={{
+                  title: 'Details Updated!',
+                  body: 'Your Group has been updated!',
+                  primaryBtnText: 'Manage Groups',
+                  secondaryBtnText: 'Dismiss',
+                  onSubmit: () => history.push('/managegroups')
+                }}
+              />
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="w-75"
+                  color="danger"
+                  onClick={() => this.deleteModal.toggle()}
+                  block
+                  disabled={!window.gapi.client}
+                >
+                  {!window.gapi.client ? (
+                    <FontAwesomeIcon icon="spinner" spin />
+                  ) : (
+                    ''
+                  )}{' '}
+                  <FontAwesomeIcon icon="trash-alt" /> Delete Group
+                </Button>
+              </div>
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="w-75 mt-3"
+                  color="secondary"
+                  onClick={() => history.push('/managegroups')}
+                  outline
+                  block
+                >
+                  Back to Manage Groups
+                </Button>
+              </div>
+            </Col>
+          ) : (
+            <Col>
+              <h4>
+                <FontAwesomeIcon icon="spinner" spin /> Loading...
+              </h4>
+            </Col>
+          )}
+        </Row>
+      </Container>
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth,
+    auth: state.firebase.auth
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(EditGroup))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(EditGroup)
+)

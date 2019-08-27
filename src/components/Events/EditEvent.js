@@ -8,7 +8,7 @@ import DeleteModal from '../reusable/DeleteModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { updateEvent, deleteEvent, getEvent } from '../../actions/EventsActions'
 import { eventTimesToMoment } from '../../utils/utils'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect } from 'react-redux-firebase'
 import { withRouter } from 'react-router-dom'
 
 class EditEvent extends Component {
@@ -31,18 +31,18 @@ class EditEvent extends Component {
     const { eventID } = this.props.match.params
     const { history, auth } = this.props
 
-    getEvent(firestore, eventID, (snapshot) => {
+    getEvent(firestore, eventID, snapshot => {
       if (!snapshot.exists) {
         history.push('/events')
       } else {
         const event = eventTimesToMoment(snapshot.data())
-        if(event.creator !== auth.uid) {
+        if (event.creator !== auth.uid) {
           history.push('/events')
         } else {
           this.setState({
             event: {
               ...event,
-              venue: event.otherVenue ? "Others" : event.venue,
+              venue: event.otherVenue ? 'Others' : event.venue,
               otherVenue: event.otherVenue ? event.venue : '',
               id: eventID
             }
@@ -57,7 +57,7 @@ class EditEvent extends Component {
     const { firestore } = this.context.store
     const originalEvent = this.state.event
 
-    updateEvent(firestore, firebase, event, originalEvent, (event) => {
+    updateEvent(firestore, firebase, event, originalEvent, event => {
       callback(false)
     })
   }
@@ -74,55 +74,86 @@ class EditEvent extends Component {
     const { event } = this.state
     const { history } = this.props
 
-    return (<Container>
-      <DeleteModal ref={element => { this.deleteModal = element }} onDelete={() => this.deleteEvent()} />
-      <Row>
-        <Col>
-          <div className="d-flex">
-            <h1 className="display-3">Edit Event</h1>
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        {
-          event ?
+    return (
+      <Container>
+        <DeleteModal
+          ref={element => {
+            this.deleteModal = element
+          }}
+          onDelete={() => this.deleteEvent()}
+        />
+        <Row>
           <Col>
-            <EventForm
-              submit={this.updateEvent}
-              initialValues={event}
-              btnText="Update Event"
-              modal={{
-                title: 'Event Updated!',
-                body: 'Your event details have been successfully updated!',
-                primaryBtnText: 'Manage Events',
-                secondaryBtnText: 'Dismiss',
-                onSubmit: () => history.push('/manageevents')
-              }}/>
-            <div className="d-flex justify-content-center">
-              <Button className="w-75" color="danger" onClick={() => this.deleteModal.toggle()} block disabled={!window.gapi.client}>
-                { !window.gapi.client ? <FontAwesomeIcon icon="spinner" spin /> : '' } <FontAwesomeIcon icon="trash-alt" />{' '}Delete Event
-              </Button>
-            </div>
-            <div className="d-flex justify-content-center">
-              <Button className="w-75 mt-3" color="secondary" onClick={() => history.push('/manageevents')} outline block>
-                Back to Manage Events
-              </Button>
+            <div className="d-flex">
+              <h1 className="display-3">Edit Event</h1>
             </div>
           </Col>
-          : <Col><h4><FontAwesomeIcon icon="spinner" spin /> Loading...</h4></Col>
-        }
-      </Row>
-    </Container>)
+        </Row>
+        <Row>
+          {event ? (
+            <Col>
+              <EventForm
+                submit={this.updateEvent}
+                initialValues={event}
+                btnText="Update Event"
+                modal={{
+                  title: 'Event Updated!',
+                  body: 'Your event details have been successfully updated!',
+                  primaryBtnText: 'Manage Events',
+                  secondaryBtnText: 'Dismiss',
+                  onSubmit: () => history.push('/manageevents')
+                }}
+              />
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="w-75"
+                  color="danger"
+                  onClick={() => this.deleteModal.toggle()}
+                  block
+                  disabled={!window.gapi.client}
+                >
+                  {!window.gapi.client ? (
+                    <FontAwesomeIcon icon="spinner" spin />
+                  ) : (
+                    ''
+                  )}{' '}
+                  <FontAwesomeIcon icon="trash-alt" /> Delete Event
+                </Button>
+              </div>
+              <div className="d-flex justify-content-center">
+                <Button
+                  className="w-75 mt-3"
+                  color="secondary"
+                  onClick={() => history.push('/manageevents')}
+                  outline
+                  block
+                >
+                  Back to Manage Events
+                </Button>
+              </div>
+            </Col>
+          ) : (
+            <Col>
+              <h4>
+                <FontAwesomeIcon icon="spinner" spin /> Loading...
+              </h4>
+            </Col>
+          )}
+        </Row>
+      </Container>
+    )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    auth: state.firebase.auth,
+    auth: state.firebase.auth
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(EditEvent))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(EditEvent)
+)

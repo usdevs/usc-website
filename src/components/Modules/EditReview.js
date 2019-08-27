@@ -3,11 +3,21 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import {
-  Container, Row, Col,
-  Button, Modal, ModalBody, ModalFooter
-} from 'reactstrap';
-import { firebaseConnect } from 'react-redux-firebase';
-import { getModuleReview, updateReview, deleteReview, getModule } from '../../actions/ModulesActions'
+  Container,
+  Row,
+  Col,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter
+} from 'reactstrap'
+import { firebaseConnect } from 'react-redux-firebase'
+import {
+  getModuleReview,
+  updateReview,
+  deleteReview,
+  getModule
+} from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ReviewForm from './ReviewForm'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -29,7 +39,7 @@ class EditReview extends Component {
     const { firestore } = this.context.store
     const { reviewID } = this.props.match.params
 
-    getModuleReview(firestore, reviewID, (snapshot) => {
+    getModuleReview(firestore, reviewID, snapshot => {
       const review = snapshot.data()
       this.setState({
         review: {
@@ -38,7 +48,7 @@ class EditReview extends Component {
         }
       })
 
-      getModule(firestore, review.module, (modSnapshot) => {
+      getModule(firestore, review.module, modSnapshot => {
         this.setState({
           module: modSnapshot.data()
         })
@@ -59,18 +69,30 @@ class EditReview extends Component {
     const { successModal } = this.state
     const { history } = this.props
 
-    return(<Modal isOpen={successModal} toggle={() => this.toggle('success')}>
-      <ModalBody>
-        <h3 style={{fontWeight: 300}}>Review Updated!</h3>
-        <p>Your review has been updated!</p>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="primary" onClick={() => history.push('/managereviews/')}>To Your Reviews</Button>{' '}
-        <Button color="secondary" onClick={() => {
-          this.toggle('success')
-        }}>Dismiss</Button>
-      </ModalFooter>
-    </Modal>)
+    return (
+      <Modal isOpen={successModal} toggle={() => this.toggle('success')}>
+        <ModalBody>
+          <h3 style={{ fontWeight: 300 }}>Review Updated!</h3>
+          <p>Your review has been updated!</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="primary"
+            onClick={() => history.push('/managereviews/')}
+          >
+            To Your Reviews
+          </Button>{' '}
+          <Button
+            color="secondary"
+            onClick={() => {
+              this.toggle('success')
+            }}
+          >
+            Dismiss
+          </Button>
+        </ModalFooter>
+      </Modal>
+    )
   }
 
   deleteModal = () => {
@@ -78,31 +100,47 @@ class EditReview extends Component {
     const { deleteModal, review } = this.state
     const { history } = this.props
 
-    return(<Modal isOpen={deleteModal} toggle={() => this.toggle('delete')}>
-      <ModalBody>
-        <h3 style={{fontWeight: 300}}>Do You Want To Delete?</h3>
-        <p>Please confirm that you would like to delete this Review?</p>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="secondary" onClick={() => {
-          this.toggle('delete')
-        }}>Cancel</Button>
-        <Button color="danger" onClick={() => deleteReview(firestore, review, () => history.push('/managereviews'))}><FontAwesomeIcon icon="trash-alt" />{' '} Confirm Deletion</Button>{' '}
-      </ModalFooter>
-    </Modal>)
+    return (
+      <Modal isOpen={deleteModal} toggle={() => this.toggle('delete')}>
+        <ModalBody>
+          <h3 style={{ fontWeight: 300 }}>Do You Want To Delete?</h3>
+          <p>Please confirm that you would like to delete this Review?</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary"
+            onClick={() => {
+              this.toggle('delete')
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            color="danger"
+            onClick={() =>
+              deleteReview(firestore, review, () =>
+                history.push('/managereviews')
+              )
+            }
+          >
+            <FontAwesomeIcon icon="trash-alt" /> Confirm Deletion
+          </Button>{' '}
+        </ModalFooter>
+      </Modal>
+    )
   }
 
-  toggle = (type) => {
-    switch(type) {
+  toggle = type => {
+    switch (type) {
       case 'success':
         this.setState({
           successModal: !this.state.successModal
-        });
+        })
         break
       case 'delete':
         this.setState({
           deleteModal: !this.state.deleteModal
-        });
+        })
         break
       default:
         break
@@ -113,38 +151,54 @@ class EditReview extends Component {
     const { review, module } = this.state
     const { history } = this.props
 
-    return(<Container>
-      { this.successModal() }
-      { this.deleteModal() }
-      <Row>
-        <Col>
-          <h1 style={{fontWeight: 300}}>Add Review</h1>
-        </Col>
-      </Row>
-      <Row>
-        {
-          review && module ?
+    return (
+      <Container>
+        {this.successModal()}
+        {this.deleteModal()}
+        <Row>
+          <Col>
+            <h1 style={{ fontWeight: 300 }}>Add Review</h1>
+          </Col>
+        </Row>
+        <Row>
+          {review && module ? (
             <Col>
               <ReviewForm
                 buttonOnSubmit={this.updateReview}
                 module={module}
                 review={review}
-                buttonText="Update Review" />
+                buttonText="Update Review"
+              />
               <div className="d-flex justify-content-center">
-                <Button className="w-75" color="danger" onClick={() => this.toggle('delete')} block>
-                  <FontAwesomeIcon icon="trash-alt" />{' '}Delete Review
+                <Button
+                  className="w-75"
+                  color="danger"
+                  onClick={() => this.toggle('delete')}
+                  block
+                >
+                  <FontAwesomeIcon icon="trash-alt" /> Delete Review
                 </Button>
               </div>
               <div className="d-flex justify-content-center">
-                <Button className="w-75 mt-3" color="secondary" onClick={() => history.push('/managereviews')} outline block>
+                <Button
+                  className="w-75 mt-3"
+                  color="secondary"
+                  onClick={() => history.push('/managereviews')}
+                  outline
+                  block
+                >
                   Back to Your Reviews
                 </Button>
               </div>
             </Col>
-          : <h3 className="mt-2"><FontAwesomeIcon icon="spinner" spin /> Loading Review...</h3>
-        }
-      </Row>
-    </Container>)
+          ) : (
+            <h3 className="mt-2">
+              <FontAwesomeIcon icon="spinner" spin /> Loading Review...
+            </h3>
+          )}
+        </Row>
+      </Container>
+    )
   }
 }
 
@@ -154,7 +208,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(EditReview))
+export default withRouter(
+  compose(
+    firebaseConnect(),
+    connect(mapStateToProps)
+  )(EditReview)
+)

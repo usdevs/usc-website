@@ -1,24 +1,21 @@
 import {
   getFile as getFirestoreFile,
   uploadFile as uploadFirebaseFile,
-  uploadFiles as uploadFirebaseFiles,
-  deleteFile as deleteFirebaseFile,
+  uploadFiles as uploadFirebaseFiles
 } from '../firestore/FilesClient'
 
 const imageCache = {}
 
 export function getFile(firebase, path, callback) {
-
-  if(!imageCache.path) {
-    getFirestoreFile(firebase, path, (url) => {
+  if (!imageCache.path) {
+    getFirestoreFile(firebase, path, url => {
       imageCache[path] = url
-      
+
       callback(url)
     })
   } else {
     callback(imageCache.path)
   }
-
 }
 
 export function uploadFile(firebase, path, file, callback = () => {}) {

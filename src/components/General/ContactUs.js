@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Jumbotron } from "reactstrap";
+import React, { Component } from 'react'
+import { Container, Row, Col, Jumbotron } from 'reactstrap'
 import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker
-} from "react-google-maps";
-import { headerContactUs as header } from "../../resources/images.js";
-import { firebaseConfig } from "../../resources/config.js";
+} from 'react-google-maps'
+import { headerContactUs as header } from '../../resources/images.js'
+import { firebaseConfig } from '../../resources/config.js'
 
 const MapWithAMarker = withScriptjs(
   withGoogleMap(props => (
@@ -18,9 +18,9 @@ const MapWithAMarker = withScriptjs(
       <Marker position={{ lat: 1.3067028, lng: 103.7734 }} />
     </GoogleMap>
   ))
-);
+)
 
-const firebaseApiKey = firebaseConfig.apiKey;
+const firebaseApiKey = firebaseConfig.apiKey
 
 class ContactUs extends Component {
   render() {
@@ -58,7 +58,7 @@ class ContactUs extends Component {
               <br />
               <p>
                 If you have any queries or questions regarding the University
-                Scholars Club and would like to speak to someone, please email{" "}
+                Scholars Club and would like to speak to someone, please email{' '}
                 <a href="mailto:usc.hongensec@u.nus.edu">
                   usc.hongensec@u.nus.edu
                 </a>
@@ -71,8 +71,8 @@ class ContactUs extends Component {
           <br />
         </Row>
       </Container>
-    );
+    )
   }
 }
 
-export default ContactUs;
+export default ContactUs

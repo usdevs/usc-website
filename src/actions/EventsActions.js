@@ -10,11 +10,11 @@ import {
   getGroupEvents as getFirestoreGroupEvents,
   getUserEvents as getFirestoreUserEvents,
   getSpaces as getFirestoreSpaces,
-  watchEvents as watchFirestoreEvents,
+  watchEvents as watchFirestoreEvents
 } from '../firestore/EventsClient'
 import {
   uploadFile as uploadFirebaseFile,
-  deleteFile as deleteFirebaseFile,
+  deleteFile as deleteFirebaseFile
 } from '../firestore/FilesClient'
 import {
   createEvent as createGoogleEvent,
@@ -26,37 +26,43 @@ import { config } from '../resources/config'
 
 //Create, Update and Delete
 
-export function createEvent(firestore, firebase, event, callback = () => {}, errorCallback = () => {}) {
-  if(event.poster && !event.internal) {
-    uploadPoster(firebase, event.poster, (filePath) => {
+export function createEvent(
+  firestore,
+  firebase,
+  event,
+  callback = () => {},
+  errorCallback = () => {}
+) {
+  if (event.poster && !event.internal) {
+    uploadPoster(firebase, event.poster, filePath => {
       event = {
         ...event,
-        poster: filePath,
+        poster: filePath
       }
 
-      createGoogleEvent(event, (googleEntry) => {
+      createGoogleEvent(event, googleEntry => {
         event = {
           ...event,
-          gCalID: googleEntry.id,
+          gCalID: googleEntry.id
         }
 
         createFirestoreEvent(firestore, event, callback, errorCallback)
       })
     })
   } else if (event.poster) {
-    uploadPoster(firebase, event.poster, (filePath) => {
+    uploadPoster(firebase, event.poster, filePath => {
       event = {
         ...event,
-        poster: filePath,
+        poster: filePath
       }
 
       createFirestoreEvent(firestore, event, callback, errorCallback)
     })
   } else if (!event.internal) {
-    createGoogleEvent(event, (googleEntry) => {
+    createGoogleEvent(event, googleEntry => {
       event = {
         ...event,
-        gCalID: googleEntry.id,
+        gCalID: googleEntry.id
       }
 
       createFirestoreEvent(firestore, event, callback, errorCallback)
@@ -66,56 +72,84 @@ export function createEvent(firestore, firebase, event, callback = () => {}, err
   }
 }
 
-export function updateEvent(firestore, firebase, event, originalEvent, callback = () => {}, errorCallback = () => {}) {
-  const actionHandleGCal = (firestore, firebase, event, originalEvent, callback) => {
+export function updateEvent(
+  firestore,
+  firebase,
+  event,
+  originalEvent,
+  callback = () => {},
+  errorCallback = () => {}
+) {
+  const actionHandleGCal = (
+    firestore,
+    firebase,
+    event,
+    originalEvent,
+    callback
+  ) => {
     //If there are any changes in whether the event is internal or external
     //Else update GCal if it exist, and update Firestore
-    if(originalEvent.internal !== event.internal) {
+    if (originalEvent.internal !== event.internal) {
       //If it is now internal, delete the GCal event and update
       //Else it means, it is now not internal, create a GCal and update
-      if(event.internal) {
+      if (event.internal) {
         deleteGoogleEvent(event, () => {
           event = {
             ...event,
             gCalID: null
           }
 
-          updateFirestoreEvent(firestore, event, () => callback(event), errorCallback)
+          updateFirestoreEvent(
+            firestore,
+            event,
+            () => callback(event),
+            errorCallback
+          )
         })
       } else {
-        createGoogleEvent(event, (googleEntry) => {
+        createGoogleEvent(event, googleEntry => {
           event = {
             ...event,
             gCalID: googleEntry.id
           }
 
-          updateFirestoreEvent(firestore, event, () => callback(event), errorCallback)
+          updateFirestoreEvent(
+            firestore,
+            event,
+            () => callback(event),
+            errorCallback
+          )
         })
       }
     } else {
-      if(event.gCalID) {
+      if (event.gCalID) {
         updateGoogleEvent(event, () => {})
       }
 
-      updateFirestoreEvent(firestore, event, () => callback(event), errorCallback)
+      updateFirestoreEvent(
+        firestore,
+        event,
+        () => callback(event),
+        errorCallback
+      )
     }
   }
 
   //If there are changes in the poster
   //Else just update GCal and firestoreReducer
-  if(originalEvent.poster !== event.poster) {
+  if (originalEvent.poster !== event.poster) {
     //Delete the original poster file if it exists
-    if(originalEvent.poster) {
+    if (originalEvent.poster) {
       deleteFirebaseFile(firebase, originalEvent.poster, () => {})
     }
 
     //If there is a new poster file. Upload it and then update GCal and Firestore
     //Else just update GCal and Firestore
-    if(event.poster) {
-      uploadPoster(firebase, event.poster, (filePath) => {
+    if (event.poster) {
+      uploadPoster(firebase, event.poster, filePath => {
         event = {
           ...event,
-          poster: filePath,
+          poster: filePath
         }
 
         actionHandleGCal(firestore, firebase, event, originalEvent, callback)
@@ -129,11 +163,11 @@ export function updateEvent(firestore, firebase, event, originalEvent, callback 
 }
 
 export function deleteEvent(firestore, firebase, event, callback) {
-  if(event.poster) {
+  if (event.poster) {
     deleteFirebaseFile(firebase, event.poster, () => {})
   }
 
-  if(event.gCalID) {
+  if (event.gCalID) {
     deleteGoogleEvent(event, callback)
   }
 
@@ -149,11 +183,16 @@ export function getEvent(firestore, eventID, callback = () => {}) {
   getFirestoreEvent(firestore, eventID, callback)
 }
 
-export function getEvents(firestore, callback = () => {}, month = null, spaceOnly = false) {
+export function getEvents(
+  firestore,
+  callback = () => {},
+  month = null,
+  spaceOnly = false
+) {
   getEventTypes(firestore)
   getSpaces(firestore)
 
-  if(month) {
+  if (month) {
     getEventsByMonth(firestore, callback, month, spaceOnly)
   } else {
     getFirestoreEvents(firestore, callback, spaceOnly)
@@ -162,11 +201,22 @@ export function getEvents(firestore, callback = () => {}, month = null, spaceOnl
   watchFirestoreEvents(firestore)
 }
 
-export function getEventVenueBookingsAfter(firestore, venueID, date, alias = 'venueBookings', callback = () => {}) {
+export function getEventVenueBookingsAfter(
+  firestore,
+  venueID,
+  date,
+  alias = 'venueBookings',
+  callback = () => {}
+) {
   getFirestoreEventVenueBookingsAfter(firestore, venueID, date, alias, callback)
 }
 
-export function getEventsByMonth(firestore, callback = () => {}, month, spaceOnly = false) {
+export function getEventsByMonth(
+  firestore,
+  callback = () => {},
+  month,
+  spaceOnly = false
+) {
   getFirestoreEvents(firestore, callback, month, spaceOnly, true)
   getFirestoreEvents(firestore, callback, month, spaceOnly, false)
   watchFirestoreEvents(firestore)
