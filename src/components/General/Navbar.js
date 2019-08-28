@@ -164,7 +164,7 @@ class SiteNavbar extends Component {
       items.push(
         <NavItem key={item.link}>
           <NavLink
-            href={item.link}
+            style={{ cursor: 'pointer' }}
             onClick={() => {
               if (isOpen) {
                 this.toggle()
@@ -189,7 +189,7 @@ class SiteNavbar extends Component {
               history.push('/dashboard')
             }}
             className="border border-primary rounded text-primary"
-            style={{ fontWeight: 500 }}
+            style={{ fontWeight: 500, cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon="columns" /> Dashboard
           </NavLink>
@@ -209,7 +209,7 @@ class SiteNavbar extends Component {
           <NavLink
             onClick={this.toggleLogin.bind(this)}
             className="border border-primary rounded text-primary"
-            style={{ fontWeight: 500 }}
+            style={{ fontWeight: 500, cursor: 'pointer' }}
           >
             <FontAwesomeIcon icon="sign-in-alt" /> Log In
           </NavLink>
@@ -272,6 +272,7 @@ class SiteNavbar extends Component {
     return (
       <Navbar color="light" light expand="md">
         <NavbarBrand
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             if (isOpen) {
               this.toggle()
@@ -280,8 +281,10 @@ class SiteNavbar extends Component {
           }}
         >
           <img src={logo} style={logoStyle} alt="logo" />
-          <Badge color="primary">Beta</Badge>
         </NavbarBrand>
+        <h5>
+          <Badge color="primary">Beta</Badge>
+        </h5>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={this.state.isOpen} navbar>
           <Nav className="ml-auto" navbar>
