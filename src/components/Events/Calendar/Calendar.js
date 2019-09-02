@@ -82,9 +82,10 @@ class Calendar extends Component {
                       'fa-layers-text ' + (sameDay ? 'text-white' : '')
                     }
                     transform="bottom-100"
-                    style={{ marginTop: '.6em' }}
                   >
-                    <h4>{day.format('D')}</h4>
+                    <h6>
+                      <b>{day.format('D')}</b>
+                    </h6>
                   </span>
                 </span>
               </Col>
