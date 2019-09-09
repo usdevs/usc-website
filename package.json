@@ -11,7 +11,7 @@
     "@fortawesome/fontawesome-pro-light": "^5.0.13",
     "@fortawesome/fontawesome-pro-regular": "^5.0.13",
     "@fortawesome/fontawesome-pro-solid": "^5.0.13",
-    "@fortawesome/free-brands-svg-icons": "^5.1.0-11",
+    "@fortawesome/free-brands-svg-icons": "^5.10.2",
     "@fortawesome/pro-solid-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "0.0.20",
     "ajv": "^6.5.0",
