@@ -22,7 +22,7 @@
     "connected-react-router": "^4.3.0",
     "dotenv": "^8.0.0",
     "enzyme": "^3.3.0",
-    "firebase": "^5.1.0",
+    "firebase": "^7.2.0",
     "formik": "^0.11.11",
     "googlemaps": "^1.12.0",
     "history": "^4.7.2",
