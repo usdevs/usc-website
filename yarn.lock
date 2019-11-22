@@ -929,10 +929,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@casl/ability@^2.4.2":
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-2.5.1.tgz#53f12af45295793472c65b539204226372904594"
-  integrity sha512-Ju1cl1R4xgPiiYxmjUAoO+rhNxp0ximyKZzWuw4/DLKHnbQNqbSVyDkRSVHuAuL+BWyeBsaD/sVSwxUitYlDyA==
+"@casl/ability@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-3.2.0.tgz#b723abb17202619874dcf13bf912f8d597ba47a7"
+  integrity sha512-MoU+fm8Bfx37DCM2r7BtkyYTy3T6x+2d9zaVESe4y+Q7BKZsWeyKLhF8Yh+fZHBcAC5RDupmk88ckoBSHpiOtQ==
   dependencies:
     sift "^7.0.1"
 
