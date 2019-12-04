@@ -80,10 +80,12 @@ class EventForm extends Component {
 
     if (spaces.isLoaded) {
       _.forEach(spaces.ordered, space => {
-        options.push({
-          id: space.id,
-          display: space.name
-        })
+        if (space.name !== 'CTPH-Old' && space.name !== 'CTPH') {
+          options.push({
+            id: space.id,
+            display: space.name
+          })
+        }
       })
     }
 
