@@ -11,7 +11,6 @@ import Can from '../../utils/Can'
 const calendarLink = 'http://bit.ly/uspcalendar'
 
 class Events extends Component {
-
   render() {
     return (
       <Container>

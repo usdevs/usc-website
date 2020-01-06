@@ -81,12 +81,12 @@ class AdminEventForm extends Component {
     var options = []
 
     if (spaces.isLoaded) {
-        _.forEach(spaces.ordered, space => {
-            options.push({
-            id: space.id,
-            display: space.name
-            })
+      _.forEach(spaces.ordered, space => {
+        options.push({
+          id: space.id,
+          display: space.name
         })
+      })
     }
 
     return options

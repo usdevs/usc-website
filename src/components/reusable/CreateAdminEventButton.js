@@ -10,9 +10,9 @@ const createAdminEventLink = 'createadminevent'
 
 class CreateAdminEventButton extends Component {
   render() {
-  	const { auth, history } = this.props
-	  const signedIn = isLoaded(auth) && !isEmpty(auth)
-	  if (signedIn) {
+    const { auth, history } = this.props
+    const signedIn = isLoaded(auth) && !isEmpty(auth)
+    if (signedIn) {
       return (
         <Button
           color="info"
@@ -21,7 +21,7 @@ class CreateAdminEventButton extends Component {
         >
           <FontAwesomeIcon icon={'plus'} className="mr-2" />
           Create Admin Event
-        </Button> 
+        </Button>
       )
     } else {
       return null

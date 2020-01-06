@@ -13,14 +13,12 @@ import moment from 'moment'
 import { config } from '../../resources/config'
 
 export const validateNotEmpty = value => {
-  return !value
-    ? 'Field cannot be empty' 
-    : null
+  return !value ? 'Field cannot be empty' : null
 }
 
 export const validateNotEmptyNotCtph = value => {
   return !value
-    ? 'Field cannot be empty' 
+    ? 'Field cannot be empty'
     : value.trim() === 'CTPH'
     ? 'You cannot book the CTPH directly. Please contact USP Admin for more information.'
     : null
