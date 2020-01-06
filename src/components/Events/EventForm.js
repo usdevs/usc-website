@@ -13,7 +13,8 @@ import {
   GroupInput,
   ImageInput,
   TextAreaInput,
-  validateNotEmpty
+  validateNotEmpty,
+  validateNotEmptyNotCtph
 } from '../reusable/FormInputs'
 import { config } from '../../resources/config'
 import moment from 'moment'
@@ -31,6 +32,7 @@ import {
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
+// TODO: Remove ability for students to book CTPH under 'Others'
 class EventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
@@ -118,7 +120,7 @@ class EventForm extends Component {
 
   validateOtherVenue = (formApi, value) => {
     if (formApi.getValue('venue') === 'Others') {
-      return validateNotEmpty(value)
+      return validateNotEmptyNotCtph(value)
     } else {
       return null
     }

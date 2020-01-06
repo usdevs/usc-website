@@ -31,6 +31,8 @@ import {
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
+// TODO: Add "Show as Admin Booked Event" option frontend (work in progress!)
+
 class AdminEventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col, Button } from 'reactstrap'
 import { headerEvent as header } from '../../resources/images.js'
 import CtphAlert from './CtphAlert'
 import EventCalendar from './Calendar/EventCalendar'
