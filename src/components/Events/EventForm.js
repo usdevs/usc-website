@@ -31,8 +31,6 @@ import {
   getSpaces
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
-
-// TODO: Remove ability for students to book CTPH under 'Others'
 class EventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
