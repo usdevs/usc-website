@@ -68,8 +68,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(ManageGroups)
+  compose(firebaseConnect(), connect(mapStateToProps))(ManageGroups)
 )

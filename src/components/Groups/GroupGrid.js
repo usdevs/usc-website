@@ -59,7 +59,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(GroupGrid)
+export default compose(firebaseConnect(), connect(mapStateToProps))(GroupGrid)

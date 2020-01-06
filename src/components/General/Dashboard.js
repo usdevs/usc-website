@@ -373,8 +373,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(Dashboard)
+  compose(firebaseConnect(), connect(mapStateToProps))(Dashboard)
 )

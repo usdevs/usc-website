@@ -75,8 +75,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(ManageReviews)
+  compose(firebaseConnect(), connect(mapStateToProps))(ManageReviews)
 )

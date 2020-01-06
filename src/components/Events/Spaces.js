@@ -3,6 +3,7 @@ import { Container, Row, Col } from 'reactstrap'
 import { headerSpaces as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import CreateEventButton from '../reusable/CreateEventButton.js'
+import CtphAlert from './CtphAlert'
 
 class Spaces extends Component {
   render() {
@@ -11,6 +12,11 @@ class Spaces extends Component {
         <Row>
           <Col>
             <img src={header} className="img-fluid" alt="header" />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12">
+            <CtphAlert />
           </Col>
         </Row>
         <Row>
