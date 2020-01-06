@@ -177,7 +177,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(ProfileForm)
+export default compose(firebaseConnect(), connect(mapStateToProps))(ProfileForm)

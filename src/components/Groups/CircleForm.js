@@ -244,7 +244,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(CircleForm)
+export default compose(firebaseConnect(), connect(mapStateToProps))(CircleForm)

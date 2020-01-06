@@ -34,8 +34,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(CreateEventButton)
+  compose(firebaseConnect(), connect(mapStateToProps))(CreateEventButton)
 )

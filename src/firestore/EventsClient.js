@@ -146,7 +146,10 @@ export function getEventVenueBookingsAfter(
   firestore
     .get({
       collection: 'events',
-      where: [['endDate', '>=', date.toDate()], ['venue', '==', venueID]],
+      where: [
+        ['endDate', '>=', date.toDate()],
+        ['venue', '==', venueID]
+      ],
       orderBy: ['endDate'],
       storeAs: alias
     })
