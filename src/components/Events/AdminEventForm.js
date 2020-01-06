@@ -264,6 +264,10 @@ class AdminEventForm extends Component {
                   text="Venue Booking Only"
                   validateOnChange
                 />
+                {/* <CheckboxInput
+                  field="adminBooked"
+                  text="Show as booked by Admin (Still working on it!)"
+                /> */}
               </div>
               <h3>Venue</h3>
               <div className="mb-3">

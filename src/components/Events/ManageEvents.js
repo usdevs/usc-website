@@ -15,6 +15,7 @@ import { formatEvents, formatFirestoreData } from '../../utils/utils'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 import { withRouter } from 'react-router-dom'
+import Can from '../../utils/Can'
 
 class ManageEvents extends Component {
   static contextTypes = {
