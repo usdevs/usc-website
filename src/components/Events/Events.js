@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
+import { Alert, Container, Row, Col, Button } from 'reactstrap'
 import { headerEvent as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -8,12 +8,6 @@ import CreateEventButton from '../reusable/CreateEventButton.js'
 const calendarLink = 'http://bit.ly/uspcalendar'
 
 class Events extends Component {
-  googleCalendarBtn = () => (
-    <Button color="primary" className="d-block d-sm-none" block>
-      <FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />
-      View on Google Calendar
-    </Button>
-  )
 
   render() {
     return (

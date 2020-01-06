@@ -14,6 +14,7 @@ import Navbar from './components/General/Navbar'
 import ContactUs from './components/General/ContactUs'
 import Dashboard from './components/General/Dashboard'
 import CreateEvent from './components/Events/CreateEvent'
+import CreateAdminEvent from './components/Events/CreateAdminEvent'
 import ManageEvents from './components/Events/ManageEvents'
 import EditEvent from './components/Events/EditEvent'
 //import EventAdmin from './components/Events/EventAdmin'
@@ -213,6 +214,7 @@ render(
                 <Route path="/eventadmin" component={GroupAdmin} />
                 <Route path="/groupadmin" component={GroupAdmin} />
                 <Route path="/moduleadmin" component={ModuleAdmin} />
+                <Route path="/createadminevent" component={CreateAdminEvent} />
               </div>
             </Can>
             <Route component={Home} />
