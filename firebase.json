@@ -48,6 +48,15 @@
             "value": "max-age=86400"
           }
         ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=0, no-cache"
+          }
+        ]
       }
     ]
   },
