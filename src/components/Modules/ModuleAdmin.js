@@ -92,7 +92,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(
-  firebaseConnect(),
-  connect(mapStateToProps)
-)(ModuleAdmin)
+export default compose(firebaseConnect(), connect(mapStateToProps))(ModuleAdmin)

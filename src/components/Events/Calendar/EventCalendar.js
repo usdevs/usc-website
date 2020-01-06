@@ -206,10 +206,5 @@ const mapStateToProps = state => {
 
 export default compose(
   firebaseConnect(),
-  connect(
-    mapStateToProps,
-    null,
-    null,
-    areStatesEqual
-  )
+  connect(mapStateToProps, null, null, areStatesEqual)
 )(EventCalendar)

@@ -53,8 +53,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(GroupAdmin)
+  compose(firebaseConnect(), connect(mapStateToProps))(GroupAdmin)
 )

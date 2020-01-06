@@ -222,8 +222,5 @@ const mapStateToProps = state => {
 }
 
 export default withRouter(
-  compose(
-    firebaseConnect(),
-    connect(mapStateToProps)
-  )(GroupAutocomplete)
+  compose(firebaseConnect(), connect(mapStateToProps))(GroupAutocomplete)
 )
