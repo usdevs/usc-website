@@ -5,17 +5,12 @@ import CtphAlert from './CtphAlert'
 import EventCalendar from './Calendar/EventCalendar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import CreateEventButton from '../reusable/CreateEventButton.js'
+import CreateAdminEventButton from '../reusable/CreateAdminEventButton.js'
+import Can from '../../utils/Can'
 
 const calendarLink = 'http://bit.ly/uspcalendar'
 
 class Events extends Component {
-  googleCalendarBtn = () => (
-    <Button color="primary" className="d-block d-sm-none" block>
-      <FontAwesomeIcon icon={['fab', 'google']} className="mr-2" />
-      View on Google Calendar
-    </Button>
-  )
-
   render() {
     return (
       <Container>
@@ -48,6 +43,9 @@ class Events extends Component {
                   </Button>
                 </a>
                 <CreateEventButton />
+                <Can I="manage" a="Admin">
+                  <CreateAdminEventButton />
+                </Can>
               </div>
             </div>
             <hr className="my-2" />

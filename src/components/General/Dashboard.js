@@ -9,25 +9,31 @@ import Can from '../../utils/Can'
 import { headerDashboard as header } from '../../resources/images.js'
 
 const adminCategories = [
-  {
+  /* {
     name: 'Events Admin Panel',
     icon: 'calendar-alt',
-    link: '/eventsadmin',
+    link: '/eventadmin',
     color: 'tomato'
+  }, */
+  {
+    name: 'Create Admin Event',
+    icon: 'plus',
+    link: '/createadminevent',
+    color: 'teal'
   },
   {
     name: 'Add Group',
     icon: 'plus',
     link: '/creategroup',
-    color: 'steelblue'
+    color: 'teal'
   },
   {
     name: 'Group Admin Panel',
     icon: 'users',
     link: '/groupadmin',
-    color: 'steelblue'
+    color: 'teal'
   },
-  {
+  /*{
     name: 'Modules Admin Panel',
     icon: 'chalkboard-teacher',
     link: '/modulesadmin',
@@ -38,12 +44,12 @@ const adminCategories = [
     icon: 'chalkboard-teacher',
     link: '/useradmin',
     color: 'sandybrown'
-  },
+  },*/
   {
     name: 'Add International Programme',
     icon: 'plus',
     link: '/createintlprog',
-    color: 'steelblue'
+    color: 'teal'
   }
 ]
 

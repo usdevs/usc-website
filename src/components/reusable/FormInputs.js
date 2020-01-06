@@ -16,6 +16,14 @@ export const validateNotEmpty = value => {
   return !value ? 'Field cannot be empty' : null
 }
 
+export const validateNotEmptyNotCtph = value => {
+  return !value
+    ? 'Field cannot be empty'
+    : value.trim() === 'CTPH'
+    ? 'You cannot book the CTPH directly. Please contact USP Admin for more information.'
+    : null
+}
+
 export const duplicateValidation = (value, values) => {
   return values.filter(v => v === value).length > 1
     ? 'This field must be unique.'

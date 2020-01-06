@@ -13,8 +13,7 @@ import {
   GroupInput,
   ImageInput,
   TextAreaInput,
-  validateNotEmpty,
-  validateNotEmptyNotCtph
+  validateNotEmpty
 } from '../reusable/FormInputs'
 import { config } from '../../resources/config'
 import moment from 'moment'
@@ -31,7 +30,10 @@ import {
   getSpaces
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
-class EventForm extends Component {
+
+// TODO: Add "Show as Admin Booked Event" option frontend (work in progress!)
+
+class AdminEventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
   }
@@ -80,12 +82,10 @@ class EventForm extends Component {
 
     if (spaces.isLoaded) {
       _.forEach(spaces.ordered, space => {
-        if (space.name !== 'CTPH-Old' && space.name !== 'CTPH') {
-          options.push({
-            id: space.id,
-            display: space.name
-          })
-        }
+        options.push({
+          id: space.id,
+          display: space.name
+        })
       })
     }
 
@@ -118,7 +118,7 @@ class EventForm extends Component {
 
   validateOtherVenue = (formApi, value) => {
     if (formApi.getValue('venue') === 'Others') {
-      return validateNotEmptyNotCtph(value)
+      return validateNotEmpty(value)
     } else {
       return null
     }
@@ -264,6 +264,10 @@ class EventForm extends Component {
                   text="Venue Booking Only"
                   validateOnChange
                 />
+                {/* <CheckboxInput
+                  field="adminBooked"
+                  text="Show as booked by Admin (Still working on it!)"
+                /> */}
               </div>
               <h3>Venue</h3>
               <div className="mb-3">
@@ -426,4 +430,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(firebaseConnect(), connect(mapStateToProps))(EventForm)
+export default compose(
+  firebaseConnect(),
+  connect(mapStateToProps)
+)(AdminEventForm)
