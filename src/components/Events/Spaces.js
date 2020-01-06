@@ -3,7 +3,9 @@ import { Container, Row, Col } from 'reactstrap'
 import { headerSpaces as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import CreateEventButton from '../reusable/CreateEventButton.js'
+import CreateAdminEventButton from '../reusable/CreateAdminEventButton.js'
 import CtphAlert from './CtphAlert'
+import Can from '../../utils/Can'
 
 class Spaces extends Component {
   render() {
@@ -29,6 +31,9 @@ class Spaces extends Component {
               </div>
               <div className="d-flex ml-auto mr-3 p-2 align-items-center">
                 <CreateEventButton />
+                <Can I="manage" a="Admin">
+                  <CreateAdminEventButton />
+                </Can>
               </div>
             </div>
             <hr className="my-2" />
