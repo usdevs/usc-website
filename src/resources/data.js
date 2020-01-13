@@ -410,11 +410,11 @@ export const uscCommittees = [
       },
       {
         name: 'Finance',
-        members: 'Clare Chia (Project Director)'
+        members: 'Clare Chia (Project Director), Valerie Kwok Kit Min, Pua Xuan Ming, Ng Wai Ching, Tan Yi Hui Valerie'
       },
       {
         name: 'Public Relations',
-        members: 'Sijie Grace Ong (Project Director)'
+        members: 'Sijie Grace Ong (Project Director), Clare Chia Xiao Fen, Kenny, Chong Wei Xin, Armado , Ruizhong, Siyi'
       },
       {
         name: 'Creative',
