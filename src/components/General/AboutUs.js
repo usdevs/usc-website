@@ -68,7 +68,7 @@ class AboutUs extends Component {
         <small className="text-muted">
           Headed by <em>{committee.headedBy}</em>
         </small>
-        <br />
+        <p className="text-muted">{committee.description}</p>
         <br />
         {committee.teams.map(team => (
           <div key={team.name}>
