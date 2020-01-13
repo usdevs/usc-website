@@ -258,12 +258,12 @@ export const uscCommittees = [
       },
       {
         name: 'Alumni Relations Team',
-        members: 'Tan Kia Sim, Kathy, Yip Sze Kay, Wu Fan, Seow Nicole, Hoe Jia En Allison'
+        members:
+          'Tan Kia Sim, Kathy, Yip Sze Kay, Wu Fan, Seow Nicole, Hoe Jia En Allison'
       },
       {
         name: 'Think Tank',
-        members:
-          'Mah Terence, Auyok Sean, Atharv Joshi, Hong Shao Yang'
+        members: 'Mah Terence, Auyok Sean, Atharv Joshi, Hong Shao Yang'
       }
     ]
   },
@@ -274,7 +274,8 @@ export const uscCommittees = [
     teams: [
       {
         name: 'Sports Directorate',
-        members: 'Guek Jun Kai, Sebastian (Director), R Ramana, Ang Jing Zhe, Vijayan Kumaran Kausalya'
+        members:
+          'Guek Jun Kai, Sebastian (Director), R Ramana, Ang Jing Zhe, Vijayan Kumaran Kausalya'
       },
       {
         name: 'Cultural Arts Directorate',
@@ -287,12 +288,12 @@ export const uscCommittees = [
       },
       {
         name: 'IG Coordinators (Non-Sports)',
-        members:
-          'Chengzhi Zheng, Muhammad Excel Muslim'
+        members: 'Chengzhi Zheng, Muhammad Excel Muslim'
       },
       {
         name: 'GUI Coordinators (Social/Cultural/Academic/Welfare)',
-        members: 'Loh Jonina, Hnin Azali (Brenda), Marcus Ng Yong Ming, Chan Min Yi'
+        members:
+          'Loh Jonina, Hnin Azali (Brenda), Marcus Ng Yong Ming, Chan Min Yi'
       }
     ]
   },
@@ -323,7 +324,8 @@ export const uscCommittees = [
     teams: [
       {
         name: 'Academic Committee',
-        members: 'Vijayan Kumaran Kausalya (Director), Wang Zijun (Curriculum Review Committee Representative), Chan Yun Yee Michelle, Yap Mitchell, Keoliya Mayank, Hnin Azali (Brenda), Chua Leah, Loo Nicole, Hoe Jia En Allison, Mah Terence, Wu Weiming, Lim Darren'
+        members:
+          'Vijayan Kumaran Kausalya (Director), Wang Zijun (Curriculum Review Committee Representative), Chan Yun Yee Michelle, Yap Mitchell, Keoliya Mayank, Hnin Azali (Brenda), Chua Leah, Loo Nicole, Hoe Jia En Allison, Mah Terence, Wu Weiming, Lim Darren'
       }
     ]
   },
@@ -385,13 +387,11 @@ export const uscCommittees = [
       },
       {
         name: "Orientation Camp (O'Camp)",
-        members:
-          'Nisha Subramaniam (Project Director)'
+        members: 'Nisha Subramaniam (Project Director)'
       },
       {
         name: "Orientation Week (O'Week)",
-        members:
-          'Christabelle Peng (Project Director)'
+        members: 'Christabelle Peng (Project Director)'
       },
       {
         name: 'Events',
@@ -399,13 +399,11 @@ export const uscCommittees = [
       },
       {
         name: 'Batch Project',
-        members:
-          'Yen Yi Lum (Project Director)'
+        members: 'Yen Yi Lum (Project Director)'
       },
       {
         name: 'Finance',
-        members:
-          'Clare Chia (Project Director)'
+        members: 'Clare Chia (Project Director)'
       },
       {
         name: 'Public Relations',
@@ -417,8 +415,7 @@ export const uscCommittees = [
       },
       {
         name: 'Operations',
-        members:
-          'Si Tian Lim (Project Director)'
+        members: 'Si Tian Lim (Project Director)'
       }
     ]
   }
