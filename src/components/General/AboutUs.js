@@ -184,7 +184,7 @@ class AboutUs extends Component {
         <Row>
           <Col>
             <div className="p-3 mb-2 bg-dark text-white">
-              <h3 className="mb-0">18th Management Committee</h3>
+              <h3 className="mb-0">19th Management Committee</h3>
             </div>
           </Col>
         </Row>
