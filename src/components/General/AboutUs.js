@@ -188,7 +188,7 @@ class AboutUs extends Component {
             </div>
           </Col>
         </Row>
-        <Row>{mcMembers(this.props.mcMembers['18th'], false)}</Row>
+        <Row>{mcMembers(this.props.mcMembers['19th'], false)}</Row>
         <Row>
           <Col>
             <Button color="primary" onClick={this.toggle}>

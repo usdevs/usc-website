@@ -4,5 +4,6 @@ node_js:
 install:
   - yarn
 script:
+  - yarn run format
   - yarn run format:ci
   - yarn run build
