@@ -249,7 +249,8 @@ export const uscCommittees = [
   {
     name: 'Advisory',
     headedBy: 'Ng Hui Ren, President',
-    description: 'The Advisory Committee manages USP’s internal data (e.g. Welfare Survey Report), communications and feedback channels (e.g. @nus.usc Instagram, USC Feedback Box), Think Tank - a task force to investigate issues pertaining to USP -  as well as Alumni relations.',
+    description:
+      'The Advisory Committee manages USP’s internal data (e.g. Welfare Survey Report), communications and feedback channels (e.g. @nus.usc Instagram, USC Feedback Box), Think Tank - a task force to investigate issues pertaining to USP -  as well as Alumni relations.',
     image: presidentComm,
     teams: [
       {
@@ -271,7 +272,8 @@ export const uscCommittees = [
   {
     name: 'Community Life',
     headedBy: 'Chan Qiu Qing, Vice-President (Community Life)',
-    description: 'The Community Life committee believes strongly in doing what makes you happy :) From Interest Groups to Ground-Up Initiatives, we aim to ENABLE you by supporting and providing advice on how you can turn your ideas into reality. Share your ideas with us (even the ones that popped up at 2am) at bit.ly/usideas!',
+    description:
+      'The Community Life committee believes strongly in doing what makes you happy :) From Interest Groups to Ground-Up Initiatives, we aim to ENABLE you by supporting and providing advice on how you can turn your ideas into reality. Share your ideas with us (even the ones that popped up at 2am) at bit.ly/usideas!',
     image: vpcommlifeComm,
     teams: [
       {
@@ -302,7 +304,8 @@ export const uscCommittees = [
   {
     name: 'Student Welfare',
     headedBy: 'Venny Lewis, Vice-President (Welfare)',
-    description: 'The Welfare Committee functions as a social safety net in USP. Through Exam Welfare and Welfare Projects Committee we plan diverse events and initiatives open to all USP students. Meanwhile, Inter-house coordinators handle collaboration between Houses for IHG and other initiatives.',
+    description:
+      'The Welfare Committee functions as a social safety net in USP. Through Exam Welfare and Welfare Projects Committee we plan diverse events and initiatives open to all USP students. Meanwhile, Inter-house coordinators handle collaboration between Houses for IHG and other initiatives.',
     image: vpwelfareComm,
     teams: [
       {
@@ -323,7 +326,8 @@ export const uscCommittees = [
   {
     name: 'Academic',
     headedBy: 'Ng Hui Ren, President',
-    description: 'The Academic Committee is responsible for understanding, addressing, and surfacing USP students’ sentiments on all academics-related matters. We work closely with the USP Faculty - who has been very supportive and receptive to students’ feedback - to achieve these objectives.',
+    description:
+      'The Academic Committee is responsible for understanding, addressing, and surfacing USP students’ sentiments on all academics-related matters. We work closely with the USP Faculty - who has been very supportive and receptive to students’ feedback - to achieve these objectives.',
     image: academicComm,
     teams: [
       {
@@ -336,7 +340,8 @@ export const uscCommittees = [
   {
     name: 'Secretariat',
     headedBy: 'Ng Qian Jie Cheryl, Honorary General Secretary',
-    description: 'The Secretariat Committee is tirelessly working to improve the USP spaces, adding colour and functionality to our community. It consists of 3 subcommittees - Spaces, Design and Maker Studio. Got an idea? Feel free to contact any of us!', 
+    description:
+      'The Secretariat Committee is tirelessly working to improve the USP spaces, adding colour and functionality to our community. It consists of 3 subcommittees - Spaces, Design and Maker Studio. Got an idea? Feel free to contact any of us!',
     image: hongensecComm,
     teams: [
       {
@@ -359,7 +364,8 @@ export const uscCommittees = [
   {
     name: 'Finance',
     headedBy: 'Wang Xinman (Mandy), Honorary Financial Secretary',
-    description: 'The Finance Committee supports student initiatives in USP by allocating budget and obtaining sponsorships. Additionally, we raise funds for the community through the sale of USP merchandise, and maintain partnerships with vendors to benefit USP students.',
+    description:
+      'The Finance Committee supports student initiatives in USP by allocating budget and obtaining sponsorships. Additionally, we raise funds for the community through the sale of USP merchandise, and maintain partnerships with vendors to benefit USP students.',
     image: honfinsecComm,
     teams: [
       {
@@ -385,7 +391,8 @@ export const uscCommittees = [
   {
     name: 'Freshmen Orientation',
     headedBy: 'Chia Kai Xin, Freshmen Orientation Director',
-    description: 'The FOP Committee, comprising of 8 sub-committees, is in-charge of planning the annual Freshmen Orientation Programme. The FOP Committee also engages important external stakeholders like the House Committees and USP staff to refine and curate the programme. The Committee is dedicated to creating a fun and fulfilling experience for the freshmen, and ensuring that they integrate seamlessly into the USP community.',
+    description:
+      'The FOP Committee, comprising of 8 sub-committees, is in-charge of planning the annual Freshmen Orientation Programme. The FOP Committee also engages important external stakeholders like the House Committees and USP staff to refine and curate the programme. The Committee is dedicated to creating a fun and fulfilling experience for the freshmen, and ensuring that they integrate seamlessly into the USP community.',
     image: fopdirectorComm,
     teams: [
       {
@@ -394,35 +401,43 @@ export const uscCommittees = [
       },
       {
         name: "Orientation Camp (O'Camp)",
-        members: 'Nisha Subramaniam (Project Director), Chong Wei Xin (Vice-Project Director), Gautum Girish Vasnani, Jermaine Tang Chor Yee, Pua Xuan Ming, Ng Xiang Yun, Tang Kwan Hou, Ong Sijie Grace, Soon Xiao Xi Natasha, Neo Jing Xuan Renee, Lim Wei Liang, Bec Kyung Huhn (Kevin), Johnathan Yeo Hong-Hui, Yip Jung Hon, Lin Min Kang'
+        members:
+          'Nisha Subramaniam (Project Director), Chong Wei Xin (Vice-Project Director), Gautum Girish Vasnani, Jermaine Tang Chor Yee, Pua Xuan Ming, Ng Xiang Yun, Tang Kwan Hou, Ong Sijie Grace, Soon Xiao Xi Natasha, Neo Jing Xuan Renee, Lim Wei Liang, Bec Kyung Huhn (Kevin), Johnathan Yeo Hong-Hui, Yip Jung Hon, Lin Min Kang'
       },
       {
         name: "Orientation Week (O'Week)",
-        members: 'Christabelle Peng (Project Director), Peter Lok (Vice-Project Director), Tay Kiat Jun, Joshua Chew, Goh Quan Sheng, Jonathan Lau, Lim Jing Feng, Marcus Ng, Ashruff, Mervin Junus, Nicole Loo, Chloe Yung, Tan Ler Nie, Claire Low, Hazel Tan, Xing Yu Xia, Valerie Kwok'
+        members:
+          'Christabelle Peng (Project Director), Peter Lok (Vice-Project Director), Tay Kiat Jun, Joshua Chew, Goh Quan Sheng, Jonathan Lau, Lim Jing Feng, Marcus Ng, Ashruff, Mervin Junus, Nicole Loo, Chloe Yung, Tan Ler Nie, Claire Low, Hazel Tan, Xing Yu Xia, Valerie Kwok'
       },
       {
         name: 'Events',
-        members: 'Qi Ting Joei Ow (Project Director), Adele Chin Shu Fern (Vice-Project Director), Tabitha Tan Si Yi, Ong Yong En, Ow Jun Ning Claire, Ng Wai Ching, Ng Yu Fang, Jun Jie, Ng Wai Ching'
+        members:
+          'Qi Ting Joei Ow (Project Director), Adele Chin Shu Fern (Vice-Project Director), Tabitha Tan Si Yi, Ong Yong En, Ow Jun Ning Claire, Ng Wai Ching, Ng Yu Fang, Jun Jie, Ng Wai Ching'
       },
       {
         name: 'Batch Project',
-        members: 'Yen Yi Lum (Project Director), Toh Jie Ying (Vice-Project Director), Tiffany Tang, Tan Yi Hui Valerie, Miki Ng, Kevin, Yip Jung Hon, Gautum Girish Vasnani, Tasha Phua, Rhea Sharma, Matthew, Lim Yu Fei, Constance Thum, Johnathan Yeo Hong-Hui'
+        members:
+          'Yen Yi Lum (Project Director), Toh Jie Ying (Vice-Project Director), Tiffany Tang, Tan Yi Hui Valerie, Miki Ng, Kevin, Yip Jung Hon, Gautum Girish Vasnani, Tasha Phua, Rhea Sharma, Matthew, Lim Yu Fei, Constance Thum, Johnathan Yeo Hong-Hui'
       },
       {
         name: 'Finance',
-        members: 'Clare Chia (Project Director), Valerie Kwok Kit Min, Pua Xuan Ming, Ng Wai Ching, Tan Yi Hui Valerie'
+        members:
+          'Clare Chia (Project Director), Valerie Kwok Kit Min, Pua Xuan Ming, Ng Wai Ching, Tan Yi Hui Valerie'
       },
       {
         name: 'Public Relations',
-        members: 'Sijie Grace Ong (Project Director), Clare Chia Xiao Fen, Kenny, Chong Wei Xin, Armado , Ruizhong, Siyi'
+        members:
+          'Sijie Grace Ong (Project Director), Clare Chia Xiao Fen, Kenny, Chong Wei Xin, Armado , Ruizhong, Siyi'
       },
       {
         name: 'Creative',
-        members: 'Tiffany Ho (Project Director), Dakshita (Vice-Project Director), Weiliang, Joshua Chew, Gabriel May Moe Kyaw, Stephanie Goh, Tharun, Ying Feng, Haiyun, Ruizhong Choo, Jing Wen, Si Yi Li, Yu Fei'
+        members:
+          'Tiffany Ho (Project Director), Dakshita (Vice-Project Director), Weiliang, Joshua Chew, Gabriel May Moe Kyaw, Stephanie Goh, Tharun, Ying Feng, Haiyun, Ruizhong Choo, Jing Wen, Si Yi Li, Yu Fei'
       },
       {
         name: 'Operations',
-        members: 'Si Tian Lim (Project Director), Jun Jie, Jermaine, Hazel Tan, Tiffany Tang'
+        members:
+          'Si Tian Lim (Project Director), Jun Jie, Jermaine, Hazel Tan, Tiffany Tang'
       }
     ]
   }
