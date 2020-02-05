@@ -163,17 +163,7 @@ class SiteNavbar extends Component {
     _.forEach(this.navbarItems, item => {
       items.push(
         <NavItem key={item.link}>
-          <NavLink
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              if (isOpen) {
-                this.toggle()
-              }
-              history.push(item.link)
-            }}
-          >
-            {item.display}
-          </NavLink>
+          <NavLink href={item.link}>{item.display}</NavLink>
         </NavItem>
       )
     })
