@@ -89,6 +89,11 @@ class Home extends Component {
               <hr className="my-2" />
               <br />
               <h1 style={{ fontWeight: 300 }}>Upcoming Events</h1>
+              <p className="lead">
+                <Button color="primary" onClick={() => history.push('/events')}>
+                  View All Events
+                </Button>
+              </p>
               <Container>
                 <Row>
                   {upcomingEvents &&
@@ -128,12 +133,6 @@ class Home extends Component {
                   )}
                 </Row>
               </Container>
-              <br />
-              <p className="lead">
-                <Button color="primary" onClick={() => history.push('/events')}>
-                  View All Events
-                </Button>
-              </p>
             </Jumbotron>
           </Col>
         </Row>
