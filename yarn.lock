@@ -10023,10 +10023,10 @@ react-reconciler@^0.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
-react-redux-firebase@^2.4.1:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-2.5.0.tgz#e0f9d99ae160bed5af94c924090261aff280dcbc"
-  integrity sha512-ZKX2jhRtnaaT04I3zQBVErhTZz7feBsvRmR/hoeefu+xC4ln4ZiHDC2UKsQ8iax3C8fDoZrLHAjjUPoMj6Mpaw==
+react-redux-firebase@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-3.1.1.tgz#fedede0bb7ee6058c1918f7260d6122845803a43"
+  integrity sha512-qj9kfaidEy3CrcFXwOmuz104zt8xKXrHfkF8QOvDjCa2FLn1ka/BZksose08bQ6Lsz7MCmwWxtWo4p+azMu0zQ==
   dependencies:
     hoist-non-react-statics "^3.3.0"
     lodash "^4.17.15"
