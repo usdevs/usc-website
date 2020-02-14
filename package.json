@@ -65,7 +65,7 @@
     "redux-firestore": "^0.8.0",
     "styled-components": "^3.3.3",
     "typography": "^0.16.17",
-    "yarn": "^1.21.1",
+    "yarn": "^1.22.0",
     "yup": "^0.27.0"
   },
   "scripts": {
