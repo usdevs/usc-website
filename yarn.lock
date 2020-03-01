@@ -9783,10 +9783,10 @@ react-axiom@^0.4.0:
     hoist-non-react-statics "^2.3.1"
     lodash "^4.17.4"
 
-react-big-calendar@^0.22.0:
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-0.22.1.tgz#7b523cee4c423410a05e4499a720e8dae12ebec6"
-  integrity sha512-Pd0x0W4vjs5oDzPl3kvIlJok4ESO7p/+jpxKil0xkJ5sfsYlB/lZMCht7htEy9/WInnnJQGcXx+tLIcEzDbV8g==
+react-big-calendar@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/react-big-calendar/-/react-big-calendar-0.24.0.tgz#aca0bcdecdc359ec06e874d2391707e5b2181e29"
+  integrity sha512-GvIQSt8xs2Qfm073H/NInt9HLAtgwCRJX1CPRrABnqMjIyjQKB4snJPjG1IMH3XGz/YYb/r+RDl9fMO7wurzlg==
   dependencies:
     "@babel/runtime" "^7.1.5"
     clsx "^1.0.4"
@@ -9799,7 +9799,6 @@ react-big-calendar@^0.22.0:
     prop-types "^15.6.2"
     react-overlays "^2.0.0-0"
     uncontrollable "^7.0.0"
-    warning "^4.0.2"
 
 react-calendar-timeline@^0.16.3:
   version "0.16.3"
