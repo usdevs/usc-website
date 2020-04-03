@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { carouselOne, carouselTwo, carouselThree } from '../../resources/images'
+import EventsAlert from '../Events/EventsAlert'
 import {
   UncontrolledCarousel,
   Container,
@@ -68,6 +69,11 @@ class Home extends Component {
         <Row>
           <Col sm="12">
             <UncontrolledCarousel items={items} />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12">
+            <EventsAlert />
           </Col>
         </Row>
         <Row>

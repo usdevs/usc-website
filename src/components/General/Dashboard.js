@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import Can from '../../utils/Can'
 import { headerDashboard as header } from '../../resources/images.js'
+import EventsAlert from '../Events/EventsAlert'
 
 const adminCategories = [
   /* {
@@ -318,6 +319,11 @@ class Dashboard extends Component {
         <Row>
           <Col>
             <img src={header} className="img-fluid" alt="header" />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12">
+            <EventsAlert />
           </Col>
         </Row>
         <Row>

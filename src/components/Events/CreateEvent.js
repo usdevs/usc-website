@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'reactstrap'
 import EventForm from './EventForm'
+import EventsAlert from './EventsAlert'
 import EventCalendar from './Calendar/EventCalendar'
 import { createEvent } from '../../actions/EventsActions'
 import { firebaseConnect } from 'react-redux-firebase'
@@ -31,6 +32,11 @@ class CreateEvent extends Component {
             <div className="d-flex">
               <h1 className="display-3">Create Event</h1>
             </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm="12">
+            <EventsAlert />
           </Col>
         </Row>
         <Row>

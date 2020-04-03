@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import { headerEvent as header } from '../../resources/images.js'
-import CtphAlert from './CtphAlert'
+import EventsAlert from './EventsAlert'
 import EventCalendar from './Calendar/EventCalendar'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import CreateEventButton from '../reusable/CreateEventButton.js'
@@ -21,7 +21,7 @@ class Events extends Component {
         </Row>
         <Row>
           <Col sm="12">
-            <CtphAlert />
+            <EventsAlert />
           </Col>
         </Row>
         <Row>

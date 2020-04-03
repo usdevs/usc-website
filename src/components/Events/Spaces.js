@@ -4,7 +4,7 @@ import { headerSpaces as header } from '../../resources/images.js'
 import EventCalendar from './Calendar/EventCalendar'
 import CreateEventButton from '../reusable/CreateEventButton.js'
 import CreateAdminEventButton from '../reusable/CreateAdminEventButton.js'
-import CtphAlert from './CtphAlert'
+import EventsAlert from './EventsAlert'
 import Can from '../../utils/Can'
 
 class Spaces extends Component {
@@ -18,7 +18,7 @@ class Spaces extends Component {
         </Row>
         <Row>
           <Col sm="12">
-            <CtphAlert />
+            <EventsAlert />
           </Col>
         </Row>
         <Row>
