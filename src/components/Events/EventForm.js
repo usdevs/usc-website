@@ -124,18 +124,29 @@ class EventForm extends Component {
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
       return 'Please indicate the Date and Time'
     }
-
-    const advancedBookingMax = moment().add(
-      maxWeeksInAdvanceForBooking,
-      'weeks'
-    )
-
-    if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
-      return (
-        'Bookings must be made max ' +
-        maxWeeksInAdvanceForBooking +
-        ' weeks in advance'
+    
+    if (formApi.getValue('venue') !== 'Others') {
+      const advancedBookingMax = moment().add(
+        maxWeeksInAdvanceForBooking,
+        'weeks'
       )
+
+      if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
+        return (
+          'Bookings must be made max ' +
+          maxWeeksInAdvanceForBooking +
+          ' weeks in advance'
+        )
+      }
+
+      const endBefore = moment(formApi.getValue('startDate')).add(
+        maxNoOfHours,
+        'hours'
+      )
+  
+      if (moment(formApi.getValue('endDate')) > endBefore) {
+        return 'Max booking duration of ' + maxNoOfHours + ' hours.'
+      }
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
@@ -144,15 +155,6 @@ class EventForm extends Component {
 
     if (startNotBeforeEnd) {
       return 'Check that the Start Date must be before End Date'
-    }
-
-    const endBefore = moment(formApi.getValue('startDate')).add(
-      maxNoOfHours,
-      'hours'
-    )
-
-    if (moment(formApi.getValue('endDate')) > endBefore) {
-      return 'Max booking duration of ' + maxNoOfHours + ' hours.'
     }
 
     return null
@@ -342,7 +344,7 @@ class EventForm extends Component {
                   others="true"
                   validate={validateNotEmpty}
                   validateOnChange
-                  notify={['otherVenue']}
+                  notify={['otherVenue', 'startDate', 'endDate']}
                   disabled={!spaces.isLoaded}
                   loading={!spaces.isLoaded}
                   options={this.venueOptions(spaces)}
