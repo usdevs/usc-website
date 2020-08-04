@@ -115,6 +115,7 @@ class EventForm extends Component {
 
   validateDayFields = (formApi, value) => {
     const maxNoOfHours = 2
+    const maxWeeksInAdvanceForBooking = 2
 
     if (formApi.getValue('startDate') && formApi.getValue('fullDay')) {
       return null
@@ -122,6 +123,12 @@ class EventForm extends Component {
 
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
       return "Please indicate the Date and Time"
+    }
+
+    const advancedBookingMax = moment().add(maxWeeksInAdvanceForBooking, 'weeks')
+
+    if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
+      return "Bookings must be made max " + maxWeeksInAdvanceForBooking + " weeks in advance"
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
