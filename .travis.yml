@@ -4,7 +4,7 @@ node_js:
 before_install:
   - yarn cache clean
 cache:
-  - npm: false
+  npm: false
 install:
   - yarn install
   - yarn
