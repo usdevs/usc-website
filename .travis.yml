@@ -5,6 +5,7 @@ before_install:
   - yarn cache clean
 install:
   - yarn
+  - npm ci
 script:
   - yarn run format
   - yarn run format:ci
