@@ -122,13 +122,20 @@ class EventForm extends Component {
     }
 
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
-      return "Please indicate the Date and Time"
+      return 'Please indicate the Date and Time'
     }
 
-    const advancedBookingMax = moment().add(maxWeeksInAdvanceForBooking, 'weeks')
+    const advancedBookingMax = moment().add(
+      maxWeeksInAdvanceForBooking,
+      'weeks'
+    )
 
     if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
-      return "Bookings must be made max " + maxWeeksInAdvanceForBooking + " weeks in advance"
+      return (
+        'Bookings must be made max ' +
+        maxWeeksInAdvanceForBooking +
+        ' weeks in advance'
+      )
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
@@ -136,13 +143,16 @@ class EventForm extends Component {
     )
 
     if (startNotBeforeEnd) {
-      return "Check that the Start Date must be before End Date"
+      return 'Check that the Start Date must be before End Date'
     }
 
-    const endBefore = moment(formApi.getValue('startDate')).add(maxNoOfHours, 'hours')
+    const endBefore = moment(formApi.getValue('startDate')).add(
+      maxNoOfHours,
+      'hours'
+    )
 
     if (moment(formApi.getValue('endDate')) > endBefore) {
-      return "Max booking duration of " + maxNoOfHours +" hours."
+      return 'Max booking duration of ' + maxNoOfHours + ' hours.'
     }
 
     return null
@@ -269,7 +279,14 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, zones, btnText, modal, initialValues } = this.props
+    const {
+      eventTypes,
+      spaces,
+      zones,
+      btnText,
+      modal,
+      initialValues
+    } = this.props
 
     return (
       <div>

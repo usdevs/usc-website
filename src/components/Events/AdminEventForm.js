@@ -185,7 +185,7 @@ class AdminEventForm extends Component {
       otherVenue: normalVenue ? false : true,
       zone: normalZone ? values.zone : values.otherZone,
       zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
-      otherZone: normalZone ? false : true,
+      otherZone: normalZone ? false : true
     }
 
     getEventVenueBookingsAfter(
@@ -249,7 +249,14 @@ class AdminEventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, zones, btnText, modal, initialValues } = this.props
+    const {
+      eventTypes,
+      spaces,
+      zones,
+      btnText,
+      modal,
+      initialValues
+    } = this.props
 
     return (
       <div>

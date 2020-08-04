@@ -125,12 +125,17 @@ class EventCard extends Component {
                 {'at ' +
                   (event.otherVenue
                     ? event.venue
-                    : spaces.data[event.venue].name)
-                  + ' for '
-                  + (event.zoneName === undefined ? "All Zones" : event.zoneName)
-                }
+                    : spaces.data[event.venue].name) +
+                  ' for ' +
+                  (event.zoneName === undefined ? 'All Zones' : event.zoneName)}
               </h4>
-              {userProfile ? <h4 className="mb-0" style={{ fontWeight: 300 }}>Booked by: {userProfile.displayName}</h4> : ''}
+              {userProfile ? (
+                <h4 className="mb-0" style={{ fontWeight: 300 }}>
+                  Booked by: {userProfile.displayName}
+                </h4>
+              ) : (
+                ''
+              )}
               {event.description ? (
                 <p>
                   {fullDescription
