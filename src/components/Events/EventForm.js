@@ -124,7 +124,7 @@ class EventForm extends Component {
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
       return 'Please indicate the Date and Time'
     }
-    
+
     if (formApi.getValue('venue') !== 'Others') {
       const advancedBookingMax = moment().add(
         maxWeeksInAdvanceForBooking,
@@ -143,7 +143,7 @@ class EventForm extends Component {
         maxNoOfHours,
         'hours'
       )
-  
+
       if (moment(formApi.getValue('endDate')) > endBefore) {
         return 'Max booking duration of ' + maxNoOfHours + ' hours.'
       }
