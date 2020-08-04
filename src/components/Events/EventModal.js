@@ -74,6 +74,7 @@ class EventModal extends Component {
       event,
       eventTypes,
       spaces,
+      zones,
       groups,
       groupTypes,
       firebase,
@@ -101,9 +102,12 @@ class EventModal extends Component {
           <h4 className="mb-0" style={{ fontWeight: 300 }}>
             {this.dateDisplay()}
           </h4>
-          <h4 style={{ fontWeight: 300 }}>
-            {'at ' +
-              (!event.otherVenue ? spaces.data[event.venue].name : event.venue)}
+          <h4 className = "mb-0" style={{ fontWeight: 300 }}>
+            {'at '
+              + (!event.otherVenue ? spaces.data[event.venue].name : event.venue)
+              + ' for ' 
+              + (event.zoneName == undefined ? "All Zones" : event.zoneName)
+            }
           </h4>
           <Container>
             <Row>

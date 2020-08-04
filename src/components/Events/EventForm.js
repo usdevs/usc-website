@@ -28,7 +28,8 @@ import {
 import {
   getEventVenueBookingsAfter,
   getEventTypes,
-  getSpaces
+  getSpaces,
+  getZones
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 class EventForm extends Component {
@@ -49,7 +50,7 @@ class EventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces } = this.props
+    const { eventTypes, spaces, zones } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -57,6 +58,10 @@ class EventForm extends Component {
 
     if (!spaces.isLoaded) {
       getSpaces(firestore)
+    }
+
+    if (!zones.isLoaded) {
+      getZones(firestore)
     }
   }
 
@@ -86,6 +91,21 @@ class EventForm extends Component {
             display: space.name
           })
         }
+      })
+    }
+
+    return options
+  }
+
+  zoneOptions = zones => {
+    var options = []
+
+    if (zones.isLoaded) {
+      _.forEach(zones.ordered, zone => {
+        options.push({
+          id: zone.id,
+          display: zone.name
+        })
       })
     }
 
@@ -124,12 +144,20 @@ class EventForm extends Component {
     }
   }
 
+  validateOtherZone = (formApi, value) => {
+    if (formApi.getValue('zone') === 'Others') {
+      return validateNotEmpty(value)
+    } else {
+      return null
+    }
+  }
+
   internalShouldDisable = formApi => {
     return formApi.getValue('spaceOnly')
   }
 
   submit = values => {
-    const { auth, spaces, initialValues } = this.props
+    const { auth, spaces, zones, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
@@ -137,6 +165,7 @@ class EventForm extends Component {
     })
 
     const normalVenue = values.venue !== 'Others'
+    const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
@@ -153,6 +182,9 @@ class EventForm extends Component {
         ? spaces.data[values.venue].name
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
+      zone: normalZone ? values.zone : values.otherZone,
+      zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
+      otherZone: normalZone ? false : true,
       otherVenue: normalVenue ? false : true
     }
 
@@ -217,7 +249,7 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, btnText, modal, initialValues } = this.props
+    const { eventTypes, spaces, zones, btnText, modal, initialValues } = this.props
 
     return (
       <div>
@@ -287,6 +319,33 @@ class EventForm extends Component {
                     hidden={formApi.getValue('venue') !== 'Others'}
                     placeholder="Enter the venue name"
                     validate={value => this.validateOtherVenue(formApi, value)}
+                    validateOnBlur
+                    className="mb-3"
+                  />
+                </div>
+              </div>
+              <h3>Zone</h3>
+              <div className="mb-3">
+                <DropdownInput
+                  field="zone"
+                  placeholder="Select a Zone"
+                  others="true"
+                  validate={validateNotEmpty}
+                  validateOnChange
+                  notify={['otherZone']}
+                  disabled={!zones.isLoaded}
+                  loading={!zones.isLoaded}
+                  options={this.zoneOptions(zones)}
+                />
+                <div
+                  className="mt-2"
+                  hidden={formApi.getValue('zone') !== 'Others'}
+                >
+                  <TextInput
+                    field="otherZone"
+                    hidden={formApi.getValue('zone') !== 'Others'}
+                    placeholder="Enter the zone name"
+                    validate={value => this.validateOtherZone(formApi, value)}
                     validateOnBlur
                     className="mb-3"
                   />
@@ -422,6 +481,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
+    zones: formatFirestoreData(state.firestore, 'zones'),
     venueBookings: state.firestore.ordered.venueBookings
   }
 }

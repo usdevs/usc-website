@@ -67,6 +67,7 @@ class EventCard extends Component {
       event,
       eventTypes,
       spaces,
+      zones,
       buttonAction,
       buttonText,
       groups,
@@ -107,11 +108,14 @@ class EventCard extends Component {
               <h4 className="mb-0" style={{ fontWeight: 300 }}>
                 {event.startDate.format('Do MMMM - hh:mm a')}
               </h4>
-              <h4 className="mb-2" style={{ fontWeight: 300 }}>
+              <h4 className="mb-0" style={{ fontWeight: 300 }}>
                 {'at ' +
                   (event.otherVenue
                     ? event.venue
-                    : spaces.data[event.venue].name)}
+                    : spaces.data[event.venue].name)
+                  + ' for '
+                  + (event.zoneName == undefined ? "All Zones" : event.zoneName)
+                }
               </h4>
               {event.description ? (
                 <p>
@@ -156,6 +160,7 @@ class EventCard extends Component {
                   event={event}
                   eventTypes={eventTypes}
                   spaces={spaces}
+                  zones={zones}
                   groups={groups}
                   groupTypes={groupTypes}
                 />
