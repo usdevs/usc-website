@@ -31,7 +31,11 @@ import {
   getSpaces,
   getZones
 } from '../../actions/EventsActions'
+import {
+  getMyProfile
+} from '../../actions/UsersActions'
 import LinkModal from '../reusable/LinkModal'
+
 class EventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
@@ -50,7 +54,7 @@ class EventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces, zones } = this.props
+    const { eventTypes, spaces, zones, myProfile } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -113,19 +117,31 @@ class EventForm extends Component {
   }
 
   validateDayFields = (formApi, value) => {
+    const maxNoOfHours = 2
+
     if (formApi.getValue('startDate') && formApi.getValue('fullDay')) {
       return null
     }
 
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
-      return true
+      return "Please indicate the Date and Time"
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
       moment(formApi.getValue('endDate'))
     )
 
-    return startNotBeforeEnd ? true : null
+    if (startNotBeforeEnd) {
+      return "Check that the Start Date must be before End Date"
+    }
+
+    const endBefore = moment(formApi.getValue('startDate')).add(maxNoOfHours, 'hours')
+
+    if (moment(formApi.getValue('endDate')) > endBefore) {
+      return "Max booking duration of " + maxNoOfHours +" hours."
+    }
+
+    return null
   }
 
   validateInternal = (formApi, value) => {
@@ -249,7 +265,7 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, zones, btnText, modal, initialValues } = this.props
+    const { eventTypes, spaces, zones, btnText, modal, initialValues, myProfile } = this.props
 
     return (
       <div>
@@ -364,7 +380,6 @@ class EventForm extends Component {
                   )}
                   <DatePickerInput
                     field="startDate"
-                    errortext="Please indicate the Date and Time"
                     dateOnly={formApi.getValue('fullDay')}
                     showTimeSelect
                     validate={value => this.validateDayFields(formApi, value)}
@@ -386,7 +401,6 @@ class EventForm extends Component {
                   <DatePickerInput
                     field="endDate"
                     hidden={formApi.getValue('fullDay')}
-                    errortext="Check that the Start Date must be before End Date"
                     dateOnly={formApi.getValue('fullDay')}
                     validate={value => this.validateDayFields(formApi, value)}
                     validateOnChange
@@ -482,7 +496,8 @@ const mapStateToProps = state => {
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
     zones: formatFirestoreData(state.firestore, 'zones'),
-    venueBookings: state.firestore.ordered.venueBookings
+    venueBookings: state.firestore.ordered.venueBookings,
+    myProfile: formatFirestoreData(state.firestore, 'myProfile')
   }
 }
 

@@ -114,7 +114,7 @@ class EventCard extends Component {
                     ? event.venue
                     : spaces.data[event.venue].name)
                   + ' for '
-                  + (event.zoneName == undefined ? "All Zones" : event.zoneName)
+                  + (event.zoneName === undefined ? "All Zones" : event.zoneName)
                 }
               </h4>
               {event.description ? (
