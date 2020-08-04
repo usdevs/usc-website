@@ -51,7 +51,7 @@ class EventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces, zones, myProfile } = this.props
+    const { eventTypes, spaces, zones } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -202,10 +202,10 @@ class EventForm extends Component {
         ? spaces.data[values.venue].name
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
+      otherVenue: normalVenue ? false : true,
       zone: normalZone ? values.zone : values.otherZone,
       zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
-      otherZone: normalZone ? false : true,
-      otherVenue: normalVenue ? false : true
+      otherZone: normalZone ? false : true
     }
 
     getEventVenueBookingsAfter(
@@ -269,7 +269,7 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, zones, btnText, modal, initialValues, myProfile } = this.props
+    const { eventTypes, spaces, zones, btnText, modal, initialValues } = this.props
 
     return (
       <div>
@@ -367,7 +367,7 @@ class EventForm extends Component {
                     placeholder="Enter the zone name"
                     validate={value => this.validateOtherZone(formApi, value)}
                     validateOnBlur
-                    className="mb-3"
+                    className="mb-0"
                   />
                 </div>
               </div>
@@ -500,8 +500,7 @@ const mapStateToProps = state => {
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
     zones: formatFirestoreData(state.firestore, 'zones'),
-    venueBookings: state.firestore.ordered.venueBookings,
-    myProfile: formatFirestoreData(state.firestore, 'myProfile')
+    venueBookings: state.firestore.ordered.venueBookings
   }
 }
 
