@@ -199,6 +199,8 @@ export function getEvents(
     getFirestoreEvents(firestore, callback, spaceOnly)
   }
 
+  getZones(firestore)
+
   watchFirestoreEvents(firestore)
 }
 

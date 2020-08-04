@@ -78,7 +78,8 @@ class EventModal extends Component {
       groups,
       groupTypes,
       firebase,
-      firestore
+      firestore,
+      userProfile
     } = this.props
 
     return (
@@ -109,6 +110,7 @@ class EventModal extends Component {
               + (event.zoneName === undefined ? "All Zones" : event.zoneName)
             }
           </h4>
+          {userProfile ? <h4 className="mb-0" style={{ fontWeight: 300 }}>Booked by: {userProfile.displayName}</h4> : ''}
           <Container>
             <Row>
               {poster ? (

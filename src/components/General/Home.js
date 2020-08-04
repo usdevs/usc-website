@@ -107,7 +107,7 @@ class Home extends Component {
                   eventTypes.isLoaded &&
                   spaces.isLoaded &&
                   groups.isLoaded &&
-                  // zones.isLoaded &&
+                  zones.isLoaded &&
                   groupTypes.isLoaded ? (
                     upcomingEvents.length > 0 ? (
                       _.filter(upcomingEvents, e => {
@@ -119,7 +119,7 @@ class Home extends Component {
                             eventTypes={eventTypes}
                             spaces={spaces}
                             groups={groups}
-                            // zones={zones}
+                            zones={zones}
                             groupTypes={groupTypes}
                             buttonText="See More"
                             firebase={firebase}

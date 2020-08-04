@@ -31,9 +31,6 @@ import {
   getSpaces,
   getZones
 } from '../../actions/EventsActions'
-import {
-  getMyProfile
-} from '../../actions/UsersActions'
 import LinkModal from '../reusable/LinkModal'
 
 class EventForm extends Component {
