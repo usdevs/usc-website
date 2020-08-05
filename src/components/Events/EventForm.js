@@ -28,9 +28,11 @@ import {
 import {
   getEventVenueBookingsAfter,
   getEventTypes,
-  getSpaces
+  getSpaces,
+  getZones
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
+
 class EventForm extends Component {
   static contextTypes = {
     store: PropTypes.object.isRequired
@@ -49,7 +51,7 @@ class EventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces } = this.props
+    const { eventTypes, spaces, zones } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -57,6 +59,10 @@ class EventForm extends Component {
 
     if (!spaces.isLoaded) {
       getSpaces(firestore)
+    }
+
+    if (!zones.isLoaded) {
+      getZones(firestore)
     }
   }
 
@@ -92,20 +98,66 @@ class EventForm extends Component {
     return options
   }
 
+  zoneOptions = zones => {
+    var options = []
+
+    if (zones.isLoaded) {
+      _.forEach(zones.ordered, zone => {
+        options.push({
+          id: zone.id,
+          display: zone.name
+        })
+      })
+    }
+
+    return options
+  }
+
   validateDayFields = (formApi, value) => {
+    const maxNoOfHours = 2
+    const maxWeeksInAdvanceForBooking = 2
+
     if (formApi.getValue('startDate') && formApi.getValue('fullDay')) {
       return null
     }
 
     if (!formApi.getValue('startDate') || !formApi.getValue('endDate')) {
-      return true
+      return 'Please indicate the Date and Time'
+    }
+
+    if (formApi.getValue('venue') !== 'Others') {
+      const advancedBookingMax = moment().add(
+        maxWeeksInAdvanceForBooking,
+        'weeks'
+      )
+
+      if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
+        return (
+          'Bookings must be made max ' +
+          maxWeeksInAdvanceForBooking +
+          ' weeks in advance'
+        )
+      }
+
+      const endBefore = moment(formApi.getValue('startDate')).add(
+        maxNoOfHours,
+        'hours'
+      )
+
+      if (moment(formApi.getValue('endDate')) > endBefore) {
+        return 'Max booking duration of ' + maxNoOfHours + ' hours.'
+      }
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
       moment(formApi.getValue('endDate'))
     )
 
-    return startNotBeforeEnd ? true : null
+    if (startNotBeforeEnd) {
+      return 'Check that the Start Date must be before End Date'
+    }
+
+    return null
   }
 
   validateInternal = (formApi, value) => {
@@ -124,12 +176,20 @@ class EventForm extends Component {
     }
   }
 
+  validateOtherZone = (formApi, value) => {
+    if (formApi.getValue('zone') === 'Others') {
+      return validateNotEmpty(value)
+    } else {
+      return null
+    }
+  }
+
   internalShouldDisable = formApi => {
     return formApi.getValue('spaceOnly')
   }
 
   submit = values => {
-    const { auth, spaces, initialValues } = this.props
+    const { auth, spaces, zones, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
@@ -137,6 +197,7 @@ class EventForm extends Component {
     })
 
     const normalVenue = values.venue !== 'Others'
+    const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
@@ -153,7 +214,10 @@ class EventForm extends Component {
         ? spaces.data[values.venue].name
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
-      otherVenue: normalVenue ? false : true
+      otherVenue: normalVenue ? false : true,
+      zone: normalZone ? values.zone : values.otherZone,
+      zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
+      otherZone: normalZone ? false : true
     }
 
     getEventVenueBookingsAfter(
@@ -217,7 +281,14 @@ class EventForm extends Component {
 
   render() {
     const { submitting } = this.state
-    const { eventTypes, spaces, btnText, modal, initialValues } = this.props
+    const {
+      eventTypes,
+      spaces,
+      zones,
+      btnText,
+      modal,
+      initialValues
+    } = this.props
 
     return (
       <div>
@@ -273,7 +344,7 @@ class EventForm extends Component {
                   others="true"
                   validate={validateNotEmpty}
                   validateOnChange
-                  notify={['otherVenue']}
+                  notify={['otherVenue', 'startDate', 'endDate']}
                   disabled={!spaces.isLoaded}
                   loading={!spaces.isLoaded}
                   options={this.venueOptions(spaces)}
@@ -292,6 +363,33 @@ class EventForm extends Component {
                   />
                 </div>
               </div>
+              <h3>Zone</h3>
+              <div className="mb-3">
+                <DropdownInput
+                  field="zone"
+                  placeholder="Select a Zone"
+                  others="true"
+                  validate={validateNotEmpty}
+                  validateOnChange
+                  notify={['otherZone']}
+                  disabled={!zones.isLoaded}
+                  loading={!zones.isLoaded}
+                  options={this.zoneOptions(zones)}
+                />
+                <div
+                  className="mt-2"
+                  hidden={formApi.getValue('zone') !== 'Others'}
+                >
+                  <TextInput
+                    field="otherZone"
+                    hidden={formApi.getValue('zone') !== 'Others'}
+                    placeholder="Enter the zone name"
+                    validate={value => this.validateOtherZone(formApi, value)}
+                    validateOnBlur
+                    className="mb-0"
+                  />
+                </div>
+              </div>
               <h3 className="mb-2">Date and Time</h3>
               <div className="mb-2">
                 <CheckboxInput field="fullDay" text="Full Day" />
@@ -305,7 +403,6 @@ class EventForm extends Component {
                   )}
                   <DatePickerInput
                     field="startDate"
-                    errortext="Please indicate the Date and Time"
                     dateOnly={formApi.getValue('fullDay')}
                     showTimeSelect
                     validate={value => this.validateDayFields(formApi, value)}
@@ -327,7 +424,6 @@ class EventForm extends Component {
                   <DatePickerInput
                     field="endDate"
                     hidden={formApi.getValue('fullDay')}
-                    errortext="Check that the Start Date must be before End Date"
                     dateOnly={formApi.getValue('fullDay')}
                     validate={value => this.validateDayFields(formApi, value)}
                     validateOnChange
@@ -422,6 +518,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
+    zones: formatFirestoreData(state.firestore, 'zones'),
     venueBookings: state.firestore.ordered.venueBookings
   }
 }

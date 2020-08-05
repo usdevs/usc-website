@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { Button, Card, CardText, Container, Row, Col } from 'reactstrap'
 import EventModal from './EventModal'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { getFile } from '../../actions/FilesActions'
+import { getUserProfile } from '../../actions/UsersActions'
 import { config } from '../../resources/config'
 import _ from 'lodash'
 
@@ -21,19 +23,30 @@ class EventCard extends Component {
     super(props)
 
     this.state = {
-      poster: null
+      poster: null,
+      userProfile: null
     }
   }
 
   componentDidMount() {
     this.mounted = true
 
+    const { firestore } = this.context.store
     const { event } = this.props
     const { poster } = event
 
     if (poster) {
       this.loadPoster(poster)
     }
+
+    getUserProfile(firestore, event.creator, snapshot => {
+      const leaderProfile = snapshot.data()
+      this.setState({
+        userProfile: {
+          ...leaderProfile
+        }
+      })
+    })
   }
 
   componentWillUnmount() {
@@ -62,11 +75,12 @@ class EventCard extends Component {
 
   render() {
     const { firestore } = this.context.store
-    const { poster, fullDescription } = this.state
+    const { poster, fullDescription, userProfile } = this.state
     const {
       event,
       eventTypes,
       spaces,
+      zones,
       buttonAction,
       buttonText,
       groups,
@@ -107,12 +121,21 @@ class EventCard extends Component {
               <h4 className="mb-0" style={{ fontWeight: 300 }}>
                 {event.startDate.format('Do MMMM - hh:mm a')}
               </h4>
-              <h4 className="mb-2" style={{ fontWeight: 300 }}>
+              <h4 className="mb-0" style={{ fontWeight: 300 }}>
                 {'at ' +
                   (event.otherVenue
                     ? event.venue
-                    : spaces.data[event.venue].name)}
+                    : spaces.data[event.venue].name) +
+                  ' for ' +
+                  (event.zoneName === undefined ? 'All Zones' : event.zoneName)}
               </h4>
+              {userProfile ? (
+                <h4 className="mb-0" style={{ fontWeight: 300 }}>
+                  Booked by: {userProfile.displayName}
+                </h4>
+              ) : (
+                ''
+              )}
               {event.description ? (
                 <p>
                   {fullDescription
@@ -156,8 +179,10 @@ class EventCard extends Component {
                   event={event}
                   eventTypes={eventTypes}
                   spaces={spaces}
+                  zones={zones}
                   groups={groups}
                   groupTypes={groupTypes}
+                  userProfile={userProfile}
                 />
               ) : (
                 ''
@@ -170,4 +195,11 @@ class EventCard extends Component {
   }
 }
 
-export default compose(firebaseConnect())(EventCard)
+const mapStateToProps = state => {
+  return {
+    userProfile: state.firestore.data.userProfile
+  }
+}
+
+// export default compose(firebaseConnect())(EventCard)
+export default compose(firebaseConnect(), connect(mapStateToProps))(EventCard)

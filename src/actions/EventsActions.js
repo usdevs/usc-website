@@ -10,6 +10,7 @@ import {
   getGroupEvents as getFirestoreGroupEvents,
   getUserEvents as getFirestoreUserEvents,
   getSpaces as getFirestoreSpaces,
+  getZones as getFirestoreZones,
   watchEvents as watchFirestoreEvents
 } from '../firestore/EventsClient'
 import {
@@ -198,6 +199,8 @@ export function getEvents(
     getFirestoreEvents(firestore, callback, spaceOnly)
   }
 
+  getZones(firestore)
+
   watchFirestoreEvents(firestore)
 }
 
@@ -243,6 +246,10 @@ export function getEventTypes(firestore) {
 
 export function getSpaces(firestore) {
   getFirestoreSpaces(firestore)
+}
+
+export function getZones(firestore) {
+  getFirestoreZones(firestore)
 }
 
 //Utility

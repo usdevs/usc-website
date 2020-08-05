@@ -54,6 +54,10 @@ export function getSpaces(firestore) {
   firestore.get({ collection: 'spaces', orderBy: ['name'] })
 }
 
+export function getZones(firestore) {
+  firestore.get({ collection: 'zones', orderBy: ['name'] })
+}
+
 export function getEvents(
   firestore,
   callback = () => {},
