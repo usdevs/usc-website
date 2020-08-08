@@ -234,7 +234,7 @@ export const DatePickerInput = asField(({ fieldState, fieldApi, ...props }) => {
         }
         showTimeSelect={!props.dateOnly}
         timeFormat="hh:mm a"
-        timeInterval={config.timeInterval}
+        timeIntervals={config.timeInterval}
         dateFormat="LLL"
         timeCaption="time"
       />
