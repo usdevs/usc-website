@@ -114,7 +114,17 @@ class GroupCard extends Component {
               {!hideButtons ? (
                 <Button
                   color="primary"
-                  onClick={() => history.push('/group/' + id)}
+                  onClick={() => {
+                    console.log(name + id)
+                    history.push(
+                      {
+                        pathname: '/group/' + name, 
+                        state: { 
+                          groupID: id,
+                          name: name
+                        }
+                      })
+                  }}
                 >
                   Details
                 </Button>

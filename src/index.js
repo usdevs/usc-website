@@ -192,7 +192,8 @@ render(
             />
             <Route path="/createcircle" component={CreateCircle} />
             <Route path="/groups" component={Groups} />
-            <Route path="/group/:groupID" component={Group} />
+            <Route path="/group/:groupName" component={Group} />
+            {/* <Route path="/group/:groupID" component={Group} /> */}
             <Route path="/managegroups" component={ManageGroups} />
             <Route path="/editgroup/:groupID" component={EditGroup} />
             <Route path="/settings" component={Settings} />

@@ -23,14 +23,16 @@ class Group extends Component {
     super(props)
 
     this.state = {
-      groupID: this.props.match.params.groupID,
+      groupID: this.props.location.state.groupID,
+      groupName: this.props.location.state.name,
       logo: null,
       userProfile: null
     }
+    console.log(this.state)
   }
 
   componentDidMount() {
-    const { groupID } = this.state
+    const { groupName, groupID } = this.state
     const { history, groups } = this.props
     const { firestore } = this.context.store
 
@@ -38,13 +40,13 @@ class Group extends Component {
       history.push('/')
     } else if (groups.isLoaded && groups.data[groupID]) {
       const group = {
-        ...groups.data[groupID],
-        id: groupID
+        ...groups.data[groupID]
       }
 
       this.setState({
         group: group
       })
+      console.log(group)
 
       getUserProfile(firestore, group.leaderID, snapshot => {
         const leaderProfile = snapshot.data()
