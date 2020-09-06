@@ -24,7 +24,7 @@ class Group extends Component {
 
     this.state = {
       groupID: this.props.location.state.groupID,
-      groupName: this.props.location.state.name,
+      groupName: this.props.location.state.groupName,
       logo: null,
       userProfile: null
     }
@@ -32,7 +32,7 @@ class Group extends Component {
   }
 
   componentDidMount() {
-    const { groupName, groupID } = this.state
+    const { groupID } = this.state
     const { history, groups } = this.props
     const { firestore } = this.context.store
 

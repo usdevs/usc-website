@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { Badge, Button, Card, Container, Row, Col } from 'reactstrap'
 import { getFile } from '../../actions/FilesActions'
 import { config } from '../../resources/config'
-import _ from 'lodash'
+import _, { kebabCase } from 'lodash'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect } from 'react-redux-firebase'
 import { groupStatuses } from '../../resources/config'
@@ -116,14 +116,10 @@ class GroupCard extends Component {
                   color="primary"
                   onClick={() => {
                     console.log(name + id)
-                    history.push(
-                      {
-                        pathname: '/group/' + name, 
-                        state: { 
-                          groupID: id,
-                          name: name
-                        }
-                      })
+                    history.push({
+                      pathname: '/group/' + _.kebabCase(name), 
+                      state: { groupID: id },
+                    })
                   }}
                 >
                   Details
