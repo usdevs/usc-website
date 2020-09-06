@@ -16,10 +16,10 @@ const EventsAlert = props => {
       {' '} for more information.
       </div> */}
       <div className="text-center">
-        USC is hard at work making changes to adhere to NUS' policies during the
-        COVID-19 outbreak. All bookings made during this time on the site will
-        not be valid. We'll be right back! For more information,{' '}
-        <a href="https://emergency.nus.edu.sg/" className="alert-link">
+      Bookings for spaces have finally reopened! 
+      All bookings must abide by the zoning schedule for Chatterbox, 
+      Theme Rooms and CTPH. For the latest guidelines on bookings, please {' '}
+        <a href="https://bit.ly/uscspacescovid" className="alert-link">
           head here
         </a>
         .
