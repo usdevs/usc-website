@@ -19,7 +19,7 @@ import {
 import { config } from '../../resources/config'
 import moment from 'moment'
 import _ from 'lodash'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   roundTime,
   formatFirestoreData,

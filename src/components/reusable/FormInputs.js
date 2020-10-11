@@ -8,7 +8,7 @@ import IntlProgAutocomplete from './IntlProgAutocomplete'
 import UserForm from './UserForm'
 import ImageUploader from './ImageUploader'
 import MultiImageUploader from './MultiImageUploader'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import moment from 'moment'
 import { config } from '../../resources/config'
 

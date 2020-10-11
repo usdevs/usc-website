@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, Button } from 'reactstrap'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class DeleteModal extends Component {
   constructor(props) {

@@ -14,7 +14,7 @@ import {
   duplicateValidation
 } from '../reusable/FormInputs'
 import _ from 'lodash'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { config } from '../../resources/config'
 import LinkModal from '../reusable/LinkModal'
 

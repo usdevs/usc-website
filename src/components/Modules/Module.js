@@ -7,7 +7,7 @@ import { firebaseConnect } from 'react-redux-firebase'
 import { getModule, getModuleReviews } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ModuleReviewCard from './ModuleReviewCard'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class Module extends Component {
   static contextTypes = {

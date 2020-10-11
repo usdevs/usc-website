@@ -12,7 +12,7 @@ import {
   Jumbotron,
   Button
 } from 'reactstrap'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import EventCard from '../Events/EventCard'
 import { getUpcomingEvents } from '../../actions/EventsActions'
 import { getGroups } from '../../actions/GroupsActions'

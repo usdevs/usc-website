@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { Alert, Button, Badge } from 'reactstrap'
 import { Form } from 'informed'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
 import {
   TextInput,

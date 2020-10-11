@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Dropzone from 'react-dropzone'
 import { Button, Alert } from 'reactstrap'
 import { getFile } from '../../actions/FilesActions'

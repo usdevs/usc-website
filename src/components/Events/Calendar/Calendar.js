@@ -3,7 +3,7 @@ import { Button, Container, Row, Col } from 'reactstrap'
 import Moment from 'moment'
 import _ from 'lodash'
 import { extendMoment } from 'moment-range'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const moment = extendMoment(Moment)
 
