@@ -80,7 +80,7 @@
     "node-pre-gyp": "^0.15.0",
     "prettier": "^1.18.2",
     "react-big-calendar": "^0.26.0",
-    "style-loader": "^0.21.0"
+    "style-loader": "^0.23.1"
   },
   "browserslist": {
     "production": [
