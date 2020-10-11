@@ -75,7 +75,7 @@ import {
   faUtensils,
   faWrench,
   faBoxOpen
-} from '@fortawesome/pro-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons'
 import { fab, faTelegram } from '@fortawesome/free-brands-svg-icons'
 import Typography from 'typography'
 import { firebaseConfig } from './resources/config'
