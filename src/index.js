@@ -43,8 +43,7 @@ import registerServiceWorker from './registerServiceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 import { createStore } from 'redux'
 import reducers from './reducers'
-import fontawesome from '@fortawesome/fontawesome'
-import brands from '@fortawesome/fontawesome-free-brands'
+import { library } from '@fortawesome/fontawesome-svg-core'
 import { Jumbotron } from 'reactstrap'
 import {
   faArrowCircleLeft,
@@ -82,7 +81,7 @@ import { firebaseConfig } from './resources/config'
 import { initialiseGAPI } from './actions/UsersActions'
 import Can from './utils/Can'
 
-fontawesome.library.add(
+library.add(
   brands,
   faArrowCircleLeft,
   faArrowCircleRight,
