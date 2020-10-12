@@ -18,5 +18,3 @@
 ### Checklist for reviewers
 - [ ] I have reviewed the new code
 - [ ] I have followed the given steps to test the PR, and it passes.
-
-
