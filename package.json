@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/helper-create-regexp-features-plugin": "^7.7.4",
     "@babel/plugin-transform-react-jsx": "^7.7.4",
-    "@casl/ability": "^2.4.2",
+    "@casl/ability": "^3.4.0",
     "@casl/react": "^1.0.4",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
