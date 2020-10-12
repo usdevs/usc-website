@@ -20,7 +20,7 @@ import {
 } from '../../actions/ModulesActions'
 import { withRouter } from 'react-router-dom'
 import ReviewForm from './ReviewForm'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class EditReview extends Component {
   static contextTypes = {

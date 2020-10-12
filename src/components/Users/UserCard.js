@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { compose } from 'redux'
 import { Card, Container, Row, Col } from 'reactstrap'
 import { firebaseConnect } from 'react-redux-firebase'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { getFile } from '../../actions/FilesActions'
 
 class UserCard extends Component {

@@ -12,7 +12,7 @@ import { config } from '../../resources/config'
 import moment from 'moment'
 import Autosuggest from 'react-autosuggest'
 import _ from 'lodash'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModuleCard from './ModuleCard'
 import { withRouter } from 'react-router-dom'
 

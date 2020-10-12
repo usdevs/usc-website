@@ -10,7 +10,7 @@ import { getGroupEvents } from '../../actions/EventsActions'
 import { getFile } from '../../actions/FilesActions'
 import { getUserProfile } from '../../actions/UsersActions'
 import { formatEvents, formatFirestoreData } from '../../utils/utils'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { withRouter } from 'react-router-dom'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 

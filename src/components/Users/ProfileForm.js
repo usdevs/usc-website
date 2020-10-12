@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { Alert, Button, InputGroup, InputGroupAddon } from 'reactstrap'
 import { Form } from 'informed'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LinkModal from '../reusable/LinkModal'
 import _ from 'lodash'
 import {

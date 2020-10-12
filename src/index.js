@@ -82,7 +82,6 @@ import { initialiseGAPI } from './actions/UsersActions'
 import Can from './utils/Can'
 
 library.add(
-  brands,
   faArrowCircleLeft,
   faArrowCircleRight,
   faCircle,

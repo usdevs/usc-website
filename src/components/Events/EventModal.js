@@ -10,7 +10,7 @@ import {
 } from 'reactstrap'
 import { getFile } from '../../actions/FilesActions'
 import GroupCard from '../Groups/GroupCard'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 class EventModal extends Component {
   constructor(props) {

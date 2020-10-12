@@ -11,7 +11,7 @@ import {
   InputGroupAddon,
   FormFeedback
 } from 'reactstrap'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import UserCard from '../Users/UserCard'
 import { getUserProfile, getUserByEmail } from '../../actions/UsersActions'
 import { firebaseConnect } from 'react-redux-firebase'

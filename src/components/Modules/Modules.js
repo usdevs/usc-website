@@ -17,7 +17,7 @@ import { getModule, getModuleReviews } from '../../actions/ModulesActions'
 import { formatModulesIntoTypes } from '../../utils/utils'
 import { withRouter } from 'react-router-dom'
 import ModuleCard from './ModuleCard'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import classnames from 'classnames'
 import _ from 'lodash'
 
