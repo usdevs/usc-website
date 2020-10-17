@@ -33,7 +33,12 @@ The first steps in the [fork and pull request workflow](https://gist.github.com/
     - Look for the "Fork" button on the top right
     - Click it!
 
-2. Clone your fork of the repo to your local machine
+2. Enable Travis CI on your repo (You'll need this to merge a pull request later on)
+    - Sign up in with your github account [here](https://travis-ci.org/)
+    - Accept the Authorization of Travis CI. You’ll be redirected to GitHub.
+    - Click on your profile picture in the top right of your Travis Dashboard, click Settings and then the green Activate button, and select your forked repository.. 
+
+3. Clone your fork of the repo to your local machine
     - replace "USERNAME" with your Github username and run:
     - `git clone https://github.com/USERNAME/usc-website.git`
 
