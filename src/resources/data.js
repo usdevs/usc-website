@@ -27,13 +27,21 @@ import nineteenthhonfinsec from './images/MC/19th/honfinsec.png'
 import nineteenthhongensec from './images/MC/19th/hongensec.png'
 import nineteenthfopdirector from './images/MC/19th/fopdirector.png'
 
-import presidentComm from './images/USCommitees/advisory.jpg'
-import vpwelfareComm from './images/USCommitees/welfare.jpg'
-import vpcommlifeComm from './images/USCommitees/commlife.jpg'
-import academicComm from './images/USCommitees/academic.jpg'
-import honfinsecComm from './images/USCommitees/finance.jpg'
-import hongensecComm from './images/USCommitees/secretariat.jpg'
-import fopdirectorComm from './images/USCommitees/fop.jpg'
+import twentiethpresident from './images/MC/20th/president.png'
+import twentiethvpwelfare from './images/MC/20th/vpwelfare.png'
+import twentiethvpcommlife from './images/MC/20th/vpcommlife.png'
+import twentiethhonfinsec from './images/MC/20th/honfinsec.png'
+import twentiethhongensec from './images/MC/20th/hongensec.png'
+import twentiethacaddirector from './images/MC/20th/acaddirector.png'
+import twentiethfopdirector from './images/MC/20th/fopdirector.png'
+
+import presidentComm from './images/USCommitees/advisory.png'
+import vpwelfareComm from './images/USCommitees/welfare.png'
+import vpcommlifeComm from './images/USCommitees/commlife.png'
+import academicComm from './images/USCommitees/academic.png'
+import honfinsecComm from './images/USCommitees/finance.png'
+import hongensecComm from './images/USCommitees/secretariat.png'
+import fopdirectorComm from './images/USCommitees/fop.png'
 
 import ursaia from './images/House/Ursaia.jpg'
 import nocturna from './images/House/Nocturna.jpg'
@@ -117,12 +125,12 @@ export const mcMembers = {
       image: sixteenthpresident
     },
     {
-      name: 'Hillary TAN',
+      name: 'Devesh NARAYANAN',
       title: 'Vice-President (Welfare)',
       image: sixteenthvpwelfare
     },
     {
-      name: 'Devesh NARAYANAN',
+      name: 'Hillary TAN',
       title: 'Vice-President (Community Life)',
       image: sixteenthvpcommlife
     },
@@ -242,202 +250,258 @@ export const mcMembers = {
       title: 'Freshmen Orientation Project Director',
       image: nineteenthfopdirector
     }
+  ],
+  '20th': [
+    {
+      name: 'CHAN Qiu Qing',
+      title: 'President',
+      image: twentiethpresident
+    },
+    {
+      name: 'Lydia CHEE Qian Ting',
+      title: 'Vice-President (Community Life)',
+      image: twentiethvpcommlife
+    },
+    {
+      name: 'Nisha SUBRAMANIAM',
+      title: 'Vice-President (Welfare)',
+      image: twentiethvpwelfare
+    },
+    {
+      name: 'Chloe Alexandra Jiayi YUNG',
+      title: 'Honorary General Secretary',
+      image: twentiethhongensec
+    },
+    {
+      name: 'ZHENG Chengzhi',
+      title: 'Honorary Financial Secretary',
+      image: twentiethhonfinsec
+    },
+    {
+      name: 'NG Jia Yeong',
+      title: 'Academic Director',
+      image: twentiethacaddirector
+    },
+    {
+      name: 'Theresia Agustine SANTOSO',
+      title: 'Freshmen Orientation Project Director',
+      image: twentiethfopdirector
+    }
   ]
 }
 
 export const uscCommittees = [
   {
     name: 'Advisory',
-    headedBy: 'Ng Hui Ren, President',
+    headedBy: 'Chan Qiu Qing, President',
     description:
-      'The Advisory Committee manages USP’s internal data (e.g. Welfare Survey Report), communications and feedback channels (e.g. @nus.usc Instagram, USC Feedback Box), Think Tank - a task force to investigate issues pertaining to USP -  as well as Alumni relations.',
+      'USC Advisory Committee is the central administration of USC - as such, it changes every year to reflect USC’s needs! This year, we have the Communications Directorate, Training Directorate, and Special Projects (Exam Welfare Pack Data, Alumni Relations and USC Wiki). We welcome new special projects throughout the year, so do let any of us know if you have thoughts/feedback!',
     image: presidentComm,
     teams: [
       {
-        name: 'Communications Team',
+        name: 'Communications Directorate',
         members:
-          'Mah Terence, Leebrant Theodore, Muhammad Excel Muslim, Low Qian Ling Claire, Tan Kassandra, Viswanath Suresh, Lim Su Woon Sarah, Tang Kwan Hou'
+        	'Yeo Shao Jie (Director), Teoh Xin Yi (Director), Hua Xin Hui, Low Qian Ling Claire, Rachel Teng Ying Xin'
       },
       {
-        name: 'Alumni Relations Team',
+        name: 'Social Media Managers',
         members:
-          'Tan Kia Sim, Kathy, Yip Sze Kay, Wu Fan, Seow Nicole, Hoe Jia En Allison'
+        	'Ng Yu Fang, Stephanie Goh'
       },
       {
-        name: 'Think Tank',
-        members: 'Mah Terence, Auyok Sean, Atharv Joshi, Hong Shao Yang'
+        name: 'Special Projects Team',
+        members:
+        	'Tham Jun Han (Alumni Relations), Wong Li Fang (USC Wiki, Director), Hong Ai Ling (USC Wiki), Marcus Ng Yong Ming (USC Wiki), Mah Cai Jun, Terence (Welfare Pack Data, Director)'
+      },
+      {
+        name: 'Training Directorate',
+        members: 'Tan Kia Sim Kathy (Director), Rachel Teng Ying Xin'
       }
     ]
   },
   {
     name: 'Community Life',
-    headedBy: 'Chan Qiu Qing, Vice-President (Community Life)',
+    headedBy: 'Lydia Chee Qian Ting, Vice-President (Community Life)',
     description:
-      'The Community Life committee believes strongly in doing what makes you happy :) From Interest Groups to Ground-Up Initiatives, we aim to ENABLE you by supporting and providing advice on how you can turn your ideas into reality. Share your ideas with us (even the ones that popped up at 2am) at bit.ly/usideas!',
+      'USC Community Life is the #enabler for all our student-initiated activities. From Interest Groups to Ground-Up Initiatives and USProjects (Think USProductions, Camp Reconnect or Connect Tuition), we promote events and activities that contribute to our vibrant USP student life. Alongside student-initiated events, the Cultural Arts and Sports Directorate also organize activities directly. This semester, look forward to Halloween events and Cinna-Mas (Christmas)! Want to start something new for the USP community? Hit us up!',
     image: vpcommlifeComm,
     teams: [
+    {
+        name: 'Deputy Director',
+        members:
+        	'Lum Yen Yi',
+      },
+      {
+        name: 'IG Coordinators',
+        members: 'Sumiko Teng, Muhammad Excel Muslim'
+      },
+      {
+        name: 'GUI Coordinators',
+        members:
+          'Khoo Jia le Isaac, Adele Chin'
+      },
       {
         name: 'Sports Directorate',
         members:
-          'Guek Jun Kai, Sebastian (Director), R Ramana, Ang Jing Zhe, Vijayan Kumaran Kausalya'
+        	'Gabriel May Moe Kyaw (Director), Tang Boxuan, Teo Kun Ho Arnold, Claire Swee'
       },
       {
         name: 'Cultural Arts Directorate',
         members:
-          'Wu Fan (Director), Sim Rou Chen, Tan June, Yip Sze Kay, Lin Yuan, Ng Ming Qian, Wong Li Fang, Qian Zihan'
-      },
-      {
-        name: 'Operations & Logistics Directorate',
-        members: 'You Jing You (Director), Gautum Vasnani, Muley Ishaan'
-      },
-      {
-        name: 'IG Coordinators (Non-Sports)',
-        members: 'Chengzhi Zheng, Muhammad Excel Muslim'
-      },
-      {
-        name: 'GUI Coordinators (Social/Cultural/Academic/Welfare)',
-        members:
-          'Loh Jonina, Hnin Azali (Brenda), Marcus Ng Yong Ming, Chan Min Yi'
+          'Wu Fan (Director), Tiffany Ho, Gautham S/O Vijayan Kumaran, Allard Quek, Tan Yi Rong Euclea, Marcus Chew Heng Wee, Yip Sze Kay, Rhea Sharma'
       }
     ]
   },
   {
-    name: 'Student Welfare',
-    headedBy: 'Venny Lewis, Vice-President (Welfare)',
+    name: 'Welfare',
+    headedBy: 'Nisha Subramaniam, Vice-President (Welfare)',
     description:
-      'The Welfare Committee functions as a social safety net in USP. Through Exam Welfare and Welfare Projects Committee we plan diverse events and initiatives open to all USP students. Meanwhile, Inter-house coordinators handle collaboration between Houses for IHG and other initiatives.',
+      "USC Welfare looks after the USP community's well-being, serving as a safety net to provide joy and laughter to students while considering mental and pastoral care for the community. From planning exciting events like Children's Days and Deepavali by our Welfare Projects Committee, our Exam Welfare Committee also organizes the anticipated welfare pack giveaways biannually! Besides, our inter-house coordinators promote inter-house bonding, creating a united community in Cinnahome.",
     image: vpwelfareComm,
     teams: [
       {
-        name: 'Welfare Projects Team',
-        members:
-          'Chng Dinise (Director), Neo Renee (Deputy Director, General), Lye Cheng Wen Joanne, Theodore Vito, Ng Marcus Yong Ming, Nai Jing Wen Bernessa, Ho Jun Ning Jolyn (Pastoral Care), Tjong Samantha Gladys (Deputy Director, International Students)'
+        name: 'Welfare Projects Committee',
+        members: 'Chong Wei Xin (Director), Zhang Yiying (Deputy Director, Pastoral), Wu Fan, Ng Yu Fang, Marcus Ng Yong Ming, Gautum Girish Vasnani, Amanda Loh, Charlotte Boulanger, Kong Min Yee (Pastoral), Rhea Sharma'
+      },
+      {
+        name: 'Exam Welfare Committee',
+        members: 'Wu Weiming (Director), Kork Ling Hui, Tang Kwan Hou, Jolyn Ho Jun Ning (Pastoral), Tan Yi Hui Valerie (Pastoral)'
       },
       {
         name: 'Inter-House Coordinators',
-        members: 'Peng Yun Ting, Low Chen Yi Sean'
-      },
-      {
-        name: 'Exam Welfare Team',
-        members: 'Ang Wei Shen Michael, L Krishaa, Tan Yi Hui Valerie'
+        members: 'Victoria Lim Yuk Ki, Lim Yi Jin'
       }
     ]
   },
   {
     name: 'Academic',
-    headedBy: 'Ng Hui Ren, President',
+    headedBy: 'Ng Jia Yeong, Academic Director',
     description:
-      'The Academic Committee is responsible for understanding, addressing, and surfacing USP students’ sentiments on all academics-related matters. We work closely with the USP Faculty - who has been very supportive and receptive to students’ feedback - to achieve these objectives.',
+    	"The Academic Committee represents students' interests in academic-related matters. We seek to improve the academic environment of students in USP through academic initiatives and by surfacing student sentiments to USP faculty and administration - who have been very supportive and receptive to students' feedback.",
     image: academicComm,
     teams: [
       {
-        name: 'Academic Committee',
+        name: 'Internal Projects Committee',
         members:
-          'Vijayan Kumaran Kausalya (Director), Wang Zijun (Curriculum Review Committee Representative), Chan Yun Yee Michelle, Yap Mitchell, Keoliya Mayank, Hnin Azali (Brenda), Chua Leah, Loo Nicole, Hoe Jia En Allison, Mah Terence, Wu Weiming, Lim Darren'
-      }
-    ]
-  },
-  {
-    name: 'Secretariat',
-    headedBy: 'Ng Qian Jie Cheryl, Honorary General Secretary',
-    description:
-      'The Secretariat Committee is tirelessly working to improve the USP spaces, adding colour and functionality to our community. It consists of 3 subcommittees - Spaces, Design and Maker Studio. Got an idea? Feel free to contact any of us!',
-    image: hongensecComm,
-    teams: [
-      {
-        name: 'Spaces Directorate',
-        members:
-          'Yung Chloe (Director), Abraham Wong, Tjong Samantha Gladys, Chew Heng Wee Marcus, Daniel Ho'
+        	'Lim Pei Rong Angela (Deputy Director), Lu Jinyao, Wang Xinman (Mandy), Gautum Girish Vasnani, Cheong Kwang Aik Eldrick, Tan Kai Qian Makarios, Goh Jun Ming, Ong Sing Huat Jonathan, Hua Xin Hui',
       },
       {
-        name: 'Design Directorate',
+        name: 'Data and Communications Committee',
         members:
-          'Foo Yong Qing (Director), Wang Xuanqi, Sim Rou Chen, Leong Yue Qi'
-      },
-      {
-        name: 'Maker Studio Directorate',
-        members:
-          'Tan Daniel (Director), Lai Chang En Samuel, Tan Jin Jie, Khoo Benedict, Chow Kit Ying, Neo Kai Wen Jevon, Ke Er Chloe Lee, Low Ju Li, Jazreel, Leong Yue Qi, Wang Xuanqi'
+        	'Mah Cai Jun (Deputy Director), Terence, Wang Mengzhe, Jermaine Tang Chor Yee, Lim Yu Fei, Lum Yen Yi',
       }
     ]
   },
   {
     name: 'Finance',
-    headedBy: 'Wang Xinman (Mandy), Honorary Financial Secretary',
+    headedBy: 'Zheng Chengzhi, Honorary Financial Secretary',
     description:
-      'The Finance Committee supports student initiatives in USP by allocating budget and obtaining sponsorships. Additionally, we raise funds for the community through the sale of USP merchandise, and maintain partnerships with vendors to benefit USP students.',
+    	"The Finance Committee oversees the USC budget and helps students with obtaining funding for activities ranging from interest group events to FOP! The comm also organises productions and sales of USC merchandise, and regularly collaborates with other committees such as FOP and Welfare in procuring sponsorship deals for our students.  In addition, Finance comm is actively engaged with external parties, liaising with other RCs in the Co-NUS Inter-RC shirt project and partnering with U-town establishments in offering USCards, our very own student discount card scheme!",
     image: honfinsecComm,
     teams: [
       {
-        name: 'Deputy Honorary Financial Secretaries',
-        members: 'Xiao Chengxin (Attaché), Alvin Jun Heng Choo (Biz Dev)'
+        name: 'Deputy Honorary Financial Secretary (Biz Dev)',
+        members: 'Law Wing Sum'
       },
       {
-        name: 'Business Development & Marketing Executives (External)',
+        name: 'Deputy Honorary Financial Secretary (Attachés)',
+        members: 'Tee Jing Ying'
+      },
+      {
+        name: 'Financial Attachés',
         members:
-          'Yi Hui Valerie Tan, Peng Yun Ting, Jing Ying Tee, Tay Ming Kiat, Tan June, Chan Min Yi, Weng Yek Wong, Kenny Ang (FOP), Clare Chia (FOP)'
+        	'Tee Jing Ying (Welfare & Standing Comm), Tang Boxuan (Secretariat & Standing Comm), Lim Yi Jin (Houses), Muhammad Harz Bin Zaydie (Comm Life), Alson Tay Zhi Sheng (Houses), Chang Wei Ching (Comm Life)'
       },
       {
-        name: 'Business Development & Marketing Executives (Internal)',
-        members: 'Wang Yihe, Wing Sum Law, You Jing You'
+        name: 'Marketing Executives (Internal Business Development)',
+        members: 'June Tan Ying Shuang, He Li, Xiao Chengxin, Yong Chuen Shin'
       },
       {
-        name: 'Financial Attaches',
+        name: 'Marketing Executives (External Business Development)',
         members:
-          'Dave Zhang Yun Hu (Secretariat & Advisory), Ajeya Mantri (Welfare), Chengzhi Zheng (Community Life), Xin Yi Marion Kua (Houses)'
+        	'Gau Meng Yew (USCards Project IC), Isabel Teo Jing Lin (CoNUS Shirt Project IC), Tabitha Tan Si Yi (Sponsorships IC), Sadia Haque, Renee Lee, Natalie Chung Hui En'
+      }
+    ]
+  },
+  {
+    name: 'Secretariat',
+    headedBy: 'Chloe Alexandra Jiayi Yung, Honorary General Secretary',
+    description:
+    	"The Secretariat Committee is tirelessly working to improve both USP's physical spaces and cyberspace, adding colour and functionality to our community. We are made up of four subcommittees - Design, Makers' Studio, Spaces and Technologies. Got an idea? Feel free to get in touch with one of us!",
+    image: hongensecComm,
+    teams: [
+      {
+        name: 'Design Directorate',
+        members:
+          'Ong Yun Ning (Director), Jen Chik Hui Xin, Leong Yue Qi, Pearl Koswara, Peng Mu Zi, Yong Chuen Shin, Zhang Ziqing'
+      },
+      {
+        name: "Makers' Studio Directorate",
+        members:
+          "Hu Yu Xin (Director), Gau Meng Yew (Deputy Director), Chua Hsi-Ern Caylee (Deputy Director), Cao Ngoc Linh (Logistics Director (Makers')), Andrew Sutjipto, Chen Yiyang, Daniel Tan Ren Jie, Ho Jie Feng, Khoo Jia Le Isaac, Loh Jing Yen, Lynette Chia Sze Min, Marcus Lim Tze Yang, Ng Qian Jie Cheryl, Peng Mu Zi, Ryan Lee Rui En, Ryan Ong Ren-An, Samuel Lai Chang En, See Tow Zi Hsien, Tan Jin Jie, Tan Yong-Jia Naaman, Tan Zhen Xuan Jasper"
+      },
+      {
+        name: 'Spaces Directorate',
+        members:
+          'Chan Tzen Yi (Director), So Ee Cheng (Deputy Director), Ryan Ch’ng Wei Han (Logistics Director (IC)), Abraham Wong (Logistics Director (Spaces)), Gau Meng Yew, Leong Yue Qi, Marcus Lim Tze Yang, Ng Hui Ren, Tan Yi Rong, Euclea, Hua Yuhan'
+      },
+      {
+        name: 'Technologies Directorate',
+        members:
+          'Mitchell Kwong (Director), Jivesh Mohan (Deputy Director), Allard Quek, Chen Yiyang, Goh Siau Chiak, Hazel Tan, Hong Ai Ling, Justin Hoe Jia Jie, Melissa Ong Yi Lin, Ng Qian Jie Cheryl, R Ramana, Ryan Ong Ren-An, Quek Siying, Tan Jin Jie, Tan Yong-Jia Naaman, Teo Chuan Kai, Wang Xinman (Mandy), Wong Zi Xin Avellin, Xiao Chengxin, Zhang Ziqing'
       }
     ]
   },
   {
     name: 'Freshmen Orientation',
-    headedBy: 'Chia Kai Xin, Freshmen Orientation Director',
+    headedBy: 'Theresia Agustine Santoso, Freshmen Orientation Programme Director',
     description:
-      'The FOP Committee, comprising of 8 sub-committees, is in-charge of planning the annual Freshmen Orientation Programme. The FOP Committee also engages important external stakeholders like the House Committees and USP staff to refine and curate the programme. The Committee is dedicated to creating a fun and fulfilling experience for the freshmen, and ensuring that they integrate seamlessly into the USP community.',
+    	'Comprising of 8 main sub-committees, the FOP committee is the forefront of the yearly Freshman Orientation Programme. The committee is responsible for the planning and execution of the various programmes under FOP, through the engagement with external stakeholders such as House Committees and USP staff. Dedicated towards creating a fun and memorable experience for the freshmen, the Committee aims to curate and refine the program - ensuring a warm welcome and seamless integration of the freshmen into the USP community.',
     image: fopdirectorComm,
     teams: [
       {
-        name: 'Deputy Director',
-        members: 'Shawne Goh'
+        name: 'Vice Director',
+        members: 'Odelia Ong Mun'
       },
       {
         name: "Orientation Camp (O'Camp)",
         members:
-          'Nisha Subramaniam (Project Director), Chong Wei Xin (Vice-Project Director), Gautum Girish Vasnani, Jermaine Tang Chor Yee, Pua Xuan Ming, Ng Xiang Yun, Tang Kwan Hou, Ong Sijie Grace, Soon Xiao Xi Natasha, Neo Jing Xuan Renee, Lim Wei Liang, Bec Kyung Huhn (Kevin), Johnathan Yeo Hong-Hui, Yip Jung Hon, Lin Min Kang'
+          'Yee Dong Ying Megan (Project Director), Melissa Ong Yi Lin (Vice-Project Director), Michael Alexander, Vivienne Teo Sher Yi, Hu Linglong, Christopher Ang Ming Yang, Vera Khoo, Shi Shu Yuan, Tanya Ragupathi, Bharathkumar Sriram, Gabriel Goh Han Jie, Lucy Maria Beatriz Porras Lauron, Rachelle Marie Chua Hui Ling, Allard Quek, Jovyn Tan Li Shyan, Marcus Lim, Ezra Daniel Faizal'
       },
       {
         name: "Orientation Week (O'Week)",
         members:
-          'Christabelle Peng (Project Director), Peter Lok (Vice-Project Director), Tay Kiat Jun, Joshua Chew, Goh Quan Sheng, Jonathan Lau, Lim Jing Feng, Marcus Ng, Ashruff, Mervin Junus, Nicole Loo, Chloe Yung, Tan Ler Nie, Claire Low, Hazel Tan, Xing Yu Xia, Valerie Kwok'
+          'Lyn Tan (Project Director), Lim Ji Kang (Vice-Project Director), Amanda Soh Xuan Min, Tan Lay Yee Celestin, Lau Yong Yee Chloe, Leong Xin Ru Sarah, Simone Teo Kay, Gau Meng Yew, Jonathan Loh Jiahui, Tang Boxuanm, Jin Mei Xuan, Amelyn Low Zhi Ning, Ng Hui Xin, Natalie Lem, Lim Tse Hwee (Lin Zhihui)'
       },
       {
         name: 'Events',
         members:
-          'Qi Ting Joei Ow (Project Director), Adele Chin Shu Fern (Vice-Project Director), Tabitha Tan Si Yi, Ong Yong En, Ow Jun Ning Claire, Ng Wai Ching, Ng Yu Fang, Jun Jie, Ng Wai Ching'
+          'Ng Sze Xuan (Project Director), James Lao (Vice-Project Director), Hong Ai Ling, Tan Shi Zhen, Tan Kai Qian Makarios, Gau Meng Yew, Aloysius Chow, Daniel Tan Ren Jie, Jeriel Teo'
       },
       {
         name: 'Batch Project',
         members:
-          'Yen Yi Lum (Project Director), Toh Jie Ying (Vice-Project Director), Tiffany Tang, Tan Yi Hui Valerie, Miki Ng, Kevin, Yip Jung Hon, Gautum Girish Vasnani, Tasha Phua, Rhea Sharma, Matthew, Lim Yu Fei, Constance Thum, Johnathan Yeo Hong-Hui'
+          'Lim Xin Yi (Project Director), Timothy Wan (Vice-Project Director), Jessy, Chen Silin, Simone Teo Kay, Isabel Teo Jing Lin, Chang Soo Yen, Tan Shi Zhen, Neo Wei Qing, Boey Jia Ning Vicki, Verlyn Ku, Edbert Wartono, Syarifah Aneesa'
       },
       {
         name: 'Finance',
         members:
-          'Clare Chia (Project Director), Valerie Kwok Kit Min, Pua Xuan Ming, Ng Wai Ching, Tan Yi Hui Valerie'
+          "Natalie Chung Hui En (Director), Ng Hui Xin (O'Week), Jovyn Tan (O'Camp), Hong Ai Ling (Events), Neo Wei Qing (Batch Project)"
       },
       {
         name: 'Public Relations',
         members:
-          'Sijie Grace Ong (Project Director), Clare Chia Xiao Fen, Kenny, Chong Wei Xin, Armado , Ruizhong, Siyi'
+          'Justin Lim Yong Jie (Director), Melissa Japar, Kong Min Yee, Sadia Haque, Aloysius Chow, Edbert Wartono, Tian Mengxi'
       },
       {
         name: 'Creative',
         members:
-          'Tiffany Ho (Project Director), Dakshita (Vice-Project Director), Weiliang, Joshua Chew, Gabriel May Moe Kyaw, Stephanie Goh, Tharun, Ying Feng, Haiyun, Ruizhong Choo, Jing Wen, Si Yi Li, Yu Fei'
+          'Sarah Lim Rui En (Director), Charlotte Teng, Choo Ruizhong, Christina Fu, Constance Tan, Samantha Moey, Syarifah Aneesa, Thin Lae Yi Zaw, Verlyn Ku'
       },
       {
         name: 'Operations',
         members:
-          'Si Tian Lim (Project Director), Jun Jie, Jermaine, Hazel Tan, Tiffany Tang'
+          'Wan Yoke Chun Shaena (Director), Ezra Daniel, Marcus Lim, Natalie Lem, Lim Tse Hwee (Lin Zhihui), Jeriel Teo, Isabel Teo'
       }
     ]
   }
@@ -449,19 +513,19 @@ export const houseCommittees = [
     image: ursaia,
     members: [
       {
-        name: 'Tan Armado Yi Zhou',
+        name: 'Wong Shi Ting Calista',
         title: 'House Captain'
       },
       {
-        name: 'Zhang Zhen Li Jenny',
+        name: 'Quek Xian Yi Erwin',
         title: 'Vice House Captain'
       },
       {
-        name: 'Ng Zhili',
+        name: 'Brittney Loke Zi Qing',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Low Si Yu Sabrina',
+        name: 'Tan Jun Yi',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -471,19 +535,19 @@ export const houseCommittees = [
     image: nocturna,
     members: [
       {
-        name: 'Hussain Fathah',
+        name: 'Yap Yu Qi Delphie',
         title: 'House Captain'
       },
       {
-        name: 'Lee Tze Kerr Scott',
+        name: 'Low Si Jie',
         title: 'Vice House Captain'
       },
       {
-        name: 'Douglas Leong',
+        name: 'Ng Qi Xuan',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Ng Sze Munn Elyssa',
+        name: 'Joshen Lim',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -493,19 +557,19 @@ export const houseCommittees = [
     image: ianthe,
     members: [
       {
-        name: 'Salifian Bin Sulaiman',
+        name: 'Goh Jun Ming',
         title: 'House Captain'
       },
       {
-        name: 'Kenny Ang Wee Howe',
+        name: 'Putri Pearl Koswara',
         title: 'Vice House Captain'
       },
       {
-        name: 'Claire Low Qian Ling',
+        name: 'Ryan Ong Ren-An',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Gabriel May Moe Kyaw',
+        name: 'Ryan Lee Rui En',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -515,19 +579,19 @@ export const houseCommittees = [
     image: triton,
     members: [
       {
-        name: 'Choo Ruizhong',
+        name: 'Cheng Zhibin Nicholas',
         title: 'House Captain'
       },
       {
-        name: 'Chan Tzen Yi',
+        name: 'Jerome Ong Yi Jie',
         title: 'Vice House Captain'
       },
       {
-        name: 'Lim Yijin',
+        name: 'Tan Joe Wel',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Ng Jia Yeong',
+        name: 'Ha Tae Rin',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -537,19 +601,19 @@ export const houseCommittees = [
     image: ankaa,
     members: [
       {
-        name: 'Michelle Phua Kah Hwee',
+        name: 'Justin Rong Hengyang',
         title: 'House Captain'
       },
       {
-        name: 'Goh Siau Chiak',
+        name: 'Goh Hong Pei',
         title: 'Vice House Captain'
       },
       {
-        name: 'Liaw Wyi Wying',
+        name: 'Lavelle Wong Jing Tong',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Cheong Kwang Aik Eldrick',
+        name: 'Tan Yan Feng',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -559,19 +623,19 @@ export const houseCommittees = [
     image: saren,
     members: [
       {
-        name: 'Victoria Lim Yuk Ki',
+        name: 'Gautham S/O Vijayan Kumaran',
         title: 'House Captain'
       },
       {
-        name: 'Nicholas Lam Wei Xiang',
+        name: 'Maxyn Claris Koh',
         title: 'Vice House Captain'
       },
       {
-        name: 'Amanda Loh Hui Ling',
+        name: 'Avelle Wong Shi Ying',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Marcus Ng Yong Ming',
+        name: 'Ang Jun Yi',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
