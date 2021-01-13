@@ -13,7 +13,7 @@ import _ from 'lodash'
 
 class EventCard extends Component {
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   }
 
   mounted = false
@@ -24,7 +24,7 @@ class EventCard extends Component {
 
     this.state = {
       poster: null,
-      userProfile: null
+      userProfile: null,
     }
   }
 
@@ -39,12 +39,12 @@ class EventCard extends Component {
       this.loadPoster(poster)
     }
 
-    getUserProfile(firestore, event.creator, snapshot => {
+    getUserProfile(firestore, event.creator, (snapshot) => {
       const leaderProfile = snapshot.data()
       this.setState({
         userProfile: {
-          ...leaderProfile
-        }
+          ...leaderProfile,
+        },
       })
     })
   }
@@ -59,14 +59,14 @@ class EventCard extends Component {
     }
   }
 
-  loadPoster = poster => {
+  loadPoster = (poster) => {
     const { firebase } = this.props
 
     if (poster) {
-      getFile(firebase, poster, url => {
+      getFile(firebase, poster, (url) => {
         if (this.mounted) {
           this.setState({
-            poster: url
+            poster: url,
           })
         }
       })
@@ -86,7 +86,7 @@ class EventCard extends Component {
       groups,
       groupTypes,
       hasModal,
-      firebase
+      firebase,
     } = this.props
 
     return (
@@ -125,9 +125,7 @@ class EventCard extends Component {
                 {'at ' +
                   (event.otherVenue
                     ? event.venue
-                    : spaces.data[event.venue].name) +
-                  ' for ' +
-                  (event.zoneName === undefined ? 'All Zones' : event.zoneName)}
+                    : spaces.data[event.venue].name)}
               </h4>
               {userProfile ? (
                 <h4 className="mb-0" style={{ fontWeight: 300 }}>
@@ -141,7 +139,7 @@ class EventCard extends Component {
                   {fullDescription
                     ? event.description
                     : _.truncate(event.description, {
-                        length: config.descriptionPreviewLength
+                        length: config.descriptionPreviewLength,
                       })}
                   <Button
                     onClick={() =>
@@ -171,7 +169,7 @@ class EventCard extends Component {
               {hasModal ? (
                 <EventModal
                   key={event.id}
-                  ref={element => {
+                  ref={(element) => {
                     this.modal = element
                   }}
                   firebase={firebase}
@@ -195,9 +193,9 @@ class EventCard extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    userProfile: state.firestore.data.userProfile
+    userProfile: state.firestore.data.userProfile,
   }
 }
 

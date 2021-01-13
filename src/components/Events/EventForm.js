@@ -51,7 +51,7 @@ class EventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces, zones } = this.props
+    const { eventTypes, spaces} = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -60,11 +60,6 @@ class EventForm extends Component {
     if (!spaces.isLoaded) {
       getSpaces(firestore)
     }
-
-    if (!zones.isLoaded) {
-      getZones(firestore)
-    }
-  }
 
   eventTypeOptions = eventTypes => {
     var options = []
@@ -98,20 +93,20 @@ class EventForm extends Component {
     return options
   }
 
-  zoneOptions = zones => {
-    var options = []
+  // zoneOptions = zones => {
+  //   var options = []
 
-    if (zones.isLoaded) {
-      _.forEach(zones.ordered, zone => {
-        options.push({
-          id: zone.id,
-          display: zone.name
-        })
-      })
-    }
+  //   if (zones.isLoaded) {
+  //     _.forEach(zones.ordered, zone => {
+  //       options.push({
+  //         id: zone.id,
+  //         display: zone.name
+  //       })
+  //     })
+  //   }
 
-    return options
-  }
+  //   return options
+  // }
 
   validateDayFields = (formApi, value) => {
     const maxNoOfHours = 2
@@ -176,20 +171,20 @@ class EventForm extends Component {
     }
   }
 
-  validateOtherZone = (formApi, value) => {
-    if (formApi.getValue('zone') === 'Others') {
-      return validateNotEmpty(value)
-    } else {
-      return null
-    }
-  }
+  // validateOtherZone = (formApi, value) => {
+  //   if (formApi.getValue('zone') === 'Others') {
+  //     return validateNotEmpty(value)
+  //   } else {
+  //     return null
+  //   }
+  // }
 
   internalShouldDisable = formApi => {
     return formApi.getValue('spaceOnly')
   }
 
   submit = values => {
-    const { auth, spaces, zones, initialValues } = this.props
+    const { auth, spaces, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
@@ -215,9 +210,6 @@ class EventForm extends Component {
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
       otherVenue: normalVenue ? false : true,
-      zone: normalZone ? values.zone : values.otherZone,
-      zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
-      otherZone: normalZone ? false : true
     }
 
     getEventVenueBookingsAfter(
@@ -284,7 +276,6 @@ class EventForm extends Component {
     const {
       eventTypes,
       spaces,
-      zones,
       btnText,
       modal,
       initialValues
@@ -360,33 +351,6 @@ class EventForm extends Component {
                     validate={value => this.validateOtherVenue(formApi, value)}
                     validateOnBlur
                     className="mb-3"
-                  />
-                </div>
-              </div>
-              <h3>Zone</h3>
-              <div className="mb-3">
-                <DropdownInput
-                  field="zone"
-                  placeholder="Select a Zone"
-                  others="true"
-                  validate={validateNotEmpty}
-                  validateOnChange
-                  notify={['otherZone']}
-                  disabled={!zones.isLoaded}
-                  loading={!zones.isLoaded}
-                  options={this.zoneOptions(zones)}
-                />
-                <div
-                  className="mt-2"
-                  hidden={formApi.getValue('zone') !== 'Others'}
-                >
-                  <TextInput
-                    field="otherZone"
-                    hidden={formApi.getValue('zone') !== 'Others'}
-                    placeholder="Enter the zone name"
-                    validate={value => this.validateOtherZone(formApi, value)}
-                    validateOnBlur
-                    className="mb-0"
                   />
                 </div>
               </div>
@@ -518,7 +482,7 @@ const mapStateToProps = state => {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
-    zones: formatFirestoreData(state.firestore, 'zones'),
+    // zones: formatFirestoreData(state.firestore, 'zones'),
     venueBookings: state.firestore.ordered.venueBookings
   }
 }
