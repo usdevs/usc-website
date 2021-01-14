@@ -159,6 +159,12 @@ const categories = [
         icon: ['fab', 'linkedin'],
         link: 'http://gg.gg/usplinkedin',
         color: 'steelblue'
+      },
+      {
+        name: 'USP Battle Royale',
+        icon: ['fab', 'telegram'],
+        link: 'https://t.me/joinchat/SN9NUuatjjaAS9et',
+        color: 'steelblue'
       }
     ]
   },
