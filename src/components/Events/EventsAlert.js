@@ -16,7 +16,7 @@ const EventsAlert = props => {
       {' '} for more information.
       </div> */}
       <div className="text-center">
-      Bookings for spaces have finally reopened! All bookings must abide by the zoning schedule for Chatterbox, Theme Rooms and CTPH. For the latest guidelines on bookings, please {' '}
+      Bookings for spaces have finally reopened! For the latest guidelines on bookings, please {' '}
         <a href="https://bit.ly/uscspacescovid" className="alert-link">
           head here
         </a>

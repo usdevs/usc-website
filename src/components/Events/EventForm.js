@@ -14,7 +14,7 @@ import {
   ImageInput,
   TextAreaInput,
   validateNotEmpty,
-  validateNotEmptyNotCtph
+  validateNotEmptyNotCtph,
 } from '../reusable/FormInputs'
 import { config } from '../../resources/config'
 import moment from 'moment'
@@ -23,19 +23,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   roundTime,
   formatFirestoreData,
-  eventTimesToMoment
+  eventTimesToMoment,
 } from '../../utils/utils'
 import {
   getEventVenueBookingsAfter,
   getEventTypes,
   getSpaces,
-  getZones
+  getZones,
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
 class EventForm extends Component {
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   }
 
   formApi = null
@@ -45,13 +45,13 @@ class EventForm extends Component {
     super(props)
 
     this.state = {
-      submitted: false
+      submitted: false,
     }
   }
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces} = this.props
+    const { eventTypes, spaces } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -60,15 +60,16 @@ class EventForm extends Component {
     if (!spaces.isLoaded) {
       getSpaces(firestore)
     }
+  }
 
-  eventTypeOptions = eventTypes => {
+  eventTypeOptions = (eventTypes) => {
     var options = []
 
     if (eventTypes.isLoaded) {
-      _.forEach(eventTypes.ordered, type => {
+      _.forEach(eventTypes.ordered, (type) => {
         options.push({
           id: type.id,
-          display: type.name
+          display: type.name,
         })
       })
     }
@@ -76,15 +77,15 @@ class EventForm extends Component {
     return options
   }
 
-  venueOptions = spaces => {
+  venueOptions = (spaces) => {
     var options = []
 
     if (spaces.isLoaded) {
-      _.forEach(spaces.ordered, space => {
+      _.forEach(spaces.ordered, (space) => {
         if (space.name !== 'CTPH-Old' && space.name !== 'CTPH') {
           options.push({
             id: space.id,
-            display: space.name
+            display: space.name,
           })
         }
       })
@@ -179,16 +180,16 @@ class EventForm extends Component {
   //   }
   // }
 
-  internalShouldDisable = formApi => {
+  internalShouldDisable = (formApi) => {
     return formApi.getValue('spaceOnly')
   }
 
-  submit = values => {
+  submit = (values) => {
     const { auth, spaces, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
-      submitting: true
+      submitting: true,
     })
 
     const normalVenue = values.venue !== 'Others'
@@ -196,9 +197,7 @@ class EventForm extends Component {
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
-      : moment(values.startDate)
-          .add(1, 'day')
-          .add(-30, 'minutes')
+      : moment(values.startDate).add(1, 'day').add(-30, 'minutes')
 
     var formattedEvent = {
       ...values,
@@ -217,12 +216,12 @@ class EventForm extends Component {
       formattedEvent.venue,
       startDate,
       'venueBookings',
-      snapshot => {
+      (snapshot) => {
         const { venueBookings } = this.props
 
         var clashes = false
 
-        _.forEach(venueBookings, bookingTemp => {
+        _.forEach(venueBookings, (bookingTemp) => {
           const booking = eventTimesToMoment(bookingTemp)
           clashes =
             startDate.isBetween(booking.startDate, booking.endDate) ||
@@ -250,7 +249,7 @@ class EventForm extends Component {
           )
 
           this.setState({
-            submitting: false
+            submitting: false,
           })
         } else {
           this.props.submit(formattedEvent, this.submitCallback)
@@ -259,7 +258,7 @@ class EventForm extends Component {
     )
   }
 
-  submitCallback = reset => {
+  submitCallback = (reset) => {
     if (reset) {
       this.formApi.reset()
     }
@@ -267,28 +266,22 @@ class EventForm extends Component {
     this.modal.toggle()
 
     this.setState({
-      submitting: false
+      submitting: false,
     })
   }
 
   render() {
     const { submitting } = this.state
-    const {
-      eventTypes,
-      spaces,
-      btnText,
-      modal,
-      initialValues
-    } = this.props
+    const { eventTypes, spaces, btnText, modal, initialValues } = this.props
 
     return (
       <div>
         <Form
           initialValues={initialValues}
-          getApi={api => {
+          getApi={(api) => {
             this.formApi = api
           }}
-          onSubmit={values => this.submit(values)}
+          onSubmit={(values) => this.submit(values)}
         >
           {({ formApi }) => (
             <div>
@@ -318,7 +311,7 @@ class EventForm extends Component {
                   field="internal"
                   text="Internal (Not on Google Calendar)"
                   disabled={this.internalShouldDisable(formApi)}
-                  validate={value => this.validateInternal(formApi, value)}
+                  validate={(value) => this.validateInternal(formApi, value)}
                 />
                 <CheckboxInput
                   field="spaceOnly"
@@ -348,7 +341,9 @@ class EventForm extends Component {
                     field="otherVenue"
                     hidden={formApi.getValue('venue') !== 'Others'}
                     placeholder="Enter the venue name"
-                    validate={value => this.validateOtherVenue(formApi, value)}
+                    validate={(value) =>
+                      this.validateOtherVenue(formApi, value)
+                    }
                     validateOnBlur
                     className="mb-3"
                   />
@@ -369,7 +364,7 @@ class EventForm extends Component {
                     field="startDate"
                     dateOnly={formApi.getValue('fullDay')}
                     showTimeSelect
-                    validate={value => this.validateDayFields(formApi, value)}
+                    validate={(value) => this.validateDayFields(formApi, value)}
                     validateOnChange
                     notify={
                       !formApi.getValue('fullDay')
@@ -389,7 +384,7 @@ class EventForm extends Component {
                     field="endDate"
                     hidden={formApi.getValue('fullDay')}
                     dateOnly={formApi.getValue('fullDay')}
-                    validate={value => this.validateDayFields(formApi, value)}
+                    validate={(value) => this.validateDayFields(formApi, value)}
                     validateOnChange
                     showTimeSelect
                     notify={['startDate', 'venue']}
@@ -462,7 +457,7 @@ class EventForm extends Component {
           )}
         </Form>
         <LinkModal
-          ref={element => {
+          ref={(element) => {
             this.modal = element
           }}
           title={modal.title}
@@ -477,13 +472,13 @@ class EventForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
     // zones: formatFirestoreData(state.firestore, 'zones'),
-    venueBookings: state.firestore.ordered.venueBookings
+    venueBookings: state.firestore.ordered.venueBookings,
   }
 }
 

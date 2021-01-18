@@ -106,9 +106,7 @@ class EventModal extends Component {
             {'at ' +
               (!event.otherVenue
                 ? spaces.data[event.venue].name
-                : event.venue) +
-              ' for ' +
-              (event.zoneName === undefined ? 'All Zones' : event.zoneName)}
+                : event.venue) }
           </h4>
           {userProfile ? (
             <h4 className="mb-0" style={{ fontWeight: 300 }}>
