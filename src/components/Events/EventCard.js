@@ -80,7 +80,7 @@ class EventCard extends Component {
       event,
       eventTypes,
       spaces,
-      zones,
+      // zones,
       buttonAction,
       buttonText,
       groups,

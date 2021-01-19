@@ -29,7 +29,7 @@ import {
   getEventVenueBookingsAfter,
   getEventTypes,
   getSpaces,
-  getZones,
+  // getZones,
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
@@ -193,7 +193,7 @@ class EventForm extends Component {
     })
 
     const normalVenue = values.venue !== 'Others'
-    const normalZone = values.zone !== 'Others'
+    // const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
