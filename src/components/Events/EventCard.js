@@ -177,7 +177,6 @@ class EventCard extends Component {
                   event={event}
                   eventTypes={eventTypes}
                   spaces={spaces}
-                  zones={zones}
                   groups={groups}
                   groupTypes={groupTypes}
                   userProfile={userProfile}

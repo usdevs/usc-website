@@ -6,7 +6,7 @@ import {
   ModalFooter,
   Container,
   Row,
-  Col
+  Col,
 } from 'reactstrap'
 import { getFile } from '../../actions/FilesActions'
 import GroupCard from '../Groups/GroupCard'
@@ -18,7 +18,7 @@ class EventModal extends Component {
 
     this.state = {
       isOpen: false,
-      poster: null
+      poster: null,
     }
   }
 
@@ -26,7 +26,7 @@ class EventModal extends Component {
     const { isOpen } = this.state
 
     this.setState({
-      isOpen: !isOpen
+      isOpen: !isOpen,
     })
   }
 
@@ -36,10 +36,10 @@ class EventModal extends Component {
     this.mounted = true
 
     if (event.poster) {
-      getFile(firebase, event.poster, url => {
+      getFile(firebase, event.poster, (url) => {
         if (this.mounted) {
           this.setState({
-            poster: url
+            poster: url,
           })
         }
       })
@@ -78,7 +78,7 @@ class EventModal extends Component {
       groupTypes,
       firebase,
       firestore,
-      userProfile
+      userProfile,
     } = this.props
 
     return (
@@ -104,9 +104,7 @@ class EventModal extends Component {
           </h4>
           <h4 className="mb-0" style={{ fontWeight: 300 }}>
             {'at ' +
-              (!event.otherVenue
-                ? spaces.data[event.venue].name
-                : event.venue) }
+              (!event.otherVenue ? spaces.data[event.venue].name : event.venue)}
           </h4>
           {userProfile ? (
             <h4 className="mb-0" style={{ fontWeight: 300 }}>
@@ -152,7 +150,7 @@ class EventModal extends Component {
               firestore={firestore}
               group={{
                 ...groups.data[event.organisedBy],
-                id: event.organisedBy
+                id: event.organisedBy,
               }}
               groupTypes={groupTypes}
             />
