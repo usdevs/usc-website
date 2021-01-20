@@ -28,7 +28,6 @@ import {
   getEventVenueBookingsAfter,
   getEventTypes,
   getSpaces,
-  getZones,
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
@@ -153,7 +152,7 @@ class AdminEventForm extends Component {
   }
 
   submit = (values) => {
-    const { auth, spaces, zones, initialValues } = this.props
+    const { auth, spaces, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
@@ -161,7 +160,6 @@ class AdminEventForm extends Component {
     })
 
     const normalVenue = values.venue !== 'Others'
-    const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
