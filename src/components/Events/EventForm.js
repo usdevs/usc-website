@@ -94,21 +94,6 @@ class EventForm extends Component {
     return options
   }
 
-  // zoneOptions = zones => {
-  //   var options = []
-
-  //   if (zones.isLoaded) {
-  //     _.forEach(zones.ordered, zone => {
-  //       options.push({
-  //         id: zone.id,
-  //         display: zone.name
-  //       })
-  //     })
-  //   }
-
-  //   return options
-  // }
-
   validateDayFields = (formApi, value) => {
     const maxNoOfHours = 2
     const maxWeeksInAdvanceForBooking = 2
@@ -193,7 +178,6 @@ class EventForm extends Component {
     })
 
     const normalVenue = values.venue !== 'Others'
-    // const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
@@ -477,7 +461,6 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
-    // zones: formatFirestoreData(state.firestore, 'zones'),
     venueBookings: state.firestore.ordered.venueBookings,
   }
 }

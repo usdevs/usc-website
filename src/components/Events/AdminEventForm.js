@@ -52,7 +52,7 @@ class AdminEventForm extends Component {
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces, zones } = this.props
+    const { eventTypes, spaces } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -60,10 +60,6 @@ class AdminEventForm extends Component {
 
     if (!spaces.isLoaded) {
       getSpaces(firestore)
-    }
-
-    if (!zones.isLoaded) {
-      getZones(firestore)
     }
   }
 
@@ -181,9 +177,6 @@ class AdminEventForm extends Component {
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
       otherVenue: normalVenue ? false : true,
-      zone: normalZone ? values.zone : values.otherZone,
-      zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
-      otherZone: normalZone ? false : true,
     }
 
     getEventVenueBookingsAfter(
