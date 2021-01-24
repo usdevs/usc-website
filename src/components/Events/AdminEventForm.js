@@ -13,7 +13,7 @@ import {
   GroupInput,
   ImageInput,
   TextAreaInput,
-  validateNotEmpty
+  validateNotEmpty,
 } from '../reusable/FormInputs'
 import { config } from '../../resources/config'
 import moment from 'moment'
@@ -22,13 +22,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   roundTime,
   formatFirestoreData,
-  eventTimesToMoment
+  eventTimesToMoment,
 } from '../../utils/utils'
 import {
   getEventVenueBookingsAfter,
   getEventTypes,
   getSpaces,
-  getZones
 } from '../../actions/EventsActions'
 import LinkModal from '../reusable/LinkModal'
 
@@ -36,7 +35,7 @@ import LinkModal from '../reusable/LinkModal'
 
 class AdminEventForm extends Component {
   static contextTypes = {
-    store: PropTypes.object.isRequired
+    store: PropTypes.object.isRequired,
   }
 
   formApi = null
@@ -46,13 +45,13 @@ class AdminEventForm extends Component {
     super(props)
 
     this.state = {
-      submitted: false
+      submitted: false,
     }
   }
 
   componentDidMount() {
     const { firestore } = this.context.store
-    const { eventTypes, spaces, zones } = this.props
+    const { eventTypes, spaces } = this.props
 
     if (!eventTypes.isLoaded) {
       getEventTypes(firestore)
@@ -61,20 +60,16 @@ class AdminEventForm extends Component {
     if (!spaces.isLoaded) {
       getSpaces(firestore)
     }
-
-    if (!zones.isLoaded) {
-      getZones(firestore)
-    }
   }
 
-  eventTypeOptions = eventTypes => {
+  eventTypeOptions = (eventTypes) => {
     var options = []
 
     if (eventTypes.isLoaded) {
-      _.forEach(eventTypes.ordered, type => {
+      _.forEach(eventTypes.ordered, (type) => {
         options.push({
           id: type.id,
-          display: type.name
+          display: type.name,
         })
       })
     }
@@ -82,14 +77,14 @@ class AdminEventForm extends Component {
     return options
   }
 
-  venueOptions = spaces => {
+  venueOptions = (spaces) => {
     var options = []
 
     if (spaces.isLoaded) {
-      _.forEach(spaces.ordered, space => {
+      _.forEach(spaces.ordered, (space) => {
         options.push({
           id: space.id,
-          display: space.name
+          display: space.name,
         })
       })
     }
@@ -97,14 +92,14 @@ class AdminEventForm extends Component {
     return options
   }
 
-  zoneOptions = zones => {
+  zoneOptions = (zones) => {
     var options = []
 
     if (zones.isLoaded) {
-      _.forEach(zones.ordered, zone => {
+      _.forEach(zones.ordered, (zone) => {
         options.push({
           id: zone.id,
-          display: zone.name
+          display: zone.name,
         })
       })
     }
@@ -152,26 +147,23 @@ class AdminEventForm extends Component {
     }
   }
 
-  internalShouldDisable = formApi => {
+  internalShouldDisable = (formApi) => {
     return formApi.getValue('spaceOnly')
   }
 
-  submit = values => {
-    const { auth, spaces, zones, initialValues } = this.props
+  submit = (values) => {
+    const { auth, spaces, initialValues } = this.props
     const { firestore } = this.context.store
 
     this.setState({
-      submitting: true
+      submitting: true,
     })
 
     const normalVenue = values.venue !== 'Others'
-    const normalZone = values.zone !== 'Others'
     const startDate = moment(values.startDate)
     const endDate = !values.fullDay
       ? moment(values.endDate)
-      : moment(values.startDate)
-          .add(1, 'day')
-          .add(-30, 'minutes')
+      : moment(values.startDate).add(1, 'day').add(-30, 'minutes')
 
     var formattedEvent = {
       ...values,
@@ -183,9 +175,6 @@ class AdminEventForm extends Component {
         : values.otherVenue,
       venue: normalVenue ? values.venue : values.otherVenue,
       otherVenue: normalVenue ? false : true,
-      zone: normalZone ? values.zone : values.otherZone,
-      zoneName: normalZone ? zones.data[values.zone].name : values.otherZone,
-      otherZone: normalZone ? false : true
     }
 
     getEventVenueBookingsAfter(
@@ -193,12 +182,12 @@ class AdminEventForm extends Component {
       formattedEvent.venue,
       startDate,
       'venueBookings',
-      snapshot => {
+      (snapshot) => {
         const { venueBookings } = this.props
 
         var clashes = false
 
-        _.forEach(venueBookings, bookingTemp => {
+        _.forEach(venueBookings, (bookingTemp) => {
           const booking = eventTimesToMoment(bookingTemp)
           clashes =
             startDate.isBetween(booking.startDate, booking.endDate) ||
@@ -226,7 +215,7 @@ class AdminEventForm extends Component {
           )
 
           this.setState({
-            submitting: false
+            submitting: false,
           })
         } else {
           this.props.submit(formattedEvent, this.submitCallback)
@@ -235,7 +224,7 @@ class AdminEventForm extends Component {
     )
   }
 
-  submitCallback = reset => {
+  submitCallback = (reset) => {
     if (reset) {
       this.formApi.reset()
     }
@@ -243,29 +232,22 @@ class AdminEventForm extends Component {
     this.modal.toggle()
 
     this.setState({
-      submitting: false
+      submitting: false,
     })
   }
 
   render() {
     const { submitting } = this.state
-    const {
-      eventTypes,
-      spaces,
-      zones,
-      btnText,
-      modal,
-      initialValues
-    } = this.props
+    const { eventTypes, spaces, btnText, modal, initialValues } = this.props
 
     return (
       <div>
         <Form
           initialValues={initialValues}
-          getApi={api => {
+          getApi={(api) => {
             this.formApi = api
           }}
-          onSubmit={values => this.submit(values)}
+          onSubmit={(values) => this.submit(values)}
         >
           {({ formApi }) => (
             <div>
@@ -295,7 +277,7 @@ class AdminEventForm extends Component {
                   field="internal"
                   text="Internal (Not on Google Calendar)"
                   disabled={this.internalShouldDisable(formApi)}
-                  validate={value => this.validateInternal(formApi, value)}
+                  validate={(value) => this.validateInternal(formApi, value)}
                 />
                 <CheckboxInput
                   field="spaceOnly"
@@ -329,36 +311,11 @@ class AdminEventForm extends Component {
                     field="otherVenue"
                     hidden={formApi.getValue('venue') !== 'Others'}
                     placeholder="Enter the venue name"
-                    validate={value => this.validateOtherVenue(formApi, value)}
+                    validate={(value) =>
+                      this.validateOtherVenue(formApi, value)
+                    }
                     validateOnBlur
                     className="mb-3"
-                  />
-                </div>
-              </div>
-              <h3>Zone</h3>
-              <div className="mb-3">
-                <DropdownInput
-                  field="zone"
-                  placeholder="Select a Zone"
-                  others="true"
-                  validate={validateNotEmpty}
-                  validateOnChange
-                  notify={['otherZone']}
-                  disabled={!zones.isLoaded}
-                  loading={!zones.isLoaded}
-                  options={this.zoneOptions(zones)}
-                />
-                <div
-                  className="mt-2"
-                  hidden={formApi.getValue('zone') !== 'Others'}
-                >
-                  <TextInput
-                    field="otherZone"
-                    hidden={formApi.getValue('zone') !== 'Others'}
-                    placeholder="Enter the zone name"
-                    validate={value => this.validateOtherZone(formApi, value)}
-                    validateOnBlur
-                    className="mb-0"
                   />
                 </div>
               </div>
@@ -378,7 +335,7 @@ class AdminEventForm extends Component {
                     errortext="Please indicate the Date and Time"
                     dateOnly={formApi.getValue('fullDay')}
                     showTimeSelect
-                    validate={value => this.validateDayFields(formApi, value)}
+                    validate={(value) => this.validateDayFields(formApi, value)}
                     validateOnChange
                     notify={
                       !formApi.getValue('fullDay')
@@ -399,7 +356,7 @@ class AdminEventForm extends Component {
                     hidden={formApi.getValue('fullDay')}
                     errortext="Check that the Start Date must be before End Date"
                     dateOnly={formApi.getValue('fullDay')}
-                    validate={value => this.validateDayFields(formApi, value)}
+                    validate={(value) => this.validateDayFields(formApi, value)}
                     validateOnChange
                     showTimeSelect
                     notify={['startDate', 'venue']}
@@ -472,7 +429,7 @@ class AdminEventForm extends Component {
           )}
         </Form>
         <LinkModal
-          ref={element => {
+          ref={(element) => {
             this.modal = element
           }}
           title={modal.title}
@@ -487,13 +444,13 @@ class AdminEventForm extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     eventTypes: formatFirestoreData(state.firestore, 'eventTypes'),
     spaces: formatFirestoreData(state.firestore, 'spaces'),
-    zones: formatFirestoreData(state.firestore, 'zones'),
-    venueBookings: state.firestore.ordered.venueBookings
+    // zones: formatFirestoreData(state.firestore, 'zones'),
+    venueBookings: state.firestore.ordered.venueBookings,
   }
 }
 
