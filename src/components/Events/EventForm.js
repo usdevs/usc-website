@@ -112,7 +112,7 @@ class EventForm extends Component {
         'weeks'
       )
 
-      if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
+      if (moment(formApi.getValue('startDate')).isAfter(advancedBookingMax, 'weeks')) {
         return (
           'Bookings must be made max ' +
           maxWeeksInAdvanceForBooking +
@@ -125,7 +125,9 @@ class EventForm extends Component {
         'hours'
       )
 
-      if (moment(formApi.getValue('endDate')) > endBefore) {
+      if (moment(formApi.getValue('endDate')).isAfter(endBefore, 'minutes')) {
+        // console.log(moment(formApi.getValue('endDate')));
+        // console.log(endBefore);
         return 'Max booking duration of ' + maxNoOfHours + ' hours.'
       }
     }
