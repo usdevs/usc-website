@@ -112,7 +112,7 @@ class EventForm extends Component {
         'weeks'
       )
 
-      if (moment(formApi.getValue('startDate')) > advancedBookingMax) {
+      if (moment(formApi.getValue('startDate')).isAfter(advancedBookingMax, 'minutes')) {
         return (
           'Bookings must be made max ' +
           maxWeeksInAdvanceForBooking +
@@ -125,13 +125,14 @@ class EventForm extends Component {
         'hours'
       )
 
-      if (moment(formApi.getValue('endDate')) > endBefore) {
+      if (moment(formApi.getValue('endDate')).isAfter(endBefore, 'minutes')) {
         return 'Max booking duration of ' + maxNoOfHours + ' hours.'
       }
     }
 
     const startNotBeforeEnd = !moment(formApi.getValue('startDate')).isBefore(
-      moment(formApi.getValue('endDate'))
+      moment(formApi.getValue('endDate')),
+      'minutes'
     )
 
     if (startNotBeforeEnd) {
@@ -208,10 +209,14 @@ class EventForm extends Component {
         _.forEach(venueBookings, (bookingTemp) => {
           const booking = eventTimesToMoment(bookingTemp)
           clashes =
-            startDate.isBetween(booking.startDate, booking.endDate) ||
-            endDate.isBetween(booking.startDate, booking.endDate) ||
-            booking.startDate.isBetween(startDate, endDate) ||
-            booking.endDate.isBetween(startDate, endDate)
+            startDate.isBetween(booking.startDate, booking.endDate, 'minutes') ||
+            endDate.isBetween(booking.startDate, booking.endDate, 'minutes') ||
+            booking.startDate.isBetween(startDate, endDate, 'minutes') ||
+            booking.endDate.isBetween(startDate, endDate, 'minutes') ||
+            (
+              booking.startDate.isSame(startDate, 'minutes') &&
+              booking.endDate.isSame(endDate, 'minutes')
+            )
 
           if (
             initialValues &&
