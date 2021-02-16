@@ -23,7 +23,7 @@
     "firebase": "^5.1.0",
     "formik": "^0.11.11",
     "googlemaps": "^1.12.0",
-    "history": "^4.7.2",
+    "history": "^5.0.0",
     "image-compressor.js": "^1.1.4",
     "informed": "^1.4.0",
     "jquery": "^3.3.1",
