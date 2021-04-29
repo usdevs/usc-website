@@ -1,0 +1,20 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: reactstrap
+    versions:
+    - 8.8.1
+  - dependency-name: react-dropzone
+    versions:
+    - 11.2.4
+  - dependency-name: style-loader
+    versions:
+    - 1.2.1
+  - dependency-name: react-redux-firebase
+    versions:
+    - 3.7.0
