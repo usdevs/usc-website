@@ -59,7 +59,7 @@
     "react-typography": "^0.16.13",
     "reactstrap": "^6.1.0",
     "redux": "^4.0.0",
-    "redux-firestore": "^0.8.0",
+    "redux-firestore": "^0.15.0",
     "styled-components": "^3.3.3",
     "typography": "^0.16.17",
     "yarn": "^1.21.1",
