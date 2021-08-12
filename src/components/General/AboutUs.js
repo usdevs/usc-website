@@ -174,7 +174,7 @@ class AboutUs extends Component {
               <li>To Bridge the Students, Faculty & Alumni</li>
               <li>To encourage and facilitate ground up initiatives</li>
             </ol>
-            <a href="http://bit.ly/USConsitution">
+            <a href="https://nus.campuslabs.com/engage/organization/nus-students-university-scholars-club/documents/view/1563614">
               <Button color="primary">View Our Constitution</Button>
             </a>
             <br />
