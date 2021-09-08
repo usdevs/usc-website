@@ -34,7 +34,7 @@ export const firebaseConfig = {
   messagingSenderId: '115895791273',
   clientId:
     '115895791273-6hbrflf3p4hq9o9b1td3lijq602eb3jk.apps.googleusercontent.com',
-  scopes: ['email', 'profile', 'https://www.googleapis.com/auth/calendar'],
+  scopes: ['email', 'profile', 'https://www.googleapis.com/auth/calendar.app.created'],
   discoveryDocs: [
     'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'
   ]
