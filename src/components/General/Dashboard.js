@@ -72,34 +72,46 @@ const categories = [
   {
     name: 'USC',
     buttons: [
-      {
-        name: 'MC Minutes & AGM Report',
-        icon: 'file-alt',
-        link: 'https://orgsync.com/134647/files/1302496',
-        color: 'dodgerblue'
-      },
+      // {
+      //   name: 'MC Minutes & AGM Report',
+      //   icon: 'file-alt',
+      //   link: 'https://orgsync.com/134647/files/1302496',
+      //   color: 'dodgerblue'
+      // },
       {
         name: 'USC Constitution',
         icon: 'file-alt',
-        link: 'https://orgsync.com/134647/files/1559870',
+        link: 'https://nus.campuslabs.com/engage/organization/nus-students-university-scholars-club/documents/view/1563614',
         color: 'dodgerblue'
       },
       {
-        name: 'USC + USP Logos',
+        name: 'USC Club Rules',
         icon: 'file-alt',
-        link: 'https://orgsync.com/134647/files/1066978',
+        link: 'https://nus.campuslabs.com/engage/organization/nus-students-university-scholars-club/documents/view/1565121',
         color: 'dodgerblue'
       },
+      // {
+      //   name: 'USC + USP Logos',
+      //   icon: 'file-alt',
+      //   link: 'https://orgsync.com/134647/files/1066978',
+      //   color: 'dodgerblue'
+      // },
       {
         name: 'Logistics List',
         icon: 'box-open',
         link: 'http://gg.gg/USPlogs',
         color: 'dodgerblue'
       },
+      // {
+      //   name: 'Welfare Pack Survey Results',
+      //   icon: 'comment',
+      //   link: 'https://orgsync.com/134647/files/1485601',
+      //   color: 'dodgerblue'
+      // },
       {
-        name: 'Welfare Pack Survey Results',
-        icon: 'comment',
-        link: 'https://orgsync.com/134647/files/1485601',
+        name: 'USC Wiki',
+        icon: 'file-alt',
+        link: 'https://wiki.nususc.com/index.php?title=Main_Page',
         color: 'dodgerblue'
       }
     ]
