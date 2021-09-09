@@ -8,19 +8,9 @@ const EventsAlert = props => {
 
   return (
     <Alert color="primary" isOpen={visible} toggle={onDismiss}>
-      {/* <div className="text-center">
-      Due to the COVID-19 outbreak, all IGs, GUIs, Houses and other USP groups will not be able to hold any face-to-face activities, and bookings for such purposes will not be considered valid during this time. Refer {' '}
-        <a href="https://emergency.nus.edu.sg/" className="alert-link">
-          here
-        </a>
-      {' '} for more information.
-      </div> */}
-      <div className="text-center">
-      Bookings for spaces have finally reopened! For the latest guidelines on bookings, please {' '}
-        <a href="https://bit.ly/uscspacescovid" className="alert-link">
-          head here
-        </a>
-        .
+      <div>
+        Visit our <a href="https://t.me/cinnaspaces">Cinnaspaces Channel</a> for assistance regarding the common spaces, 
+        or <a href="https://t.me/cinnabot">Cinnabot</a> to check the latest Spaces bookings on Telegram.
       </div>
     </Alert>
   )
