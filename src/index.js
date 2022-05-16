@@ -220,7 +220,7 @@ render(
           </Switch>
           <Jumbotron className="mt-5 mb-0">
             <h5 className="mb-0">
-              © Copyright 2018. All Rights Reserved. NUS Students' University
+              © Copyright 2022. All Rights Reserved. NUS Students' University
               Scholars Club
             </h5>
           </Jumbotron>
