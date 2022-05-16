@@ -456,51 +456,47 @@ export const uscCommittees = [
   },
   {
     name: 'Academic',
-    headedBy: 'Ng Jia Yeong, Academic Director',
+    headedBy: 'Lim Ji Kang, Academic Director',
     description:
       "The Academic Committee represents students' interests in academic-related matters. We seek to improve the academic environment of students in USP through academic initiatives and by surfacing student sentiments to USP faculty and administration - who have been very supportive and receptive to students' feedback.",
     image: academicComm,
     teams: [
       {
-        name: 'Internal Projects Committee',
-        members:
-        	'Lim Pei Rong Angela (Deputy Director), Lu Jinyao, Wang Xinman (Mandy), Gautum Girish Vasnani, Cheong Kwang Aik Eldrick, Tan Kai Qian Makarios, Goh Jun Ming, Ong Sing Huat Jonathan, Hua Xin Hui',
+        name: 'Deputy Directors',
+        members: 'Xin Yi, Eldrick'
       },
       {
-        name: 'Data and Communications Committee',
-        members:
-        	'Mah Cai Jun (Deputy Director), Terence, Wang Mengzhe, Jermaine Tang Chor Yee, Lim Yu Fei, Lum Yen Yi',
+        name: 'Core Team',
+        members: 'Xin Hui, Ai Xuan, Ji Kang, Jenny, Eldrick, Wei Xi'
+      },
+      {
+        name: 'Focused Projects',
+        members: 'Wei En, Sriram, Shu Yuan'
       }
     ]
   },
   {
     name: 'Finance',
-    headedBy: 'Zheng Chengzhi, Honorary Financial Secretary',
+    headedBy: 'Muhammad Harz Bin Zaydie, Honorary Financial Secretary',
     description:
-    	"The Finance Committee oversees the USC budget and helps students with obtaining funding for activities ranging from interest group events to FOP! The comm also organises productions and sales of USC merchandise, and regularly collaborates with other committees such as FOP and Welfare in procuring sponsorship deals for our students.  In addition, Finance comm is actively engaged with external parties, liaising with other RCs in the Co-NUS Inter-RC shirt project and partnering with U-town establishments in offering USCards, our very own student discount card scheme!",
+      'The Finance Committee oversees the USC budget and helps students with obtaining funding for activities ranging from interest group events to FOP! The comm also organises productions and sales of USC merchandise, and regularly collaborates with other committees such as FOP and Welfare in procuring sponsorship deals for our students.  In addition, Finance comm is actively engaged with external parties, liaising with other RCs in the Co-NUS Inter-RC shirt project and partnering with U-town establishments in offering USCards, our very own student discount card scheme!',
     image: honfinsecComm,
     teams: [
       {
-        name: 'Deputy Honorary Financial Secretary (Biz Dev)',
-        members: 'Law Wing Sum'
-      },
-      {
-        name: 'Deputy Honorary Financial Secretary (Attachés)',
-        members: 'Tee Jing Ying'
+        name: 'Deputy Honorary Financial Secretary',
+        members: 'Natalie'
       },
       {
         name: 'Financial Attachés',
-        members:
-        	'Tee Jing Ying (Welfare & Standing Comm), Tang Boxuan (Secretariat & Standing Comm), Lim Yi Jin (Houses), Muhammad Harz Bin Zaydie (Comm Life), Alson Tay Zhi Sheng (Houses), Chang Wei Ching (Comm Life)'
+        members: 'Kyna, Wei Ming, Mikey, Shaun, Run Fent'
       },
       {
-        name: 'Marketing Executives (Internal Business Development)',
-        members: 'June Tan Ying Shuang, He Li, Xiao Chengxin, Yong Chuen Shin'
+        name: 'Internal Business Development',
+        members: 'Natalie, Harz, Avelle, Tong'
       },
       {
-        name: 'Marketing Executives (External Business Development)',
-        members:
-        	'Gau Meng Yew (USCards Project IC), Isabel Teo Jing Lin (CoNUS Shirt Project IC), Tabitha Tan Si Yi (Sponsorships IC), Sadia Haque, Renee Lee, Natalie Chung Hui En'
+        name: 'External Business Development',
+        members: 'Sze Xuan, Natalie, Mikey, Daniel, He Li'
       }
     ]
   },
@@ -517,23 +513,19 @@ export const uscCommittees = [
       },
       {
         name: 'Design Directorate',
-        members:
-          'Natalie, Yun Ning, Min Yee, Givson, Ryan'
+        members: 'Natalie, Yun Ning, Min Yee, Givson, Ryan'
       },
       {
         name: "Makers' Studio Directorate",
-        members:
-          "Zhi Hui, Yun Ning, Si Jie, Geraldine, Yu Xin, Meng Yew"
+        members: 'Zhi Hui, Yun Ning, Si Jie, Geraldine, Yu Xin, Meng Yew'
       },
       {
         name: 'Spaces Directorate',
-        members:
-          'Ryan, Zhi Hui, Yun Ning, Joshua, Ryan, Zi Hsien'
+        members: 'Ryan, Zhi Hui, Yun Ning, Joshua, Ryan, Zi Hsien'
       },
       {
         name: 'Technologies Directorate',
-        members:
-          'Donovan, Yun Ning, Yi Hong, Pawandeep, Chuan Kai'
+        members: 'Donovan, Yun Ning, Yi Hong, Pawandeep, Chuan Kai'
       }
     ]
   },
@@ -541,7 +533,7 @@ export const uscCommittees = [
     name: 'Freshmen Orientation',
     headedBy: 'Jamie Lee Fang Hua, Freshmen Orientation Programme Director',
     description:
-    	'The FOP committee is the forefront of the yearly Freshman Orientation Programme. The committee is responsible for the planning and execution of the various programmes under FOP, through the engagement with external stakeholders such as House Committees and USP staff. Dedicated towards creating a fun and memorable experience for the freshmen, the Committee aims to curate and refine the program - ensuring a warm welcome and seamless integration of the freshmen into the USP community.',
+      'The FOP committee is the forefront of the yearly Freshman Orientation Programme. The committee is responsible for the planning and execution of the various programmes under FOP, through the engagement with external stakeholders such as House Committees and USP staff. Dedicated towards creating a fun and memorable experience for the freshmen, the Committee aims to curate and refine the program - ensuring a warm welcome and seamless integration of the freshmen into the USP community.',
     image: fopdirectorComm,
     teams: [
       {
@@ -563,19 +555,19 @@ export const houseCommittees = [
     image: ursaia,
     members: [
       {
-        name: 'Wong Shi Ting Calista',
+        name: 'Tristan Tan',
         title: 'House Captain'
       },
       {
-        name: 'Quek Xian Yi Erwin',
+        name: 'Iyan Danial',
         title: 'Vice House Captain'
       },
       {
-        name: 'Brittney Loke Zi Qing',
+        name: 'Reycherl Eng',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Tan Jun Yi',
+        name: 'Kok Ai Xuan',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -585,19 +577,19 @@ export const houseCommittees = [
     image: nocturna,
     members: [
       {
-        name: 'Yap Yu Qi Delphie',
+        name: 'Chew Hong Jin',
         title: 'House Captain'
       },
       {
-        name: 'Low Si Jie',
+        name: 'Yu Jia Lin',
         title: 'Vice House Captain'
       },
       {
-        name: 'Ng Qi Xuan',
+        name: 'Sim Hsin Wei Lauren',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Joshen Lim',
+        name: 'Chong Shin Ee',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -607,19 +599,19 @@ export const houseCommittees = [
     image: ianthe,
     members: [
       {
-        name: 'Goh Jun Ming',
+        name: 'Su Yan Le',
         title: 'House Captain'
       },
       {
-        name: 'Putri Pearl Koswara',
+        name: 'Tan Enn Syn, Shona',
         title: 'Vice House Captain'
       },
       {
-        name: 'Ryan Ong Ren-An',
+        name: 'Ashley Goh Ying Yue',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Ryan Lee Rui En',
+        name: 'Pierre Russell Ho Jun',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -629,19 +621,19 @@ export const houseCommittees = [
     image: triton,
     members: [
       {
-        name: 'Cheng Zhibin Nicholas',
+        name: 'Ryan Quek Wei Heng',
         title: 'House Captain'
       },
       {
-        name: 'Jerome Ong Yi Jie',
+        name: 'Muhamad Mamfizam bin Ismail',
         title: 'Vice House Captain'
       },
       {
-        name: 'Tan Joe Wel',
+        name: 'Loh Le Xuan',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Ha Tae Rin',
+        name: 'Charmaine Sew Fan Ning',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -651,19 +643,19 @@ export const houseCommittees = [
     image: ankaa,
     members: [
       {
-        name: 'Justin Rong Hengyang',
+        name: 'Eu Shae-Anne',
         title: 'House Captain'
       },
       {
-        name: 'Goh Hong Pei',
+        name: 'Ashley How Kai Xin',
         title: 'Vice House Captain'
       },
       {
-        name: 'Lavelle Wong Jing Tong',
+        name: 'Joelle Tang Ting Yee',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Tan Yan Feng',
+        name: 'Crystal Phua',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
@@ -673,19 +665,19 @@ export const houseCommittees = [
     image: saren,
     members: [
       {
-        name: 'Gautham S/O Vijayan Kumaran',
+        name: 'Dylan Ho Shu Jie',
         title: 'House Captain'
       },
       {
-        name: 'Maxyn Claris Koh',
+        name: 'Zhi Yi Lew',
         title: 'Vice House Captain'
       },
       {
-        name: 'Avelle Wong Shi Ying',
+        name: 'Clementine Bella Putri Santosa',
         title: 'Chief Orientation Group Leader'
       },
       {
-        name: 'Ang Jun Yi',
+        name: 'Stefanie Sew',
         title: 'Vice Chief Orientation Group Leader'
       }
     ]
